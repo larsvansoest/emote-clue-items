@@ -1,7 +1,6 @@
 package com.larsvansoest.runelite.clueitems.overlay;
 
 import com.larsvansoest.runelite.clueitems.config.ConfigProvider;
-import com.larsvansoest.runelite.clueitems.config.EmoteClueItemsConfig;
 import com.larsvansoest.runelite.clueitems.data.ItemsProvider;
 import com.larsvansoest.runelite.clueitems.overlay.icons.IconProvider;
 import java.awt.Graphics2D;
