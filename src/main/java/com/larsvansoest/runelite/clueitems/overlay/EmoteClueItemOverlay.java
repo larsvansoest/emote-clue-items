@@ -1,8 +1,15 @@
 package com.larsvansoest.runelite.clueitems.overlay;
 
-import com.larsvansoest.runelite.clueitems.config.ConfigProvider;
+import com.larsvansoest.runelite.clueitems.overlay.config.ConfigProvider;
 import com.larsvansoest.runelite.clueitems.data.ItemsProvider;
 import com.larsvansoest.runelite.clueitems.overlay.icons.IconProvider;
+import com.larsvansoest.runelite.clueitems.overlay.interfaces.WidgetGroup;
+import com.larsvansoest.runelite.clueitems.overlay.interfaces.WidgetInterface;
+import static com.larsvansoest.runelite.clueitems.overlay.interfaces.WidgetInterface.*;
+import static com.larsvansoest.runelite.clueitems.overlay.interfaces.WidgetInterface.PLAYER_TRADE_SCREEN_GROUP;
+import static com.larsvansoest.runelite.clueitems.overlay.interfaces.WidgetInterface.SEED_VAULT_INVENTORY_GROUP;
+import static com.larsvansoest.runelite.clueitems.overlay.interfaces.WidgetInterface.SHOP_INVENTORY_GROUP;
+import com.larsvansoest.runelite.clueitems.overlay.interfaces.WidgetProvider;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -26,60 +33,65 @@ import java.util.HashSet;
 public class EmoteClueItemOverlay extends WidgetItemOverlay
 {
 	private final ItemManager itemManager;
-	private final ItemsProvider items;
-	private final IconProvider icons;
-	private final ConfigProvider config;
+	private final ItemsProvider itemsProvider;
+	private final IconProvider iconProvider;
+	private final ConfigProvider configProvider;
+	private final WidgetProvider widgetProvider;
 
 	private final Point point; // Single allocation, to be re-used every iteration.
 
 	@Inject
-	public EmoteClueItemOverlay(ItemManager itemManager, ConfigProvider config, ItemsProvider items, IconProvider icons)
+	public EmoteClueItemOverlay(ItemManager itemManager, ConfigProvider config, ItemsProvider itemsProvider, IconProvider icons)
 	{
 		this.itemManager = itemManager;
-		this.config = config;
-		this.items = items;
-		this.icons = icons;
+		this.configProvider = config;
+		this.itemsProvider = itemsProvider;
+		this.iconProvider = icons;
+		this.widgetProvider = new WidgetProvider();
 		this.point = new Point();
 
-		super.showOnInterfaces(BANK_GROUP_ID);
-
-		super.showOnInterfaces(DEPOSIT_BOX_GROUP_ID,
+		super.showOnInterfaces(
+			BANK_GROUP_ID,
 			BANK_INVENTORY_GROUP_ID,
-			SHOP_INVENTORY_GROUP_ID,
-			GRAND_EXCHANGE_INVENTORY_GROUP_ID,
-			GUIDE_PRICES_INVENTORY_GROUP_ID,
-			EQUIPMENT_INVENTORY_GROUP_ID,
-			INVENTORY_GROUP_ID,
-			SEED_VAULT_INVENTORY_GROUP_ID,
+			DEPOSIT_BOX_GROUP_ID,
 			DUEL_INVENTORY_GROUP_ID,
 			DUEL_INVENTORY_OTHER_GROUP_ID,
+			EQUIPMENT_GROUP_ID,
+			EQUIPMENT_INVENTORY_GROUP_ID,
+			GRAND_EXCHANGE_INVENTORY_GROUP_ID,
+			GUIDE_PRICES_INVENTORY_GROUP_ID,
+			INVENTORY_GROUP_ID,
+			PLAYER_TRADE_INVENTORY_GROUP_ID,
 			PLAYER_TRADE_SCREEN_GROUP_ID,
-			PLAYER_TRADE_INVENTORY_GROUP_ID);
-
-		super.showOnInterfaces(EQUIPMENT_GROUP_ID);
+			SEED_VAULT_INVENTORY_GROUP_ID,
+			SHOP_INVENTORY_GROUP_ID
+		);
 	}
 
 	@Override
 	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem itemWidget)
 	{
 		int widgetID = TO_GROUP(itemWidget.getWidget().getId());
-		if (!config.interfaceSelected(widgetID))
+		WidgetInterface widgetInterface = widgetProvider.getWidgetInterface(widgetID);
+
+
+		// User-defined interface selection filtering.
+		if (!configProvider.interfaceGroupSelected(widgetInterface.group))
 		{
 			return;
 		}
 
-		final int _id = this.itemManager.canonicalize(itemId);
+		final int item = this.itemManager.canonicalize(itemId);
 		final Rectangle bounds = itemWidget.getCanvasBounds();
-		final int x = bounds.x + bounds.width - 6;
+		final int x = bounds.x + bounds.width + widgetInterface.offset;
 
 		int y = bounds.y;
-
-		y = this.renderClueItemDetection(graphics, this.items.getBeginnerItems(), this.icons.getRibbons().getBeginnerRibbon(), _id, x, y);
-		y = this.renderClueItemDetection(graphics, this.items.getEasyItems(), this.icons.getRibbons().getEasyRibbon(), _id, x, y);
-		y = this.renderClueItemDetection(graphics, this.items.getMediumItems(), this.icons.getRibbons().getMediumRibbon(), _id, x, y);
-		y = this.renderClueItemDetection(graphics, this.items.getHardItems(), this.icons.getRibbons().getHardRibbon(), _id, x, y);
-		y = this.renderClueItemDetection(graphics, this.items.getEliteItems(), this.icons.getRibbons().getEliteRibbon(), _id, x, y);
-		this.renderClueItemDetection(graphics, this.items.getMasterItems(), this.icons.getRibbons().getMasterRibbon(), _id, x, y);
+		y = this.renderClueItemDetection(graphics, this.itemsProvider.getBeginnerItems(), this.iconProvider.getRibbons().getBeginnerRibbon(), item, x, y);
+		y = this.renderClueItemDetection(graphics, this.itemsProvider.getEasyItems(), this.iconProvider.getRibbons().getEasyRibbon(), item, x, y);
+		y = this.renderClueItemDetection(graphics, this.itemsProvider.getMediumItems(), this.iconProvider.getRibbons().getMediumRibbon(), item, x, y);
+		y = this.renderClueItemDetection(graphics, this.itemsProvider.getHardItems(), this.iconProvider.getRibbons().getHardRibbon(), item, x, y);
+		y = this.renderClueItemDetection(graphics, this.itemsProvider.getEliteItems(), this.iconProvider.getRibbons().getEliteRibbon(), item, x, y);
+		this.renderClueItemDetection(graphics, this.itemsProvider.getMasterItems(), this.iconProvider.getRibbons().getMasterRibbon(), item, x, y);
 	}
 
 	private int renderClueItemDetection(Graphics2D graphics, HashSet<Integer> items, ImageComponent component, int id, int x, int y)
