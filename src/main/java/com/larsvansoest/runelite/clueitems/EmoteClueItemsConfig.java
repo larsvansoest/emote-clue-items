@@ -41,4 +41,13 @@ public interface EmoteClueItemsConfig extends Config
 		position = 02
 	)
 	default boolean highlightEquipment() { return false; }
+
+	@ConfigItem(
+		keyName = "HighlightShop",
+		name = "Shops",
+		description = "Show highlights on shop interfaces.",
+		section = Section_selectInterface,
+		position = 03
+	)
+	default boolean highlightShop() { return false; }
 }

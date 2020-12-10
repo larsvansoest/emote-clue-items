@@ -1,10 +1,8 @@
 package com.larsvansoest.runelite.clueitems.data;
 
-import org.apache.commons.lang3.ArrayUtils;
+import com.larsvansoest.runelite.clueitems.support.Util;
 
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.stream.Collectors;
 
 public class ItemsProvider
 {
@@ -27,7 +25,7 @@ public class ItemsProvider
 
 	private HashSet<Integer> toHashSet(int[] ids)
 	{
-		return Arrays.stream(ArrayUtils.toObject(ids)).collect(Collectors.toCollection(HashSet::new));
+		return Util.toHashSet(ids);
 	}
 
 	public HashSet<Integer> getBeginnerItems()
