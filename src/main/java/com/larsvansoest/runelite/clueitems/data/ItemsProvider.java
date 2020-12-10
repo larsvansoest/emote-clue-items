@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 
-public class EmoteClueItemsProvider
+public class ItemsProvider
 {
 	private HashSet<Integer> beginnerItems;
 	private HashSet<Integer> easyItems;
@@ -17,12 +17,12 @@ public class EmoteClueItemsProvider
 
 	public void loadItems()
 	{
-		this.beginnerItems = this.toHashSet(EmoteClueItems.Beginner.ids);
-		this.easyItems = this.toHashSet(EmoteClueItems.Easy.ids);
-		this.mediumItems = this.toHashSet(EmoteClueItems.Medium.ids);
-		this.hardItems = this.toHashSet(EmoteClueItems.Hard.ids);
-		this.eliteItems = this.toHashSet(EmoteClueItems.Elite.ids);
-		this.masterItems = this.toHashSet(EmoteClueItems.Master.ids);
+		this.beginnerItems = this.toHashSet(Items.Beginner.ids);
+		this.easyItems = this.toHashSet(Items.Easy.ids);
+		this.mediumItems = this.toHashSet(Items.Medium.ids);
+		this.hardItems = this.toHashSet(Items.Hard.ids);
+		this.eliteItems = this.toHashSet(Items.Elite.ids);
+		this.masterItems = this.toHashSet(Items.Master.ids);
 	}
 
 	private HashSet<Integer> toHashSet(int[] ids)

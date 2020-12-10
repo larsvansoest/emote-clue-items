@@ -2,7 +2,7 @@ package com.larsvansoest.runelite.clueitems.data;
 
 import net.runelite.api.ItemID;
 
-enum EmoteClueItems
+enum Items
 {
 
 	Beginner(
@@ -628,7 +628,7 @@ enum EmoteClueItems
 		ItemID.ZAMORAK_GODSWORD
 	);
 
-	EmoteClueItems(int... ids)
+	Items(int... ids)
 	{
 		this.ids = ids;
 	}

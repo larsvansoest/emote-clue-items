@@ -1,10 +1,18 @@
 package com.larsvansoest.runelite.clueitems.overlay;
 
-import com.larsvansoest.runelite.clueitems.data.EmoteClueItemsProvider;
-import com.larsvansoest.runelite.clueitems.overlay.icons.EmoteClueIconProvider;
+import com.larsvansoest.runelite.clueitems.config.ConfigProvider;
+import com.larsvansoest.runelite.clueitems.config.EmoteClueItemsConfig;
+import com.larsvansoest.runelite.clueitems.data.ItemsProvider;
+import com.larsvansoest.runelite.clueitems.overlay.icons.IconProvider;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import static net.runelite.api.widgets.WidgetID.*;
+import static net.runelite.api.widgets.WidgetID.DUEL_INVENTORY_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.DUEL_INVENTORY_OTHER_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.PLAYER_TRADE_INVENTORY_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.PLAYER_TRADE_SCREEN_GROUP_ID;
+import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
@@ -18,29 +26,49 @@ import java.util.HashSet;
  */
 public class EmoteClueItemOverlay extends WidgetItemOverlay
 {
-	private final EmoteClueItemsProvider items;
-	private final EmoteClueIconProvider icons;
 	private final ItemManager itemManager;
+	private final ItemsProvider items;
+	private final IconProvider icons;
+	private final ConfigProvider config;
 
 	private final Point point; // Single allocation, to be re-used every iteration.
 
 	@Inject
-	public EmoteClueItemOverlay(ItemManager itemManager, EmoteClueItemsProvider items, EmoteClueIconProvider icons)
+	public EmoteClueItemOverlay(ItemManager itemManager, ConfigProvider config, ItemsProvider items, IconProvider icons)
 	{
 		this.itemManager = itemManager;
+		this.config = config;
 		this.items = items;
 		this.icons = icons;
-
 		this.point = new Point();
 
-		super.showOnBank();
-		super.showOnEquipment();
-		super.showOnInventory();
+		super.showOnInterfaces(BANK_GROUP_ID);
+
+		super.showOnInterfaces(DEPOSIT_BOX_GROUP_ID,
+			BANK_INVENTORY_GROUP_ID,
+			SHOP_INVENTORY_GROUP_ID,
+			GRAND_EXCHANGE_INVENTORY_GROUP_ID,
+			GUIDE_PRICES_INVENTORY_GROUP_ID,
+			EQUIPMENT_INVENTORY_GROUP_ID,
+			INVENTORY_GROUP_ID,
+			SEED_VAULT_INVENTORY_GROUP_ID,
+			DUEL_INVENTORY_GROUP_ID,
+			DUEL_INVENTORY_OTHER_GROUP_ID,
+			PLAYER_TRADE_SCREEN_GROUP_ID,
+			PLAYER_TRADE_INVENTORY_GROUP_ID);
+
+		super.showOnInterfaces(EQUIPMENT_GROUP_ID);
 	}
 
 	@Override
 	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem itemWidget)
 	{
+		int widgetID = TO_GROUP(itemWidget.getWidget().getId());
+		if (!config.interfaceSelected(widgetID))
+		{
+			return;
+		}
+
 		final int _id = this.itemManager.canonicalize(itemId);
 		final Rectangle bounds = itemWidget.getCanvasBounds();
 		final int x = bounds.x + bounds.width - 6;
@@ -57,12 +85,7 @@ public class EmoteClueItemOverlay extends WidgetItemOverlay
 
 	private int renderClueItemDetection(Graphics2D graphics, HashSet<Integer> items, ImageComponent component, int id, int x, int y)
 	{
-		if (items.contains(id))
-		{
-			y += renderRibbon(graphics, component, x, y).getHeight() + 1;
-		}
-
-		return y;
+		return items.contains(id) ? (int) (y + renderRibbon(graphics, component, x, y).getHeight()) + 1 : y;
 	}
 
 	private Rectangle renderRibbon(Graphics2D graphics, ImageComponent ribbon, int x, int y)

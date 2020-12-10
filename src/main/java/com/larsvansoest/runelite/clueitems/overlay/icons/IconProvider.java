@@ -13,21 +13,21 @@ import net.runelite.client.util.ImageUtil;
  * @author Lars van Soest
  * @since 1.0
  */
-public class EmoteClueIconProvider
+public class IconProvider
 {
-	public EmoteClueRibbonCollection getRibbons()
+	public RibbonCollection getRibbons()
 	{
 		return ribbons;
 	}
 
-	private EmoteClueRibbonCollection ribbons;
+	private RibbonCollection ribbons;
 
 	/**
-	 * Initialise {@link BufferedImage} references and store in internal {@link EmoteClueRibbonCollection} reference.
+	 * Initialise {@link BufferedImage} references and store in internal {@link RibbonCollection} reference.
 	 */
 	public void fetchBuffers() throws IOException
 	{
-		this.ribbons = new EmoteClueRibbonCollection(fetchBuffer(EmoteClueIconSources.BEGINNER_RIBBON), fetchBuffer(EmoteClueIconSources.EASY_RIBBON), fetchBuffer(EmoteClueIconSources.MEDIUM_RIBBON), fetchBuffer(EmoteClueIconSources.HARD_RIBBON), fetchBuffer(EmoteClueIconSources.ELITE_RIBBON), fetchBuffer(EmoteClueIconSources.MASTER_RIBBON));
+		this.ribbons = new RibbonCollection(fetchBuffer(IconSources.BEGINNER_RIBBON), fetchBuffer(IconSources.EASY_RIBBON), fetchBuffer(IconSources.MEDIUM_RIBBON), fetchBuffer(IconSources.HARD_RIBBON), fetchBuffer(IconSources.ELITE_RIBBON), fetchBuffer(IconSources.MASTER_RIBBON));
 	}
 
 	private ImageComponent fetchBuffer(String iconSource) throws IOException
