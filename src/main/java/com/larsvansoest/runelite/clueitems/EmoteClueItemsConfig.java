@@ -1,4 +1,4 @@
-package com.larsvansoest.runelite.clueitems.config;
+package com.larsvansoest.runelite.clueitems;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
