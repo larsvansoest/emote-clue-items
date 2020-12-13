@@ -1,6 +1,5 @@
 package com.larsvansoest.runelite.clueitems.overlay.widgets;
 
-import com.larsvansoest.runelite.clueitems.support.Util;
 import java.util.HashSet;
 
 public enum Window
@@ -29,8 +28,8 @@ public enum Window
 	{
 		this.container = container;
 		this.main = main;
-		this.inventory = Util.toHashSet(inventory);
-		this.equipment = Util.toHashSet(equipment);
+		this.inventory = null;
+		this.equipment = null;
 	}
 
 	public Container getContainer(int child)

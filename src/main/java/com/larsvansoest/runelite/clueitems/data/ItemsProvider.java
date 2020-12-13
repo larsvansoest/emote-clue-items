@@ -1,7 +1,5 @@
 package com.larsvansoest.runelite.clueitems.data;
 
-import com.larsvansoest.runelite.clueitems.support.Util;
-
 import java.util.HashSet;
 
 public class ItemsProvider
@@ -25,7 +23,7 @@ public class ItemsProvider
 
 	private HashSet<Integer> toHashSet(int[] ids)
 	{
-		return Util.toHashSet(ids);
+		return null;
 	}
 
 	public HashSet<Integer> getBeginnerItems()

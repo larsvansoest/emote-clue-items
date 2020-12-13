@@ -3,16 +3,14 @@ package com.larsvansoest.runelite.clueitems.overlay;
 import com.larsvansoest.runelite.clueitems.overlay.config.ConfigProvider;
 import com.larsvansoest.runelite.clueitems.data.ItemsProvider;
 import com.larsvansoest.runelite.clueitems.overlay.icons.IconProvider;
-import com.larsvansoest.runelite.clueitems.overlay.widgets.Container;
-import com.larsvansoest.runelite.clueitems.overlay.widgets.Window;
-import com.larsvansoest.runelite.clueitems.overlay.widgets.WindowProvider;
+import com.larsvansoest.runelite.modules.widgets.ItemWidgetContainer;
+import com.larsvansoest.runelite.modules.widgets.ItemWidgetContext;
+import com.larsvansoest.runelite.modules.widgets.ItemWidgetData;
+import com.larsvansoest.runelite.modules.widgets.ItemWidgets;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.*;
-import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
-import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
@@ -33,6 +31,7 @@ public class EmoteClueItemOverlay extends WidgetItemOverlay
 	private final WindowProvider windowProvider;
 
 	private final Point point; // Single allocation, to be re-used every iteration.
+	private final ItemWidgetData itemWidgetData;
 
 	@Inject
 	public EmoteClueItemOverlay(ItemManager itemManager, ConfigProvider config, ItemsProvider itemsProvider, IconProvider icons)
@@ -43,6 +42,7 @@ public class EmoteClueItemOverlay extends WidgetItemOverlay
 		this.iconProvider = icons;
 		this.windowProvider = new WindowProvider();
 		this.point = new Point();
+		this.itemWidgetData = new ItemWidgetData();
 
 		super.showOnInterfaces(
 			// supported
@@ -74,20 +74,12 @@ public class EmoteClueItemOverlay extends WidgetItemOverlay
 	@Override
 	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem itemWidget)
 	{
-		Widget widget = itemWidget.getWidget();
-
-		int child = TO_CHILD(widget.getId());
-		int group = TO_GROUP(widget.getId());
-
-		Window window = windowProvider.getWindow(group);
+		ItemWidgets.Inspect(itemWidget, this.itemWidgetData);
+		ItemWidgetContainer container = this.itemWidgetData.getContainer();
+		ItemWidgetContext context = this.itemWidgetData.getContext();
 
 		// filter unsupported or turned off interfaces.
-		if (window == null)
-		{
-			return;
-		}
-		Container container = window.getContainer(child);
-		if (container == null || !configProvider.interfaceGroupSelected(container))
+		if (context == null || container == null || !configProvider.interfaceGroupSelected(container))
 		{
 			return;
 		}

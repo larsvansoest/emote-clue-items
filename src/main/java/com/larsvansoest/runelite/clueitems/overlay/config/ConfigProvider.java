@@ -1,7 +1,7 @@
 package com.larsvansoest.runelite.clueitems.overlay.config;
 
 import com.larsvansoest.runelite.clueitems.EmoteClueItemsConfig;
-import com.larsvansoest.runelite.clueitems.overlay.widgets.Container;
+import com.larsvansoest.runelite.modules.widgets.ItemWidgetContainer;
 
 public class ConfigProvider
 {
@@ -12,7 +12,7 @@ public class ConfigProvider
 		this.config = config;
 	}
 
-	public boolean interfaceGroupSelected(Container container)
+	public boolean interfaceGroupSelected(ItemWidgetContainer container)
 	{
 		switch (container)
 		{
