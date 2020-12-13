@@ -1,4 +1,4 @@
-package com.larsvansoest.runelite.modules.widgets;
+package com.larsvansoest.runelite.modules.itemwidgets;
 
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;

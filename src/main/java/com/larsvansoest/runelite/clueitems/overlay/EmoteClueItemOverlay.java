@@ -3,10 +3,10 @@ package com.larsvansoest.runelite.clueitems.overlay;
 import com.larsvansoest.runelite.clueitems.overlay.config.ConfigProvider;
 import com.larsvansoest.runelite.clueitems.data.ItemsProvider;
 import com.larsvansoest.runelite.clueitems.overlay.icons.IconProvider;
-import com.larsvansoest.runelite.modules.widgets.ItemWidgetContainer;
-import com.larsvansoest.runelite.modules.widgets.ItemWidgetContext;
-import com.larsvansoest.runelite.modules.widgets.ItemWidgetData;
-import com.larsvansoest.runelite.modules.widgets.ItemWidgets;
+import com.larsvansoest.runelite.modules.itemwidgets.ItemWidgetContainer;
+import com.larsvansoest.runelite.modules.itemwidgets.ItemWidgetContext;
+import com.larsvansoest.runelite.modules.itemwidgets.ItemWidgetData;
+import com.larsvansoest.runelite.modules.itemwidgets.ItemWidgets;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -28,7 +28,6 @@ public class EmoteClueItemOverlay extends WidgetItemOverlay
 	private final ItemsProvider itemsProvider;
 	private final IconProvider iconProvider;
 	private final ConfigProvider configProvider;
-	private final WindowProvider windowProvider;
 
 	private final Point point; // Single allocation, to be re-used every iteration.
 	private final ItemWidgetData itemWidgetData;
@@ -40,7 +39,6 @@ public class EmoteClueItemOverlay extends WidgetItemOverlay
 		this.configProvider = config;
 		this.itemsProvider = itemsProvider;
 		this.iconProvider = icons;
-		this.windowProvider = new WindowProvider();
 		this.point = new Point();
 		this.itemWidgetData = new ItemWidgetData();
 
@@ -87,7 +85,7 @@ public class EmoteClueItemOverlay extends WidgetItemOverlay
 		final int item = this.itemManager.canonicalize(itemId);
 		final Rectangle bounds = itemWidget.getCanvasBounds();
 
-		final int x = bounds.x + bounds.width + getXOffset(window, container);
+		final int x = bounds.x + bounds.width + getXOffset(container, context);
 
 		int y = bounds.y;
 		y = this.renderClueItemDetection(graphics, this.itemsProvider.getBeginnerItems(), this.iconProvider.getRibbons().getBeginnerRibbon(), item, x, y);
@@ -98,9 +96,9 @@ public class EmoteClueItemOverlay extends WidgetItemOverlay
 		this.renderClueItemDetection(graphics, this.itemsProvider.getMasterItems(), this.iconProvider.getRibbons().getMasterRibbon(), item, x, y);
 	}
 
-	private int getXOffset(Window window, Container container)
+	private int getXOffset(ItemWidgetContainer container, ItemWidgetContext context)
 	{
-		return container == Container.Equipment ? -10 : this.iconProvider.getOffset(window);
+		return container == ItemWidgetContainer.Equipment ? -10 : context == ItemWidgetContext.Default ? -1 : -5;
 	}
 
 	private int renderClueItemDetection(Graphics2D graphics, HashSet<Integer> items, ImageComponent component, int id, int x, int y)

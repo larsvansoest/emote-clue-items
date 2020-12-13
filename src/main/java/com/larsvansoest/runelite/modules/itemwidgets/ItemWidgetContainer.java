@@ -1,4 +1,4 @@
-package com.larsvansoest.runelite.modules.widgets;
+package com.larsvansoest.runelite.modules.itemwidgets;
 
 public enum ItemWidgetContainer
 {
