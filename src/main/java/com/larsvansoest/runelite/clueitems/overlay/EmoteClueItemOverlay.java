@@ -6,6 +6,7 @@ import com.larsvansoest.runelite.clueitems.overlay.icons.IconProvider;
 import com.larsvansoest.runelite.modules.itemwidgets.ItemWidgetContainer;
 import com.larsvansoest.runelite.modules.itemwidgets.ItemWidgetContext;
 import com.larsvansoest.runelite.modules.itemwidgets.ItemWidgetData;
+import com.larsvansoest.runelite.modules.itemwidgets.ItemWidgetInfo;
 import com.larsvansoest.runelite.modules.itemwidgets.ItemWidgets;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -62,7 +63,8 @@ public class EmoteClueItemOverlay extends WidgetItemOverlay
 			WidgetInfo.SMITHING_INVENTORY_ITEMS_CONTAINER.getGroupId(),
 			WidgetInfo.SEED_VAULT_ITEM_CONTAINER.getGroupId(),
 			WidgetInfo.SHOP_INVENTORY_ITEMS_CONTAINER.getGroupId(),
-			WidgetInfo.SHOP_ITEMS_CONTAINER.getGroupId()
+			WidgetInfo.SHOP_ITEMS_CONTAINER.getGroupId(),
+			ItemWidgetInfo.EQUIPMENT_ITEM_SLOTS.getGroupId()
 		);
 	}
 

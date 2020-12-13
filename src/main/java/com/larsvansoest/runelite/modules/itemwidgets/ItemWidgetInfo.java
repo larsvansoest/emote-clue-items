@@ -2,9 +2,10 @@ package com.larsvansoest.runelite.modules.itemwidgets;
 
 import net.runelite.api.widgets.WidgetID;
 
-enum ItemWidgetInfo
+public enum ItemWidgetInfo
 {
-	SHOP_ITEMS_CONTAINER(WidgetID.SHOP_GROUP_ID, 16);
+	SHOP_ITEMS_CONTAINER(WidgetID.SHOP_GROUP_ID, ItemWidgetID.Shop.ITEMS_CONTAINER),
+	EQUIPMENT_ITEM_SLOTS(ItemWidgetID.EQUIPMENT_ITEMS_GROUP_ID, ItemWidgetID.Equipment.ITEM_SLOTS);
 
 	private final int groupId;
 	private final int childId;

@@ -16,6 +16,8 @@ public abstract class ItemWidgets
 		while (widget != null)
 		{
 			int id = widget.getId();
+			Widget test = widget.getParent();
+			int parentidlol = test.getId();
 			if (id == WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getId()) {
 				widgetDataRef.setContext(ItemWidgetContext.InBank);
 				widgetDataRef.setContainer(ItemWidgetContainer.Inventory);
@@ -105,6 +107,11 @@ public abstract class ItemWidgets
 			else if (id == ItemWidgetInfo.SHOP_ITEMS_CONTAINER.getId()) {
 				widgetDataRef.setContext(ItemWidgetContext.InShop);
 				widgetDataRef.setContainer(ItemWidgetContainer.Shop);
+				return;
+			}
+			else if (id == ItemWidgetInfo.EQUIPMENT_ITEM_SLOTS.getId()) {
+				widgetDataRef.setContext(ItemWidgetContext.InEquipment);
+				widgetDataRef.setContainer(ItemWidgetContainer.Equipment);
 				return;
 			}
 			widget = widget.getParent();
