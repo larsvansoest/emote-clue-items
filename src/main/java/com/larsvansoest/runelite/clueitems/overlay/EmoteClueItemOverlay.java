@@ -10,7 +10,9 @@ import com.larsvansoest.runelite.modules.itemwidgets.ItemWidgets;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import static net.runelite.api.widgets.WidgetID.*;
+import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.widgets.WidgetInfo;
+import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
@@ -43,29 +45,24 @@ public class EmoteClueItemOverlay extends WidgetItemOverlay
 		this.itemWidgetData = new ItemWidgetData();
 
 		super.showOnInterfaces(
-			// supported
-			BANK_GROUP_ID,
-			BANK_INVENTORY_GROUP_ID,
-			DEPOSIT_BOX_GROUP_ID,
-			SHOP_GROUP_ID,
-			SHOP_INVENTORY_GROUP_ID,
-			EQUIPMENT_INVENTORY_GROUP_ID,
-			INVENTORY_GROUP_ID,
-			SEED_VAULT_INVENTORY_GROUP_ID,
-			EQUIPMENT_GROUP_ID,
-			GUIDE_PRICES_INVENTORY_GROUP_ID
-
-			/* not yet supported
-			GRAND_EXCHANGE_INVENTORY_GROUP_ID,
-			DUEL_INVENTORY_GROUP_ID,
-			DUEL_INVENTORY_OTHER_GROUP_ID,
-			PLAYER_TRADE_SCREEN_GROUP_ID,
-			PLAYER_TRADE_INVENTORY_GROUP_ID,
-			KEPT_ON_DEATH_GROUP_ID,
-			GUIDE_PRICE_GROUP_ID,
-			LOOTING_BAG_GROUP_ID,
-			SEED_BOX_GROUP_ID,
-			KINGDOM_GROUP_ID */
+			WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId(),
+			WidgetInfo.BANK_ITEM_CONTAINER.getGroupId(),
+			WidgetInfo.BANK_EQUIPMENT_CONTAINER.getGroupId(),
+			WidgetInfo.BARROWS_REWARD_INVENTORY.getGroupId(),
+			WidgetInfo.CLUE_SCROLL_REWARD_ITEM_CONTAINER.getGroupId(),
+			WidgetInfo.DEPOSIT_BOX_INVENTORY_ITEMS_CONTAINER.getGroupId(),
+			WidgetInfo.EQUIPMENT.getGroupId(),
+			WidgetInfo.EQUIPMENT_INVENTORY_ITEMS_CONTAINER.getGroupId(),
+			WidgetInfo.GRAND_EXCHANGE_INVENTORY_ITEMS_CONTAINER.getGroupId(),
+			WidgetInfo.GUIDE_PRICES_INVENTORY_ITEMS_CONTAINER.getGroupId(),
+			WidgetInfo.GUIDE_PRICES_ITEMS_CONTAINER.getGroupId(),
+			WidgetInfo.INVENTORY.getGroupId(),
+			WidgetInfo.RUNE_POUCH_ITEM_CONTAINER.getGroupId(),
+			WidgetInfo.SEED_VAULT_INVENTORY_ITEMS_CONTAINER.getGroupId(),
+			WidgetInfo.SMITHING_INVENTORY_ITEMS_CONTAINER.getGroupId(),
+			WidgetInfo.SEED_VAULT_ITEM_CONTAINER.getGroupId(),
+			WidgetInfo.SHOP_INVENTORY_ITEMS_CONTAINER.getGroupId(),
+			WidgetInfo.SHOP_ITEMS_CONTAINER.getGroupId()
 		);
 	}
 
