@@ -3,6 +3,7 @@ package com.larsvansoest.runelite.clueitems.overlay;
 import com.larsvansoest.runelite.clueitems.overlay.config.ConfigProvider;
 import com.larsvansoest.runelite.clueitems.data.ItemsProvider;
 import com.larsvansoest.runelite.clueitems.overlay.icons.IconProvider;
+import com.larsvansoest.runelite.modules.itemwidgets.ItemWidget;
 import com.larsvansoest.runelite.modules.itemwidgets.ItemWidgetContainer;
 import com.larsvansoest.runelite.modules.itemwidgets.ItemWidgetContext;
 import com.larsvansoest.runelite.modules.itemwidgets.ItemWidgetData;
@@ -11,6 +12,7 @@ import com.larsvansoest.runelite.modules.itemwidgets.ItemWidgets;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.Arrays;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
@@ -46,25 +48,7 @@ public class EmoteClueItemOverlay extends WidgetItemOverlay
 		this.itemWidgetData = new ItemWidgetData();
 
 		super.showOnInterfaces(
-			WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId(),
-			WidgetInfo.BANK_ITEM_CONTAINER.getGroupId(),
-			WidgetInfo.BANK_EQUIPMENT_CONTAINER.getGroupId(),
-			WidgetInfo.BARROWS_REWARD_INVENTORY.getGroupId(),
-			WidgetInfo.CLUE_SCROLL_REWARD_ITEM_CONTAINER.getGroupId(),
-			WidgetInfo.DEPOSIT_BOX_INVENTORY_ITEMS_CONTAINER.getGroupId(),
-			WidgetInfo.EQUIPMENT.getGroupId(),
-			WidgetInfo.EQUIPMENT_INVENTORY_ITEMS_CONTAINER.getGroupId(),
-			WidgetInfo.GRAND_EXCHANGE_INVENTORY_ITEMS_CONTAINER.getGroupId(),
-			WidgetInfo.GUIDE_PRICES_INVENTORY_ITEMS_CONTAINER.getGroupId(),
-			WidgetInfo.GUIDE_PRICES_ITEMS_CONTAINER.getGroupId(),
-			WidgetInfo.INVENTORY.getGroupId(),
-			WidgetInfo.RUNE_POUCH_ITEM_CONTAINER.getGroupId(),
-			WidgetInfo.SEED_VAULT_INVENTORY_ITEMS_CONTAINER.getGroupId(),
-			WidgetInfo.SMITHING_INVENTORY_ITEMS_CONTAINER.getGroupId(),
-			WidgetInfo.SEED_VAULT_ITEM_CONTAINER.getGroupId(),
-			WidgetInfo.SHOP_INVENTORY_ITEMS_CONTAINER.getGroupId(),
-			WidgetInfo.SHOP_ITEMS_CONTAINER.getGroupId(),
-			ItemWidgetInfo.EQUIPMENT_ITEM_SLOTS.getGroupId()
+			Arrays.stream(ItemWidget.values()).mapToInt(ItemWidget::getGroupId).toArray()
 		);
 	}
 
