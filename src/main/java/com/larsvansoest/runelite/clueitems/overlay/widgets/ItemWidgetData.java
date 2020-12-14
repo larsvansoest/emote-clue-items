@@ -1,5 +1,8 @@
-package com.larsvansoest.runelite.modules.itemwidgets;
+package com.larsvansoest.runelite.clueitems.overlay.widgets;
 
+/**
+ * Bean-like object which contains return data by {@link ItemWidgets} class Inspect method.
+ */
 public class ItemWidgetData
 {
 	private ItemWidgetContainer container;

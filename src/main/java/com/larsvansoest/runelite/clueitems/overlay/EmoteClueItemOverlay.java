@@ -3,19 +3,15 @@ package com.larsvansoest.runelite.clueitems.overlay;
 import com.larsvansoest.runelite.clueitems.overlay.config.ConfigProvider;
 import com.larsvansoest.runelite.clueitems.data.ItemsProvider;
 import com.larsvansoest.runelite.clueitems.overlay.icons.IconProvider;
-import com.larsvansoest.runelite.modules.itemwidgets.ItemWidget;
-import com.larsvansoest.runelite.modules.itemwidgets.ItemWidgetContainer;
-import com.larsvansoest.runelite.modules.itemwidgets.ItemWidgetContext;
-import com.larsvansoest.runelite.modules.itemwidgets.ItemWidgetData;
-import com.larsvansoest.runelite.modules.itemwidgets.ItemWidgetInfo;
-import com.larsvansoest.runelite.modules.itemwidgets.ItemWidgets;
+import com.larsvansoest.runelite.clueitems.overlay.widgets.ItemWidget;
+import com.larsvansoest.runelite.clueitems.overlay.widgets.ItemWidgetContainer;
+import com.larsvansoest.runelite.clueitems.overlay.widgets.ItemWidgetContext;
+import com.larsvansoest.runelite.clueitems.overlay.widgets.ItemWidgetData;
+import com.larsvansoest.runelite.clueitems.overlay.widgets.ItemWidgets;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Arrays;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
-import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
@@ -34,7 +30,8 @@ public class EmoteClueItemOverlay extends WidgetItemOverlay
 	private final IconProvider iconProvider;
 	private final ConfigProvider configProvider;
 
-	private final Point point; // Single allocation, to be re-used every iteration.
+	// Single object allocations, re-used every sequential iteration.
+	private final Point point;
 	private final ItemWidgetData itemWidgetData;
 
 	@Inject
@@ -48,28 +45,27 @@ public class EmoteClueItemOverlay extends WidgetItemOverlay
 		this.itemWidgetData = new ItemWidgetData();
 
 		super.showOnInterfaces(
-			Arrays.stream(ItemWidget.values()).mapToInt(ItemWidget::getGroupId).toArray()
+			Arrays.stream(ItemWidget.values()).mapToInt(itemWidget -> itemWidget.groupId).toArray()
 		);
 	}
 
 	@Override
 	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem itemWidget)
 	{
-		ItemWidgets.Inspect(itemWidget, this.itemWidgetData);
+		ItemWidgets.Inspect(itemWidget, this.itemWidgetData, 3);
 		ItemWidgetContainer container = this.itemWidgetData.getContainer();
 		ItemWidgetContext context = this.itemWidgetData.getContext();
 
-		// filter unsupported or turned off interfaces.
-		if (context == null || container == null || !configProvider.interfaceGroupSelected(container))
+		// Filter unsupported and turned off interfaces.
+		if (context == null || container == null || !this.configProvider.interfaceGroupSelected(container))
 		{
 			return;
 		}
 
 		final int item = this.itemManager.canonicalize(itemId);
+
 		final Rectangle bounds = itemWidget.getCanvasBounds();
-
-		final int x = bounds.x + bounds.width + getXOffset(container, context);
-
+		final int x = bounds.x + bounds.width + this.getXOffset(container, context);
 		int y = bounds.y;
 		y = this.renderClueItemDetection(graphics, this.itemsProvider.getBeginnerItems(), this.iconProvider.getRibbons().getBeginnerRibbon(), item, x, y);
 		y = this.renderClueItemDetection(graphics, this.itemsProvider.getEasyItems(), this.iconProvider.getRibbons().getEasyRibbon(), item, x, y);
@@ -86,7 +82,7 @@ public class EmoteClueItemOverlay extends WidgetItemOverlay
 
 	private int renderClueItemDetection(Graphics2D graphics, HashSet<Integer> items, ImageComponent component, int id, int x, int y)
 	{
-		return items.contains(id) ? (int) (y + renderRibbon(graphics, component, x, y).getHeight()) + 1 : y;
+		return items.contains(id) ? (int) (y + this.renderRibbon(graphics, component, x, y).getHeight()) + 1 : y;
 	}
 
 	private Rectangle renderRibbon(Graphics2D graphics, ImageComponent ribbon, int x, int y)
