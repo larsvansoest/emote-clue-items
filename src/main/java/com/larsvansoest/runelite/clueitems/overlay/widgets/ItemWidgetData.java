@@ -8,7 +8,9 @@ public class ItemWidgetData
 	private ItemWidgetContainer container;
 	private ItemWidgetContext context;
 
-	public ItemWidgetData() {};
+	public ItemWidgetData()
+	{
+	}
 
 	public ItemWidgetContainer getContainer()
 	{

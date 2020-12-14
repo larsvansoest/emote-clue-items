@@ -11,6 +11,7 @@ public abstract class ItemWidgets
 	 * @param widgetItem    the {@link WidgetItem} to analyse.
 	 * @param widgetDataRef the {@link ItemWidgetData} to write found data to.
 	 * @param maxDepth      the maximum steps from initial widgetItem parameter to one of the parents specified.
+	 * @since 1.2.0
 	 */
 	public static void Inspect(final WidgetItem widgetItem, final ItemWidgetData widgetDataRef, final int maxDepth)
 	{
