@@ -55,7 +55,7 @@ import net.runelite.api.coords.WorldPoint;
 @Getter
 public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClueScroll
 {
-	private static final Set<EmoteClue> CLUES = ImmutableSet.of(
+	public static final Set<EmoteClue> CLUES = ImmutableSet.of(
 		new EmoteClue(Hard, "Beckon on the east coast of the Kharazi Jungle. Beware of double agents! Equip any vestment stole and a heraldic rune shield.", "Kharazi Jungle", NORTHEAST_CORNER_OF_THE_KHARAZI_JUNGLE, new WorldPoint(2954, 2933, 0), DOUBLE_AGENT_108, BECKON, any("Any stole", item(GUTHIX_STOLE), item(SARADOMIN_STOLE), item(ZAMORAK_STOLE), item(ARMADYL_STOLE), item(BANDOS_STOLE), item(ANCIENT_STOLE)), any("Any heraldic rune shield", item(RUNE_SHIELD_H1), item(RUNE_SHIELD_H2), item(RUNE_SHIELD_H3), item(RUNE_SHIELD_H4), item(RUNE_SHIELD_H5))),
 		new EmoteClue(Medium, "Cheer in the Barbarian Agility Arena. Headbang before you talk to me. Equip a steel platebody, maple shortbow and a Wilderness cape.", "Barbarian Outpost", BARBARIAN_OUTPOST_OBSTACLE_COURSE, new WorldPoint(2552, 3556, 0), CHEER, HEADBANG, item(STEEL_PLATEBODY), item(MAPLE_SHORTBOW), range("Any team cape", TEAM1_CAPE, TEAM50_CAPE)),
 		new EmoteClue(Elite, "Bow upstairs in the Edgeville Monastery. Equip a completed prayer book.", "Edgeville Monastery", SOUTHEAST_CORNER_OF_THE_MONASTERY, new WorldPoint(3056, 3484, 1), BOW, any("Any god book", item(HOLY_BOOK), item(BOOK_OF_BALANCE), item(UNHOLY_BOOK), item(BOOK_OF_LAW), item(BOOK_OF_WAR), item(BOOK_OF_DARKNESS))),
@@ -178,7 +178,6 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 
 	private final String text;
 	private final String locationName;
-
 	private final Difficulty difficulty;
 
 	@Nullable
@@ -216,18 +215,5 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 		this(difficulty, text, locationName, stashUnit, location, firstEmote, secondEmote, itemRequirements);
 		setRequiresLight(true);
 		setHasFirePit(firePit);
-	}
-
-	public static EmoteClue forText(String text)
-	{
-		for (EmoteClue clue : CLUES)
-		{
-			if (clue.getText().equalsIgnoreCase(text))
-			{
-				return clue;
-			}
-		}
-
-		return null;
 	}
 }
