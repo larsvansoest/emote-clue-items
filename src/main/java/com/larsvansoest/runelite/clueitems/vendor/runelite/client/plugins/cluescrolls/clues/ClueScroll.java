@@ -22,15 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cluescrolls.clues;
+package com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues;
 
-import java.awt.Graphics2D;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Varbits;
-import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 
 public abstract class ClueScroll
 {
@@ -49,8 +46,4 @@ public abstract class ClueScroll
 	@Setter(AccessLevel.PROTECTED)
 	@Getter(AccessLevel.PUBLIC)
 	private Enemy enemy;
-
-	public abstract void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin);
-
-	public abstract void makeWorldOverlayHint(Graphics2D graphics, ClueScrollPlugin plugin);
 }

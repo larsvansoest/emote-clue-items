@@ -22,42 +22,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cluescrolls.clues;
+package com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues;
 
 import com.google.common.collect.ImmutableSet;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Polygon;
+import static com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.Enemy.DOUBLE_AGENT_108;
+import static com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.Enemy.DOUBLE_AGENT_141;
+import static com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.Enemy.DOUBLE_AGENT_65;
+import com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.emote.Emote;
+import static com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.emote.Emote.BULL_ROARER;
+import static com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.emote.Emote.*;
+import com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit;
+import static com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit.SHANTAY_PASS;
+import static com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit.*;
+import com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
+import static com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.all;
+import static com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.any;
+import static com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.emptySlot;
+import static com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.item;
+import static com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.range;
 import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.Getter;
-import net.runelite.api.Client;
-import static net.runelite.api.EquipmentInventorySlot.*;
 import static net.runelite.api.EquipmentInventorySlot.LEGS;
-import net.runelite.api.Item;
+import static net.runelite.api.EquipmentInventorySlot.*;
 import net.runelite.api.ItemID;
 import static net.runelite.api.ItemID.*;
-import net.runelite.api.Perspective;
-import net.runelite.api.ScriptID;
 import net.runelite.api.Varbits;
-import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
-import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
-import net.runelite.client.plugins.cluescrolls.clues.emote.Emote;
-import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.*;
-import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.BULL_ROARER;
-import net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit;
-import static net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit.*;
-import static net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit.SHANTAY_PASS;
-import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
-import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.*;
-import static net.runelite.client.plugins.cluescrolls.clues.Enemy.*;
-import net.runelite.client.ui.overlay.OverlayUtil;
-import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
-import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Getter
 public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClueScroll
@@ -219,113 +211,6 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 		this(text, locationName, stashUnit, location, firstEmote, secondEmote, itemRequirements);
 		setRequiresLight(true);
 		setHasFirePit(firePit);
-	}
-
-	@Override
-	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
-	{
-		panelComponent.getChildren().add(TitleComponent.builder().text("Emote Clue").build());
-		panelComponent.getChildren().add(LineComponent.builder().left("Emotes:").build());
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left(getFirstEmote().getName())
-			.leftColor(TITLED_CONTENT_COLOR)
-			.build());
-
-		if (getSecondEmote() != null)
-		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left(getSecondEmote().getName())
-				.leftColor(TITLED_CONTENT_COLOR)
-				.build());
-		}
-
-		panelComponent.getChildren().add(LineComponent.builder().left("Location:").build());
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left(getLocationName())
-			.leftColor(TITLED_CONTENT_COLOR)
-			.build());
-
-		if (itemRequirements.length > 0)
-		{
-			Client client = plugin.getClient();
-
-			if (stashUnit != null)
-			{
-				client.runScript(ScriptID.WATSON_STASH_UNIT_CHECK, stashUnit.getObjectId(), 0, 0, 0);
-				int[] intStack = client.getIntStack();
-				boolean stashUnitBuilt = intStack[0] == 1;
-
-				panelComponent.getChildren().add(LineComponent.builder()
-					.left("STASH Unit:")
-					.right(stashUnitBuilt ? UNICODE_CHECK_MARK : UNICODE_BALLOT_X)
-					.rightColor(stashUnitBuilt ? Color.GREEN : Color.RED)
-					.build());
-			}
-
-			panelComponent.getChildren().add(LineComponent.builder().left("Equip:").build());
-
-			Item[] equipment = plugin.getEquippedItems();
-			Item[] inventory = plugin.getInventoryItems();
-
-			// If equipment is null, the player is wearing nothing
-			if (equipment == null)
-			{
-				equipment = new Item[0];
-			}
-
-			// If inventory is null, the player has nothing in their inventory
-			if (inventory == null)
-			{
-				inventory = new Item[0];
-			}
-
-			Item[] combined = new Item[equipment.length + inventory.length];
-			System.arraycopy(equipment, 0, combined, 0, equipment.length);
-			System.arraycopy(inventory, 0, combined, equipment.length, inventory.length);
-
-			for (ItemRequirement requirement : itemRequirements)
-			{
-				boolean equipmentFulfilled = requirement.fulfilledBy(equipment);
-				boolean combinedFulfilled = requirement.fulfilledBy(combined);
-
-				panelComponent.getChildren().add(LineComponent.builder()
-					.left(requirement.getCollectiveName(client))
-					.leftColor(TITLED_CONTENT_COLOR)
-					.right(combinedFulfilled ? UNICODE_CHECK_MARK : UNICODE_BALLOT_X)
-					.rightColor(equipmentFulfilled ? Color.GREEN : (combinedFulfilled ? Color.ORANGE : Color.RED))
-					.build());
-			}
-		}
-	}
-
-	@Override
-	public void makeWorldOverlayHint(Graphics2D graphics, ClueScrollPlugin plugin)
-	{
-		LocalPoint localPoint = LocalPoint.fromWorld(plugin.getClient(), getLocation());
-
-		if (localPoint != null)
-		{
-			OverlayUtil.renderTileOverlay(plugin.getClient(), graphics, localPoint, plugin.getEmoteImage(), Color.ORANGE);
-		}
-
-		if (stashUnit != null)
-		{
-			final WorldPoint[] worldPoints = stashUnit.getWorldPoints();
-
-			for (final WorldPoint worldPoint : worldPoints)
-			{
-				final LocalPoint stashUnitLocalPoint = LocalPoint.fromWorld(plugin.getClient(), worldPoint);
-
-				if (stashUnitLocalPoint != null)
-				{
-					final Polygon poly = Perspective.getCanvasTilePoly(plugin.getClient(), stashUnitLocalPoint);
-					if (poly != null)
-					{
-						OverlayUtil.renderPolygon(graphics, poly, Color.RED);
-					}
-				}
-			}
-		}
 	}
 
 	public static EmoteClue forText(String text)
