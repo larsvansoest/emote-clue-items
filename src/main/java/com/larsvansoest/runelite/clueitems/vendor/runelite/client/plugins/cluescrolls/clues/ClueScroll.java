@@ -46,4 +46,8 @@ public abstract class ClueScroll
 	@Setter(AccessLevel.PROTECTED)
 	@Getter(AccessLevel.PUBLIC)
 	private Enemy enemy;
+
+	@Setter(AccessLevel.PROTECTED)
+	@Getter(AccessLevel.PUBLIC)
+	private Difficulty difficulty;
 }
