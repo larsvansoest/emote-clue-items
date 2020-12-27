@@ -2,8 +2,8 @@ package com.larsvansoest.runelite.clueitems.overlay;
 
 import com.larsvansoest.runelite.clueitems.data.EmoteClueCollection;
 import com.larsvansoest.runelite.clueitems.data.EmoteClues;
+import com.larsvansoest.runelite.clueitems.data.Images;
 import com.larsvansoest.runelite.clueitems.overlay.config.ConfigProvider;
-import com.larsvansoest.runelite.clueitems.overlay.icons.IconProvider;
 import com.larsvansoest.runelite.clueitems.overlay.widgets.ItemWidget;
 import com.larsvansoest.runelite.clueitems.overlay.widgets.ItemWidgetContainer;
 import com.larsvansoest.runelite.clueitems.overlay.widgets.ItemWidgetContext;
@@ -25,21 +25,33 @@ import net.runelite.client.ui.overlay.components.ImageComponent;
 public class EmoteClueItemOverlay extends WidgetItemOverlay
 {
 	private final ItemManager itemManager;
-	private final IconProvider iconProvider;
 	private final ConfigProvider configProvider;
 
 	// Single object allocations, re-used every sequential iteration.
 	private final Point point;
 	private final ItemWidgetData itemWidgetData;
 
+	private final ImageComponent beginnerRibbon;
+	private final ImageComponent easyRibbon;
+	private final ImageComponent mediumRibbon;
+	private final ImageComponent hardRibbon;
+	private final ImageComponent eliteRibbon;
+	private final ImageComponent masterRibbon;
+
 	@Inject
-	public EmoteClueItemOverlay(ItemManager itemManager, ConfigProvider config, IconProvider icons)
+	public EmoteClueItemOverlay(ItemManager itemManager, ConfigProvider config)
 	{
 		this.itemManager = itemManager;
 		this.configProvider = config;
-		this.iconProvider = icons;
 		this.point = new Point();
 		this.itemWidgetData = new ItemWidgetData();
+
+		this.beginnerRibbon = new ImageComponent(Images.BEGINNER_RIBBON);
+		this.easyRibbon = new ImageComponent(Images.EASY_RIBBON);
+		this.mediumRibbon = new ImageComponent(Images.MEDIUM_RIBBON);
+		this.hardRibbon = new ImageComponent(Images.HARD_RIBBON);
+		this.eliteRibbon = new ImageComponent(Images.ELITE_RIBBON);
+		this.masterRibbon = new ImageComponent(Images.MASTER_RIBBON);
 
 		super.showOnInterfaces(
 			Arrays.stream(ItemWidget.values()).mapToInt(itemWidget -> itemWidget.groupId).toArray()
@@ -64,12 +76,12 @@ public class EmoteClueItemOverlay extends WidgetItemOverlay
 		final Rectangle bounds = itemWidget.getCanvasBounds();
 		final int x = bounds.x + bounds.width + this.getXOffset(container, context);
 		int y = bounds.y;
-		y = this.renderClueItemDetection(graphics, EmoteClues.beginner, this.iconProvider.getRibbons().getBeginnerRibbon(), item, x, y);
-		y = this.renderClueItemDetection(graphics, EmoteClues.easy, this.iconProvider.getRibbons().getEasyRibbon(), item, x, y);
-		y = this.renderClueItemDetection(graphics, EmoteClues.medium, this.iconProvider.getRibbons().getMediumRibbon(), item, x, y);
-		y = this.renderClueItemDetection(graphics, EmoteClues.hard, this.iconProvider.getRibbons().getHardRibbon(), item, x, y);
-		y = this.renderClueItemDetection(graphics, EmoteClues.elite, this.iconProvider.getRibbons().getEliteRibbon(), item, x, y);
-		this.renderClueItemDetection(graphics, EmoteClues.master, this.iconProvider.getRibbons().getMasterRibbon(), item, x, y);
+		y = this.renderClueItemDetection(graphics, EmoteClues.beginner, this.beginnerRibbon, item, x, y);
+		y = this.renderClueItemDetection(graphics, EmoteClues.easy, this.easyRibbon, item, x, y);
+		y = this.renderClueItemDetection(graphics, EmoteClues.medium, this.mediumRibbon, item, x, y);
+		y = this.renderClueItemDetection(graphics, EmoteClues.hard, this.hardRibbon, item, x, y);
+		y = this.renderClueItemDetection(graphics, EmoteClues.elite, this.eliteRibbon, item, x, y);
+		this.renderClueItemDetection(graphics, EmoteClues.master, this.masterRibbon, item, x, y);
 	}
 
 	private int getXOffset(ItemWidgetContainer container, ItemWidgetContext context)

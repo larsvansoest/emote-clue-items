@@ -12,7 +12,7 @@ public abstract class EmoteClues
 	public static final EmoteClueCollection elite = ofDifficulty(Difficulty.Elite);
 	public static final EmoteClueCollection master = ofDifficulty(Difficulty.Master);
 
-	private static final EmoteClueCollection ofDifficulty(Difficulty difficulty) {
+	private static EmoteClueCollection ofDifficulty(Difficulty difficulty) {
 		return new EmoteClueCollection(EmoteClue.CLUES.stream().filter(clue -> clue.getDifficulty() == difficulty).toArray(EmoteClue[]::new));
 	}
 }

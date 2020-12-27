@@ -120,6 +120,5 @@ public abstract class ItemWidgets
 			widget = widget.getParent();
 			i++;
 		}
-		return;
 	}
 }

@@ -14,7 +14,7 @@ public class ItemWidgetData
 
 	public ItemWidgetContainer getContainer()
 	{
-		return container;
+		return this.container;
 	}
 
 	public void setContainer(ItemWidgetContainer container)
@@ -24,7 +24,7 @@ public class ItemWidgetData
 
 	public ItemWidgetContext getContext()
 	{
-		return context;
+		return this.context;
 	}
 
 	public void setContext(ItemWidgetContext context)

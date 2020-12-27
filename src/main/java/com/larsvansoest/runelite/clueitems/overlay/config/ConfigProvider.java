@@ -17,25 +17,25 @@ public class ConfigProvider
 		switch (container)
 		{
 			case Bank:
-				return config.highlightBank();
+				return this.config.highlightBank();
 
 			case DepositBox:
-				return config.highlightDepositBox();
+				return this.config.highlightDepositBox();
 
 			case Inventory:
-				return config.highlightInventory();
+				return this.config.highlightInventory();
 
 			case Equipment:
-				return config.highlightEquipment();
+				return this.config.highlightEquipment();
 
 			case Shop:
-				return config.highlightShop();
+				return this.config.highlightShop();
 
 			case KeptOnDeath:
-				return config.highlightKeptOnDeath();
+				return this.config.highlightKeptOnDeath();
 
 			case GuidePrices:
-				return config.highlightGuidePrices();
+				return this.config.highlightGuidePrices();
 
 			default:
 				return false;

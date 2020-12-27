@@ -11,6 +11,10 @@ public class EmoteClueCollection
 		this.collection = collection;
 	}
 
+	public final EmoteClue[] getCollection() {
+		return this.collection;
+	}
+
 	public final Boolean containsItem(int itemId) {
 		return Arrays.stream(this.collection).flatMap(emoteClue -> Arrays.stream(emoteClue.getItemRequirements())).anyMatch(itemRequirement -> itemRequirement.fulfilledBy(itemId));
 	}
