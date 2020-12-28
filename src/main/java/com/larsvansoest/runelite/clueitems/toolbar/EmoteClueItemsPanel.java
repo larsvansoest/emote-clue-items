@@ -16,10 +16,6 @@ public class EmoteClueItemsPanel extends PluginPanel
 {
 	public EmoteClueItemsPanel()
 	{
-		EmoteClue.CLUES.stream().flatMap(emoteClue -> Arrays.stream(emoteClue.getItemRequirements()).filter(itemRequirement -> !(itemRequirement instanceof SlotLimitationRequirement)).flatMap(itemRequirement -> Stream.of(new AbstractMap.SimpleImmutableEntry<>(emoteClue, itemRequirement)))).collect(Collectors.toMap(entry -> entry.getValue().getName(), entry -> Stream.of(entry.getKey()).toArray(EmoteClue[]::new), ArrayUtils::addAll)).entrySet().stream().forEach(entry -> {
-			String requirementName = entry.getKey();
-			EmoteClue[] emoteClues = entry.getValue();
-			super.add(new ItemRequirementPanel(new ImageIcon(Images.HARD_RIBBON), requirementName, emoteClues));
-		});
+		EmoteClue.CLUES.stream().flatMap(emoteClue -> Arrays.stream(emoteClue.getItemRequirements()).filter(itemRequirement -> !(itemRequirement instanceof SlotLimitationRequirement)).flatMap(itemRequirement -> Stream.of(new AbstractMap.SimpleImmutableEntry<>(emoteClue, itemRequirement)))).collect(Collectors.toMap(entry -> entry.getValue().getName(), entry -> Stream.of(entry.getKey()).toArray(EmoteClue[]::new), ArrayUtils::addAll)).forEach((requirementName, emoteClues) -> super.add(new ItemRequirementPanel(new ImageIcon(Images.HARD_RIBBON), requirementName, emoteClues)));
 	}
 }
