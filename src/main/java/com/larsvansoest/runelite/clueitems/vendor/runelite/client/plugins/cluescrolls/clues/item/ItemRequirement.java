@@ -24,7 +24,6 @@
  */
 package com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.item;
 
-import net.runelite.api.Client;
 import net.runelite.api.Item;
 
 public interface ItemRequirement
@@ -33,5 +32,5 @@ public interface ItemRequirement
 
 	boolean fulfilledBy(Item[] items);
 
-	String getCollectiveName(Client client);
+	String getName();
 }

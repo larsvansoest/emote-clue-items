@@ -24,7 +24,6 @@
  */
 package com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.item;
 
-import net.runelite.api.Client;
 import net.runelite.api.Item;
 
 public class RangeItemRequirement implements ItemRequirement
@@ -61,7 +60,7 @@ public class RangeItemRequirement implements ItemRequirement
 	}
 
 	@Override
-	public String getCollectiveName(Client client)
+	public String getName()
 	{
 		return name;
 	}

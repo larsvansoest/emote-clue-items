@@ -1,6 +1,7 @@
 package com.larsvansoest.runelite.clueitems.data;
 
 import com.larsvansoest.runelite.clueitems.EmoteClueItemsPlugin;
+import com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.Difficulty;
 import java.awt.image.BufferedImage;
 import net.runelite.client.util.ImageUtil;
 
@@ -17,5 +18,17 @@ public abstract class Images
 
 	private static BufferedImage bufferedImage(String resourcePath) {
 		return ImageUtil.getResourceStreamFromClass(EmoteClueItemsPlugin.class, resourcePath);
+	}
+
+	public static final BufferedImage getRibbon(Difficulty difficulty) {
+		switch (difficulty) {
+			case Beginner: return BEGINNER_RIBBON;
+			case Easy: return EASY_RIBBON;
+			case Medium: return MEDIUM_RIBBON;
+			case Hard: return HARD_RIBBON;
+			case Elite: return ELITE_RIBBON;
+			case Master: return MASTER_RIBBON;
+			default: return null;
+		}
 	}
 }

@@ -9,10 +9,15 @@ import com.larsvansoest.runelite.clueitems.overlay.widgets.ItemWidgetContainer;
 import com.larsvansoest.runelite.clueitems.overlay.widgets.ItemWidgetContext;
 import com.larsvansoest.runelite.clueitems.overlay.widgets.ItemWidgetData;
 import com.larsvansoest.runelite.clueitems.overlay.widgets.ItemWidgets;
+import com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.EmoteClue;
+import com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
@@ -37,6 +42,7 @@ public class EmoteClueItemOverlay extends WidgetItemOverlay
 	private final ImageComponent hardRibbon;
 	private final ImageComponent eliteRibbon;
 	private final ImageComponent masterRibbon;
+
 
 	@Inject
 	public EmoteClueItemOverlay(ItemManager itemManager, ConfigProvider config)
@@ -82,6 +88,15 @@ public class EmoteClueItemOverlay extends WidgetItemOverlay
 		y = this.renderClueItemDetection(graphics, EmoteClues.hard, this.hardRibbon, item, x, y);
 		y = this.renderClueItemDetection(graphics, EmoteClues.elite, this.eliteRibbon, item, x, y);
 		this.renderClueItemDetection(graphics, EmoteClues.master, this.masterRibbon, item, x, y);
+
+		List<String> names = new ArrayList<String>();
+		for (EmoteClue emoteClue : EmoteClue.CLUES) {
+			for (ItemRequirement req : emoteClue.getItemRequirements()) {
+				//names.add(req.getName(this.client));
+			}
+		}
+		String test = names.stream().collect(Collectors.joining("\r\n"));
+		return;
 	}
 
 	private int getXOffset(ItemWidgetContainer container, ItemWidgetContext context)

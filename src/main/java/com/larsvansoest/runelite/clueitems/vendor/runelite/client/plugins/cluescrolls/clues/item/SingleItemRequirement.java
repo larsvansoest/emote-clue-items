@@ -24,17 +24,16 @@
  */
 package com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.item;
 
-import net.runelite.api.Client;
 import net.runelite.api.Item;
-import net.runelite.api.ItemComposition;
 
 public class SingleItemRequirement implements ItemRequirement
 {
 	private final int itemId;
+	private final String name;
 
-	public SingleItemRequirement(int itemId)
-	{
+	public SingleItemRequirement(String name, int itemId) {
 		this.itemId = itemId;
+		this.name = name;
 	}
 
 	@Override
@@ -58,15 +57,8 @@ public class SingleItemRequirement implements ItemRequirement
 	}
 
 	@Override
-	public String getCollectiveName(Client client)
+	public String getName()
 	{
-		ItemComposition definition = client.getItemDefinition(itemId);
-
-		if (definition == null)
-		{
-			return "N/A";
-		}
-
-		return definition.getName();
+		return name;
 	}
 }

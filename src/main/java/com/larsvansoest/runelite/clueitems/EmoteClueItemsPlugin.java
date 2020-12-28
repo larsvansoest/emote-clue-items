@@ -50,7 +50,7 @@ public class EmoteClueItemsPlugin extends Plugin
 		this.overlay = new EmoteClueItemOverlay(this.itemManager, configProvider);
 		this.overlayManager.add(this.overlay);
 
-		final EmoteClueItemsPanel emoteClueItemsPanel = new EmoteClueItemsPanel();
+		final EmoteClueItemsPanel emoteClueItemsPanel = new EmoteClueItemsPanel(this.client);
 
 		this.navigationButton = NavigationButton.builder()
 			.tooltip("Emote Clue Items")

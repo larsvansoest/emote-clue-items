@@ -24,23 +24,15 @@
  */
 package com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.item;
 
-import net.runelite.api.Client;
 import net.runelite.api.Item;
 
 public class AllRequirementsCollection implements ItemRequirement
 {
-	private String name;
 	private ItemRequirement[] requirements;
-
-	public AllRequirementsCollection(String name, ItemRequirement... requirements)
-	{
-		this.name = name;
-		this.requirements = requirements;
-	}
 
 	public AllRequirementsCollection(ItemRequirement... requirements)
 	{
-		this("N/A", requirements);
+		this.requirements = requirements;
 	}
 
 	@Override
@@ -72,8 +64,8 @@ public class AllRequirementsCollection implements ItemRequirement
 	}
 
 	@Override
-	public String getCollectiveName(Client client)
+	public String getName()
 	{
-		return name;
+		return null;
 	}
 }
