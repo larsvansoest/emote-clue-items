@@ -1,26 +1,27 @@
 package com.larsvansoest.runelite.clueitems.toolbar.requirement;
 
 import com.larsvansoest.runelite.clueitems.data.Images;
-import com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.Difficulty;
+import com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.EmoteClue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import javax.swing.Icon;
+import java.util.Arrays;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 
 public abstract class RequirementPanel extends JPanel
 {
 	private static ImageIcon ICON_FOLD = new ImageIcon(Images.ARROW_DOWN_S_LINE);
 
 	private final JLabel name;
-	private final JLabel icon;
-	private final Difficulty[] difficulties;
+	//private final JLabel icon;
 
 	private RequirementStatus status;
 
-	public RequirementPanel(ImageIcon icon, String name, Difficulty... difficulties) {
+	public RequirementPanel(ImageIcon icon, String name, EmoteClue... emoteClues) {
 		super.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		super.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
@@ -29,42 +30,31 @@ public abstract class RequirementPanel extends JPanel
 		c.gridx = 0;
 		c.gridy = 0;
 		c.anchor = GridBagConstraints.WEST;
-		c.weightx = 0;
 		c.insets.left = 5;
-		this.icon = new JLabel();
-		this.icon.setIcon(icon);
-		super.add(this.icon, c);
-
-		c.gridx++;
+		c.insets.top = 2;
+		c.insets.bottom = 2;
 		c.weightx = 1;
-		this.name = new JLabel();
+		this.name = new JShadowedLabel();
 		this.name.setText(name);
+		this.name.setFont(FontManager.getRunescapeSmallFont());
 		super.add(this.name, c);
 
 		c.insets.left = 0;
 		c.insets.right = 5;
 		c.weightx = 0;
 		c.anchor = GridBagConstraints.EAST;
-		for(Difficulty difficulty : difficulties) {
+		Arrays.stream(emoteClues).map(EmoteClue::getDifficulty).distinct().forEach(difficulty ->
+		{
 			c.gridx++;
 			JLabel tier = new JLabel();
 			tier.setIcon(new ImageIcon(Images.getRibbon(difficulty)));
 			super.add(tier, c);
-		}
-		this.difficulties = difficulties;
+		});
 
 		c.gridx++;
 		JLabel fold = new JLabel();
 		fold.setIcon(ICON_FOLD);
 		super.add(fold, c);
-	}
-
-	public final void setIcon(ImageIcon icon) {
-		this.icon.setIcon(icon);
-	}
-
-	public final Icon getIcon() {
-		return this.icon.getIcon();
 	}
 
 	public final void setName(String name) {

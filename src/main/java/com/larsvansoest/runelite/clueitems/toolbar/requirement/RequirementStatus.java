@@ -9,7 +9,7 @@ public enum RequirementStatus
 
 	InProgress(ColorScheme.PROGRESS_INPROGRESS_COLOR),
 
-	InComplete(ColorScheme.PROGRESS_ERROR_COLOR);
+	InComplete(ColorScheme.LIGHT_GRAY_COLOR);
 
 	public final Color colour;
 

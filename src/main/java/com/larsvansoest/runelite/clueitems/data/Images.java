@@ -14,7 +14,7 @@ public abstract class Images
 	public static final BufferedImage HARD_RIBBON = bufferedImage("/icons/ribbons/hard_ribbon.png");
 	public static final BufferedImage ELITE_RIBBON = bufferedImage("/icons/ribbons/elite_ribbon.png");
 	public static final BufferedImage MASTER_RIBBON = bufferedImage("/icons/ribbons/master_ribbon.png");
-	public static final BufferedImage ARROW_DOWN_S_LINE = bufferedImage("/icons/arrow-down-s-line.png");
+	public static final BufferedImage ARROW_DOWN_S_LINE = bufferedImage("/icons/chevron-down.png");
 
 	private static BufferedImage bufferedImage(String resourcePath) {
 		return ImageUtil.getResourceStreamFromClass(EmoteClueItemsPlugin.class, resourcePath);

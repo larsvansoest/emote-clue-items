@@ -3,19 +3,23 @@ package com.larsvansoest.runelite.clueitems.toolbar;
 import com.larsvansoest.runelite.clueitems.data.Images;
 import com.larsvansoest.runelite.clueitems.toolbar.item.ItemRequirementPanel;
 import com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.EmoteClue;
-import com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
+import com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.item.SlotLimitationRequirement;
+import java.util.AbstractMap;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.swing.ImageIcon;
-import net.runelite.api.Client;
 import net.runelite.client.ui.PluginPanel;
+import org.apache.commons.lang3.ArrayUtils;
 
 public class EmoteClueItemsPanel extends PluginPanel
 {
-	public EmoteClueItemsPanel(Client client) {
-		super();
-		for (EmoteClue emoteClue : EmoteClue.CLUES) {
-			for (ItemRequirement itemRequirement : emoteClue.getItemRequirements()) {
-				super.add(new ItemRequirementPanel(new ImageIcon(Images.MEDIUM_RIBBON), itemRequirement.getName(), emoteClue.getDifficulty()));
-			}
-		}
+	public EmoteClueItemsPanel()
+	{
+		EmoteClue.CLUES.stream().flatMap(emoteClue -> Arrays.stream(emoteClue.getItemRequirements()).filter(itemRequirement -> !(itemRequirement instanceof SlotLimitationRequirement)).flatMap(itemRequirement -> Stream.of(new AbstractMap.SimpleImmutableEntry<>(emoteClue, itemRequirement)))).collect(Collectors.toMap(entry -> entry.getValue().getName(), entry -> Stream.of(entry.getKey()).toArray(EmoteClue[]::new), ArrayUtils::addAll)).entrySet().stream().forEach(entry -> {
+			String requirementName = entry.getKey();
+			EmoteClue[] emoteClues = entry.getValue();
+			super.add(new ItemRequirementPanel(new ImageIcon(Images.HARD_RIBBON), requirementName, emoteClues));
+		});
 	}
 }
