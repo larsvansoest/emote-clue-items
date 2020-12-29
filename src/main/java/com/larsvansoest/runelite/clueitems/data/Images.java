@@ -29,7 +29,7 @@ public abstract class Images
 			case Hard: return HARD_RIBBON;
 			case Elite: return ELITE_RIBBON;
 			case Master: return MASTER_RIBBON;
-			default: return null;
+			default: throw new IllegalArgumentException();
 		}
 	}
 }

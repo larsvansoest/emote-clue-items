@@ -1,32 +1,32 @@
 package com.larsvansoest.runelite.clueitems.toolbar.requirement;
 
-import com.larsvansoest.runelite.clueitems.data.Images;
-import com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.EmoteClue;
+import com.larsvansoest.runelite.clueitems.toolbar.requirement.header.RequirementPanelHeader;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.Arrays;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import net.runelite.client.ui.ColorScheme;
 
 public abstract class RequirementPanel extends JPanel
 {
-	private RequirementStatus status;
 	private final RequirementPanelHeader header;
 
-	private Boolean expanded;
-	private JLabel temp;
+	private final JPanel foldContent;
 
-	public RequirementPanel(ImageIcon icon, String name, EmoteClue... emoteClues) {
+	private Boolean expanded;
+	private RequirementStatus status;
+
+	public RequirementPanel(String name, JPanel foldContent, JLabel... icons) {
+		this(false, name, foldContent, icons);
+	}
+
+	public RequirementPanel(Boolean expanded, String name, JPanel foldContent, JLabel... icons) {
 		super.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		super.setLayout(new GridBagLayout());
 
-		this.header = new RequirementPanelHeader(this, name, Arrays.stream(emoteClues).map(EmoteClue::getDifficulty).distinct().map(difficulty -> {
-			JLabel ribbon = new JLabel();
-			ribbon.setIcon(new ImageIcon(Images.getRibbon(difficulty)));
-			return ribbon;
-		}).toArray(JLabel[]::new));
+		this.expanded = expanded;
+		this.foldContent = foldContent;
+		this.header = new RequirementPanelHeader(this, name, icons);
 
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -36,11 +36,13 @@ public abstract class RequirementPanel extends JPanel
 		super.add(this.header, c);
 
 		c.gridy++;
-		this.expanded = false;
-		temp = new JLabel();
-		temp.setText("Lorem Ipsum");
-		temp.setVisible(this.expanded);
-		super.add(temp, c);
+		foldContent.setVisible(this.expanded);
+		super.add(foldContent, c);
+	}
+
+	public JPanel getFoldContent()
+	{
+		return this.foldContent;
 	}
 
 	public final RequirementStatus getStatus() {
@@ -52,12 +54,14 @@ public abstract class RequirementPanel extends JPanel
 		this.status = status;
 	}
 
-	public final void fold() {
+	public final Boolean fold() {
 		this.expanded = !this.expanded;
-		temp.setVisible(this.expanded);
+		foldContent.setVisible(this.expanded);
+		return this.expanded;
 	}
 
-	public final Boolean isExpanded() {
+	public final Boolean isExpanded()
+	{
 		return this.expanded;
 	}
 }
