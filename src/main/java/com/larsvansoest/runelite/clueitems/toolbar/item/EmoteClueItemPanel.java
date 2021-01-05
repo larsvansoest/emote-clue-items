@@ -1,5 +1,6 @@
 package com.larsvansoest.runelite.clueitems.toolbar.item;
 
+import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
 import com.larsvansoest.runelite.clueitems.data.Images;
 import com.larsvansoest.runelite.clueitems.toolbar.requirement.RequirementPanel;
 import com.larsvansoest.runelite.clueitems.toolbar.requirement.RequirementStatus;
@@ -11,14 +12,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import org.apache.commons.lang3.ArrayUtils;
 
-public class ItemRequirementPanel extends RequirementPanel
+public class EmoteClueItemPanel extends RequirementPanel
 {
 	private static Dimension DIMENSION_ICON_QUANTITY = new Dimension(7, 15);
-
-	private final JLabel quantityLabel;
-	private final DetailsPanel detailsPanel;
-
-	public static JLabel[] getRibbons(EmoteClue... emoteClues) {
+	private static JLabel[] getRibbons(EmoteClue... emoteClues) {
 		return Arrays.stream(emoteClues).map(EmoteClue::getDifficulty).distinct().map(difficulty ->
 		{
 			JLabel ribbon = new JLabel();
@@ -27,14 +24,13 @@ public class ItemRequirementPanel extends RequirementPanel
 		}).toArray(JLabel[]::new);
 	}
 
-	public ItemRequirementPanel(String name, EmoteClue... emoteClues) {
-		this(name, new DetailsPanel(), new RequirementPanelHeaderText(ItemRequirementPanel.DIMENSION_ICON_QUANTITY, String.valueOf(emoteClues.length)), getRibbons(emoteClues));
+	public EmoteClueItemPanel(EmoteClueItem itemRequirement, EmoteClue... emoteClues) {
+		this(itemRequirement.getCollectiveName(null), ArrayUtils.add(EmoteClueItemPanel.getRibbons(emoteClues), new RequirementPanelHeaderText(EmoteClueItemPanel.DIMENSION_ICON_QUANTITY, String.valueOf(emoteClues.length))));
 	}
 
-	private ItemRequirementPanel(String name, DetailsPanel detailsPanel, JLabel quantityLabel, JLabel... ribbonLabels) {
-		super(name, new DetailsPanel(), ArrayUtils.add(ribbonLabels, quantityLabel));
-		super.setStatus(RequirementStatus.InComplete); // TODO: refactor
-		this.quantityLabel = quantityLabel;
-		this.detailsPanel = detailsPanel;
+	private EmoteClueItemPanel(String name, JLabel... ribbonLabels) {
+		super(name, ribbonLabels);
+		super.setStatus(RequirementStatus.InComplete);
 	}
+
 }
