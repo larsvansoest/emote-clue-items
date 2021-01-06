@@ -1,4 +1,4 @@
-package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.panel.header;
+package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.entry.header;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;

@@ -1,4 +1,4 @@
-package com.larsvansoest.runelite.clueitems.toolbar.component.filter;
+package com.larsvansoest.runelite.clueitems.toolbar.component.query;
 
 import java.awt.Color;
 import javax.swing.Icon;

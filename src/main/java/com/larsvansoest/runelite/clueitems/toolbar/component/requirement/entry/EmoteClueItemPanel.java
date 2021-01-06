@@ -1,7 +1,7 @@
-package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.panel;
+package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.entry;
 
 import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.panel.header.RequirementPanelHeaderText;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.entry.header.RequirementPanelHeaderText;
 import com.larsvansoest.runelite.clueitems.util.ImageProvider;
 import com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.Difficulty;
 import com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.EmoteClue;

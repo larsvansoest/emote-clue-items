@@ -1,10 +1,11 @@
 package com.larsvansoest.runelite.clueitems.toolbar;
 
-import com.larsvansoest.runelite.clueitems.toolbar.component.filter.FilterButton;
+import com.larsvansoest.runelite.clueitems.toolbar.component.footer.FooterPanel;
+import com.larsvansoest.runelite.clueitems.toolbar.component.query.FilterButton;
 import com.larsvansoest.runelite.clueitems.toolbar.component.query.SearchBarFactory;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementContainer;
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.panel.EmoteClueItemPanel;
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.panel.RequirementStatus;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.entry.EmoteClueItemPanel;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.entry.RequirementStatus;
 import com.larsvansoest.runelite.clueitems.util.ImageProvider;
 import com.larsvansoest.runelite.clueitems.util.RequirementPanelProvider;
 import com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.Difficulty;
@@ -36,6 +37,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 
 		this.searchBar = new SearchBarFactory(this).build();
 
+		// TODO: convert to lambda action instead of border color
 		this.requirementStatusFilterButton = new FilterButton<>(this, null, new ImageIcon(imageProvider.getCheckSquareAll()), new Dimension(25, 20), null, 10);
 		this.requirementStatusFilterButton.addOption(RequirementStatus.InComplete, new ImageIcon(imageProvider.getCheckSquareUnfinished()), null);
 		this.requirementStatusFilterButton.addOption(RequirementStatus.InProgress, new ImageIcon(imageProvider.getCheckSquareInProgress()), null);
@@ -48,6 +50,8 @@ public class EmoteClueItemsPanel extends PluginPanel
 		this.difficultyFilterButton.addOption(Difficulty.Hard, new ImageIcon(imageProvider.getHardRibbon()), Difficulty.Hard.getColor());
 		this.difficultyFilterButton.addOption(Difficulty.Elite, new ImageIcon(imageProvider.getEliteRibbon()), Difficulty.Elite.getColor());
 		this.difficultyFilterButton.addOption(Difficulty.Master, new ImageIcon(imageProvider.getMasterRibbon()), Difficulty.Master.getColor());
+
+		FooterPanel footerPanel = new FooterPanel("Emote Clue Items", "v2.0.0", "https://github.com/larsvansoest/emote-clue-items", new ImageIcon(imageProvider.getGitHubLogo()));
 
 		c.fill = GridBagConstraints.BOTH;
 		c.gridx = 0;
@@ -67,6 +71,10 @@ public class EmoteClueItemsPanel extends PluginPanel
 		c.gridy++;
 		c.gridwidth = 3;
 		super.add(this.requirementContainer, c);
+
+		c.gridwidth = 0;
+		c.gridy++;
+		super.add(footerPanel, c);
 	}
 
 	public void search() {

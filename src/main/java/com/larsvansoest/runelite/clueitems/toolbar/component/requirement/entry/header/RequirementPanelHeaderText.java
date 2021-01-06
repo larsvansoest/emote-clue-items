@@ -1,4 +1,4 @@
-package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.panel.header;
+package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.entry.header;
 
 import java.awt.Dimension;
 import javax.swing.JLabel;

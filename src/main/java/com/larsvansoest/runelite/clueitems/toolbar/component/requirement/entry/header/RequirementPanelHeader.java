@@ -1,6 +1,6 @@
-package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.panel.header;
+package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.entry.header;
 
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.panel.RequirementPanel;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.entry.RequirementPanel;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;

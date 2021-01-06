@@ -15,12 +15,12 @@ public class ImageProvider
 	private final BufferedImage masterRibbon;
 	private final BufferedImage chevronDown;
 	private final BufferedImage chevronLeft;
-	private final BufferedImage asterisk;
 	private final BufferedImage allRibbons;
 	private final BufferedImage checkSquareComplete;
 	private final BufferedImage checkSquareInProgress;
 	private final BufferedImage checkSquareUnfinished;
 	private final BufferedImage checkSquareAll;
+	private final BufferedImage gitHubLogo;
 
 	public ImageProvider() {
 		this.allRibbonsLogo = this.bufferedImage("/icons/icon.png");
@@ -32,12 +32,12 @@ public class ImageProvider
 		this.masterRibbon = this.bufferedImage("/icons/ribbons/master_ribbon.png");
 		this.chevronDown = this.bufferedImage("/icons/chevron-down.png");
 		this.chevronLeft = this.bufferedImage("/icons/chevron-left.png");
-		this.asterisk = this.bufferedImage("/icons/asterisk.png");
 		this.allRibbons = this.bufferedImage("/icons/ribbons/allribbons.png");
 		this.checkSquareComplete = this.bufferedImage("/icons/check-square-complete.png");
 		this.checkSquareInProgress = this.bufferedImage("/icons/check-square-inprogress.png");
 		this.checkSquareUnfinished = this.bufferedImage("/icons/check-square-incomplete.png");
 		this.checkSquareAll = this.bufferedImage("/icons/check-square-all.png");
+		this.gitHubLogo = this.bufferedImage("/icons/github.png");
 	}
 
 	private BufferedImage bufferedImage(String resourcePath) {
@@ -101,11 +101,6 @@ public class ImageProvider
 		return this.chevronLeft;
 	}
 
-	public final BufferedImage getAsterisk()
-	{
-		return this.asterisk;
-	}
-
 	public final BufferedImage getAllRibbons() { return this.allRibbons; }
 
 	public BufferedImage getCheckSquareComplete()
@@ -126,5 +121,10 @@ public class ImageProvider
 	public BufferedImage getCheckSquareAll()
 	{
 		return this.checkSquareAll;
+	}
+
+	public BufferedImage getGitHubLogo()
+	{
+		return this.gitHubLogo;
 	}
 }

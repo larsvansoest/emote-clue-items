@@ -1,9 +1,9 @@
 package com.larsvansoest.runelite.clueitems.util;
 
 import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.panel.EmoteClueItemPanel;
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.panel.EmoteCluePanel;
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.panel.StashUnitPanel;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.entry.EmoteClueItemPanel;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.entry.EmoteCluePanel;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.entry.StashUnitPanel;
 import com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.EmoteClue;
 import java.util.Collection;
 import java.util.Map;

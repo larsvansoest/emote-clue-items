@@ -1,4 +1,4 @@
-package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.panel;
+package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.entry;
 
 import java.awt.Color;
 import net.runelite.client.ui.ColorScheme;
