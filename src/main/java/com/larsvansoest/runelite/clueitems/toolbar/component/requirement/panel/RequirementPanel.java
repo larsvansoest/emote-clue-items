@@ -1,8 +1,10 @@
-package com.larsvansoest.runelite.clueitems.toolbar.requirement;
+package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.panel;
 
-import com.larsvansoest.runelite.clueitems.toolbar.requirement.header.RequirementPanelHeader;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.panel.header.RequirementPanelHeader;
+import com.larsvansoest.runelite.clueitems.util.ImageProvider;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import net.runelite.client.ui.ColorScheme;
@@ -17,16 +19,20 @@ public abstract class RequirementPanel extends JPanel
 	private Boolean expanded;
 	private RequirementStatus status;
 
-	public RequirementPanel(String name, JLabel... icons) {
-		this(false, name, icons);
+	public RequirementPanel(ImageProvider imageProvider, String name, JLabel... icons) {
+		this(imageProvider, false, name, icons);
 	}
 
-	public RequirementPanel(Boolean expanded, String name, JLabel... icons) {
+	public RequirementPanel(ImageProvider imageProvider, Boolean expanded, String name, JLabel... icons) {
 		super(new GridBagLayout());
 		super.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		super.setName(name);
 
 		this.expanded = expanded;
-		this.requirementPanelHeader = new RequirementPanelHeader(this, name, icons);
+
+		ImageIcon iconDown = new ImageIcon(imageProvider.getChevronDown());
+		ImageIcon iconLeft = new ImageIcon(imageProvider.getChevronLeft());
+		this.requirementPanelHeader = new RequirementPanelHeader(this, name, iconDown, iconLeft, icons);
 
 		this.foldContent = new JPanel(new GridBagLayout());
 		this.foldConstraints = new GridBagConstraints();

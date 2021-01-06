@@ -1,14 +1,14 @@
-package com.larsvansoest.runelite.clueitems.toolbar.item;
+package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.panel;
 
-import com.larsvansoest.runelite.clueitems.toolbar.requirement.RequirementPanel;
+import com.larsvansoest.runelite.clueitems.util.ImageProvider;
 import com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.EmoteClue;
 
 public class EmoteCluePanel extends RequirementPanel
 {
 	private final EmoteClue emoteClue;
 
-	public EmoteCluePanel(EmoteClue emoteClue) {
-		super(emoteClue.getLocationName());
+	public EmoteCluePanel(ImageProvider imageProvider, EmoteClue emoteClue) {
+		super(imageProvider, emoteClue.getLocationName());
 		this.emoteClue = emoteClue;
 	}
 

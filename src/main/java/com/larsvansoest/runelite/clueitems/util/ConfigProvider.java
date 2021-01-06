@@ -1,4 +1,4 @@
-package com.larsvansoest.runelite.clueitems.overlay.config;
+package com.larsvansoest.runelite.clueitems.util;
 
 import com.larsvansoest.runelite.clueitems.EmoteClueItemsConfig;
 import com.larsvansoest.runelite.clueitems.overlay.widgets.ItemWidgetContainer;

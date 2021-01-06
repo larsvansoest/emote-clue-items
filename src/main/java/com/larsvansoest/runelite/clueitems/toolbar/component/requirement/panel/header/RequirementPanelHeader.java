@@ -1,6 +1,6 @@
-package com.larsvansoest.runelite.clueitems.toolbar.requirement.header;
+package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.panel.header;
 
-import com.larsvansoest.runelite.clueitems.toolbar.requirement.RequirementPanel;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.panel.RequirementPanel;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -8,6 +8,7 @@ import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import net.runelite.client.ui.ColorScheme;
@@ -24,11 +25,11 @@ public class RequirementPanelHeader extends JPanel
 	private final RequirementPanelHeaderText name;
 	private final FoldIconLabel foldIcon;
 
-	public RequirementPanelHeader(RequirementPanel parent, String name, JLabel... icons)
+	public RequirementPanelHeader(RequirementPanel parent, String name, ImageIcon iconDown, ImageIcon iconLeft, JLabel... icons)
 	{
 		this.parent = parent;
 		this.name = new RequirementPanelHeaderText(DIMENSION_NAME, name);
-		this.foldIcon = new FoldIconLabel(false);
+		this.foldIcon = new FoldIconLabel(false, iconDown, iconLeft);
 
 		super.addMouseListener(new MouseAdapter()
 		{

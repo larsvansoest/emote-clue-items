@@ -3,8 +3,10 @@ package com.larsvansoest.runelite.clueitems.overlay.widgets;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetItem;
 
-public abstract class ItemWidgets
+public class ItemWidgetInspector
 {
+	public ItemWidgetInspector() {}
+
 	/**
 	 * Identifies the origin of given widgetItem, writes found data into given {@link ItemWidgetData} object. The method iterates over the ancestors (parents of parents), and compares it to the ids of all entries of the {@link ItemWidget} enum.
 	 *
@@ -13,7 +15,7 @@ public abstract class ItemWidgets
 	 * @param maxDepth      the maximum steps from initial widgetItem parameter to one of the parents specified.
 	 * @since 1.2.0
 	 */
-	public static void Inspect(final WidgetItem widgetItem, final ItemWidgetData widgetDataRef, final int maxDepth)
+	public void inspect(final WidgetItem widgetItem, final ItemWidgetData widgetDataRef, final int maxDepth)
 	{
 		Widget widget = widgetItem.getWidget();
 

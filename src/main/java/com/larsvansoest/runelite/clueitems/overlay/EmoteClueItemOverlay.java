@@ -1,13 +1,13 @@
 package com.larsvansoest.runelite.clueitems.overlay;
 
-import com.larsvansoest.runelite.clueitems.data.EmoteClueMap;
-import com.larsvansoest.runelite.clueitems.data.Images;
-import com.larsvansoest.runelite.clueitems.overlay.config.ConfigProvider;
 import com.larsvansoest.runelite.clueitems.overlay.widgets.ItemWidget;
 import com.larsvansoest.runelite.clueitems.overlay.widgets.ItemWidgetContainer;
 import com.larsvansoest.runelite.clueitems.overlay.widgets.ItemWidgetContext;
 import com.larsvansoest.runelite.clueitems.overlay.widgets.ItemWidgetData;
-import com.larsvansoest.runelite.clueitems.overlay.widgets.ItemWidgets;
+import com.larsvansoest.runelite.clueitems.overlay.widgets.ItemWidgetInspector;
+import com.larsvansoest.runelite.clueitems.util.ConfigProvider;
+import com.larsvansoest.runelite.clueitems.util.EmoteClueProvider;
+import com.larsvansoest.runelite.clueitems.util.ImageProvider;
 import com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.Difficulty;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -24,25 +24,36 @@ import net.runelite.client.ui.overlay.components.ImageComponent;
  */
 public class EmoteClueItemOverlay extends WidgetItemOverlay
 {
-	static private final ImageComponent beginnerRibbon = new ImageComponent(Images.BEGINNER_RIBBON);
-	static private final ImageComponent easyRibbon = new ImageComponent(Images.EASY_RIBBON);
-	static private final ImageComponent mediumRibbon = new ImageComponent(Images.MEDIUM_RIBBON);
-	static private final ImageComponent hardRibbon = new ImageComponent(Images.HARD_RIBBON);
-	static private final ImageComponent eliteRibbon = new ImageComponent(Images.ELITE_RIBBON);
-	static private final ImageComponent masterRibbon = new ImageComponent(Images.MASTER_RIBBON);
+	private final ImageComponent beginnerRibbon;
+	private final ImageComponent easyRibbon;
+	private final ImageComponent mediumRibbon;
+	private final ImageComponent hardRibbon;
+	private final ImageComponent eliteRibbon;
+	private final ImageComponent masterRibbon;
 
 	private final ItemManager itemManager;
+	private final EmoteClueProvider emoteClueProvider;
 	private final ConfigProvider configProvider;
+	private final ItemWidgetInspector itemWidgetInspector;
 
 	// Single object allocations, re-used every sequential iteration.
 	private final ItemWidgetData itemWidgetData;
 	private final Point point;
 
 	@Inject
-	public EmoteClueItemOverlay(ItemManager itemManager, ConfigProvider config)
+	public EmoteClueItemOverlay(ItemManager itemManager, EmoteClueProvider emoteClueProvider, ConfigProvider config, ImageProvider imageProvider)
 	{
+		this.beginnerRibbon = new ImageComponent(imageProvider.getBeginnerRibbon());
+		this.easyRibbon = new ImageComponent(imageProvider.getEasyRibbon());
+		this.mediumRibbon = new ImageComponent(imageProvider.getMediumRibbon());
+		this.hardRibbon = new ImageComponent(imageProvider.getHardRibbon());
+		this.eliteRibbon = new ImageComponent(imageProvider.getEliteRibbon());
+		this.masterRibbon = new ImageComponent(imageProvider.getMasterRibbon());
+
 		this.itemManager = itemManager;
+		this.emoteClueProvider = emoteClueProvider;
 		this.configProvider = config;
+		this.itemWidgetInspector = new ItemWidgetInspector();
 
 		this.itemWidgetData = new ItemWidgetData();
 		this.point = new Point();
@@ -55,7 +66,7 @@ public class EmoteClueItemOverlay extends WidgetItemOverlay
 	@Override
 	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem itemWidget)
 	{
-		ItemWidgets.Inspect(itemWidget, this.itemWidgetData, 3);
+		this.itemWidgetInspector.inspect(itemWidget, this.itemWidgetData, 3);
 		ItemWidgetContainer container = this.itemWidgetData.getContainer();
 		ItemWidgetContext context = this.itemWidgetData.getContext();
 
@@ -70,12 +81,12 @@ public class EmoteClueItemOverlay extends WidgetItemOverlay
 		final Rectangle bounds = itemWidget.getCanvasBounds();
 		final int x = bounds.x + bounds.width + this.getXOffset(container, context);
 		int y = bounds.y;
-		y = this.renderClueItemDetection(graphics, Difficulty.Beginner, EmoteClueItemOverlay.beginnerRibbon, item, x, y);
-		y = this.renderClueItemDetection(graphics, Difficulty.Easy, EmoteClueItemOverlay.easyRibbon, item, x, y);
-		y = this.renderClueItemDetection(graphics, Difficulty.Medium, EmoteClueItemOverlay.mediumRibbon, item, x, y);
-		y = this.renderClueItemDetection(graphics, Difficulty.Hard, EmoteClueItemOverlay.hardRibbon, item, x, y);
-		y = this.renderClueItemDetection(graphics, Difficulty.Elite, EmoteClueItemOverlay.eliteRibbon, item, x, y);
-		this.renderClueItemDetection(graphics, Difficulty.Master, EmoteClueItemOverlay.masterRibbon, item, x, y);
+		y = this.renderClueItemDetection(graphics, Difficulty.Beginner, this.beginnerRibbon, item, x, y);
+		y = this.renderClueItemDetection(graphics, Difficulty.Easy, this.easyRibbon, item, x, y);
+		y = this.renderClueItemDetection(graphics, Difficulty.Medium, this.mediumRibbon, item, x, y);
+		y = this.renderClueItemDetection(graphics, Difficulty.Hard, this.hardRibbon, item, x, y);
+		y = this.renderClueItemDetection(graphics, Difficulty.Elite, this.eliteRibbon, item, x, y);
+		this.renderClueItemDetection(graphics, Difficulty.Master, this.masterRibbon, item, x, y);
 	}
 
 	private int getXOffset(ItemWidgetContainer container, ItemWidgetContext context)
@@ -85,7 +96,7 @@ public class EmoteClueItemOverlay extends WidgetItemOverlay
 
 	private int renderClueItemDetection(Graphics2D graphics, Difficulty difficulty, ImageComponent component, int id, int x, int y)
 	{
-		return Arrays.stream(EmoteClueMap.difficultyMap.get(difficulty)).anyMatch(emoteClue -> Arrays.stream(emoteClue.getItemRequirements()).anyMatch(itemRequirement -> itemRequirement.fulfilledBy(id))) ? (int) (y + this.renderRibbon(graphics, component, x, y).getHeight()) + 1 : y;
+		return Arrays.stream(this.emoteClueProvider.getDifficultyMap().get(difficulty)).anyMatch(emoteClue -> Arrays.stream(emoteClue.getItemRequirements()).anyMatch(itemRequirement -> itemRequirement.fulfilledBy(id))) ? (int) (y + this.renderRibbon(graphics, component, x, y).getHeight()) + 1 : y;
 	}
 
 	private Rectangle renderRibbon(Graphics2D graphics, ImageComponent ribbon, int x, int y)
