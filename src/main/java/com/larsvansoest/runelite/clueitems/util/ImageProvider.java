@@ -6,26 +6,38 @@ import net.runelite.client.util.ImageUtil;
 
 public class ImageProvider
 {
-	private final BufferedImage climbingBootsLogo;
+	private final BufferedImage allRibbonsLogo;
 	private final BufferedImage beginnerRibbon;
 	private final BufferedImage easyRibbon;
 	private final BufferedImage mediumRibbon;
-	private final BufferedImage hardRibobn;
+	private final BufferedImage hardRibbon;
 	private final BufferedImage eliteRibbon;
 	private final BufferedImage masterRibbon;
 	private final BufferedImage chevronDown;
 	private final BufferedImage chevronLeft;
+	private final BufferedImage asterisk;
+	private final BufferedImage allRibbons;
+	private final BufferedImage checkSquareComplete;
+	private final BufferedImage checkSquareInProgress;
+	private final BufferedImage checkSquareUnfinished;
+	private final BufferedImage checkSquareAll;
 
 	public ImageProvider() {
-		this.climbingBootsLogo = this.bufferedImage("/icons/icon.png");
+		this.allRibbonsLogo = this.bufferedImage("/icons/icon.png");
 		this.beginnerRibbon = this.bufferedImage("/icons/ribbons/beginner_ribbon.png");
 		this.easyRibbon = this.bufferedImage("/icons/ribbons/easy_ribbon.png");
 		this.mediumRibbon = this.bufferedImage("/icons/ribbons/medium_ribbon.png");
-		this.hardRibobn = this.bufferedImage("/icons/ribbons/hard_ribbon.png");
+		this.hardRibbon = this.bufferedImage("/icons/ribbons/hard_ribbon.png");
 		this.eliteRibbon = this.bufferedImage("/icons/ribbons/elite_ribbon.png");
 		this.masterRibbon = this.bufferedImage("/icons/ribbons/master_ribbon.png");
 		this.chevronDown = this.bufferedImage("/icons/chevron-down.png");
 		this.chevronLeft = this.bufferedImage("/icons/chevron-left.png");
+		this.asterisk = this.bufferedImage("/icons/asterisk.png");
+		this.allRibbons = this.bufferedImage("/icons/ribbons/allribbons.png");
+		this.checkSquareComplete = this.bufferedImage("/icons/check-square-complete.png");
+		this.checkSquareInProgress = this.bufferedImage("/icons/check-square-inprogress.png");
+		this.checkSquareUnfinished = this.bufferedImage("/icons/check-square-incomplete.png");
+		this.checkSquareAll = this.bufferedImage("/icons/check-square-all.png");
 	}
 
 	private BufferedImage bufferedImage(String resourcePath) {
@@ -37,16 +49,16 @@ public class ImageProvider
 			case Beginner: return this.beginnerRibbon;
 			case Easy: return this.easyRibbon;
 			case Medium: return this.mediumRibbon;
-			case Hard: return this.hardRibobn;
+			case Hard: return this.hardRibbon;
 			case Elite: return this.eliteRibbon;
 			case Master: return this.masterRibbon;
 			default: throw new IllegalArgumentException();
 		}
 	}
 
-	public final BufferedImage getClimbingBootsLogo()
+	public BufferedImage getAllRibbonsLogo()
 	{
-		return this.climbingBootsLogo;
+		return this.allRibbonsLogo;
 	}
 
 	public final BufferedImage getBeginnerRibbon()
@@ -66,7 +78,7 @@ public class ImageProvider
 
 	public final BufferedImage getHardRibbon()
 	{
-		return this.hardRibobn;
+		return this.hardRibbon;
 	}
 
 	public final BufferedImage getEliteRibbon()
@@ -87,5 +99,32 @@ public class ImageProvider
 	public final BufferedImage getChevronLeft()
 	{
 		return this.chevronLeft;
+	}
+
+	public final BufferedImage getAsterisk()
+	{
+		return this.asterisk;
+	}
+
+	public final BufferedImage getAllRibbons() { return this.allRibbons; }
+
+	public BufferedImage getCheckSquareComplete()
+	{
+		return this.checkSquareComplete;
+	}
+
+	public BufferedImage getCheckSquareInProgress()
+	{
+		return this.checkSquareInProgress;
+	}
+
+	public BufferedImage getCheckSquareUnfinished()
+	{
+		return this.checkSquareUnfinished;
+	}
+
+	public BufferedImage getCheckSquareAll()
+	{
+		return this.checkSquareAll;
 	}
 }

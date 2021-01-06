@@ -1,4 +1,4 @@
-package com.larsvansoest.runelite.clueitems.overlay.widgets;
+package com.larsvansoest.runelite.clueitems.overlay.widget;
 
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetItem;

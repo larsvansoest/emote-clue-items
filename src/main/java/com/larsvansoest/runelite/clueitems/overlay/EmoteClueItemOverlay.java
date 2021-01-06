@@ -1,10 +1,10 @@
 package com.larsvansoest.runelite.clueitems.overlay;
 
-import com.larsvansoest.runelite.clueitems.overlay.widgets.ItemWidget;
-import com.larsvansoest.runelite.clueitems.overlay.widgets.ItemWidgetContainer;
-import com.larsvansoest.runelite.clueitems.overlay.widgets.ItemWidgetContext;
-import com.larsvansoest.runelite.clueitems.overlay.widgets.ItemWidgetData;
-import com.larsvansoest.runelite.clueitems.overlay.widgets.ItemWidgetInspector;
+import com.larsvansoest.runelite.clueitems.overlay.widget.ItemWidget;
+import com.larsvansoest.runelite.clueitems.overlay.widget.ItemWidgetContainer;
+import com.larsvansoest.runelite.clueitems.overlay.widget.ItemWidgetContext;
+import com.larsvansoest.runelite.clueitems.overlay.widget.ItemWidgetData;
+import com.larsvansoest.runelite.clueitems.overlay.widget.ItemWidgetInspector;
 import com.larsvansoest.runelite.clueitems.util.ConfigProvider;
 import com.larsvansoest.runelite.clueitems.util.EmoteClueProvider;
 import com.larsvansoest.runelite.clueitems.util.ImageProvider;

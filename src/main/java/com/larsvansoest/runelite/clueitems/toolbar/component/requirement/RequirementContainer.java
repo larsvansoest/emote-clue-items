@@ -1,12 +1,14 @@
 package com.larsvansoest.runelite.clueitems.toolbar.component.requirement;
 
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.panel.RequirementPanel;
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.Collection;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import javax.swing.JPanel;
+import javax.swing.border.MatteBorder;
 
 public class RequirementContainer extends JPanel
 {
@@ -30,6 +32,11 @@ public class RequirementContainer extends JPanel
 
 	public void filter(Function<Object, Boolean> predicate) {
 		this.display(this.requirementPanelCollection.stream().filter(predicate::apply));
+	}
+
+	public void setBorderColor(Color color)
+	{
+		super.setBorder(new MatteBorder(1, 0, 0, 0, color));
 	}
 
 	private void display(Stream<? extends RequirementPanel> requirementPanels) {

@@ -1,7 +1,7 @@
 package com.larsvansoest.runelite.clueitems.util;
 
 import com.larsvansoest.runelite.clueitems.EmoteClueItemsConfig;
-import com.larsvansoest.runelite.clueitems.overlay.widgets.ItemWidgetContainer;
+import com.larsvansoest.runelite.clueitems.overlay.widget.ItemWidgetContainer;
 
 public class ConfigProvider
 {

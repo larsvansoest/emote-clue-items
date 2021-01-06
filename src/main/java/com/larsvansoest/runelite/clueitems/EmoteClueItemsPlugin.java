@@ -60,7 +60,7 @@ public class EmoteClueItemsPlugin extends Plugin
 
 		this.navigationButton = NavigationButton.builder()
 			.tooltip("Emote Clue Items")
-			.icon(imageProvider.getClimbingBootsLogo())
+			.icon(imageProvider.getAllRibbonsLogo())
 			.priority(7)
 			.panel(emoteClueItemsPanel)
 			.build();

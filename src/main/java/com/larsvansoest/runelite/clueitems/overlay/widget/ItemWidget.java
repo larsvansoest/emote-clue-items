@@ -1,4 +1,4 @@
-package com.larsvansoest.runelite.clueitems.overlay.widgets;
+package com.larsvansoest.runelite.clueitems.overlay.widget;
 
 public enum ItemWidget
 {

@@ -1,4 +1,4 @@
-package com.larsvansoest.runelite.clueitems.overlay.widgets;
+package com.larsvansoest.runelite.clueitems.overlay.widget;
 
 /**
  * Bean-like object which contains return data by {@link ItemWidgets} class Inspect method.
