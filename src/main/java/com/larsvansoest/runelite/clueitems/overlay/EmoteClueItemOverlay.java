@@ -55,11 +55,11 @@ public class EmoteClueItemOverlay extends WidgetItemOverlay
 	static class Component {
 		static class Ribbon {
 			static ImageComponent BEGINNER = new ImageComponent(EmoteClueImage.Ribbon.BEGINNER);
-			static ImageComponent EASY = new ImageComponent(EmoteClueImage.Ribbon.BEGINNER);
-			static ImageComponent MEDIUM = new ImageComponent(EmoteClueImage.Ribbon.BEGINNER);
-			static ImageComponent HARD = new ImageComponent(EmoteClueImage.Ribbon.BEGINNER);
-			static ImageComponent ELITE = new ImageComponent(EmoteClueImage.Ribbon.BEGINNER);
-			static ImageComponent MASTER = new ImageComponent(EmoteClueImage.Ribbon.BEGINNER);
+			static ImageComponent EASY = new ImageComponent(EmoteClueImage.Ribbon.EASY);
+			static ImageComponent MEDIUM = new ImageComponent(EmoteClueImage.Ribbon.MEDIUM);
+			static ImageComponent HARD = new ImageComponent(EmoteClueImage.Ribbon.HARD);
+			static ImageComponent ELITE = new ImageComponent(EmoteClueImage.Ribbon.ELITE);
+			static ImageComponent MASTER = new ImageComponent(EmoteClueImage.Ribbon.MASTER);
 		}
 	}
 
