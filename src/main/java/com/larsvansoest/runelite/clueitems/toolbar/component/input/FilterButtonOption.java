@@ -26,47 +26,31 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.util;
+package com.larsvansoest.runelite.clueitems.toolbar.component.input;
 
-import com.larsvansoest.runelite.clueitems.EmoteClueItemsConfig;
-import com.larsvansoest.runelite.clueitems.overlay.widget.ItemWidgetContainer;
+import javax.swing.Icon;
 
-public class ConfigProvider
+class FilterButtonOption<T>
 {
-	private final EmoteClueItemsConfig config;
+	private final T value;
+	private final Icon icon;
+	private final String toolTip;
 
-	public ConfigProvider(EmoteClueItemsConfig config)
-	{
-		this.config = config;
+	public FilterButtonOption(T value, Icon icon, String toolTip) {
+		this.value = value;
+		this.icon = icon;
+		this.toolTip = toolTip;
 	}
 
-	public boolean interfaceGroupSelected(ItemWidgetContainer container)
+	public T getValue()
 	{
-		switch (container)
-		{
-			case Bank:
-				return this.config.highlightBank();
-
-			case DepositBox:
-				return this.config.highlightDepositBox();
-
-			case Inventory:
-				return this.config.highlightInventory();
-
-			case Equipment:
-				return this.config.highlightEquipment();
-
-			case Shop:
-				return this.config.highlightShop();
-
-			case KeptOnDeath:
-				return this.config.highlightKeptOnDeath();
-
-			case GuidePrices:
-				return this.config.highlightGuidePrices();
-
-			default:
-				return false;
-		}
+		return this.value;
 	}
+
+	public Icon getIcon()
+	{
+		return this.icon;
+	}
+
+	public String getToolTip() { return this.toolTip; }
 }

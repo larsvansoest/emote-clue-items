@@ -26,47 +26,52 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.util;
+package com.larsvansoest.runelite.clueitems.toolbar.palette;
 
-import com.larsvansoest.runelite.clueitems.EmoteClueItemsConfig;
-import com.larsvansoest.runelite.clueitems.overlay.widget.ItemWidgetContainer;
+import java.awt.Color;
+import net.runelite.client.ui.ColorScheme;
 
-public class ConfigProvider
+public enum EmoteClueItemsPanelPalette
 {
-	private final EmoteClueItemsConfig config;
+	DARK(ColorScheme.DARKER_GRAY_COLOR, ColorScheme.DARKER_GRAY_HOVER_COLOR, ColorScheme.DARKER_GRAY_HOVER_COLOR, ColorScheme.MEDIUM_GRAY_COLOR, ColorScheme.BRAND_ORANGE, ColorScheme.MEDIUM_GRAY_COLOR);
 
-	public ConfigProvider(EmoteClueItemsConfig config)
-	{
-		this.config = config;
+	private final Color defaultColor;
+	private final Color hoverColor;
+	private final Color selectColor;
+	private final Color foldContentColor;
+	private final Color separatorColor;
+	private final Color footerColor;
+
+	EmoteClueItemsPanelPalette(Color defaultColor, Color hoverColor, Color selectColor, Color foldContentColor, Color separatorColor, Color footerColor) {
+		this.defaultColor = defaultColor;
+		this.hoverColor = hoverColor;
+		this.selectColor = selectColor;
+		this.foldContentColor = foldContentColor;
+		this.separatorColor = separatorColor;
+		this.footerColor = footerColor;
 	}
 
-	public boolean interfaceGroupSelected(ItemWidgetContainer container)
+	public Color getDefaultColor()
 	{
-		switch (container)
-		{
-			case Bank:
-				return this.config.highlightBank();
-
-			case DepositBox:
-				return this.config.highlightDepositBox();
-
-			case Inventory:
-				return this.config.highlightInventory();
-
-			case Equipment:
-				return this.config.highlightEquipment();
-
-			case Shop:
-				return this.config.highlightShop();
-
-			case KeptOnDeath:
-				return this.config.highlightKeptOnDeath();
-
-			case GuidePrices:
-				return this.config.highlightGuidePrices();
-
-			default:
-				return false;
-		}
+		return this.defaultColor;
 	}
+
+	public Color getHoverColor()
+	{
+		return this.hoverColor;
+	}
+
+	public Color getSelectColor()
+	{
+		return this.selectColor;
+	}
+
+	public Color getFoldContentColor()
+	{
+		return this.foldContentColor;
+	}
+
+	public Color getSeparatorColor() { return this.separatorColor; }
+
+	public Color getFooterColor() { return this.footerColor; }
 }

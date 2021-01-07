@@ -26,47 +26,33 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.util;
+package com.larsvansoest.runelite.clueitems.toolbar.component.requirement;
 
-import com.larsvansoest.runelite.clueitems.EmoteClueItemsConfig;
-import com.larsvansoest.runelite.clueitems.overlay.widget.ItemWidgetContainer;
+import java.awt.Color;
 
-public class ConfigProvider
+public enum EmoteClueDifficulty
 {
-	private final EmoteClueItemsConfig config;
+	Beginner(new Color(169, 158, 157)),
 
-	public ConfigProvider(EmoteClueItemsConfig config)
+	Easy(new Color(9, 96, 13)),
+
+	Medium(new Color(86, 150, 153)),
+
+	Hard(new Color(131, 55, 152)),
+
+	Elite(new Color(189, 165, 24)),
+
+	Master(new Color(155, 48, 38));
+
+	private final Color color;
+
+	EmoteClueDifficulty(Color color)
 	{
-		this.config = config;
+		this.color = color;
 	}
 
-	public boolean interfaceGroupSelected(ItemWidgetContainer container)
+	public Color getColor()
 	{
-		switch (container)
-		{
-			case Bank:
-				return this.config.highlightBank();
-
-			case DepositBox:
-				return this.config.highlightDepositBox();
-
-			case Inventory:
-				return this.config.highlightInventory();
-
-			case Equipment:
-				return this.config.highlightEquipment();
-
-			case Shop:
-				return this.config.highlightShop();
-
-			case KeptOnDeath:
-				return this.config.highlightKeptOnDeath();
-
-			case GuidePrices:
-				return this.config.highlightGuidePrices();
-
-			default:
-				return false;
-		}
+		return this.color;
 	}
 }

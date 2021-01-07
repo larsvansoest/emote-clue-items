@@ -24,6 +24,7 @@
  */
 package com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues;
 
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.EmoteClueDifficulty;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -50,5 +51,5 @@ public abstract class ClueScroll
 
 	@Setter(AccessLevel.PROTECTED)
 	@Getter(AccessLevel.PUBLIC)
-	private Difficulty difficulty;
+	private EmoteClueDifficulty emoteClueDifficulty;
 }

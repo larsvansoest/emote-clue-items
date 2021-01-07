@@ -26,47 +26,24 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.util;
+package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.header;
 
-import com.larsvansoest.runelite.clueitems.EmoteClueItemsConfig;
-import com.larsvansoest.runelite.clueitems.overlay.widget.ItemWidgetContainer;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueImage;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
-public class ConfigProvider
+class HeaderFoldIcon extends JLabel
 {
-	private final EmoteClueItemsConfig config;
-
-	public ConfigProvider(EmoteClueItemsConfig config)
-	{
-		this.config = config;
+	private static class Arrow {
+		static ImageIcon DOWN = new ImageIcon(EmoteClueImage.Toolbar.Chevron.DOWN);
+		static ImageIcon LEFT = new ImageIcon(EmoteClueImage.Toolbar.Chevron.LEFT);
 	}
 
-	public boolean interfaceGroupSelected(ItemWidgetContainer container)
-	{
-		switch (container)
-		{
-			case Bank:
-				return this.config.highlightBank();
+	public HeaderFoldIcon(Boolean expanded) {
+		this.fold(expanded);
+	}
 
-			case DepositBox:
-				return this.config.highlightDepositBox();
-
-			case Inventory:
-				return this.config.highlightInventory();
-
-			case Equipment:
-				return this.config.highlightEquipment();
-
-			case Shop:
-				return this.config.highlightShop();
-
-			case KeptOnDeath:
-				return this.config.highlightKeptOnDeath();
-
-			case GuidePrices:
-				return this.config.highlightGuidePrices();
-
-			default:
-				return false;
-		}
+	public void fold(Boolean expanded) {
+		super.setIcon(expanded ? Arrow.DOWN : Arrow.LEFT);
 	}
 }

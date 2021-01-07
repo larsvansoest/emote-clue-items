@@ -28,45 +28,30 @@
 
 package com.larsvansoest.runelite.clueitems.util;
 
-import com.larsvansoest.runelite.clueitems.EmoteClueItemsConfig;
-import com.larsvansoest.runelite.clueitems.overlay.widget.ItemWidgetContainer;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueImage;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.EmoteClueDifficulty;
+import java.awt.image.BufferedImage;
+import net.runelite.client.util.ImageUtil;
 
-public class ConfigProvider
+public abstract class EmoteClueImages
 {
-	private final EmoteClueItemsConfig config;
-
-	public ConfigProvider(EmoteClueItemsConfig config)
-	{
-		this.config = config;
+	public static BufferedImage getRibbon(EmoteClueDifficulty emoteClueDifficulty) {
+		switch (emoteClueDifficulty) {
+			case Beginner: return EmoteClueImage.Ribbon.BEGINNER;
+			case Easy: return EmoteClueImage.Ribbon.EASY;
+			case Medium: return EmoteClueImage.Ribbon.MEDIUM;
+			case Hard: return EmoteClueImage.Ribbon.HARD;
+			case Elite: return EmoteClueImage.Ribbon.ELITE;
+			case Master: return EmoteClueImage.Ribbon.MASTER;
+			default: throw new IllegalArgumentException();
+		}
 	}
 
-	public boolean interfaceGroupSelected(ItemWidgetContainer container)
-	{
-		switch (container)
-		{
-			case Bank:
-				return this.config.highlightBank();
+	public static BufferedImage illuminate(BufferedImage bufferedImage, float scale) {
+		return ImageUtil.luminanceScale(bufferedImage, scale);
+	}
 
-			case DepositBox:
-				return this.config.highlightDepositBox();
-
-			case Inventory:
-				return this.config.highlightInventory();
-
-			case Equipment:
-				return this.config.highlightEquipment();
-
-			case Shop:
-				return this.config.highlightShop();
-
-			case KeptOnDeath:
-				return this.config.highlightKeptOnDeath();
-
-			case GuidePrices:
-				return this.config.highlightGuidePrices();
-
-			default:
-				return false;
-		}
+	public static BufferedImage resizeCanvas(BufferedImage bufferedImage, int width, int height) {
+		return ImageUtil.resizeCanvas(bufferedImage, width, height);
 	}
 }

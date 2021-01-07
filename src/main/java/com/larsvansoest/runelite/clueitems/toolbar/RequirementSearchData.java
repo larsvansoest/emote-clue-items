@@ -26,47 +26,51 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.util;
+package com.larsvansoest.runelite.clueitems.toolbar;
 
-import com.larsvansoest.runelite.clueitems.EmoteClueItemsConfig;
-import com.larsvansoest.runelite.clueitems.overlay.widget.ItemWidgetContainer;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementStatus;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.EmoteClueDifficulty;
 
-public class ConfigProvider
+class RequirementSearchData
 {
-	private final EmoteClueItemsConfig config;
+	private String requirementName;
+	private EmoteClueDifficulty requirementEmoteClueDifficulty;
+	private RequirementStatus requirementStatus;
 
-	public ConfigProvider(EmoteClueItemsConfig config)
+	public RequirementSearchData(String requirementName, EmoteClueDifficulty requirementEmoteClueDifficulty, RequirementStatus requirementStatus)
 	{
-		this.config = config;
+		this.requirementName = requirementName;
+		this.requirementEmoteClueDifficulty = requirementEmoteClueDifficulty;
+		this.requirementStatus = requirementStatus;
 	}
 
-	public boolean interfaceGroupSelected(ItemWidgetContainer container)
+	public String getRequirementName()
 	{
-		switch (container)
-		{
-			case Bank:
-				return this.config.highlightBank();
+		return this.requirementName;
+	}
 
-			case DepositBox:
-				return this.config.highlightDepositBox();
+	public void setRequirementName(String requirementName)
+	{
+		this.requirementName = requirementName;
+	}
 
-			case Inventory:
-				return this.config.highlightInventory();
+	public EmoteClueDifficulty getRequirementDifficulty()
+	{
+		return this.requirementEmoteClueDifficulty;
+	}
 
-			case Equipment:
-				return this.config.highlightEquipment();
+	public void setRequirementDifficulty(EmoteClueDifficulty requirementEmoteClueDifficulty)
+	{
+		this.requirementEmoteClueDifficulty = requirementEmoteClueDifficulty;
+	}
 
-			case Shop:
-				return this.config.highlightShop();
+	public RequirementStatus getRequirementStatus()
+	{
+		return this.requirementStatus;
+	}
 
-			case KeptOnDeath:
-				return this.config.highlightKeptOnDeath();
-
-			case GuidePrices:
-				return this.config.highlightGuidePrices();
-
-			default:
-				return false;
-		}
+	public void setRequirementStatus(RequirementStatus requirementStatus)
+	{
+		this.requirementStatus = requirementStatus;
 	}
 }

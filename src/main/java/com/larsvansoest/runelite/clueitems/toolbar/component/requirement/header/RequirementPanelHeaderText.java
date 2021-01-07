@@ -26,47 +26,22 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.util;
+package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.header;
 
-import com.larsvansoest.runelite.clueitems.EmoteClueItemsConfig;
-import com.larsvansoest.runelite.clueitems.overlay.widget.ItemWidgetContainer;
+import java.awt.Dimension;
+import javax.swing.JLabel;
+import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 
-public class ConfigProvider
+public class RequirementPanelHeaderText extends JShadowedLabel
 {
-	private final EmoteClueItemsConfig config;
-
-	public ConfigProvider(EmoteClueItemsConfig config)
-	{
-		this.config = config;
-	}
-
-	public boolean interfaceGroupSelected(ItemWidgetContainer container)
-	{
-		switch (container)
-		{
-			case Bank:
-				return this.config.highlightBank();
-
-			case DepositBox:
-				return this.config.highlightDepositBox();
-
-			case Inventory:
-				return this.config.highlightInventory();
-
-			case Equipment:
-				return this.config.highlightEquipment();
-
-			case Shop:
-				return this.config.highlightShop();
-
-			case KeptOnDeath:
-				return this.config.highlightKeptOnDeath();
-
-			case GuidePrices:
-				return this.config.highlightGuidePrices();
-
-			default:
-				return false;
-		}
+	public RequirementPanelHeaderText(Dimension dimension, String text) {
+		super.setHorizontalAlignment(JLabel.CENTER);
+		super.setVerticalAlignment(JLabel.CENTER);
+		super.setText(text);
+		super.setPreferredSize(dimension);
+		super.setMaximumSize(dimension);
+		super.setMinimumSize(dimension);
+		super.setFont(FontManager.getRunescapeSmallFont());
 	}
 }

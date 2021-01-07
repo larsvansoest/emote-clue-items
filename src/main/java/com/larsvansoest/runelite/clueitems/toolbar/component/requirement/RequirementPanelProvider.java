@@ -28,45 +28,31 @@
 
 package com.larsvansoest.runelite.clueitems.toolbar.component.requirement;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.impl.EmoteClueItemPanel;
+import com.larsvansoest.runelite.clueitems.toolbar.palette.EmoteClueItemsPanelPalette;
+import com.larsvansoest.runelite.clueitems.util.EmoteClues;
 import java.util.Collection;
-import java.util.function.Function;
-import java.util.stream.Stream;
-import javax.swing.JPanel;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-public class RequirementContainer extends JPanel
+public class RequirementPanelProvider
 {
-	private final GridBagConstraints c;
-	private Collection<? extends RequirementPanel> requirementPanelCollection;
+	private final Map<EmoteClueItem, EmoteClueItemPanel> emoteClueItemPanelMap;
+	//private final Map<STASHUnit, StashUnitPanel> stashUnitPanelMap;
+	//private final Map<EmoteClue, EmoteCluePanel> emoteCluePanelMap;
 
-	public RequirementContainer(Collection<? extends RequirementPanel> requirementPanelCollection) {
-		super(new GridBagLayout());
-		this.c = new GridBagConstraints();
-		this.c.fill = GridBagConstraints.HORIZONTAL;
-		this.c.gridx = 0;
-		this.c.gridy = 0;
-		this.c.weightx = 1;
-		this.load(requirementPanelCollection);
+	public RequirementPanelProvider(EmoteClueItemsPanelPalette emoteClueItemsPanelPalette) {
+		this.emoteClueItemPanelMap = EmoteClues.Associations.EMOTECLUEITEM.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, entry -> new EmoteClueItemPanel(emoteClueItemsPanelPalette, entry.getKey(), entry.getValue())));
+		//this.stashUnitPanelMap = EmoteClues.Associations.STASHUNIT.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, entry -> new StashUnitPanel(entry.getKey(), entry.getValue())));
+		//this.emoteCluePanelMap = EmoteClue.CLUES.stream().collect(Collectors.toMap(Function.identity(), EmoteCluePanel::new));
 	}
 
-	public void load(Collection<? extends RequirementPanel> requirementPanelCollection) {
-		this.requirementPanelCollection = requirementPanelCollection;
-		this.display(requirementPanelCollection.stream());
+	public final EmoteClueItemPanel getEmoteClueItemPanel(EmoteClueItem emoteClueItem) {
+		return this.emoteClueItemPanelMap.get(emoteClueItem);
 	}
 
-	public void filter(Function<Object, Boolean> predicate) {
-		this.display(this.requirementPanelCollection.stream().filter(predicate::apply));
-	}
-
-	private void display(Stream<? extends RequirementPanel> requirementPanels) {
-		super.removeAll();
-		this.c.gridy = 0;
-		requirementPanels.forEach(requirementPanel -> {
-			super.add(requirementPanel, this.c);
-			this.c.gridy++;
-		});
-		super.revalidate();
-		super.repaint();
+	public final Collection<EmoteClueItemPanel> getEmoteClueItemPanels() {
+		return this.emoteClueItemPanelMap.values();
 	}
 }

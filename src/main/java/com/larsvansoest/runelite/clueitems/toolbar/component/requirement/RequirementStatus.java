@@ -26,47 +26,22 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.util;
+package com.larsvansoest.runelite.clueitems.toolbar.component.requirement;
 
-import com.larsvansoest.runelite.clueitems.EmoteClueItemsConfig;
-import com.larsvansoest.runelite.clueitems.overlay.widget.ItemWidgetContainer;
+import java.awt.Color;
+import net.runelite.client.ui.ColorScheme;
 
-public class ConfigProvider
+public enum RequirementStatus
 {
-	private final EmoteClueItemsConfig config;
+	Complete(ColorScheme.PROGRESS_COMPLETE_COLOR),
 
-	public ConfigProvider(EmoteClueItemsConfig config)
-	{
-		this.config = config;
-	}
+	InProgress(ColorScheme.PROGRESS_INPROGRESS_COLOR),
 
-	public boolean interfaceGroupSelected(ItemWidgetContainer container)
-	{
-		switch (container)
-		{
-			case Bank:
-				return this.config.highlightBank();
+	InComplete(ColorScheme.LIGHT_GRAY_COLOR);
 
-			case DepositBox:
-				return this.config.highlightDepositBox();
+	public final Color colour;
 
-			case Inventory:
-				return this.config.highlightInventory();
-
-			case Equipment:
-				return this.config.highlightEquipment();
-
-			case Shop:
-				return this.config.highlightShop();
-
-			case KeptOnDeath:
-				return this.config.highlightKeptOnDeath();
-
-			case GuidePrices:
-				return this.config.highlightGuidePrices();
-
-			default:
-				return false;
-		}
+	RequirementStatus(Color colour) {
+		this.colour = colour;
 	}
 }

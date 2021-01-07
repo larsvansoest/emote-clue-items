@@ -1,5 +1,36 @@
+/*
+ * BSD 2-Clause License
+ *
+ * Copyright (c) 2020, Lars van Soest
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 package com.larsvansoest.runelite.clueitems.toolbar.component.footer;
 
+import com.larsvansoest.runelite.clueitems.data.EmoteClueImage;
+import com.larsvansoest.runelite.clueitems.toolbar.palette.EmoteClueItemsPanelPalette;
+import com.larsvansoest.runelite.clueitems.util.EmoteClueImages;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -11,42 +42,29 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.border.MatteBorder;
-import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.LinkBrowser;
 
 public class FooterPanel extends JPanel
 {
-	public FooterPanel(String pluginName, String pluginVersion, String gitHubUrl, ImageIcon gitHubIcon) {
+	public FooterPanel(EmoteClueItemsPanelPalette emoteClueItemsPanelPalette, String pluginName, String pluginVersion, String gitHubUrl) {
 		super(new GridBagLayout());
 
-		Color color = ColorScheme.MEDIUM_GRAY_COLOR;
+		Color color = emoteClueItemsPanelPalette.getFooterColor();
 		Font font = FontManager.getRunescapeSmallFont();
 
 		JSeparator separator = new JSeparator();
 		separator.setBorder(new MatteBorder(1, 0, 0, 0, color));
 
 		JLabel pluginNameLabel = this.getTextLabel(String.format("%s %s", pluginName, pluginVersion), font, color);
-		JLabel gitHubLabel = new JLabel();
-		gitHubLabel.setHorizontalAlignment(JLabel.LEFT);
-		gitHubLabel.setVerticalAlignment(JLabel.CENTER);
-		gitHubLabel.setIcon(gitHubIcon);
-		gitHubLabel.addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mousePressed(MouseEvent e)
-			{
-				LinkBrowser.browse(gitHubUrl);
-			}
-		});
+		JLabel gitHubLabel = this.getGitHubLabel(gitHubUrl);
 
-		// TODO: CC, illuminate icons (chevrons, github logo, searchbar, etc.)
 		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 0;
 		c.gridy = 0;
 		c.weightx = 1;
 		c.gridwidth = 2;
-		c.fill = GridBagConstraints.HORIZONTAL;
 		c.insets.top = 15;
 		c.insets.left = 20;
 		c.insets.right = 20;
@@ -73,5 +91,36 @@ public class FooterPanel extends JPanel
 		label.setFont(font);
 		label.setForeground(color);
 		return label;
+	}
+
+	private JLabel getGitHubLabel(String gitHubUrl) {
+		ImageIcon defaultIcon = new ImageIcon(EmoteClueImage.Toolbar.Footer.GITHUB);
+		ImageIcon illuminatedIcon = new ImageIcon(EmoteClueImages.illuminate(EmoteClueImage.Toolbar.Footer.GITHUB, 150));
+		JLabel gitHubLabel = new JLabel();
+		gitHubLabel.setToolTipText("Visit the GitHub repository webpage.");
+		gitHubLabel.setHorizontalAlignment(JLabel.LEFT);
+		gitHubLabel.setVerticalAlignment(JLabel.CENTER);
+		gitHubLabel.setIcon(defaultIcon);
+		gitHubLabel.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent e)
+			{
+				LinkBrowser.browse(gitHubUrl);
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e)
+			{
+				gitHubLabel.setIcon(illuminatedIcon);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e)
+			{
+				gitHubLabel.setIcon(defaultIcon);
+			}
+		});
+		return gitHubLabel;
 	}
 }

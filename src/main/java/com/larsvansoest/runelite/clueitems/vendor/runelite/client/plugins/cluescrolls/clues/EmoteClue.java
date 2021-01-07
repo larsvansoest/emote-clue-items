@@ -26,12 +26,13 @@ package com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.clues
 
 import com.google.common.collect.ImmutableSet;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
-import static com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.Difficulty.Beginner;
-import static com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.Difficulty.Easy;
-import static com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.Difficulty.Elite;
-import static com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.Difficulty.Hard;
-import static com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.Difficulty.Master;
-import static com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.Difficulty.Medium;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.EmoteClueDifficulty;
+import static com.larsvansoest.runelite.clueitems.toolbar.component.requirement.EmoteClueDifficulty.Beginner;
+import static com.larsvansoest.runelite.clueitems.toolbar.component.requirement.EmoteClueDifficulty.Easy;
+import static com.larsvansoest.runelite.clueitems.toolbar.component.requirement.EmoteClueDifficulty.Elite;
+import static com.larsvansoest.runelite.clueitems.toolbar.component.requirement.EmoteClueDifficulty.Hard;
+import static com.larsvansoest.runelite.clueitems.toolbar.component.requirement.EmoteClueDifficulty.Master;
+import static com.larsvansoest.runelite.clueitems.toolbar.component.requirement.EmoteClueDifficulty.Medium;
 import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -178,7 +179,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 
 	private final String text;
 	private final String locationName;
-	private final Difficulty difficulty;
+	private final EmoteClueDifficulty emoteClueDifficulty;
 
 	@Nullable
 	private final STASHUnit stashUnit;
@@ -187,20 +188,20 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 	private final Emote secondEmote;
 	private final ItemRequirement[] itemRequirements;
 
-	private EmoteClue(Difficulty difficulty, String text, String locationName, STASHUnit stashUnit, WorldPoint location, Emote firstEmote, @Nonnull ItemRequirement... itemRequirements)
+	private EmoteClue(EmoteClueDifficulty emoteClueDifficulty, String text, String locationName, STASHUnit stashUnit, WorldPoint location, Emote firstEmote, @Nonnull ItemRequirement... itemRequirements)
 	{
-		this(difficulty, text, locationName, stashUnit, location, firstEmote, null, itemRequirements);
+		this(emoteClueDifficulty, text, locationName, stashUnit, location, firstEmote, null, itemRequirements);
 	}
 
-	private EmoteClue(Difficulty difficulty, String text, String locationName, STASHUnit stashUnit, WorldPoint location, Enemy enemy, Emote firstEmote, @Nonnull ItemRequirement... itemRequirements)
+	private EmoteClue(EmoteClueDifficulty emoteClueDifficulty, String text, String locationName, STASHUnit stashUnit, WorldPoint location, Enemy enemy, Emote firstEmote, @Nonnull ItemRequirement... itemRequirements)
 	{
-		this(difficulty, text, locationName, stashUnit, location, firstEmote, null, itemRequirements);
+		this(emoteClueDifficulty, text, locationName, stashUnit, location, firstEmote, null, itemRequirements);
 		setEnemy(enemy);
 	}
 
-	private EmoteClue(Difficulty difficulty, String text, String locationName, STASHUnit stashUnit, WorldPoint location, Emote firstEmote, Emote secondEmote, @Nonnull ItemRequirement... itemRequirements)
+	private EmoteClue(EmoteClueDifficulty emoteClueDifficulty, String text, String locationName, STASHUnit stashUnit, WorldPoint location, Emote firstEmote, Emote secondEmote, @Nonnull ItemRequirement... itemRequirements)
 	{
-		this.difficulty = difficulty;
+		this.emoteClueDifficulty = emoteClueDifficulty;
 		this.text = text;
 		this.locationName = locationName;
 		this.stashUnit = stashUnit;
@@ -210,9 +211,9 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 		this.itemRequirements = itemRequirements;
 	}
 
-	private EmoteClue(Difficulty difficulty, String text, String locationName, @Nullable STASHUnit stashUnit, WorldPoint location, Emote firstEmote, Emote secondEmote, @Nonnull Varbits firePit, @Nonnull ItemRequirement... itemRequirements)
+	private EmoteClue(EmoteClueDifficulty emoteClueDifficulty, String text, String locationName, @Nullable STASHUnit stashUnit, WorldPoint location, Emote firstEmote, Emote secondEmote, @Nonnull Varbits firePit, @Nonnull ItemRequirement... itemRequirements)
 	{
-		this(difficulty, text, locationName, stashUnit, location, firstEmote, secondEmote, itemRequirements);
+		this(emoteClueDifficulty, text, locationName, stashUnit, location, firstEmote, secondEmote, itemRequirements);
 		setRequiresLight(true);
 		setHasFirePit(firePit);
 	}
