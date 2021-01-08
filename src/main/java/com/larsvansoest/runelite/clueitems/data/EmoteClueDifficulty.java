@@ -26,51 +26,33 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.toolbar;
+package com.larsvansoest.runelite.clueitems.data;
 
-import com.larsvansoest.runelite.clueitems.data.RequirementStatus;
-import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
+import java.awt.Color;
 
-class RequirementSearchData
+public enum EmoteClueDifficulty
 {
-	private String requirementName;
-	private EmoteClueDifficulty requirementEmoteClueDifficulty;
-	private RequirementStatus requirementStatus;
+	Beginner(new Color(169, 158, 157)),
 
-	public RequirementSearchData(String requirementName, EmoteClueDifficulty requirementEmoteClueDifficulty, RequirementStatus requirementStatus)
+	Easy(new Color(9, 96, 13)),
+
+	Medium(new Color(86, 150, 153)),
+
+	Hard(new Color(131, 55, 152)),
+
+	Elite(new Color(189, 165, 24)),
+
+	Master(new Color(155, 48, 38));
+
+	private final Color color;
+
+	EmoteClueDifficulty(Color color)
 	{
-		this.requirementName = requirementName;
-		this.requirementEmoteClueDifficulty = requirementEmoteClueDifficulty;
-		this.requirementStatus = requirementStatus;
+		this.color = color;
 	}
 
-	public String getRequirementName()
+	public Color getColor()
 	{
-		return this.requirementName;
-	}
-
-	public void setRequirementName(String requirementName)
-	{
-		this.requirementName = requirementName;
-	}
-
-	public EmoteClueDifficulty getRequirementDifficulty()
-	{
-		return this.requirementEmoteClueDifficulty;
-	}
-
-	public void setRequirementDifficulty(EmoteClueDifficulty requirementEmoteClueDifficulty)
-	{
-		this.requirementEmoteClueDifficulty = requirementEmoteClueDifficulty;
-	}
-
-	public RequirementStatus getRequirementStatus()
-	{
-		return this.requirementStatus;
-	}
-
-	public void setRequirementStatus(RequirementStatus requirementStatus)
-	{
-		this.requirementStatus = requirementStatus;
+		return this.color;
 	}
 }

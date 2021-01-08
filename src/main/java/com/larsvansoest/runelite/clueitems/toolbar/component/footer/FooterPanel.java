@@ -30,7 +30,7 @@ package com.larsvansoest.runelite.clueitems.toolbar.component.footer;
 
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImage;
 import com.larsvansoest.runelite.clueitems.toolbar.palette.EmoteClueItemsPanelPalette;
-import com.larsvansoest.runelite.clueitems.util.EmoteClueImages;
+import com.larsvansoest.runelite.clueitems.data.util.EmoteClueImages;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -65,9 +65,6 @@ public class FooterPanel extends JPanel
 		c.gridy = 0;
 		c.weightx = 1;
 		c.gridwidth = 2;
-		c.insets.top = 15;
-		c.insets.left = 20;
-		c.insets.right = 20;
 		super.add(separator, c);
 		c.insets.top = 5;
 		c.gridy++;
@@ -80,6 +77,7 @@ public class FooterPanel extends JPanel
 		super.add(pluginNameLabel, c);
 		c.gridx++;
 		c.anchor = GridBagConstraints.WEST;
+		c.insets.bottom = 2;
 		super.add(gitHubLabel, c);
 	}
 

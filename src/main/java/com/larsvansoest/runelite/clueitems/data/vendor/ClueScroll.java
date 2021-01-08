@@ -25,48 +25,34 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package com.larsvansoest.runelite.clueitems.data.vendor;
 
-package com.larsvansoest.runelite.clueitems.util;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+import net.runelite.api.Varbits;
+import net.runelite.client.plugins.cluescrolls.clues.Enemy;
 
-import com.larsvansoest.runelite.clueitems.EmoteClueItemsConfig;
-import com.larsvansoest.runelite.clueitems.overlay.widget.ItemWidgetContainer;
-
-public class ConfigProvider
+public abstract class ClueScroll
 {
-	private final EmoteClueItemsConfig config;
+	@Setter(AccessLevel.PROTECTED)
+	@Getter(AccessLevel.PUBLIC)
+	private boolean requiresSpade;
 
-	public ConfigProvider(EmoteClueItemsConfig config)
-	{
-		this.config = config;
-	}
+	@Setter(AccessLevel.PROTECTED)
+	@Getter(AccessLevel.PUBLIC)
+	private boolean requiresLight;
 
-	public boolean interfaceGroupSelected(ItemWidgetContainer container)
-	{
-		switch (container)
-		{
-			case Bank:
-				return this.config.highlightBank();
+	@Setter(AccessLevel.PROTECTED)
+	@Getter(AccessLevel.PUBLIC)
+	private Varbits hasFirePit;
 
-			case DepositBox:
-				return this.config.highlightDepositBox();
+	@Setter(AccessLevel.PROTECTED)
+	@Getter(AccessLevel.PUBLIC)
+	private Enemy enemy;
 
-			case Inventory:
-				return this.config.highlightInventory();
-
-			case Equipment:
-				return this.config.highlightEquipment();
-
-			case Shop:
-				return this.config.highlightShop();
-
-			case KeptOnDeath:
-				return this.config.highlightKeptOnDeath();
-
-			case GuidePrices:
-				return this.config.highlightGuidePrices();
-
-			default:
-				return false;
-		}
-	}
+	@Setter(AccessLevel.PROTECTED)
+	@Getter(AccessLevel.PUBLIC)
+	private EmoteClueDifficulty emoteClueDifficulty;
 }

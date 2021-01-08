@@ -30,7 +30,10 @@ package com.larsvansoest.runelite.clueitems.toolbar.component.requirement;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import javax.swing.JPanel;
@@ -38,7 +41,7 @@ import javax.swing.JPanel;
 public class RequirementContainer extends JPanel
 {
 	private final GridBagConstraints c;
-	private Collection<? extends RequirementPanel> requirementPanelCollection;
+	private List<? extends RequirementPanel> requirementPanels;
 
 	public RequirementContainer(Collection<? extends RequirementPanel> requirementPanelCollection) {
 		super(new GridBagLayout());
@@ -51,18 +54,19 @@ public class RequirementContainer extends JPanel
 	}
 
 	public void load(Collection<? extends RequirementPanel> requirementPanelCollection) {
-		this.requirementPanelCollection = requirementPanelCollection;
-		this.display(requirementPanelCollection.stream());
+		this.requirementPanels = new ArrayList<>(requirementPanelCollection);
+		this.requirementPanels.sort(Comparator.comparing(RequirementPanel::getName));
+		this.display(this.requirementPanels.stream());
 	}
 
 	public void filter(Function<Object, Boolean> predicate) {
-		this.display(this.requirementPanelCollection.stream().filter(predicate::apply));
+		this.display(this.requirementPanels.stream().filter(predicate::apply));
 	}
 
 	private void display(Stream<? extends RequirementPanel> requirementPanels) {
 		super.removeAll();
 		this.c.gridy = 0;
-		requirementPanels.forEach(requirementPanel -> {
+		requirementPanels.forEachOrdered(requirementPanel -> {
 			super.add(requirementPanel, this.c);
 			this.c.gridy++;
 		});

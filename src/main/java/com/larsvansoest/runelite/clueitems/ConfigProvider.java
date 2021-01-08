@@ -26,51 +26,47 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.toolbar;
+package com.larsvansoest.runelite.clueitems;
 
-import com.larsvansoest.runelite.clueitems.data.RequirementStatus;
-import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
+import com.larsvansoest.runelite.clueitems.EmoteClueItemsConfig;
+import com.larsvansoest.runelite.clueitems.overlay.widget.ItemWidgetContainer;
 
-class RequirementSearchData
+public class ConfigProvider
 {
-	private String requirementName;
-	private EmoteClueDifficulty requirementEmoteClueDifficulty;
-	private RequirementStatus requirementStatus;
+	private final EmoteClueItemsConfig config;
 
-	public RequirementSearchData(String requirementName, EmoteClueDifficulty requirementEmoteClueDifficulty, RequirementStatus requirementStatus)
+	public ConfigProvider(EmoteClueItemsConfig config)
 	{
-		this.requirementName = requirementName;
-		this.requirementEmoteClueDifficulty = requirementEmoteClueDifficulty;
-		this.requirementStatus = requirementStatus;
+		this.config = config;
 	}
 
-	public String getRequirementName()
+	public boolean interfaceGroupSelected(ItemWidgetContainer container)
 	{
-		return this.requirementName;
-	}
+		switch (container)
+		{
+			case Bank:
+				return this.config.highlightBank();
 
-	public void setRequirementName(String requirementName)
-	{
-		this.requirementName = requirementName;
-	}
+			case DepositBox:
+				return this.config.highlightDepositBox();
 
-	public EmoteClueDifficulty getRequirementDifficulty()
-	{
-		return this.requirementEmoteClueDifficulty;
-	}
+			case Inventory:
+				return this.config.highlightInventory();
 
-	public void setRequirementDifficulty(EmoteClueDifficulty requirementEmoteClueDifficulty)
-	{
-		this.requirementEmoteClueDifficulty = requirementEmoteClueDifficulty;
-	}
+			case Equipment:
+				return this.config.highlightEquipment();
 
-	public RequirementStatus getRequirementStatus()
-	{
-		return this.requirementStatus;
-	}
+			case Shop:
+				return this.config.highlightShop();
 
-	public void setRequirementStatus(RequirementStatus requirementStatus)
-	{
-		this.requirementStatus = requirementStatus;
+			case KeptOnDeath:
+				return this.config.highlightKeptOnDeath();
+
+			case GuidePrices:
+				return this.config.highlightGuidePrices();
+
+			default:
+				return false;
+		}
 	}
 }

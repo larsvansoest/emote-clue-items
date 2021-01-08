@@ -26,22 +26,32 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.toolbar.component.requirement;
+package com.larsvansoest.runelite.clueitems.data.util;
 
-import java.awt.Color;
-import net.runelite.client.ui.ColorScheme;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueImage;
+import java.awt.image.BufferedImage;
+import net.runelite.client.util.ImageUtil;
 
-public enum RequirementStatus
+public abstract class EmoteClueImages
 {
-	Complete(ColorScheme.PROGRESS_COMPLETE_COLOR),
+	public static BufferedImage getRibbon(EmoteClueDifficulty emoteClueDifficulty) {
+		switch (emoteClueDifficulty) {
+			case Beginner: return EmoteClueImage.Ribbon.BEGINNER;
+			case Easy: return EmoteClueImage.Ribbon.EASY;
+			case Medium: return EmoteClueImage.Ribbon.MEDIUM;
+			case Hard: return EmoteClueImage.Ribbon.HARD;
+			case Elite: return EmoteClueImage.Ribbon.ELITE;
+			case Master: return EmoteClueImage.Ribbon.MASTER;
+			default: throw new IllegalArgumentException();
+		}
+	}
 
-	InProgress(ColorScheme.PROGRESS_INPROGRESS_COLOR),
+	public static BufferedImage illuminate(BufferedImage bufferedImage, float scale) {
+		return ImageUtil.luminanceScale(bufferedImage, scale);
+	}
 
-	InComplete(ColorScheme.LIGHT_GRAY_COLOR);
-
-	public final Color colour;
-
-	RequirementStatus(Color colour) {
-		this.colour = colour;
+	public static BufferedImage resizeCanvas(BufferedImage bufferedImage, int width, int height) {
+		return ImageUtil.resizeCanvas(bufferedImage, width, height);
 	}
 }

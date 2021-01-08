@@ -26,32 +26,43 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.util;
+package com.larsvansoest.runelite.clueitems.iventory;
 
-import com.larsvansoest.runelite.clueitems.data.EmoteClueImage;
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.EmoteClueDifficulty;
-import java.awt.image.BufferedImage;
-import net.runelite.client.util.ImageUtil;
+import net.runelite.api.Item;
+import net.runelite.api.events.ItemContainerChanged;
 
-public abstract class EmoteClueImages
+public class EmoteClueItemMonitor
 {
-	public static BufferedImage getRibbon(EmoteClueDifficulty emoteClueDifficulty) {
-		switch (emoteClueDifficulty) {
-			case Beginner: return EmoteClueImage.Ribbon.BEGINNER;
-			case Easy: return EmoteClueImage.Ribbon.EASY;
-			case Medium: return EmoteClueImage.Ribbon.MEDIUM;
-			case Hard: return EmoteClueImage.Ribbon.HARD;
-			case Elite: return EmoteClueImage.Ribbon.ELITE;
-			case Master: return EmoteClueImage.Ribbon.MASTER;
-			default: throw new IllegalArgumentException();
+	private static class ContainerId {
+		private static final int INVENTORY = 93;
+		private static final int BANK = 95;
+	}
+
+	private Item[] bankItems;
+	private Item[] inventoryItems;
+
+	public EmoteClueItemMonitor() {
+		this.bankItems = null;
+		this.inventoryItems = null;
+	}
+
+	public void onItemContainerChanged(ItemContainerChanged event) {
+		Item[] items = event.getItemContainer().getItems();
+		switch(event.getContainerId())
+		{
+			case ContainerId.BANK: this.bankItems = items; break;
+			case ContainerId.INVENTORY:  this.inventoryItems = items; break;
+			default: break;
 		}
 	}
 
-	public static BufferedImage illuminate(BufferedImage bufferedImage, float scale) {
-		return ImageUtil.luminanceScale(bufferedImage, scale);
+	public Item[] getBankItems()
+	{
+		return this.bankItems;
 	}
 
-	public static BufferedImage resizeCanvas(BufferedImage bufferedImage, int width, int height) {
-		return ImageUtil.resizeCanvas(bufferedImage, width, height);
+	public Item[] getInventoryItems()
+	{
+		return this.inventoryItems;
 	}
 }

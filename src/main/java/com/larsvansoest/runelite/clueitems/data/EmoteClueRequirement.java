@@ -26,51 +26,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.toolbar;
+package com.larsvansoest.runelite.clueitems.data;
 
-import com.larsvansoest.runelite.clueitems.data.RequirementStatus;
-import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
-
-class RequirementSearchData
+public interface EmoteClueRequirement
 {
-	private String requirementName;
-	private EmoteClueDifficulty requirementEmoteClueDifficulty;
-	private RequirementStatus requirementStatus;
-
-	public RequirementSearchData(String requirementName, EmoteClueDifficulty requirementEmoteClueDifficulty, RequirementStatus requirementStatus)
-	{
-		this.requirementName = requirementName;
-		this.requirementEmoteClueDifficulty = requirementEmoteClueDifficulty;
-		this.requirementStatus = requirementStatus;
-	}
-
-	public String getRequirementName()
-	{
-		return this.requirementName;
-	}
-
-	public void setRequirementName(String requirementName)
-	{
-		this.requirementName = requirementName;
-	}
-
-	public EmoteClueDifficulty getRequirementDifficulty()
-	{
-		return this.requirementEmoteClueDifficulty;
-	}
-
-	public void setRequirementDifficulty(EmoteClueDifficulty requirementEmoteClueDifficulty)
-	{
-		this.requirementEmoteClueDifficulty = requirementEmoteClueDifficulty;
-	}
-
-	public RequirementStatus getRequirementStatus()
-	{
-		return this.requirementStatus;
-	}
-
-	public void setRequirementStatus(RequirementStatus requirementStatus)
-	{
-		this.requirementStatus = requirementStatus;
-	}
 }

@@ -30,15 +30,17 @@ package com.larsvansoest.runelite.clueitems;
 
 import com.google.inject.Provides;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImage;
+import com.larsvansoest.runelite.clueitems.iventory.EmoteClueItemMonitor;
 import com.larsvansoest.runelite.clueitems.overlay.EmoteClueItemOverlay;
 import com.larsvansoest.runelite.clueitems.toolbar.EmoteClueItemsPanel;
 import com.larsvansoest.runelite.clueitems.toolbar.palette.EmoteClueItemsPanelPalette;
-import com.larsvansoest.runelite.clueitems.util.ConfigProvider;
-import com.larsvansoest.runelite.clueitems.util.EmoteClueImages;
+import com.larsvansoest.runelite.clueitems.data.util.EmoteClueImages;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -71,6 +73,7 @@ public class EmoteClueItemsPlugin extends Plugin
 
 	private EmoteClueItemOverlay overlay;
 	private NavigationButton navigationButton;
+	private EmoteClueItemMonitor emoteClueItemMonitor;
 
 	@Override
 	protected void startUp()
@@ -88,7 +91,16 @@ public class EmoteClueItemsPlugin extends Plugin
 			.panel(emoteClueItemsPanel)
 			.build();
 
+		this.emoteClueItemMonitor = new EmoteClueItemMonitor();
+
 		this.clientToolbar.addNavigation(this.navigationButton);
+	}
+
+	@Subscribe
+	protected void onItemContainerChanged(ItemContainerChanged event) {
+		this.emoteClueItemMonitor.onItemContainerChanged(event);
+		//private static final int INVENTORY = 93;
+		//private static final int BANK = 95;
 	}
 
 	@Override

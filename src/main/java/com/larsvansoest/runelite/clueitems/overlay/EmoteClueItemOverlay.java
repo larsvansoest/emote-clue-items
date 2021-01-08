@@ -28,15 +28,15 @@
 
 package com.larsvansoest.runelite.clueitems.overlay;
 
-import com.larsvansoest.runelite.clueitems.data.EmoteClueImage;
 import com.larsvansoest.runelite.clueitems.overlay.widget.ItemWidget;
 import com.larsvansoest.runelite.clueitems.overlay.widget.ItemWidgetContainer;
 import com.larsvansoest.runelite.clueitems.overlay.widget.ItemWidgetContext;
 import com.larsvansoest.runelite.clueitems.overlay.widget.ItemWidgetData;
 import com.larsvansoest.runelite.clueitems.overlay.widget.ItemWidgetInspector;
-import com.larsvansoest.runelite.clueitems.util.ConfigProvider;
-import com.larsvansoest.runelite.clueitems.util.EmoteClues;
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.EmoteClueDifficulty;
+import com.larsvansoest.runelite.clueitems.ConfigProvider;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueImage;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
+import com.larsvansoest.runelite.clueitems.data.util.EmoteClues;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -65,7 +65,6 @@ public class EmoteClueItemOverlay extends WidgetItemOverlay
 
 	private final ItemManager itemManager;
 	private final ConfigProvider configProvider;
-	private final ItemWidgetInspector itemWidgetInspector;
 
 	// Single object allocations, re-used every sequential iteration.
 	private final ItemWidgetData itemWidgetData;
@@ -76,7 +75,6 @@ public class EmoteClueItemOverlay extends WidgetItemOverlay
 	{
 		this.itemManager = itemManager;
 		this.configProvider = config;
-		this.itemWidgetInspector = new ItemWidgetInspector();
 
 		this.itemWidgetData = new ItemWidgetData();
 		this.point = new Point();
@@ -89,7 +87,7 @@ public class EmoteClueItemOverlay extends WidgetItemOverlay
 	@Override
 	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem itemWidget)
 	{
-		this.itemWidgetInspector.inspect(itemWidget, this.itemWidgetData, 3);
+		ItemWidgetInspector.Inspect(itemWidget, this.itemWidgetData, 3);
 		ItemWidgetContainer container = this.itemWidgetData.getContainer();
 		ItemWidgetContext context = this.itemWidgetData.getContext();
 

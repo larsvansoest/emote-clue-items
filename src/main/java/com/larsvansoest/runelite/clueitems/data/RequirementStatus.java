@@ -26,33 +26,22 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.toolbar.component.requirement;
+package com.larsvansoest.runelite.clueitems.data;
 
 import java.awt.Color;
+import net.runelite.client.ui.ColorScheme;
 
-public enum EmoteClueDifficulty
+public enum RequirementStatus
 {
-	Beginner(new Color(169, 158, 157)),
+	Complete(ColorScheme.PROGRESS_COMPLETE_COLOR),
 
-	Easy(new Color(9, 96, 13)),
+	InProgress(ColorScheme.PROGRESS_INPROGRESS_COLOR),
 
-	Medium(new Color(86, 150, 153)),
+	InComplete(ColorScheme.LIGHT_GRAY_COLOR);
 
-	Hard(new Color(131, 55, 152)),
+	public final Color colour;
 
-	Elite(new Color(189, 165, 24)),
-
-	Master(new Color(155, 48, 38));
-
-	private final Color color;
-
-	EmoteClueDifficulty(Color color)
-	{
-		this.color = color;
-	}
-
-	public Color getColor()
-	{
-		return this.color;
+	RequirementStatus(Color colour) {
+		this.colour = colour;
 	}
 }

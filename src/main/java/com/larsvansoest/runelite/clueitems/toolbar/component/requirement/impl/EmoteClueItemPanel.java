@@ -29,31 +29,33 @@
 package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.impl;
 
 import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementPanel;
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementStatus;
+import com.larsvansoest.runelite.clueitems.data.RequirementStatus;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.header.RequirementPanelHeaderText;
 import com.larsvansoest.runelite.clueitems.toolbar.palette.EmoteClueItemsPanelPalette;
-import com.larsvansoest.runelite.clueitems.util.EmoteClueImages;
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.EmoteClueDifficulty;
-import com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.EmoteClue;
+import com.larsvansoest.runelite.clueitems.data.util.EmoteClueImages;
+import com.larsvansoest.runelite.clueitems.data.vendor.EmoteClue;
 import java.awt.Dimension;
 import java.util.Arrays;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import net.runelite.api.Item;
 import org.apache.commons.lang3.ArrayUtils;
 
 public class EmoteClueItemPanel extends RequirementPanel
 {
 	private final EmoteClueDifficulty[] difficulties;
+	private final EmoteClueItem emoteClueItem;
 
-	public EmoteClueItemPanel(EmoteClueItemsPanelPalette emoteClueItemsPanelPalette, EmoteClueItem itemRequirement, EmoteClue... emoteClues)
+	public EmoteClueItemPanel(EmoteClueItemsPanelPalette emoteClueItemsPanelPalette, EmoteClueItem emoteClueItem, EmoteClue... emoteClues)
 	{
-		this(emoteClueItemsPanelPalette, itemRequirement.getCollectiveName(null), emoteClues, Arrays.stream(emoteClues).map(EmoteClue::getEmoteClueDifficulty).distinct().sorted().toArray(EmoteClueDifficulty[]::new));
+		this(emoteClueItemsPanelPalette, emoteClueItem, emoteClues, Arrays.stream(emoteClues).map(EmoteClue::getEmoteClueDifficulty).distinct().sorted().toArray(EmoteClueDifficulty[]::new));
 	}
 
-	private EmoteClueItemPanel(EmoteClueItemsPanelPalette emoteClueItemsPanelPalette, String name, EmoteClue[] emoteClues, EmoteClueDifficulty[] difficulties)
+	private EmoteClueItemPanel(EmoteClueItemsPanelPalette emoteClueItemsPanelPalette, EmoteClueItem emoteClueItem, EmoteClue[] emoteClues, EmoteClueDifficulty[] difficulties)
 	{
-		super(emoteClueItemsPanelPalette, false, name, ArrayUtils.add(
+		super(emoteClueItemsPanelPalette, false, emoteClueItem.getCollectiveName(null), ArrayUtils.add(
 			Arrays.stream(difficulties).map(difficulty -> {
 				JLabel ribbon = new JLabel();
 				ribbon.setIcon(new ImageIcon(EmoteClueImages.getRibbon(difficulty)));
@@ -62,10 +64,23 @@ public class EmoteClueItemPanel extends RequirementPanel
 			new RequirementPanelHeaderText(new Dimension(7, 15), String.valueOf(emoteClues.length))));
 		super.setStatus(RequirementStatus.InComplete);
 		this.difficulties = difficulties;
+		this.emoteClueItem = emoteClueItem;
 	}
 
 	public EmoteClueDifficulty[] getDifficulties()
 	{
 		return this.difficulties;
+	}
+
+	@Override
+	public void updateBankItems(Item[] bankItems)
+	{
+
+	}
+
+	@Override
+	public void updateInventoryItems(Item[] inventoryItems)
+	{
+
 	}
 }

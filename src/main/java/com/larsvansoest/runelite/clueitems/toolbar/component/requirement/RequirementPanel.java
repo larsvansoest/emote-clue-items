@@ -28,6 +28,7 @@
 
 package com.larsvansoest.runelite.clueitems.toolbar.component.requirement;
 
+import com.larsvansoest.runelite.clueitems.data.RequirementStatus;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.header.RequirementPanelHeader;
 import com.larsvansoest.runelite.clueitems.toolbar.palette.EmoteClueItemsPanelPalette;
 import java.awt.Dimension;
@@ -35,6 +36,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import net.runelite.api.Item;
 
 public abstract class RequirementPanel extends JPanel
 {
@@ -94,4 +96,8 @@ public abstract class RequirementPanel extends JPanel
 	{
 		return this.expanded;
 	}
+
+	public abstract void updateBankItems(Item[] bankItems);
+
+	public abstract void updateInventoryItems(Item[] inventoryItems);
 }
