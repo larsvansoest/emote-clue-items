@@ -36,7 +36,7 @@ import net.runelite.api.Item;
 
 public abstract class EmoteClueRequirements
 {
-	public static EmoteClueRequirement[] Monitor(Item[] items) {
-		return Arrays.stream(items).map(Item::getId).map(EmoteClueItems::fromItemId).filter(Objects::nonNull).flatMap(Stream::of).toArray(EmoteClueRequirement[]::new);
+	public static EmoteClueRequirement[] Monitor(Item... items) {
+		return Arrays.stream(items).map(Item::getId).map(EmoteClueAssociations.ItemIdToEmoteClueItems::get).filter(Objects::nonNull).flatMap(Stream::of).toArray(EmoteClueRequirement[]::new);
 	}
 }

@@ -31,7 +31,7 @@ package com.larsvansoest.runelite.clueitems.toolbar.component.requirement;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueRequirement;
 import com.larsvansoest.runelite.clueitems.data.RequirementStatus;
-import com.larsvansoest.runelite.clueitems.data.util.EmoteClues;
+import com.larsvansoest.runelite.clueitems.data.util.EmoteClueAssociations;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.impl.EmoteClueItemPanel;
 import com.larsvansoest.runelite.clueitems.toolbar.palette.EmoteClueItemsPanelPalette;
 import java.util.Arrays;
@@ -46,17 +46,30 @@ public class RequirementPanelProvider
 
 	private final Collection<EmoteClueItemPanel> emoteClueItemPanels;
 
-	public RequirementPanelProvider(EmoteClueItemsPanelPalette emoteClueItemsPanelPalette) {
-		Map<EmoteClueItem,EmoteClueItemPanel> emoteClueItemPanelMap = EmoteClues.Associations.EMOTE_CLUE_ITEM.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, entry -> new EmoteClueItemPanel(emoteClueItemsPanelPalette, entry.getKey(), entry.getValue())));
+	public RequirementPanelProvider(EmoteClueItemsPanelPalette emoteClueItemsPanelPalette)
+	{
+		Map<EmoteClueItem, EmoteClueItemPanel> emoteClueItemPanelMap = EmoteClueAssociations.EmoteClueItemToEmoteClues.entrySet().stream().collect(Collectors.toMap(
+			Map.Entry::getKey,
+			entry -> new EmoteClueItemPanel(emoteClueItemsPanelPalette, entry.getKey(), entry.getValue())
+		));
+
 		this.requirementPanelMap = new HashMap<>();
 		this.requirementPanelMap.putAll(emoteClueItemPanelMap.entrySet().stream()
-			.collect(Collectors.toMap(Map.Entry::getKey, entry -> new EmoteClueItemPanel[] { entry.getValue() })));
+			.collect(Collectors.toMap(
+				Map.Entry::getKey,
+				entry -> new EmoteClueItemPanel[]{entry.getValue()})
+			));
+
 		this.emoteClueItemPanels = emoteClueItemPanelMap.values();
 	}
 
-	public final Collection<EmoteClueItemPanel> getEmoteClueItemPanels() { return this.emoteClueItemPanels; }
+	public final Collection<EmoteClueItemPanel> getEmoteClueItemPanels()
+	{
+		return this.emoteClueItemPanels;
+	}
 
-	public final void updateRequirementPanels(EmoteClueRequirement emoteClueRequirement, RequirementStatus status) {
+	public final void updateRequirementPanels(EmoteClueRequirement emoteClueRequirement, RequirementStatus status)
+	{
 		Arrays.stream(this.requirementPanelMap.get(emoteClueRequirement)).forEach(requirementPanel -> requirementPanel.setStatus(status));
 	}
 }

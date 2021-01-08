@@ -102,10 +102,9 @@ public class EmoteClueItemsPlugin extends Plugin
 
 	@Subscribe
 	protected void onItemContainerChanged(ItemContainerChanged event) {
-		//private static final int INVENTORY = 93;
-		//private static final int BANK = 95;
 		if(event.getContainerId() == 93 || event.getContainerId() == 95) {
-			Arrays.stream(EmoteClueRequirements.Monitor(event.getItemContainer().getItems())).forEach(requirement -> this.requirementPanelProvider.updateRequirementPanels(requirement, RequirementStatus.Complete));
+			Arrays.stream(EmoteClueRequirements.Monitor(event.getItemContainer().getItems()))
+				.forEach(requirement -> this.requirementPanelProvider.updateRequirementPanels(requirement, RequirementStatus.Complete));
 			this.emoteClueItemsPanel.search();
 		}
 	}

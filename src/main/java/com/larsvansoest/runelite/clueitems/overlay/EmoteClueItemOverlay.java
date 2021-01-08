@@ -28,15 +28,15 @@
 
 package com.larsvansoest.runelite.clueitems.overlay;
 
+import com.larsvansoest.runelite.clueitems.ConfigProvider;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueImage;
+import com.larsvansoest.runelite.clueitems.data.util.EmoteClueAssociations;
 import com.larsvansoest.runelite.clueitems.overlay.widget.ItemWidget;
 import com.larsvansoest.runelite.clueitems.overlay.widget.ItemWidgetContainer;
 import com.larsvansoest.runelite.clueitems.overlay.widget.ItemWidgetContext;
 import com.larsvansoest.runelite.clueitems.overlay.widget.ItemWidgetData;
 import com.larsvansoest.runelite.clueitems.overlay.widget.ItemWidgetInspector;
-import com.larsvansoest.runelite.clueitems.ConfigProvider;
-import com.larsvansoest.runelite.clueitems.data.EmoteClueImage;
-import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
-import com.larsvansoest.runelite.clueitems.data.util.EmoteClues;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -117,7 +117,7 @@ public class EmoteClueItemOverlay extends WidgetItemOverlay
 
 	private int renderClueItemDetection(Graphics2D graphics, EmoteClueDifficulty emoteClueDifficulty, ImageComponent component, int id, int x, int y)
 	{
-		return Arrays.stream(EmoteClues.Associations.DIFFICULTY.get(emoteClueDifficulty)).anyMatch(emoteClue -> Arrays.stream(emoteClue.getItemRequirements()).anyMatch(itemRequirement -> itemRequirement.fulfilledBy(id))) ? (int) (y + this.renderRibbon(graphics, component, x, y).getHeight()) + 1 : y;
+		return Arrays.stream(EmoteClueAssociations.DifficultyToEmoteClues.get(emoteClueDifficulty)).anyMatch(emoteClue -> Arrays.stream(emoteClue.getItemRequirements()).anyMatch(itemRequirement -> itemRequirement.fulfilledBy(id))) ? (int) (y + this.renderRibbon(graphics, component, x, y).getHeight()) + 1 : y;
 	}
 
 	private Rectangle renderRibbon(Graphics2D graphics, ImageComponent ribbon, int x, int y)
