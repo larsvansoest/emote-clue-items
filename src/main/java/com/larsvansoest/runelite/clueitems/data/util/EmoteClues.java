@@ -28,9 +28,9 @@
 
 package com.larsvansoest.runelite.clueitems.data.util;
 
-import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
-import com.larsvansoest.runelite.clueitems.data.vendor.EmoteClue;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
+import com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.EmoteClue;
 import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.Map;

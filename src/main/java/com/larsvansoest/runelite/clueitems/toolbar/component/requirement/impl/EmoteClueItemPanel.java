@@ -28,14 +28,14 @@
 
 package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.impl;
 
-import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementPanel;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
 import com.larsvansoest.runelite.clueitems.data.RequirementStatus;
+import com.larsvansoest.runelite.clueitems.data.util.EmoteClueImages;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementPanel;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.header.RequirementPanelHeaderText;
 import com.larsvansoest.runelite.clueitems.toolbar.palette.EmoteClueItemsPanelPalette;
-import com.larsvansoest.runelite.clueitems.data.util.EmoteClueImages;
-import com.larsvansoest.runelite.clueitems.data.vendor.EmoteClue;
+import com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.EmoteClue;
 import java.awt.Dimension;
 import java.util.Arrays;
 import javax.swing.ImageIcon;
