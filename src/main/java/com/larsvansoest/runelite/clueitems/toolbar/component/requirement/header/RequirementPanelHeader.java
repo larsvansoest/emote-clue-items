@@ -35,24 +35,26 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Arrays;
+import java.util.LinkedList;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class RequirementPanelHeader extends JPanel
 {
 	private final EmoteClueItemsPanelPalette emoteClueItemsPanelPalette;
-
+	private final RequirementPanelHeaderTextLabel name;
 	private final RequirementPanel parent;
-	private final RequirementPanelHeaderText name;
 	private final HeaderFoldIcon foldIcon;
+	private final GridBagConstraints c;
+	private final LinkedList<JLabel> icons;
 
-	public RequirementPanelHeader(RequirementPanel parent, EmoteClueItemsPanelPalette emoteClueItemsPanelPalette, Dimension dimension, String name, JLabel... icons)
+	public RequirementPanelHeader(RequirementPanel parent, EmoteClueItemsPanelPalette emoteClueItemsPanelPalette, Dimension dimension, String name)
 	{
 		this.emoteClueItemsPanelPalette = emoteClueItemsPanelPalette;
-		this.parent = parent;
-		this.name = new RequirementPanelHeaderText(dimension, name);
+		this.name = new RequirementPanelHeaderTextLabel(dimension, name);
 		this.foldIcon = new HeaderFoldIcon(false);
+		this.parent = parent;
+		this.icons = new LinkedList<>();
 
 		super.addMouseListener(new MouseAdapter()
 		{
@@ -76,32 +78,25 @@ public class RequirementPanelHeader extends JPanel
 		});
 		super.setLayout(new GridBagLayout());
 
-		GridBagConstraints c = new GridBagConstraints();
-		c.fill = GridBagConstraints.BOTH;
-		c.gridx = 0;
-		c.insets.top = 3;
-		c.insets.bottom = 1;
-		c.weightx = 0;
-		super.add(this.name, c);
-
-		c.gridx++;
-		c.weightx = 1;
-		super.add(new JLabel(), c);
-
-		c.gridx++;
-		c.weightx = 0;
-		c.insets.left = 0;
-		c.insets.right = 5;
-		c.anchor = GridBagConstraints.EAST;
-		Arrays.stream(icons).forEach(icon -> {
-			c.gridx++;
-			super.add(icon, c);
-		});
-
-		c.gridx++;
-		super.add(this.foldIcon, c);
 		this.setColor();
-		this.fold(parent.isExpanded());
+
+		this.c = new GridBagConstraints();
+		this.c.fill = GridBagConstraints.BOTH;
+		this.c.gridx = 0;
+		this.c.insets.top = 3;
+		this.c.insets.bottom = 1;
+		this.c.weightx = 0;
+		super.add(this.name, this.c);
+
+		this.c.gridx++;
+		this.c.weightx = 1;
+		super.add(new JLabel(), this.c);
+
+		this.c.weightx = 0;
+		this.c.insets.left = 0;
+		this.c.insets.right = 5;
+		this.c.anchor = GridBagConstraints.EAST;
+		this.addIcon(this.foldIcon);
 	}
 
 	private void onClick()
@@ -122,5 +117,17 @@ public class RequirementPanelHeader extends JPanel
 	public final JLabel getNameLabel()
 	{
 		return this.name;
+	}
+
+	public final void addIcon(JLabel iconLabel) {
+		this.icons.forEach(super::remove);
+		this.icons.addFirst(iconLabel);
+		this.c.gridx = 2;
+		this.icons.forEach(label -> {
+			super.add(label, this.c);
+			this.c.gridx++;
+		});
+		super.revalidate();
+		super.repaint();
 	}
 }

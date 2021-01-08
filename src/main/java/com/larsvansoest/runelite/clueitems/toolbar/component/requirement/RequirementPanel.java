@@ -34,30 +34,31 @@ import com.larsvansoest.runelite.clueitems.toolbar.palette.EmoteClueItemsPanelPa
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public abstract class RequirementPanel extends JPanel
+public abstract class RequirementPanel extends UpdatablePanel
 {
-	private static final Dimension headerTextDimension = new Dimension(155, 20);
-
 	private final RequirementPanelHeader requirementPanelHeader;
 	private final JPanel foldContent;
 	private final GridBagConstraints foldConstraints;
-
+	private final Map<String, Object[]> filterables;
 	private Boolean expanded;
-	private RequirementStatus status;
 
-	public RequirementPanel(EmoteClueItemsPanelPalette emoteClueItemsPanelPalette, Boolean expanded, String name, JLabel... icons) {
-		super(new GridBagLayout());
+	public RequirementPanel(EmoteClueItemsPanelPalette emoteClueItemsPanelPalette, String name) {
+		super.setLayout(new GridBagLayout());
 		super.setBackground(emoteClueItemsPanelPalette.getDefaultColor());
 		super.setName(name);
 
-		this.expanded = expanded;
-		this.requirementPanelHeader = new RequirementPanelHeader(this, emoteClueItemsPanelPalette, headerTextDimension, name, icons);
+		this.expanded = false;
+		this.requirementPanelHeader = new RequirementPanelHeader(this, emoteClueItemsPanelPalette, new Dimension(155, 20), name);
+
 		this.foldContent = new JPanel(new GridBagLayout());
 		this.foldContent.setBackground(emoteClueItemsPanelPalette.getFoldContentColor());
 		this.foldConstraints = new GridBagConstraints();
+		this.filterables = new HashMap<>();
 
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -71,13 +72,9 @@ public abstract class RequirementPanel extends JPanel
 		super.add(this.foldContent, c);
 	}
 
-	public final RequirementStatus getStatus() {
-		return this.status;
-	}
-
 	public final void setStatus(RequirementStatus status) {
 		this.requirementPanelHeader.getNameLabel().setForeground(status.colour);
-		this.status = status;
+		this.setFilterable("status", status);
 	}
 
 	public final Boolean fold() {
@@ -86,9 +83,21 @@ public abstract class RequirementPanel extends JPanel
 		return this.expanded;
 	}
 
+	public final void setFilterable(String key, Object... values) {
+		this.filterables.put(key, values);
+	}
+
+	public final Object[] getFilterable(String key) {
+		return this.filterables.get(key);
+	}
+
 	public final void addChild(JPanel content) {
 		this.foldContent.add(content, this.foldConstraints);
 		this.foldConstraints.gridy++;
+	}
+
+	public final void addIcon(JLabel icon) {
+		this.requirementPanelHeader.addIcon(icon);
 	}
 
 	public final Boolean isExpanded()

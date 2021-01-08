@@ -26,8 +26,22 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.data;
+package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.header;
 
-public interface EmoteClueRequirement
+import java.awt.Dimension;
+import javax.swing.JLabel;
+import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
+
+public class RequirementPanelHeaderTextLabel extends JShadowedLabel
 {
+	public RequirementPanelHeaderTextLabel(Dimension dimension, String text) {
+		super.setHorizontalAlignment(JLabel.CENTER);
+		super.setVerticalAlignment(JLabel.CENTER);
+		super.setText(text);
+		super.setPreferredSize(dimension);
+		super.setMaximumSize(dimension);
+		super.setMinimumSize(dimension);
+		super.setFont(FontManager.getRunescapeSmallFont());
+	}
 }

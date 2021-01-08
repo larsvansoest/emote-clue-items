@@ -38,7 +38,7 @@ import net.runelite.api.ItemID;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements;
 
-public enum EmoteClueItem implements ItemRequirement, EmoteClueRequirement
+public enum EmoteClueItem implements ItemRequirement
 {
 	ABYSSAL_WHIP("Abyssal whip", ItemID.ABYSSAL_WHIP),
 	ADAMANT_2H_SWORD("Adamant 2h sword", ItemID.ADAMANT_2H_SWORD),

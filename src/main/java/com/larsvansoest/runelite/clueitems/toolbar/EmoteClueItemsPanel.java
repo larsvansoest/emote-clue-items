@@ -36,12 +36,10 @@ import com.larsvansoest.runelite.clueitems.toolbar.component.input.FilterButton;
 import com.larsvansoest.runelite.clueitems.toolbar.component.input.SearchBarFactory;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementContainer;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementPanelProvider;
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.impl.EmoteClueItemPanel;
 import com.larsvansoest.runelite.clueitems.toolbar.palette.EmoteClueItemsPanelPalette;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.Arrays;
 import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
@@ -61,15 +59,11 @@ public class EmoteClueItemsPanel extends PluginPanel
 	private final FilterButton<RequirementStatus> requirementStatusFilterButton;
 	private final FilterButton<EmoteClueDifficulty> difficultyFilterButton;
 
-	private final RequirementPanelProvider requirementPanelProvider;
-
 	public EmoteClueItemsPanel(EmoteClueItemsPanelPalette emoteClueItemsPanelPalette, RequirementPanelProvider requirementPanelProvider)
 	{
 		super();
 		super.setLayout(new GridBagLayout());
 		super.getScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-
-		this.requirementPanelProvider = requirementPanelProvider;
 
 		this.emoteClueItemsPanelPalette = emoteClueItemsPanelPalette;
 		this.searchBar = new SearchBarFactory(this::onSearchBarTextChanged).defaultColor(emoteClueItemsPanelPalette.getDefaultColor()).hoverColor(emoteClueItemsPanelPalette.getHoverColor()).build();
@@ -117,20 +111,20 @@ public class EmoteClueItemsPanel extends PluginPanel
 
 	private void onSearchBarTextChanged()
 	{
-		this.requirementSearchData.setRequirementName(this.searchBar.getText());
+		this.requirementContainer.addFilter("name", this.searchBar.getText());
 		this.search();
 	}
 
 	private void onRequirementStatusFilterChanged()
 	{
-		this.requirementSearchData.setRequirementStatus(this.requirementStatusFilterButton.getSelectedValue());
+		this.requirementContainer.addFilter("status", this.requirementStatusFilterButton.getSelectedValue());
 		this.search();
 	}
 
 	private void onDifficultyFilterChanged()
 	{
 		EmoteClueDifficulty emoteClueDifficulty = this.difficultyFilterButton.getSelectedValue();
-		this.requirementSearchData.setRequirementDifficulty(emoteClueDifficulty);
+		this.requirementContainer.addFilter("difficulty", emoteClueDifficulty);
 		this.setSeparatorColor(emoteClueDifficulty);
 		this.search();
 	}
@@ -170,16 +164,6 @@ public class EmoteClueItemsPanel extends PluginPanel
 
 	public void search()
 	{
-		String name = this.requirementSearchData.getRequirementName();
-		EmoteClueDifficulty emoteClueDifficulty = this.requirementSearchData.getRequirementDifficulty();
-		RequirementStatus requirementStatus = this.requirementSearchData.getRequirementStatus();
-
-		this.requirementContainer.filter(requirementPanel -> {
-			EmoteClueItemPanel emoteClueItemPanel = (EmoteClueItemPanel) requirementPanel;
-			Boolean containsName = emoteClueItemPanel.getName().toLowerCase().contains(name.toLowerCase());
-			Boolean hasDifficulty = emoteClueDifficulty == null || Arrays.asList(emoteClueItemPanel.getDifficulties()).contains(emoteClueDifficulty);
-			Boolean hasStatus = requirementStatus == null || emoteClueItemPanel.getStatus().equals(requirementStatus);
-			return containsName && hasDifficulty && hasStatus;
-		});
+		this.requirementContainer.runFilters();
 	}
 }

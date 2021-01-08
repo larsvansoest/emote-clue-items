@@ -31,20 +31,26 @@ package com.larsvansoest.runelite.clueitems.toolbar.component.requirement;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
-import java.util.function.Function;
+import java.util.Map;
 import java.util.stream.Stream;
 import javax.swing.JPanel;
 
 public class RequirementContainer extends JPanel
 {
 	private final GridBagConstraints c;
+	private final Map<String, Object> filterables;
 	private List<? extends RequirementPanel> requirementPanels;
 
-	public RequirementContainer(Collection<? extends RequirementPanel> requirementPanelCollection) {
+	public RequirementContainer(Collection<? extends RequirementPanel> requirementPanelCollection)
+	{
 		super(new GridBagLayout());
+		this.filterables = new HashMap<>();
+
 		this.c = new GridBagConstraints();
 		this.c.fill = GridBagConstraints.HORIZONTAL;
 		this.c.gridx = 0;
@@ -53,17 +59,31 @@ public class RequirementContainer extends JPanel
 		this.load(requirementPanelCollection);
 	}
 
-	public void load(Collection<? extends RequirementPanel> requirementPanelCollection) {
+	public void load(Collection<? extends RequirementPanel> requirementPanelCollection)
+	{
 		this.requirementPanels = new ArrayList<>(requirementPanelCollection);
 		this.requirementPanels.sort(Comparator.comparing(RequirementPanel::getName));
 		this.display(this.requirementPanels.stream());
 	}
 
-	public void filter(Function<Object, Boolean> predicate) {
-		this.display(this.requirementPanels.stream().filter(predicate::apply));
+	public void addFilter(String key, Object value)
+	{
+		this.filterables.put(key, value);
 	}
 
-	private void display(Stream<? extends RequirementPanel> requirementPanels) {
+	public void runFilters()
+	{
+		this.display(
+			this.requirementPanels.stream().filter(requirementPanel ->
+				this.filterables.entrySet().stream().allMatch(entry -> {
+					Object filterValue = entry.getValue();
+					Object[] requirementValue = requirementPanel.getFilterable(entry.getKey());
+					return filterValue == null || requirementValue == null || Arrays.asList(requirementValue).contains(filterValue);
+				})));
+	}
+
+	private void display(Stream<? extends RequirementPanel> requirementPanels)
+	{
 		super.removeAll();
 		this.c.gridy = 0;
 		requirementPanels.forEachOrdered(requirementPanel -> {

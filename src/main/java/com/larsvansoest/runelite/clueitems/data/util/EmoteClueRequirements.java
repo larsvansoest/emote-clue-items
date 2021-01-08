@@ -28,15 +28,9 @@
 
 package com.larsvansoest.runelite.clueitems.data.util;
 
-import com.larsvansoest.runelite.clueitems.data.EmoteClueRequirement;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.stream.Stream;
-import net.runelite.api.Item;
-
 public abstract class EmoteClueRequirements
 {
-	public static EmoteClueRequirement[] Monitor(Item... items) {
-		return Arrays.stream(items).map(Item::getId).map(EmoteClueAssociations.ItemIdToEmoteClueItems::get).filter(Objects::nonNull).flatMap(Stream::of).toArray(EmoteClueRequirement[]::new);
-	}
+	//public static UpdatablePanel[] Monitor(Item... items) {
+		//return Arrays.stream(items).map(Item::getId).map(EmoteClueAssociations.ItemIdToEmoteClueItems::get).filter(Objects::nonNull).flatMap(Stream::of).toArray(EmoteClueRequirement[]::new);
+	//}
 }

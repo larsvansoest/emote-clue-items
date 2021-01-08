@@ -26,37 +26,23 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.overlay.widget;
+package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.impl;
 
-/**
- * Bean-like object which contains return data by class Inspect method.
- */
-public class ItemWidgetData
+import com.larsvansoest.runelite.clueitems.data.RequirementStatus;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.UpdatablePanel;
+import com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.EmoteClue;
+import javax.swing.JLabel;
+
+public class EmoteClueSubPanel extends UpdatablePanel
 {
-	private ItemWidgetContainer container;
-	private ItemWidgetContext context;
-
-	public ItemWidgetData()
-	{
+	public EmoteClueSubPanel(EmoteClue clue) {
+		JLabel debug = new JLabel();
+		debug.setText(clue.getLocationName());
+		super.add(debug);
 	}
 
-	public ItemWidgetContainer getContainer()
+	@Override
+	public void setStatus(RequirementStatus requirementStatus)
 	{
-		return this.container;
-	}
-
-	public void setContainer(ItemWidgetContainer container)
-	{
-		this.container = container;
-	}
-
-	public ItemWidgetContext getContext()
-	{
-		return this.context;
-	}
-
-	public void setContext(ItemWidgetContext context)
-	{
-		this.context = context;
 	}
 }

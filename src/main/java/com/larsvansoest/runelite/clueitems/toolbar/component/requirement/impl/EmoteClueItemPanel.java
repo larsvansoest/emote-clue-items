@@ -28,33 +28,19 @@
 
 package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.impl;
 
-import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
-import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
-import com.larsvansoest.runelite.clueitems.data.RequirementStatus;
-import com.larsvansoest.runelite.clueitems.data.util.EmoteClueImages;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementPanel;
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.header.RequirementPanelHeaderText;
 import com.larsvansoest.runelite.clueitems.toolbar.palette.EmoteClueItemsPanelPalette;
-import com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.EmoteClue;
-import java.awt.Dimension;
-import java.util.Arrays;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import org.apache.commons.lang3.ArrayUtils;
 
 public class EmoteClueItemPanel extends RequirementPanel
 {
-	private final EmoteClueDifficulty[] difficulties;
-
-	public EmoteClueItemPanel(EmoteClueItemsPanelPalette emoteClueItemsPanelPalette, EmoteClueItem emoteClueItem, EmoteClue... emoteClues)
-	{
-		this(emoteClueItemsPanelPalette, emoteClueItem, emoteClues, Arrays.stream(emoteClues).map(EmoteClue::getEmoteClueDifficulty).distinct().sorted().toArray(EmoteClueDifficulty[]::new));
+	public EmoteClueItemPanel(EmoteClueItemsPanelPalette emoteClueItemsPanelPalette, String name) {
+		super(emoteClueItemsPanelPalette, name);
 	}
 
+	/*
 	private EmoteClueItemPanel(EmoteClueItemsPanelPalette emoteClueItemsPanelPalette, EmoteClueItem emoteClueItem, EmoteClue[] emoteClues, EmoteClueDifficulty[] difficulties)
 	{
-		super(emoteClueItemsPanelPalette, false, emoteClueItem.getCollectiveName(null), ArrayUtils.add(
-			Arrays.stream(difficulties).map(difficulty -> {
+		super(emoteClueItemsPanelPalette, false, emoteClueItem.getCollectiveName(null), ArrayUtils.add(Arrays.stream(difficulties).map(difficulty -> {
 				JLabel ribbon = new JLabel();
 				ribbon.setIcon(new ImageIcon(EmoteClueImages.getRibbon(difficulty)));
 				return ribbon;
@@ -63,9 +49,5 @@ public class EmoteClueItemPanel extends RequirementPanel
 		super.setStatus(RequirementStatus.InComplete);
 		this.difficulties = difficulties;
 	}
-
-	public EmoteClueDifficulty[] getDifficulties()
-	{
-		return this.difficulties;
-	}
+	 */
 }
