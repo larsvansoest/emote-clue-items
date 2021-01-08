@@ -36,7 +36,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import net.runelite.api.Item;
 
 public abstract class RequirementPanel extends JPanel
 {
@@ -96,8 +95,4 @@ public abstract class RequirementPanel extends JPanel
 	{
 		return this.expanded;
 	}
-
-	public abstract void updateBankItems(Item[] bankItems);
-
-	public abstract void updateInventoryItems(Item[] inventoryItems);
 }

@@ -30,11 +30,14 @@ package com.larsvansoest.runelite.clueitems;
 
 import com.google.inject.Provides;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImage;
-import com.larsvansoest.runelite.clueitems.iventory.EmoteClueItemMonitor;
+import com.larsvansoest.runelite.clueitems.data.RequirementStatus;
+import com.larsvansoest.runelite.clueitems.data.util.EmoteClueImages;
+import com.larsvansoest.runelite.clueitems.data.util.EmoteClueRequirements;
 import com.larsvansoest.runelite.clueitems.overlay.EmoteClueItemOverlay;
 import com.larsvansoest.runelite.clueitems.toolbar.EmoteClueItemsPanel;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementPanelProvider;
 import com.larsvansoest.runelite.clueitems.toolbar.palette.EmoteClueItemsPanelPalette;
-import com.larsvansoest.runelite.clueitems.data.util.EmoteClueImages;
+import java.util.Arrays;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -73,7 +76,8 @@ public class EmoteClueItemsPlugin extends Plugin
 
 	private EmoteClueItemOverlay overlay;
 	private NavigationButton navigationButton;
-	private EmoteClueItemMonitor emoteClueItemMonitor;
+	private RequirementPanelProvider requirementPanelProvider;
+	private EmoteClueItemsPanel emoteClueItemsPanel;
 
 	@Override
 	protected void startUp()
@@ -82,25 +86,28 @@ public class EmoteClueItemsPlugin extends Plugin
 		this.overlay = new EmoteClueItemOverlay(this.itemManager, configProvider);
 		this.overlayManager.add(this.overlay);
 
-		final EmoteClueItemsPanel emoteClueItemsPanel = new EmoteClueItemsPanel(EmoteClueItemsPanelPalette.DARK);
+		EmoteClueItemsPanelPalette emoteClueItemsPalette = EmoteClueItemsPanelPalette.DARK;
+		this.requirementPanelProvider = new RequirementPanelProvider(emoteClueItemsPalette);
+		this.emoteClueItemsPanel = new EmoteClueItemsPanel(emoteClueItemsPalette, this.requirementPanelProvider);
 
 		this.navigationButton = NavigationButton.builder()
 			.tooltip("Emote Clue Items")
 			.icon(EmoteClueImages.resizeCanvas(EmoteClueImage.Ribbon.ALL, 16, 16))
 			.priority(7)
-			.panel(emoteClueItemsPanel)
+			.panel(this.emoteClueItemsPanel)
 			.build();
-
-		this.emoteClueItemMonitor = new EmoteClueItemMonitor();
 
 		this.clientToolbar.addNavigation(this.navigationButton);
 	}
 
 	@Subscribe
 	protected void onItemContainerChanged(ItemContainerChanged event) {
-		this.emoteClueItemMonitor.onItemContainerChanged(event);
 		//private static final int INVENTORY = 93;
 		//private static final int BANK = 95;
+		if(event.getContainerId() == 93 || event.getContainerId() == 95) {
+			Arrays.stream(EmoteClueRequirements.Monitor(event.getItemContainer().getItems())).forEach(requirement -> this.requirementPanelProvider.updateRequirementPanels(requirement, RequirementStatus.Complete));
+			this.emoteClueItemsPanel.search();
+		}
 	}
 
 	@Override

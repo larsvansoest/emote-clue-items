@@ -26,43 +26,17 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.iventory;
+package com.larsvansoest.runelite.clueitems.data.util;
 
+import com.larsvansoest.runelite.clueitems.data.EmoteClueRequirement;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.stream.Stream;
 import net.runelite.api.Item;
-import net.runelite.api.events.ItemContainerChanged;
 
-public class EmoteClueItemMonitor
+public abstract class EmoteClueRequirements
 {
-	private static class ContainerId {
-		private static final int INVENTORY = 93;
-		private static final int BANK = 95;
-	}
-
-	private Item[] bankItems;
-	private Item[] inventoryItems;
-
-	public EmoteClueItemMonitor() {
-		this.bankItems = null;
-		this.inventoryItems = null;
-	}
-
-	public void onItemContainerChanged(ItemContainerChanged event) {
-		Item[] items = event.getItemContainer().getItems();
-		switch(event.getContainerId())
-		{
-			case ContainerId.BANK: this.bankItems = items; break;
-			case ContainerId.INVENTORY:  this.inventoryItems = items; break;
-			default: break;
-		}
-	}
-
-	public Item[] getBankItems()
-	{
-		return this.bankItems;
-	}
-
-	public Item[] getInventoryItems()
-	{
-		return this.inventoryItems;
+	public static EmoteClueRequirement[] Monitor(Item[] items) {
+		return Arrays.stream(items).map(Item::getId).map(EmoteClueItems::fromItemId).filter(Objects::nonNull).flatMap(Stream::of).toArray(EmoteClueRequirement[]::new);
 	}
 }

@@ -28,26 +28,24 @@
 
 package com.larsvansoest.runelite.clueitems.toolbar;
 
+import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueImage;
+import com.larsvansoest.runelite.clueitems.data.RequirementStatus;
 import com.larsvansoest.runelite.clueitems.toolbar.component.footer.FooterPanel;
 import com.larsvansoest.runelite.clueitems.toolbar.component.input.FilterButton;
 import com.larsvansoest.runelite.clueitems.toolbar.component.input.SearchBarFactory;
-import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementContainer;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementPanelProvider;
-import com.larsvansoest.runelite.clueitems.data.RequirementStatus;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.impl.EmoteClueItemPanel;
 import com.larsvansoest.runelite.clueitems.toolbar.palette.EmoteClueItemsPanelPalette;
-import com.larsvansoest.runelite.clueitems.data.EmoteClueImage;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.Arrays;
-import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.border.MatteBorder;
-import net.runelite.api.Item;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.IconTextField;
 
@@ -65,19 +63,18 @@ public class EmoteClueItemsPanel extends PluginPanel
 
 	private final RequirementPanelProvider requirementPanelProvider;
 
-	public EmoteClueItemsPanel(EmoteClueItemsPanelPalette emoteClueItemsPanelPalette)
+	public EmoteClueItemsPanel(EmoteClueItemsPanelPalette emoteClueItemsPanelPalette, RequirementPanelProvider requirementPanelProvider)
 	{
 		super();
 		super.setLayout(new GridBagLayout());
 		super.getScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-		RequirementPanelProvider requirementPanelProvider = new RequirementPanelProvider(emoteClueItemsPanelPalette);
+		this.requirementPanelProvider = requirementPanelProvider;
 
 		this.emoteClueItemsPanelPalette = emoteClueItemsPanelPalette;
 		this.searchBar = new SearchBarFactory(this::onSearchBarTextChanged).defaultColor(emoteClueItemsPanelPalette.getDefaultColor()).hoverColor(emoteClueItemsPanelPalette.getHoverColor()).build();
 
-		this.requirementContainer = new RequirementContainer(requirementPanelProvider.getRequirementPanels());
-		this.requirementPanelProvider = requirementPanelProvider;
+		this.requirementContainer = new RequirementContainer(requirementPanelProvider.getEmoteClueItemPanels());
 
 		this.separator = new JSeparator();
 		this.setSeparatorColor(null);
@@ -184,11 +181,5 @@ public class EmoteClueItemsPanel extends PluginPanel
 			Boolean hasStatus = requirementStatus == null || emoteClueItemPanel.getStatus().equals(requirementStatus);
 			return containsName && hasDifficulty && hasStatus;
 		});
-	}
-
-	public void updateBankItems(List<Item> bankItems) {
-	}
-
-	public void updateInventoryItems(List<Item> inventoryItems) {
 	}
 }

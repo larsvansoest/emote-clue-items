@@ -30,7 +30,6 @@ package com.larsvansoest.runelite.clueitems.data.util;
 
 import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
 import java.util.AbstractMap;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -38,7 +37,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 public abstract class EmoteClueItems
 {
-	private static final Map<Integer, EmoteClueItem[]> ITEM_ID_MAP = Arrays.stream(EmoteClueItem.values())
+	private static final Map<Integer, EmoteClueItem[]> ITEM_ID_MAP = EmoteClues.Associations.EMOTE_CLUE_ITEM.keySet().stream()
 		.map(emoteClueItem -> new AbstractMap.SimpleImmutableEntry<List<Integer>, EmoteClueItem>(emoteClueItem.getItemIds(), emoteClueItem))
 		.flatMap(entry -> entry.getKey().stream().map(itemId -> new AbstractMap.SimpleImmutableEntry<Integer, EmoteClueItem>(itemId, entry.getValue())))
 		.collect(Collectors.toMap(
@@ -47,7 +46,8 @@ public abstract class EmoteClueItems
 			ArrayUtils::addAll
 		));
 
-	public static EmoteClueItem[] fromItemId(int itemId) {
+	public static EmoteClueItem[] fromItemId(int itemId)
+	{
 		return ITEM_ID_MAP.get(itemId);
 	}
 }

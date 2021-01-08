@@ -40,13 +40,11 @@ import java.awt.Dimension;
 import java.util.Arrays;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import net.runelite.api.Item;
 import org.apache.commons.lang3.ArrayUtils;
 
 public class EmoteClueItemPanel extends RequirementPanel
 {
 	private final EmoteClueDifficulty[] difficulties;
-	private final EmoteClueItem emoteClueItem;
 
 	public EmoteClueItemPanel(EmoteClueItemsPanelPalette emoteClueItemsPanelPalette, EmoteClueItem emoteClueItem, EmoteClue... emoteClues)
 	{
@@ -64,23 +62,10 @@ public class EmoteClueItemPanel extends RequirementPanel
 			new RequirementPanelHeaderText(new Dimension(7, 15), String.valueOf(emoteClues.length))));
 		super.setStatus(RequirementStatus.InComplete);
 		this.difficulties = difficulties;
-		this.emoteClueItem = emoteClueItem;
 	}
 
 	public EmoteClueDifficulty[] getDifficulties()
 	{
 		return this.difficulties;
-	}
-
-	@Override
-	public void updateBankItems(Item[] bankItems)
-	{
-
-	}
-
-	@Override
-	public void updateInventoryItems(Item[] inventoryItems)
-	{
-
 	}
 }

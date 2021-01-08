@@ -42,8 +42,24 @@ import org.apache.commons.lang3.ArrayUtils;
 public abstract class EmoteClues
 {
 	public static class Associations {
-		public static Map<EmoteClueDifficulty, EmoteClue[]> DIFFICULTY = EmoteClue.CLUES.stream().map(emoteClue -> new AbstractMap.SimpleImmutableEntry<>(emoteClue, emoteClue.getEmoteClueDifficulty())).collect(Collectors.toMap(AbstractMap.SimpleImmutableEntry::getValue, entry -> new EmoteClue[]{entry.getKey()}, ArrayUtils::addAll));
-		public static Map<EmoteClueItem, EmoteClue[]> EMOTECLUEITEM = EmoteClue.CLUES.stream().flatMap(emoteClue -> Arrays.stream(emoteClue.getItemRequirements()).filter(itemRequirement -> !(itemRequirement instanceof SlotLimitationRequirement)).map(itemRequirement -> new AbstractMap.SimpleImmutableEntry<>(emoteClue, (EmoteClueItem) itemRequirement))).collect(Collectors.toMap(AbstractMap.SimpleImmutableEntry::getValue, entry -> new EmoteClue[]{entry.getKey()}, ArrayUtils::addAll));
-		public static Map<STASHUnit, EmoteClue[]> STASHUNIT = EmoteClue.CLUES.stream().collect(Collectors.toMap(EmoteClue::getStashUnit, emoteClue -> new EmoteClue[] {emoteClue}, ArrayUtils::addAll));
+		public static Map<EmoteClueDifficulty, EmoteClue[]> DIFFICULTY = EmoteClue.CLUES.stream()
+			.map(emoteClue -> new AbstractMap.SimpleImmutableEntry<>(emoteClue, emoteClue.getEmoteClueDifficulty()))
+			.collect(Collectors.toMap(
+				AbstractMap.SimpleImmutableEntry::getValue,
+				entry -> new EmoteClue[]{entry.getKey()},
+				ArrayUtils::addAll
+			));
+
+		public static Map<EmoteClueItem, EmoteClue[]> EMOTE_CLUE_ITEM = EmoteClue.CLUES.stream()
+			.flatMap(emoteClue -> Arrays.stream(emoteClue.getItemRequirements())
+				.filter(itemRequirement -> !(itemRequirement instanceof SlotLimitationRequirement))
+				.map(itemRequirement -> new AbstractMap.SimpleImmutableEntry<>(emoteClue, (EmoteClueItem) itemRequirement)))
+			.collect(Collectors.toMap(
+				AbstractMap.SimpleImmutableEntry::getValue,
+				entry -> new EmoteClue[]{entry.getKey()},
+				ArrayUtils::addAll
+			));
+
+		public static Map<STASHUnit, EmoteClue[]> STASH_UNIT = EmoteClue.CLUES.stream().collect(Collectors.toMap(EmoteClue::getStashUnit, emoteClue -> new EmoteClue[] {emoteClue}, ArrayUtils::addAll));
 	}
 }
