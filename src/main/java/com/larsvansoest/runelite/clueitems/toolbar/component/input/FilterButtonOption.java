@@ -32,24 +32,42 @@ import javax.swing.Icon;
 
 class FilterButtonOption<T>
 {
-	private final T value;
-	private final Icon icon;
+	private final T primaryValue;
+	private final T secondaryValue;
+	private final Icon primaryIcon;
+	private final Icon secondaryIcon;
 	private final String toolTip;
 
-	public FilterButtonOption(T value, Icon icon, String toolTip) {
-		this.value = value;
-		this.icon = icon;
+	public FilterButtonOption(T primaryValue, Icon primaryIcon, String toolTip) {
+		this(primaryValue, null, primaryIcon, null, toolTip);
+	}
+
+	public FilterButtonOption(T primaryValue, T secondaryValue, Icon primaryIcon, Icon secondaryIcon, String toolTip) {
+		this.primaryValue = primaryValue;
+		this.secondaryValue = secondaryValue;
+		this.primaryIcon = primaryIcon;
+		this.secondaryIcon = secondaryIcon;
 		this.toolTip = toolTip;
 	}
 
-	public T getValue()
+	public T getPrimaryValue()
 	{
-		return this.value;
+		return this.primaryValue;
 	}
 
-	public Icon getIcon()
+	public T getSecondaryValue()
 	{
-		return this.icon;
+		return this.secondaryValue;
+	}
+
+	public Icon getPrimaryIcon()
+	{
+		return this.primaryIcon;
+	}
+
+	public Icon getSecondaryIcon()
+	{
+		return this.secondaryIcon;
 	}
 
 	public String getToolTip() { return this.toolTip; }

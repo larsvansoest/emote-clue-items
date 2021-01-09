@@ -31,9 +31,8 @@ package com.larsvansoest.runelite.clueitems.toolbar.component.requirement;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Comparator;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +42,7 @@ import javax.swing.JPanel;
 public class RequirementContainer extends JPanel
 {
 	private final GridBagConstraints c;
-	private final Map<String, Object> filterables;
+	private final Map<String, Comparable<?>> filterables;
 	private RequirementPanel expandedPanel;
 	private List<? extends RequirementPanel> requirementPanels;
 
@@ -52,7 +51,6 @@ public class RequirementContainer extends JPanel
 		super(new GridBagLayout());
 		this.filterables = new HashMap<>();
 		this.expandedPanel = null;
-
 		this.c = new GridBagConstraints();
 		this.c.fill = GridBagConstraints.HORIZONTAL;
 		this.c.gridx = 0;
@@ -62,17 +60,18 @@ public class RequirementContainer extends JPanel
 	public void load(Collection<? extends RequirementPanel> requirementPanelCollection)
 	{
 		this.requirementPanels = new ArrayList<>(requirementPanelCollection);
-		this.requirementPanels.sort(Comparator.comparing(RequirementPanel::getName));
 		this.display(this.requirementPanels.stream());
 	}
 
-	public void toggleFold(RequirementPanel requirementPanel) {
+	public void toggleFold(RequirementPanel requirementPanel)
+	{
 		RequirementPanel previous = this.expandedPanel;
-		if(this.expandedPanel != null) {
+		if (this.expandedPanel != null)
+		{
 			this.expandedPanel.fold();
 			this.expandedPanel = null;
 		}
-		if(previous != requirementPanel)
+		if (previous != requirementPanel)
 		{
 			requirementPanel.unfold();
 			this.expandedPanel = requirementPanel;
@@ -81,26 +80,32 @@ public class RequirementContainer extends JPanel
 		super.repaint();
 	}
 
-	public void addFilter(String key, Object value)
+	public void setFilter(String key, Comparable<?> value)
 	{
 		this.filterables.put(key, value);
 	}
 
 	public void runFilters()
 	{
-		this.display(
-			this.requirementPanels.stream().filter(requirementPanel ->
-				this.filterables.entrySet().stream().allMatch(entry -> {
-					Object filterValue = entry.getValue();
-					Object[] requirementValue = requirementPanel.getFilterable(entry.getKey());
-					return filterValue == null || requirementValue == null || Arrays.asList(requirementValue).contains(filterValue);
-				})));
+		this.display(this.requirementPanels.stream()
+			.filter(requirementPanel -> this.filterables.entrySet().stream()
+				.allMatch(filter -> requirementPanel.satisfiesFilterable(filter.getKey(), filter.getValue()))
+			));
+	}
+
+	public void sort(String sortKey, Boolean reversed) {
+		this.requirementPanels.sort((panel1, panel2) -> panel1.compareTo(panel2, sortKey));
+		if(reversed) {
+			Collections.reverse(this.requirementPanels);
+		}
+		this.runFilters();
 	}
 
 	private void display(Stream<? extends RequirementPanel> requirementPanels)
 	{
 		super.removeAll();
 		this.c.gridy = 0;
+
 		requirementPanels.forEachOrdered(requirementPanel -> {
 			super.add(requirementPanel, this.c);
 			this.c.gridy++;

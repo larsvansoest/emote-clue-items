@@ -49,6 +49,7 @@ public class FilterButton<T> extends JPanel
 	private final String defaultToolTip;
 
 	private FilterButtonOption<T> currentOption;
+	private T currentValue;
 
 	public FilterButton(T defaultValue, Icon defaultIcon, String defaultToolTip, Dimension dimension, Color defaultColor, Color hoverColor, int capacity, Runnable onChange)
 	{
@@ -63,7 +64,7 @@ public class FilterButton<T> extends JPanel
 			@Override
 			public void mousePressed(MouseEvent e)
 			{
-				FilterButton.this.next();
+				FilterButton.this.next(e.getButton() == MouseEvent.BUTTON1);
 			}
 
 			@Override
@@ -94,20 +95,28 @@ public class FilterButton<T> extends JPanel
 		super.add(this.optionLabel, c);
 	}
 
-	private void next()
+	private void next(Boolean isPrimaryMouseKey)
 	{
-		FilterButtonOption<T> option = Objects.requireNonNull(this.optionQueue.poll());
-		this.optionQueue.add(this.currentOption);
-		this.currentOption = option;
-		this.optionLabel.setIcon(option.getIcon());
+		FilterButtonOption<T> option;
+		if(isPrimaryMouseKey || this.currentOption.getSecondaryValue() == null) {
+			option = Objects.requireNonNull(this.optionQueue.poll());
+			this.optionQueue.add(this.currentOption);
+			this.currentOption = option;
+			this.currentValue = option.getPrimaryValue();
+			this.optionLabel.setIcon(option.getPrimaryIcon());
+		}
+		else
+		{
+			option = this.currentOption;
+			T primaryValue = this.currentOption.getPrimaryValue();
+			T secondaryValue = this.currentOption.getSecondaryValue();
+			boolean isPrimaryValue = this.currentValue == primaryValue;
+			this.currentValue = isPrimaryValue ? secondaryValue : primaryValue;
+			this.optionLabel.setIcon(isPrimaryValue ? this.currentOption.getSecondaryIcon() : this.currentOption.getPrimaryIcon());
+		}
 		String toolTip = option.getToolTip();
 		super.setToolTipText(toolTip == null ? this.defaultToolTip : toolTip);
 		this.onChange.run();
-	}
-
-	public void addOption(T value, Icon icon)
-	{
-		this.addOption(value, icon, null);
 	}
 
 	public void addOption(T value, Icon icon, String toolTip)
@@ -115,8 +124,15 @@ public class FilterButton<T> extends JPanel
 		this.optionQueue.add(new FilterButtonOption<>(value, icon, toolTip));
 	}
 
+	public void addOption(T primaryValue, T secondaryValue, Icon primaryIcon, Icon secondaryIcon, String toolTip)
+	{
+		this.optionQueue.add(new FilterButtonOption<>(primaryValue, secondaryValue, primaryIcon, secondaryIcon, toolTip));
+	}
+
 	public T getSelectedValue()
 	{
-		return this.currentOption.getValue();
+		return this.currentValue;
 	}
+
+	public Boolean isPrimaryValue() { return this.currentValue == this.currentOption.getPrimaryValue(); }
 }

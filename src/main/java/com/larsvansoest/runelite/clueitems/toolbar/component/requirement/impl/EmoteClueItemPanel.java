@@ -37,18 +37,4 @@ public class EmoteClueItemPanel extends RequirementPanel
 	public EmoteClueItemPanel(RequirementContainer parent, EmoteClueItemsPanelPalette emoteClueItemsPanelPalette, String name) {
 		super(parent, emoteClueItemsPanelPalette, name);
 	}
-
-	/*
-	private EmoteClueItemPanel(EmoteClueItemsPanelPalette emoteClueItemsPanelPalette, EmoteClueItem emoteClueItem, EmoteClue[] emoteClues, EmoteClueDifficulty[] difficulties)
-	{
-		super(emoteClueItemsPanelPalette, false, emoteClueItem.getCollectiveName(null), ArrayUtils.add(Arrays.stream(difficulties).map(difficulty -> {
-				JLabel ribbon = new JLabel();
-				ribbon.setIcon(new ImageIcon(EmoteClueImages.getRibbon(difficulty)));
-				return ribbon;
-			}).toArray(JLabel[]::new),
-			new RequirementPanelHeaderText(new Dimension(7, 15), String.valueOf(emoteClues.length))));
-		super.setStatus(RequirementStatus.InComplete);
-		this.difficulties = difficulties;
-	}
-	 */
 }

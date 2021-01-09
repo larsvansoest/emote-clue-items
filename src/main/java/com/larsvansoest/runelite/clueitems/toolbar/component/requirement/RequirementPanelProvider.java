@@ -28,6 +28,7 @@
 
 package com.larsvansoest.runelite.clueitems.toolbar.component.requirement;
 
+import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
 import com.larsvansoest.runelite.clueitems.data.RequirementStatus;
 import com.larsvansoest.runelite.clueitems.data.util.EmoteClueAssociations;
@@ -75,16 +76,21 @@ public class RequirementPanelProvider
 		Map<EmoteClue, EmoteClueSubPanel> emoteClueSubPanelMap = EmoteClue.CLUES.stream()
 			.collect(Collectors.toMap(
 				Function.identity(),
-				EmoteClueSubPanel::new
+				emoteClue -> new EmoteClueSubPanel(emoteClueItemsPanelPalette, emoteClue)
 			));
 
 		// Add EmoteClues to EmoteClueItem requirements.
 		emoteClueItemPanelMap.forEach((emoteClueItem, emoteClueItemPanel) -> {
 			EmoteClue[] emoteClues = EmoteClueAssociations.EmoteClueItemToEmoteClues.get(emoteClueItem);
 
+			// Add EmoteClueItem properties
+			List<EmoteClueDifficulty> difficulties = Arrays.stream(emoteClues).map(EmoteClue::getEmoteClueDifficulty).distinct().collect(Collectors.toList());
+			emoteClueItemPanel.setFilterable("difficulty", difficulties);
+			emoteClueItemPanel.setFilterable("quantity", emoteClues.length);
+
 			// Add EmoteClueItem icons.
 			emoteClueItemPanel.addIcon(new RequirementPanelHeaderTextLabel(new Dimension(7, 15), String.valueOf(emoteClues.length)));
-			Arrays.stream(emoteClues).map(EmoteClue::getEmoteClueDifficulty).distinct().sorted().map(EmoteClueImages::getRibbon).map(ImageIcon::new).map(JLabel::new).forEach(emoteClueItemPanel::addIcon);
+			difficulties.stream().map(EmoteClueImages::getRibbon).map(ImageIcon::new).map(JLabel::new).forEach(emoteClueItemPanel::addIcon);
 
 			Arrays.stream(emoteClues).map(emoteClueSubPanelMap::get).forEach(emoteClueItemPanel::addChild);
 		});
@@ -94,6 +100,7 @@ public class RequirementPanelProvider
 		this.addToRequirementPanelsMap(emoteClueSubPanelMap);
 
 		this.requirementContainer.load(emoteClueItemPanelMap.values());
+		this.requirementContainer.sort("name", false);
 	}
 
 	public RequirementContainer getRequirementContainer() {
