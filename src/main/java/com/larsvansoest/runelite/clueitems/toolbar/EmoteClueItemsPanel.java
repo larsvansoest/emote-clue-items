@@ -67,8 +67,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 
 		this.emoteClueItemsPanelPalette = emoteClueItemsPanelPalette;
 		this.searchBar = new SearchBarFactory(this::onSearchBarTextChanged).defaultColor(emoteClueItemsPanelPalette.getDefaultColor()).hoverColor(emoteClueItemsPanelPalette.getHoverColor()).build();
-
-		this.requirementContainer = new RequirementContainer(requirementPanelProvider.getEmoteClueItemPanels());
+		this.requirementContainer = requirementPanelProvider.getRequirementContainer();
 
 		this.separator = new JSeparator();
 		this.setSeparatorColor(null);

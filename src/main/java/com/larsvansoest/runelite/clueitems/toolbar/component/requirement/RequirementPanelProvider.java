@@ -40,30 +40,35 @@ import com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluesc
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import net.runelite.client.plugins.cluescrolls.clues.item.SlotLimitationRequirement;
 
 public class RequirementPanelProvider
 {
 	private final Map<Object, List<? extends UpdatablePanel>> requirementPanelsMap;
-
-	private final Collection<EmoteClueItemPanel> emoteClueItemPanels;
+	private final RequirementContainer requirementContainer;
 
 	public RequirementPanelProvider(EmoteClueItemsPanelPalette emoteClueItemsPanelPalette)
 	{
 		/* Create EmoteClueItem requirement panel network. */
+		this.requirementContainer = new RequirementContainer();
 
 		// Create parent EmoteClueItem panels.
-		Map<EmoteClueItem, EmoteClueItemPanel> emoteClueItemPanelMap = EmoteClueAssociations.EmoteClueItemToEmoteClues.keySet().stream()
+		Map<EmoteClueItem, EmoteClueItemPanel> emoteClueItemPanelMap = EmoteClue.CLUES.stream()
+			.map(EmoteClue::getItemRequirements).flatMap(Stream::of)
+			.filter(itemRequirement -> !(itemRequirement instanceof SlotLimitationRequirement))
+			.map(itemRequirement -> (EmoteClueItem) itemRequirement)
+			.distinct()
 			.collect(Collectors.toMap(
 				Function.identity(),
-				key -> new EmoteClueItemPanel(emoteClueItemsPanelPalette, key.getCollectiveName(null))
+				key -> new EmoteClueItemPanel(this.requirementContainer, emoteClueItemsPanelPalette, key.getCollectiveName(null))
 			));
 
 		// Create EmoteClueItem-EmoteClue (*-1) sub-panels.
@@ -84,13 +89,15 @@ public class RequirementPanelProvider
 			Arrays.stream(emoteClues).map(emoteClueSubPanelMap::get).forEach(emoteClueItemPanel::addChild);
 		});
 
-		//TODO: recursively link sub ItemRequirements
-
 		this.requirementPanelsMap = new HashMap<>();
 		this.addToRequirementPanelsMap(emoteClueItemPanelMap);
 		this.addToRequirementPanelsMap(emoteClueSubPanelMap);
 
-		this.emoteClueItemPanels = emoteClueItemPanelMap.values();
+		this.requirementContainer.load(emoteClueItemPanelMap.values());
+	}
+
+	public RequirementContainer getRequirementContainer() {
+		return this.requirementContainer;
 	}
 
 	private <T extends UpdatablePanel> void addToRequirementPanelsMap(Map<?, T> requirementPanelMap)
@@ -106,11 +113,6 @@ public class RequirementPanelProvider
 				return l1;
 			}
 		)));
-	}
-
-	public final Collection<EmoteClueItemPanel> getEmoteClueItemPanels()
-	{
-		return this.emoteClueItemPanels;
 	}
 
 	public final void updateRequirementPanels(Object key, RequirementStatus status)

@@ -35,26 +35,31 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public abstract class RequirementPanel extends UpdatablePanel
 {
+	private final RequirementContainer parent;
 	private final RequirementPanelHeader requirementPanelHeader;
 	private final JPanel foldContent;
+	private final LinkedList<JPanel> foldContentElements;
 	private final GridBagConstraints foldConstraints;
 	private final Map<String, Object[]> filterables;
 	private Boolean expanded;
 
-	public RequirementPanel(EmoteClueItemsPanelPalette emoteClueItemsPanelPalette, String name) {
+	public RequirementPanel(RequirementContainer parent, EmoteClueItemsPanelPalette emoteClueItemsPanelPalette, String name) {
 		super.setLayout(new GridBagLayout());
 		super.setBackground(emoteClueItemsPanelPalette.getDefaultColor());
 		super.setName(name);
 
+		this.parent = parent;
 		this.expanded = false;
 		this.requirementPanelHeader = new RequirementPanelHeader(this, emoteClueItemsPanelPalette, new Dimension(155, 20), name);
 
+		this.foldContentElements = new LinkedList<>();
 		this.foldContent = new JPanel(new GridBagLayout());
 		this.foldContent.setBackground(emoteClueItemsPanelPalette.getFoldContentColor());
 		this.foldConstraints = new GridBagConstraints();
@@ -77,10 +82,26 @@ public abstract class RequirementPanel extends UpdatablePanel
 		this.setFilterable("status", status);
 	}
 
-	public final Boolean fold() {
-		this.expanded = !this.expanded;
-		this.foldContent.setVisible(this.expanded);
-		return this.expanded;
+	public final void onHeaderMousePressed() {
+		this.parent.toggleFold(this);
+	}
+
+	public final void fold() {
+		this.foldContentElements.forEach(this.foldContent::remove);
+		this.requirementPanelHeader.fold();
+		this.foldContent.setVisible(false);
+		this.expanded = false;
+	}
+
+	public final void unfold() {
+		this.foldConstraints.gridy = 0;
+		this.foldContentElements.forEach(element -> {
+			this.foldContent.add(element, this.foldConstraints);
+			this.foldConstraints.gridy++;
+		});
+		this.requirementPanelHeader.unfold();
+		this.foldContent.setVisible(true);
+		this.expanded = true;
 	}
 
 	public final void setFilterable(String key, Object... values) {
@@ -92,8 +113,7 @@ public abstract class RequirementPanel extends UpdatablePanel
 	}
 
 	public final void addChild(JPanel content) {
-		this.foldContent.add(content, this.foldConstraints);
-		this.foldConstraints.gridy++;
+		this.foldContentElements.add(content);
 	}
 
 	public final void addIcon(JLabel icon) {

@@ -39,11 +39,17 @@ class HeaderFoldIcon extends JLabel
 		static ImageIcon LEFT = new ImageIcon(EmoteClueImage.Toolbar.Chevron.LEFT);
 	}
 
-	public HeaderFoldIcon(Boolean expanded) {
-		this.fold(expanded);
+	public HeaderFoldIcon() {
+		super.setIcon(Arrow.LEFT);
 	}
 
-	public void fold(Boolean expanded) {
-		super.setIcon(expanded ? Arrow.DOWN : Arrow.LEFT);
+	public void unfold()
+	{
+		super.setIcon(Arrow.DOWN);
+	}
+
+	public void fold()
+	{
+		super.setIcon(Arrow.LEFT);
 	}
 }

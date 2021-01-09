@@ -28,10 +28,6 @@
 
 package com.larsvansoest.runelite.clueitems.data;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.stream.Collectors;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
@@ -679,26 +675,34 @@ public enum EmoteClueItem implements ItemRequirement
 	ANY_MENAPHITE_SET("Menaphite set", false, EmoteClueItem.ALL_MENAPHITE_SET_PURPLE, ALL_MENAPHITE_SET_RED);
 
 	private final ItemRequirement itemRequirement;
+	private final EmoteClueItem[] children;
+	private final Integer itemId;
 	private final String name;
-	private final List<Integer> itemIds;
 
 	EmoteClueItem(String name, int itemId)
 	{
 		this.itemRequirement = ItemRequirements.item(itemId);
+		this.itemId = itemId;
+		this.children = null;
 		this.name = name;
-		this.itemIds = new LinkedList<Integer>();
-		this.itemIds.add(itemId);
 	}
 
 	EmoteClueItem(String name, Boolean isStrong, EmoteClueItem... emoteClueItems)
 	{
 		this.itemRequirement = isStrong ? ItemRequirements.all(emoteClueItems) : ItemRequirements.any(name, emoteClueItems);
+		this.itemId = null;
+		this.children = emoteClueItems;
 		this.name = name;
-		this.itemIds = Arrays.stream(emoteClueItems).flatMap(emoteClueItem -> emoteClueItem.getItemIds().stream()).collect(Collectors.toCollection(LinkedList::new));
+		//this.itemIds = Arrays.stream(emoteClueItems).flatMap(emoteClueItem -> emoteClueItem.getItemIds().stream()).collect(Collectors.toCollection(LinkedList::new));
 	}
 
-	public List<Integer> getItemIds() {
-		return this.itemIds;
+	public final EmoteClueItem[] getChildren()
+	{
+		return this.children;
+	}
+
+	public final Integer getItemId() {
+		return this.itemId;
 	}
 
 	@Override

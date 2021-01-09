@@ -44,19 +44,19 @@ public class RequirementContainer extends JPanel
 {
 	private final GridBagConstraints c;
 	private final Map<String, Object> filterables;
+	private RequirementPanel expandedPanel;
 	private List<? extends RequirementPanel> requirementPanels;
 
-	public RequirementContainer(Collection<? extends RequirementPanel> requirementPanelCollection)
+	public RequirementContainer()
 	{
 		super(new GridBagLayout());
 		this.filterables = new HashMap<>();
+		this.expandedPanel = null;
 
 		this.c = new GridBagConstraints();
 		this.c.fill = GridBagConstraints.HORIZONTAL;
 		this.c.gridx = 0;
-		this.c.gridy = 0;
 		this.c.weightx = 1;
-		this.load(requirementPanelCollection);
 	}
 
 	public void load(Collection<? extends RequirementPanel> requirementPanelCollection)
@@ -64,6 +64,21 @@ public class RequirementContainer extends JPanel
 		this.requirementPanels = new ArrayList<>(requirementPanelCollection);
 		this.requirementPanels.sort(Comparator.comparing(RequirementPanel::getName));
 		this.display(this.requirementPanels.stream());
+	}
+
+	public void toggleFold(RequirementPanel requirementPanel) {
+		RequirementPanel previous = this.expandedPanel;
+		if(this.expandedPanel != null) {
+			this.expandedPanel.fold();
+			this.expandedPanel = null;
+		}
+		if(previous != requirementPanel)
+		{
+			requirementPanel.unfold();
+			this.expandedPanel = requirementPanel;
+		}
+		super.revalidate();
+		super.repaint();
 	}
 
 	public void addFilter(String key, Object value)

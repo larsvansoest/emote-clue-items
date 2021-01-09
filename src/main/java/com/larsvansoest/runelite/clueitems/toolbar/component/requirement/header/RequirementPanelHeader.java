@@ -47,21 +47,24 @@ public class RequirementPanelHeader extends JPanel
 	private final HeaderFoldIcon foldIcon;
 	private final GridBagConstraints c;
 	private final LinkedList<JLabel> icons;
+	private Boolean expanded;
 
 	public RequirementPanelHeader(RequirementPanel parent, EmoteClueItemsPanelPalette emoteClueItemsPanelPalette, Dimension dimension, String name)
 	{
 		this.emoteClueItemsPanelPalette = emoteClueItemsPanelPalette;
 		this.name = new RequirementPanelHeaderTextLabel(dimension, name);
-		this.foldIcon = new HeaderFoldIcon(false);
+		this.foldIcon = new HeaderFoldIcon();
 		this.parent = parent;
 		this.icons = new LinkedList<>();
+		this.expanded = false;
+		super.setBackground(RequirementPanelHeader.this.emoteClueItemsPanelPalette.getDefaultColor());
 
 		super.addMouseListener(new MouseAdapter()
 		{
 			@Override
 			public void mousePressed(MouseEvent e)
 			{
-				RequirementPanelHeader.this.onClick();
+				RequirementPanelHeader.this.onMousePressed();
 			}
 
 			@Override
@@ -73,12 +76,10 @@ public class RequirementPanelHeader extends JPanel
 			@Override
 			public void mouseExited(MouseEvent e)
 			{
-				RequirementPanelHeader.this.setColor();
+				RequirementPanelHeader.super.setBackground(RequirementPanelHeader.this.expanded ? RequirementPanelHeader.this.emoteClueItemsPanelPalette.getSelectColor() : RequirementPanelHeader.this.emoteClueItemsPanelPalette.getDefaultColor());
 			}
 		});
 		super.setLayout(new GridBagLayout());
-
-		this.setColor();
 
 		this.c = new GridBagConstraints();
 		this.c.fill = GridBagConstraints.BOTH;
@@ -99,19 +100,21 @@ public class RequirementPanelHeader extends JPanel
 		this.addIcon(this.foldIcon);
 	}
 
-	private void onClick()
+	private void onMousePressed()
 	{
-		this.fold(this.parent.fold());
+		this.parent.onHeaderMousePressed();
 	}
 
-	private void fold(Boolean expanded)
-	{
-		this.foldIcon.fold(expanded);
+	public void fold() {
+		this.foldIcon.fold();
+		super.setBackground(this.emoteClueItemsPanelPalette.getDefaultColor());
+		this.expanded = false;
 	}
 
-	private void setColor()
-	{
-		super.setBackground(this.parent.isExpanded() ? this.emoteClueItemsPanelPalette.getSelectColor() : this.emoteClueItemsPanelPalette.getDefaultColor());
+	public void unfold() {
+		this.foldIcon.unfold();
+		super.setBackground(this.emoteClueItemsPanelPalette.getSelectColor());
+		this.expanded = true;
 	}
 
 	public final JLabel getNameLabel()
