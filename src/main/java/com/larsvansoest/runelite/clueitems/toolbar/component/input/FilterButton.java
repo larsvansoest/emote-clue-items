@@ -34,7 +34,9 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.AbstractMap;
 import java.util.ArrayDeque;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Queue;
 import javax.swing.Icon;
@@ -49,10 +51,22 @@ public class FilterButton<T> extends JPanel
 	private final String defaultToolTip;
 
 	private FilterButtonOption<T> currentOption;
-	private T currentValue;
+	private Map.Entry<T, Icon> currentValue;
 
-	public FilterButton(T defaultValue, Icon defaultIcon, String defaultToolTip, Dimension dimension, Color defaultColor, Color hoverColor, int capacity, Runnable onChange)
+	public FilterButton(T defaultValue, Icon defaultIcon, String defaultToolTip, Dimension dimension, Color defaultColor, Color hoverColor, int capacity, Runnable onChange) {
+		this(new AbstractMap.SimpleImmutableEntry<>(defaultValue, defaultIcon), defaultToolTip, dimension, defaultColor, hoverColor, capacity, onChange);
+	}
+
+	FilterButton(Map.Entry<T, Icon> primary, String defaultToolTip, Dimension dimension, Color defaultColor, Color hoverColor, int capacity, Runnable onChange) {
+		this(primary, primary, defaultToolTip, dimension, defaultColor, hoverColor, capacity, onChange);
+	}
+
+	public FilterButton(T defaultPrimaryValue, Icon defaultPrimaryIcon, T defaultSecondaryValue, Icon defaultSecondaryIcon, String defaultToolTip, Dimension dimension, Color defaultColor, Color hoverColor, int capacity, Runnable onChange)
 	{
+		this(new AbstractMap.SimpleImmutableEntry<>(defaultPrimaryValue, defaultPrimaryIcon), new AbstractMap.SimpleImmutableEntry<>(defaultSecondaryValue, defaultSecondaryIcon), defaultToolTip, dimension, defaultColor, hoverColor, capacity, onChange);
+	}
+
+	FilterButton(Map.Entry<T, Icon> primary, Map.Entry<T, Icon> secondary, String defaultToolTip, Dimension dimension, Color defaultColor, Color hoverColor, int capacity, Runnable onChange) {
 		super(new GridBagLayout());
 		super.setPreferredSize(dimension);
 		super.setMinimumSize(dimension);
@@ -83,11 +97,12 @@ public class FilterButton<T> extends JPanel
 		this.optionLabel = new JLabel();
 		this.optionLabel.setHorizontalAlignment(JLabel.CENTER);
 		this.optionLabel.setVerticalAlignment(JLabel.CENTER);
-		this.optionLabel.setIcon(defaultIcon);
+		this.optionLabel.setIcon(primary.getValue());
 
 		this.optionQueue = new ArrayDeque<>(capacity);
 		this.defaultToolTip = defaultToolTip;
-		this.currentOption = new FilterButtonOption<>(defaultValue, defaultIcon, null);
+		this.currentOption = new FilterButtonOption<>(primary, secondary, defaultToolTip);
+		this.currentValue = primary;
 		this.onChange = onChange;
 
 		GridBagConstraints c = new GridBagConstraints();
@@ -98,21 +113,19 @@ public class FilterButton<T> extends JPanel
 	private void next(Boolean isPrimaryMouseKey)
 	{
 		FilterButtonOption<T> option;
-		if(isPrimaryMouseKey || this.currentOption.getSecondaryValue() == null) {
+		if(isPrimaryMouseKey || this.currentOption.getPrimary() == this.currentOption.getSecondary()) {
 			option = Objects.requireNonNull(this.optionQueue.poll());
 			this.optionQueue.add(this.currentOption);
 			this.currentOption = option;
-			this.currentValue = option.getPrimaryValue();
-			this.optionLabel.setIcon(option.getPrimaryIcon());
+			this.currentValue = option.getPrimary();
+			this.optionLabel.setIcon(option.getPrimary().getValue());
 		}
 		else
 		{
 			option = this.currentOption;
-			T primaryValue = this.currentOption.getPrimaryValue();
-			T secondaryValue = this.currentOption.getSecondaryValue();
-			boolean isPrimaryValue = this.currentValue == primaryValue;
-			this.currentValue = isPrimaryValue ? secondaryValue : primaryValue;
-			this.optionLabel.setIcon(isPrimaryValue ? this.currentOption.getSecondaryIcon() : this.currentOption.getPrimaryIcon());
+			Boolean isPrimaryValue = this.isPrimaryValue();
+			this.currentValue = isPrimaryValue ? this.currentOption.getSecondary() : this.currentOption.getPrimary();
+			this.optionLabel.setIcon(isPrimaryValue ? this.currentOption.getSecondary().getValue() : this.currentOption.getPrimary().getValue());
 		}
 		String toolTip = option.getToolTip();
 		super.setToolTipText(toolTip == null ? this.defaultToolTip : toolTip);
@@ -121,18 +134,21 @@ public class FilterButton<T> extends JPanel
 
 	public void addOption(T value, Icon icon, String toolTip)
 	{
-		this.optionQueue.add(new FilterButtonOption<>(value, icon, toolTip));
+		Map.Entry<T, Icon> primary = new AbstractMap.SimpleImmutableEntry<>(value, icon);
+		this.optionQueue.add(new FilterButtonOption<>(primary, primary, toolTip));
 	}
 
-	public void addOption(T primaryValue, T secondaryValue, Icon primaryIcon, Icon secondaryIcon, String toolTip)
+	public void addOption(T primaryValue, Icon primaryIcon, T secondaryValue, Icon secondaryIcon, String toolTip)
 	{
-		this.optionQueue.add(new FilterButtonOption<>(primaryValue, secondaryValue, primaryIcon, secondaryIcon, toolTip));
+		Map.Entry<T, Icon> primary = new AbstractMap.SimpleImmutableEntry<>(primaryValue, primaryIcon);
+		Map.Entry<T, Icon> secondary = new AbstractMap.SimpleImmutableEntry<>(secondaryValue, secondaryIcon);
+		this.optionQueue.add(new FilterButtonOption<>(primary, secondary, toolTip));
 	}
 
 	public T getSelectedValue()
 	{
-		return this.currentValue;
+		return this.currentValue.getKey();
 	}
 
-	public Boolean isPrimaryValue() { return this.currentValue == this.currentOption.getPrimaryValue(); }
+	public Boolean isPrimaryValue() { return this.currentValue == this.currentOption.getPrimary(); }
 }

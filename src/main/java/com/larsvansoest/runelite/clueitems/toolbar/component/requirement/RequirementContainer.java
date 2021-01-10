@@ -33,6 +33,7 @@ import java.awt.GridBagLayout;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +43,7 @@ import javax.swing.JPanel;
 public class RequirementContainer extends JPanel
 {
 	private final GridBagConstraints c;
-	private final Map<String, Comparable<?>> filterables;
+	private final Map<String, Object> filterables;
 	private RequirementPanel expandedPanel;
 	private List<? extends RequirementPanel> requirementPanels;
 
@@ -80,7 +81,7 @@ public class RequirementContainer extends JPanel
 		super.repaint();
 	}
 
-	public void setFilter(String key, Comparable<?> value)
+	public void setFilter(String key, Object value)
 	{
 		this.filterables.put(key, value);
 	}
@@ -89,13 +90,38 @@ public class RequirementContainer extends JPanel
 	{
 		this.display(this.requirementPanels.stream()
 			.filter(requirementPanel -> this.filterables.entrySet().stream()
-				.allMatch(filter -> requirementPanel.satisfiesFilterable(filter.getKey(), filter.getValue()))
+				.allMatch(filter -> {
+					Object requirementValue = requirementPanel.getFilterable(filter.getKey());
+					if (requirementValue instanceof Collection<?>) {
+						return ((Collection<?>) requirementValue).stream().anyMatch(filterValueElement -> this.filterValueMatches(filterValueElement, filter.getValue()));
+					}
+					return this.filterValueMatches(requirementValue, filter.getValue());
+				})
 			));
 	}
 
-	public void sort(String sortKey, Boolean reversed) {
-		this.requirementPanels.sort((panel1, panel2) -> panel1.compareTo(panel2, sortKey));
-		if(reversed) {
+	private Boolean filterValueMatches(Object filterValue, Object value) {
+		return filterValue == null
+			|| value == null
+			|| (value instanceof String) && (filterValue instanceof String) && ((String) filterValue).toLowerCase().contains(((String) value).toLowerCase())
+			|| value.equals(filterValue);
+	}
+
+	public void sort(RequirementSortType sortType, Boolean reversed)
+	{
+		switch (sortType)
+		{
+			case Name:
+				this.requirementPanels.sort(Comparator.comparing(RequirementPanel::getName));
+				break;
+			case Quantity:
+				this.requirementPanels.sort(Comparator.comparing(RequirementPanel::getQuantity));
+				break;
+			default:
+				throw new IllegalArgumentException();
+		}
+		if (reversed)
+		{
 			Collections.reverse(this.requirementPanels);
 		}
 		this.runFilters();

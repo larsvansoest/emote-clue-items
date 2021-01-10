@@ -33,12 +33,10 @@ import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
 import com.larsvansoest.runelite.clueitems.data.RequirementStatus;
 import com.larsvansoest.runelite.clueitems.data.util.EmoteClueAssociations;
 import com.larsvansoest.runelite.clueitems.data.util.EmoteClueImages;
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.header.RequirementPanelHeaderTextLabel;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.impl.EmoteClueItemPanel;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.impl.EmoteClueSubPanel;
 import com.larsvansoest.runelite.clueitems.toolbar.palette.EmoteClueItemsPanelPalette;
 import com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.EmoteClue;
-import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -89,7 +87,7 @@ public class RequirementPanelProvider
 			emoteClueItemPanel.setFilterable("quantity", emoteClues.length);
 
 			// Add EmoteClueItem icons.
-			emoteClueItemPanel.addIcon(new RequirementPanelHeaderTextLabel(new Dimension(7, 15), String.valueOf(emoteClues.length)));
+			emoteClueItemPanel.setQuantity(emoteClues.length);
 			difficulties.stream().map(EmoteClueImages::getRibbon).map(ImageIcon::new).map(JLabel::new).forEach(emoteClueItemPanel::addIcon);
 
 			Arrays.stream(emoteClues).map(emoteClueSubPanelMap::get).forEach(emoteClueItemPanel::addChild);
@@ -100,7 +98,6 @@ public class RequirementPanelProvider
 		this.addToRequirementPanelsMap(emoteClueSubPanelMap);
 
 		this.requirementContainer.load(emoteClueItemPanelMap.values());
-		this.requirementContainer.sort("name", false);
 	}
 
 	public RequirementContainer getRequirementContainer() {

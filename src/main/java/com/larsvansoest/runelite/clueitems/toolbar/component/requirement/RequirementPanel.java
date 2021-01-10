@@ -34,7 +34,6 @@ import com.larsvansoest.runelite.clueitems.toolbar.palette.EmoteClueItemsPanelPa
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -44,11 +43,12 @@ import javax.swing.JPanel;
 public abstract class RequirementPanel extends UpdatablePanel
 {
 	private final RequirementContainer parent;
+	private Integer quantity;
 	private final RequirementPanelHeader requirementPanelHeader;
 	private final JPanel foldContent;
 	private final LinkedList<JPanel> foldContentElements;
 	private final GridBagConstraints foldConstraints;
-	private final Map<String, Object> filterables;
+	private final Map<Object, Object> filterables;
 	private Boolean expanded;
 
 	public RequirementPanel(RequirementContainer parent, EmoteClueItemsPanelPalette emoteClueItemsPanelPalette, String name)
@@ -59,6 +59,7 @@ public abstract class RequirementPanel extends UpdatablePanel
 
 		this.parent = parent;
 		this.expanded = false;
+
 		this.requirementPanelHeader = new RequirementPanelHeader(this, emoteClueItemsPanelPalette, new Dimension(155, 20), name);
 
 		this.foldContentElements = new LinkedList<>();
@@ -66,7 +67,6 @@ public abstract class RequirementPanel extends UpdatablePanel
 		this.foldContent.setBackground(emoteClueItemsPanelPalette.getFoldContentColor());
 		this.foldConstraints = new GridBagConstraints();
 		this.filterables = new HashMap<>();
-		this.setFilterable("name", name);
 
 		this.setStatus(RequirementStatus.InComplete);
 
@@ -113,38 +113,14 @@ public abstract class RequirementPanel extends UpdatablePanel
 		this.expanded = true;
 	}
 
-	public final void setFilterable(String key, Object value)
+	public final void setFilterable(Object key, Object value)
 	{
 		this.filterables.put(key, value);
 	}
 
-	public final Object getFilterable(String key)
+	public final Object getFilterable(Object key)
 	{
 		return this.filterables.get(key);
-	}
-
-	public final Boolean satisfiesFilterable(String key, Object value)
-	{
-		Object filterValue = this.filterables.get(key);
-		if (filterValue instanceof Collection<?>) {
-			return ((Collection<?>) filterValue).stream().anyMatch(filterValueElement -> this.filterValueMatches(filterValueElement, value));
-		}
-		return this.filterValueMatches(filterValue, value);
-	}
-
-	private Boolean filterValueMatches(Object filterValue, Object value) {
-		return filterValue == null
-			|| value == null
-			|| (value instanceof String) && (filterValue instanceof String) && ((String) filterValue).toLowerCase().contains(((String) value).toLowerCase())
-			|| value.equals(filterValue);
-	}
-
-	@SuppressWarnings({"unchecked", "rawtypes"})
-	public int compareTo(RequirementPanel requirementPanel, String sortKey) {
-		Object value1 = this.filterables.get(sortKey);
-		Object value2 = requirementPanel.getFilterable(sortKey);
-		if(value1 == value2 || !value1.getClass().equals(value2.getClass()) || !(value1 instanceof Comparable)) return 0;
-		return ((Comparable) value1).compareTo(value2);
 	}
 
 	public final void addChild(JPanel content)
@@ -155,6 +131,17 @@ public abstract class RequirementPanel extends UpdatablePanel
 	public final void addIcon(JLabel icon)
 	{
 		this.requirementPanelHeader.addIcon(icon);
+	}
+
+	public Integer getQuantity()
+	{
+		return this.quantity;
+	}
+
+	public void setQuantity(Integer quantity)
+	{
+		this.requirementPanelHeader.setQuantity(quantity);
+		this.quantity = quantity;
 	}
 
 	public final Boolean isExpanded()

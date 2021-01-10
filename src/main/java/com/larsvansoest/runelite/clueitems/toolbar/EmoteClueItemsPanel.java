@@ -36,10 +36,13 @@ import com.larsvansoest.runelite.clueitems.toolbar.component.input.FilterButton;
 import com.larsvansoest.runelite.clueitems.toolbar.component.input.SearchBarFactory;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementContainer;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementPanelProvider;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementSortType;
 import com.larsvansoest.runelite.clueitems.toolbar.palette.EmoteClueItemsPanelPalette;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.AbstractMap;
+import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
@@ -58,7 +61,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 
 	private final FilterButton<RequirementStatus> requirementStatusFilterButton;
 	private final FilterButton<EmoteClueDifficulty> difficultyFilterButton;
-	private final FilterButton<String> sortFilterButton;
+	private final FilterButton<Map.Entry<RequirementSortType, Boolean>> sortFilterButton;
 
 	public EmoteClueItemsPanel(EmoteClueItemsPanelPalette emoteClueItemsPanelPalette, RequirementPanelProvider requirementPanelProvider)
 	{
@@ -69,6 +72,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 		this.emoteClueItemsPanelPalette = emoteClueItemsPanelPalette;
 		this.searchBar = new SearchBarFactory(this::onSearchBarTextChanged).defaultColor(emoteClueItemsPanelPalette.getDefaultColor()).hoverColor(emoteClueItemsPanelPalette.getHoverColor()).build();
 		this.requirementContainer = requirementPanelProvider.getRequirementContainer();
+		this.requirementContainer.sort(RequirementSortType.Name, false);
 
 		this.separator = new JSeparator();
 		this.setSeparatorColor(null);
@@ -134,7 +138,8 @@ public class EmoteClueItemsPanel extends PluginPanel
 
 	private void onSortFilterChanged()
 	{
-		this.requirementContainer.sort(this.sortFilterButton.getSelectedValue(), !this.sortFilterButton.isPrimaryValue());
+		Map.Entry<RequirementSortType, Boolean> selected = this.sortFilterButton.getSelectedValue();
+		this.requirementContainer.sort(selected.getKey(), selected.getValue());
 	}
 
 	private FilterButton<RequirementStatus> createRequirementStatusFilterButton(EmoteClueItemsPanelPalette emoteClueItemsPanelPalette)
@@ -160,10 +165,13 @@ public class EmoteClueItemsPanel extends PluginPanel
 		return difficultyFilterButton;
 	}
 
-	private FilterButton<String> createSortFilterButton(EmoteClueItemsPanelPalette emoteClueItemsPanelPalette)
+	private FilterButton<Map.Entry<RequirementSortType, Boolean>> createSortFilterButton(EmoteClueItemsPanelPalette emoteClueItemsPanelPalette)
 	{
-		FilterButton<String> sortFilterButton = new FilterButton<>("name", new ImageIcon(EmoteClueImage.Toolbar.Footer.GITHUB), "", new Dimension(25, 30), emoteClueItemsPanelPalette.getDefaultColor(), emoteClueItemsPanelPalette.getHoverColor(), 7, this::onSortFilterChanged);
-		sortFilterButton.addOption("quantity", "reversed", new ImageIcon(EmoteClueImage.Toolbar.Chevron.DOWN), new ImageIcon(EmoteClueImage.Toolbar.Chevron.LEFT), "");
+		FilterButton<Map.Entry<RequirementSortType, Boolean>> sortFilterButton = new FilterButton<>(new AbstractMap.SimpleImmutableEntry<>(RequirementSortType.Name, false), new ImageIcon(EmoteClueImage.Toolbar.SortType.NAME_ASCENDING),"", new Dimension(25, 30), emoteClueItemsPanelPalette.getDefaultColor(), emoteClueItemsPanelPalette.getHoverColor(), 7, this::onSortFilterChanged);
+		sortFilterButton.addOption(new AbstractMap.SimpleImmutableEntry<>(RequirementSortType.Name, true), new ImageIcon(EmoteClueImage.Toolbar.SortType.NAME_DESCENDING), "");
+		sortFilterButton.addOption(new AbstractMap.SimpleImmutableEntry<>(RequirementSortType.Quantity, false), new ImageIcon(EmoteClueImage.Toolbar.SortType.QUANTITY_ASCENDING),"");
+		sortFilterButton.addOption(new AbstractMap.SimpleImmutableEntry<>(RequirementSortType.Quantity, true), new ImageIcon(EmoteClueImage.Toolbar.SortType.QUANTITY_DESCENDING), "");
+
 		return sortFilterButton;
 	}
 

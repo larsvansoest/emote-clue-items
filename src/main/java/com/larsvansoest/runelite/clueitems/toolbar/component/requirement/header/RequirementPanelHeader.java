@@ -43,6 +43,7 @@ public class RequirementPanelHeader extends JPanel
 {
 	private final EmoteClueItemsPanelPalette emoteClueItemsPanelPalette;
 	private final RequirementPanelHeaderTextLabel name;
+	private final RequirementPanelHeaderTextLabel quantity;
 	private final RequirementPanel parent;
 	private final HeaderFoldIcon foldIcon;
 	private final GridBagConstraints c;
@@ -53,6 +54,7 @@ public class RequirementPanelHeader extends JPanel
 	{
 		this.emoteClueItemsPanelPalette = emoteClueItemsPanelPalette;
 		this.name = new RequirementPanelHeaderTextLabel(dimension, name);
+		this.quantity = new RequirementPanelHeaderTextLabel(new Dimension(7, 15), "-1");
 		this.foldIcon = new HeaderFoldIcon();
 		this.parent = parent;
 		this.icons = new LinkedList<>();
@@ -98,6 +100,7 @@ public class RequirementPanelHeader extends JPanel
 		this.c.insets.right = 5;
 		this.c.anchor = GridBagConstraints.EAST;
 		this.addIcon(this.foldIcon);
+		this.addIcon(this.quantity);
 	}
 
 	private void onMousePressed()
@@ -115,6 +118,10 @@ public class RequirementPanelHeader extends JPanel
 		this.foldIcon.unfold();
 		super.setBackground(this.emoteClueItemsPanelPalette.getSelectColor());
 		this.expanded = true;
+	}
+
+	public final void setQuantity(int quantity) {
+		this.quantity.setText(String.valueOf(quantity));
 	}
 
 	public final JLabel getNameLabel()

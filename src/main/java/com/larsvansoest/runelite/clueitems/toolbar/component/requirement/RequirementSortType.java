@@ -26,32 +26,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.toolbar.component.input;
+package com.larsvansoest.runelite.clueitems.toolbar.component.requirement;
 
-import java.util.Map;
-import javax.swing.Icon;
-
-class FilterButtonOption<T>
+public enum RequirementSortType
 {
-	private final Map.Entry<T, Icon> primary;
-	private final Map.Entry<T, Icon> secondary;
-	private final String toolTip;
-
-	public FilterButtonOption(Map.Entry<T, Icon> primary, Map.Entry<T, Icon> secondary, String toolTip) {
-		this.primary = primary;
-		this.secondary = secondary;
-		this.toolTip = toolTip;
-	}
-
-	public Map.Entry<T, Icon> getPrimary()
-	{
-		return this.primary;
-	}
-
-	public Map.Entry<T, Icon> getSecondary()
-	{
-		return this.secondary;
-	}
-
-	public String getToolTip() { return this.toolTip; }
+	Name(),
+	Quantity();
 }

@@ -65,6 +65,13 @@ public abstract class EmoteClueImage
 			private static final String folder = path(Toolbar.folder, "footer");
 			public static final BufferedImage GITHUB = bufferedImage(Footer.folder, "github.png");
 		}
+		public static class SortType {
+			private static final String folder = path(Toolbar.folder, "sort-type");
+			public static final BufferedImage NAME_ASCENDING = bufferedImage(SortType.folder, "name-ascending.png");
+			public static final BufferedImage NAME_DESCENDING = bufferedImage(SortType.folder, "name-descending.png");
+			public static final BufferedImage QUANTITY_ASCENDING = bufferedImage(SortType.folder, "quantity-ascending.png");
+			public static final BufferedImage QUANTITY_DESCENDING = bufferedImage(SortType.folder, "quantity-descending.png");
+		}
 	}
 
 	private static BufferedImage bufferedImage(String folder, String name) {
