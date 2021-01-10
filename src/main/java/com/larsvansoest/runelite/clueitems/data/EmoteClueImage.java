@@ -72,6 +72,11 @@ public abstract class EmoteClueImage
 			public static final BufferedImage QUANTITY_ASCENDING = bufferedImage(SortType.folder, "quantity-ascending.png");
 			public static final BufferedImage QUANTITY_DESCENDING = bufferedImage(SortType.folder, "quantity-descending.png");
 		}
+		public static class Disclaimer {
+			private static final String folder = path(Toolbar.folder, "disclaimer");
+			public static final BufferedImage QUESTION_CIRCLE = bufferedImage(Disclaimer.folder, "question-circle.png");
+			public static final BufferedImage CLOSE = bufferedImage(Disclaimer.folder, "close.png");
+		}
 	}
 
 	private static BufferedImage bufferedImage(String folder, String name) {

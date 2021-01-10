@@ -28,6 +28,7 @@
 
 package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.header;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.JLabel;
 import net.runelite.client.ui.FontManager;
@@ -35,13 +36,28 @@ import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 
 public class RequirementPanelHeaderTextLabel extends JShadowedLabel
 {
+	private static final Color TRANSPARENT = new Color(0, 0, 0, 0);
+
+	private final Color shadow;
+
 	public RequirementPanelHeaderTextLabel(Dimension dimension, String text) {
 		super.setHorizontalAlignment(JLabel.CENTER);
 		super.setVerticalAlignment(JLabel.CENTER);
+
 		super.setText(text);
 		super.setPreferredSize(dimension);
 		super.setMaximumSize(dimension);
 		super.setMinimumSize(dimension);
 		super.setFont(FontManager.getRunescapeSmallFont());
+
+		this.shadow = super.getShadow();
+	}
+
+	public void disableShadow() {
+		super.setShadow(RequirementPanelHeaderTextLabel.TRANSPARENT);
+	}
+
+	public void enableShadow() {
+		super.setShadow(this.shadow);
 	}
 }

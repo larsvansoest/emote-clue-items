@@ -33,7 +33,7 @@ import net.runelite.client.ui.ColorScheme;
 
 public enum EmoteClueItemsPanelPalette
 {
-	DARK(ColorScheme.DARKER_GRAY_COLOR, ColorScheme.DARKER_GRAY_HOVER_COLOR, ColorScheme.DARKER_GRAY_HOVER_COLOR, ColorScheme.DARK_GRAY_HOVER_COLOR, ColorScheme.DARK_GRAY_HOVER_COLOR, ColorScheme.BRAND_ORANGE, ColorScheme.MEDIUM_GRAY_COLOR);
+	DARK(ColorScheme.DARKER_GRAY_COLOR, ColorScheme.DARKER_GRAY_HOVER_COLOR, ColorScheme.DARKER_GRAY_HOVER_COLOR, ColorScheme.DARK_GRAY_HOVER_COLOR, ColorScheme.DARK_GRAY_HOVER_COLOR, ColorScheme.BRAND_ORANGE, ColorScheme.MEDIUM_GRAY_COLOR, ColorScheme.DARKER_GRAY_HOVER_COLOR);
 
 	private final Color defaultColor;
 	private final Color hoverColor;
@@ -42,8 +42,9 @@ public enum EmoteClueItemsPanelPalette
 	private final Color foldContentElementColor;
 	private final Color separatorColor;
 	private final Color footerColor;
+	private final Color dislaimerColor;
 
-	EmoteClueItemsPanelPalette(Color defaultColor, Color hoverColor, Color selectColor, Color foldContentColor, Color foldContentElementColor, Color separatorColor, Color footerColor) {
+	EmoteClueItemsPanelPalette(Color defaultColor, Color hoverColor, Color selectColor, Color foldContentColor, Color foldContentElementColor, Color separatorColor, Color footerColor, Color disclaimerColor) {
 		this.defaultColor = defaultColor;
 		this.hoverColor = hoverColor;
 		this.selectColor = selectColor;
@@ -51,6 +52,7 @@ public enum EmoteClueItemsPanelPalette
 		this.foldContentElementColor = foldContentElementColor;
 		this.separatorColor = separatorColor;
 		this.footerColor = footerColor;
+		this.dislaimerColor = disclaimerColor;
 	}
 
 	public Color getDefaultColor()
@@ -80,4 +82,9 @@ public enum EmoteClueItemsPanelPalette
 	public Color getSeparatorColor() { return this.separatorColor; }
 
 	public Color getFooterColor() { return this.footerColor; }
+
+	public Color getDislaimerColor()
+	{
+		return this.dislaimerColor;
+	}
 }

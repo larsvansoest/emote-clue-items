@@ -31,6 +31,7 @@ package com.larsvansoest.runelite.clueitems.toolbar;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImage;
 import com.larsvansoest.runelite.clueitems.data.RequirementStatus;
+import com.larsvansoest.runelite.clueitems.toolbar.component.disclaimer.DisclaimerPanel;
 import com.larsvansoest.runelite.clueitems.toolbar.component.footer.FooterPanel;
 import com.larsvansoest.runelite.clueitems.toolbar.component.input.FilterButton;
 import com.larsvansoest.runelite.clueitems.toolbar.component.input.SearchBarFactory;
@@ -57,6 +58,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 
 	private final IconTextField searchBar;
 	private final JSeparator separator;
+	private final DisclaimerPanel disclaimerPanel;
 	private final RequirementContainer requirementContainer;
 
 	private final FilterButton<RequirementStatus> requirementStatusFilterButton;
@@ -76,6 +78,9 @@ public class EmoteClueItemsPanel extends PluginPanel
 
 		this.separator = new JSeparator();
 		this.setSeparatorColor(null);
+
+		this.disclaimerPanel = new DisclaimerPanel(emoteClueItemsPanelPalette, this::removeDisclaimer);
+		this.disclaimerPanel.setVisible(false);
 
 		this.requirementStatusFilterButton = this.createRequirementStatusFilterButton(emoteClueItemsPanelPalette);
 		this.difficultyFilterButton = this.createDifficultyFilterButton(emoteClueItemsPanelPalette);
@@ -107,6 +112,9 @@ public class EmoteClueItemsPanel extends PluginPanel
 		super.add(this.separator, c);
 
 		c.gridy++;
+		super.add(this.disclaimerPanel, c);
+
+		c.gridy++;
 		super.add(this.requirementContainer, c);
 
 		c.gridy++;
@@ -114,6 +122,15 @@ public class EmoteClueItemsPanel extends PluginPanel
 		c.insets.left = 20;
 		c.insets.right = 20;
 		super.add(footerPanel, c);
+	}
+
+	public void setDisclaimer(String text) {
+		this.disclaimerPanel.setText(text);
+		this.disclaimerPanel.setVisible(true);
+	}
+
+	public void removeDisclaimer() {
+		this.disclaimerPanel.setVisible(false);
 	}
 
 	private void onSearchBarTextChanged()

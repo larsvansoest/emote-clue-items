@@ -86,6 +86,7 @@ public class EmoteClueItemsPlugin extends Plugin
 		EmoteClueItemsPanelPalette emoteClueItemsPalette = EmoteClueItemsPanelPalette.DARK;
 		this.requirementPanelProvider = new RequirementPanelProvider(emoteClueItemsPalette);
 		this.emoteClueItemsPanel = new EmoteClueItemsPanel(emoteClueItemsPalette, this.requirementPanelProvider);
+		this.emoteClueItemsPanel.setDisclaimer("To start display of progression, please open your bank once.");
 
 		this.navigationButton = NavigationButton.builder()
 			.tooltip("Emote Clue Items")

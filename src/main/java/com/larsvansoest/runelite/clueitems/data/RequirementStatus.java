@@ -37,7 +37,9 @@ public enum RequirementStatus
 
 	InProgress(ColorScheme.PROGRESS_INPROGRESS_COLOR),
 
-	InComplete(ColorScheme.LIGHT_GRAY_COLOR);
+	InComplete(ColorScheme.LIGHT_GRAY_COLOR),
+
+	Unknown(new Color(254, 254, 254, 69));
 
 	public final Color colour;
 

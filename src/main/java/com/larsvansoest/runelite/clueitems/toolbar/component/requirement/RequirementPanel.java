@@ -67,8 +67,10 @@ public abstract class RequirementPanel extends UpdatablePanel
 		this.foldContent.setBackground(emoteClueItemsPanelPalette.getFoldContentColor());
 		this.foldConstraints = new GridBagConstraints();
 		this.filterables = new HashMap<>();
+		this.setFilterable("name", name);
 
-		this.setStatus(RequirementStatus.InComplete);
+		this.setStatus(RequirementStatus.Unknown);
+		this.requirementPanelHeader.getNameLabel().disableShadow();
 
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -84,6 +86,7 @@ public abstract class RequirementPanel extends UpdatablePanel
 
 	public final void setStatus(RequirementStatus status)
 	{
+		this.requirementPanelHeader.getNameLabel().enableShadow();
 		this.requirementPanelHeader.getNameLabel().setForeground(status.colour);
 		this.setFilterable("status", status);
 	}

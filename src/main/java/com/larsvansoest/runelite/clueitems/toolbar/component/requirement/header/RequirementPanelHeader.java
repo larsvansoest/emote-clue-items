@@ -124,7 +124,7 @@ public class RequirementPanelHeader extends JPanel
 		this.quantity.setText(String.valueOf(quantity));
 	}
 
-	public final JLabel getNameLabel()
+	public final RequirementPanelHeaderTextLabel getNameLabel()
 	{
 		return this.name;
 	}
