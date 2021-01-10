@@ -34,7 +34,11 @@ import com.larsvansoest.runelite.clueitems.toolbar.palette.EmoteClueItemsPanelPa
 
 public class EmoteClueItemPanel extends RequirementPanel
 {
+
+
 	public EmoteClueItemPanel(RequirementContainer parent, EmoteClueItemsPanelPalette emoteClueItemsPanelPalette, String name) {
 		super(parent, emoteClueItemsPanelPalette, name);
 	}
+
+
 }
