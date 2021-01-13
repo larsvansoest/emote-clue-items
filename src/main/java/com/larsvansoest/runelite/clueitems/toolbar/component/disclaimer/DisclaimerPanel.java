@@ -30,7 +30,7 @@ package com.larsvansoest.runelite.clueitems.toolbar.component.disclaimer;
 
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImage;
 import com.larsvansoest.runelite.clueitems.data.util.EmoteClueImages;
-import com.larsvansoest.runelite.clueitems.toolbar.palette.EmoteClueItemsPanelPalette;
+import com.larsvansoest.runelite.clueitems.toolbar.component.EmoteClueItemsPanelPalette;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;

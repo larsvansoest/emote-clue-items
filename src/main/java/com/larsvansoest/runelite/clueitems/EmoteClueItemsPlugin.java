@@ -33,8 +33,8 @@ import com.larsvansoest.runelite.clueitems.data.EmoteClueImage;
 import com.larsvansoest.runelite.clueitems.data.util.EmoteClueImages;
 import com.larsvansoest.runelite.clueitems.overlay.EmoteClueItemOverlay;
 import com.larsvansoest.runelite.clueitems.toolbar.EmoteClueItemsPanel;
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementPanelProvider;
-import com.larsvansoest.runelite.clueitems.toolbar.palette.EmoteClueItemsPanelPalette;
+import com.larsvansoest.runelite.clueitems.toolbar.progress.RequirementPanelProvider;
+import com.larsvansoest.runelite.clueitems.toolbar.component.EmoteClueItemsPanelPalette;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -101,7 +101,7 @@ public class EmoteClueItemsPlugin extends Plugin
 	@Subscribe
 	protected void onItemContainerChanged(ItemContainerChanged event) {
 		if(event.getContainerId() == 95) {
-			this.requirementPanelProvider.processPlayerBank(event.getItemContainer().getItems());
+			//this.requirementPanelProvider.processPlayerBank(event.getItemContainer().getItems());
 			//Arrays.stream(EmoteClueRequirements.Monitor(event.getItemContainer().getItems()))
 			//	.forEach(requirement -> this.requirementPanelProvider.updateRequirementPanels(requirement, RequirementStatus.Complete));
 			//this.emoteClueItemsPanel.search();

@@ -26,7 +26,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.toolbar.palette;
+package com.larsvansoest.runelite.clueitems.toolbar.component;
 
 import java.awt.Color;
 import net.runelite.client.ui.ColorScheme;

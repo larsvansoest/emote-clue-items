@@ -29,7 +29,7 @@
 package com.larsvansoest.runelite.clueitems.toolbar.component.footer;
 
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImage;
-import com.larsvansoest.runelite.clueitems.toolbar.palette.EmoteClueItemsPanelPalette;
+import com.larsvansoest.runelite.clueitems.toolbar.component.EmoteClueItemsPanelPalette;
 import com.larsvansoest.runelite.clueitems.data.util.EmoteClueImages;
 import java.awt.Color;
 import java.awt.Font;

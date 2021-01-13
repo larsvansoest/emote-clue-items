@@ -30,24 +30,21 @@ package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.impl;
 
 import com.larsvansoest.runelite.clueitems.data.RequirementStatus;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.UpdatablePanel;
-import com.larsvansoest.runelite.clueitems.toolbar.component.EmoteClueItemsPanelPalette;
-import com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.EmoteClue;
-import java.awt.GridBagLayout;
-import java.util.concurrent.ThreadLocalRandom;
 import javax.swing.JLabel;
 
-public class EmoteClueSubPanel extends UpdatablePanel
+public class EmoteClueSubItemPanel extends UpdatablePanel
 {
-	public EmoteClueSubPanel(EmoteClueItemsPanelPalette emoteClueItemsPanelPalette, EmoteClue clue) {
-		super.setLayout(new GridBagLayout());
-		super.setBackground(emoteClueItemsPanelPalette.getFoldContentElementColor());
-		JLabel debug = new JLabel();
-		debug.setText(String.valueOf(ThreadLocalRandom.current().nextInt(0, 100)));
-		super.add(debug);
+	private JLabel itemIdLabel;
+
+	public EmoteClueSubItemPanel(Integer itemId) {
+		this.itemIdLabel = new JLabel(String.valueOf(itemId));
+		super.add(this.itemIdLabel);
 	}
+
 
 	@Override
 	public void setStatus(RequirementStatus requirementStatus)
 	{
+
 	}
 }

@@ -36,9 +36,9 @@ import com.larsvansoest.runelite.clueitems.toolbar.component.footer.FooterPanel;
 import com.larsvansoest.runelite.clueitems.toolbar.component.input.FilterButton;
 import com.larsvansoest.runelite.clueitems.toolbar.component.input.SearchBarFactory;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementContainer;
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementPanelProvider;
+import com.larsvansoest.runelite.clueitems.toolbar.progress.RequirementPanelProvider;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementSortType;
-import com.larsvansoest.runelite.clueitems.toolbar.palette.EmoteClueItemsPanelPalette;
+import com.larsvansoest.runelite.clueitems.toolbar.component.EmoteClueItemsPanelPalette;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -184,10 +184,10 @@ public class EmoteClueItemsPanel extends PluginPanel
 
 	private FilterButton<Map.Entry<RequirementSortType, Boolean>> createSortFilterButton(EmoteClueItemsPanelPalette emoteClueItemsPanelPalette)
 	{
-		FilterButton<Map.Entry<RequirementSortType, Boolean>> sortFilterButton = new FilterButton<>(new AbstractMap.SimpleImmutableEntry<>(RequirementSortType.Name, false), new ImageIcon(EmoteClueImage.Toolbar.SortType.NAME_ASCENDING),"", new Dimension(25, 30), emoteClueItemsPanelPalette.getDefaultColor(), emoteClueItemsPanelPalette.getHoverColor(), 7, this::onSortFilterChanged);
-		sortFilterButton.addOption(new AbstractMap.SimpleImmutableEntry<>(RequirementSortType.Name, true), new ImageIcon(EmoteClueImage.Toolbar.SortType.NAME_DESCENDING), "");
-		sortFilterButton.addOption(new AbstractMap.SimpleImmutableEntry<>(RequirementSortType.Quantity, false), new ImageIcon(EmoteClueImage.Toolbar.SortType.QUANTITY_ASCENDING),"");
-		sortFilterButton.addOption(new AbstractMap.SimpleImmutableEntry<>(RequirementSortType.Quantity, true), new ImageIcon(EmoteClueImage.Toolbar.SortType.QUANTITY_DESCENDING), "");
+		FilterButton<Map.Entry<RequirementSortType, Boolean>> sortFilterButton = new FilterButton<>(new AbstractMap.SimpleImmutableEntry<>(RequirementSortType.Name, false), new ImageIcon(EmoteClueImage.Toolbar.SortType.NAME_ASCENDING), this.getToolTipText("Toggle order by %s (ascending).", "name"), new Dimension(25, 30), emoteClueItemsPanelPalette.getDefaultColor(), emoteClueItemsPanelPalette.getHoverColor(), 7, this::onSortFilterChanged);
+		sortFilterButton.addOption(new AbstractMap.SimpleImmutableEntry<>(RequirementSortType.Name, true), new ImageIcon(EmoteClueImage.Toolbar.SortType.NAME_DESCENDING), this.getToolTipText("Toggle order by %s (descending).", "name"));
+		sortFilterButton.addOption(new AbstractMap.SimpleImmutableEntry<>(RequirementSortType.Quantity, false), new ImageIcon(EmoteClueImage.Toolbar.SortType.QUANTITY_ASCENDING), this.getToolTipText("Toggle order by %s (ascending).", "quantity"));
+		sortFilterButton.addOption(new AbstractMap.SimpleImmutableEntry<>(RequirementSortType.Quantity, true), new ImageIcon(EmoteClueImage.Toolbar.SortType.QUANTITY_DESCENDING), this.getToolTipText("Toggle order by %s (descending).", "quantity"));
 
 		return sortFilterButton;
 	}

@@ -30,7 +30,7 @@ package com.larsvansoest.runelite.clueitems.toolbar.component.requirement;
 
 import com.larsvansoest.runelite.clueitems.data.RequirementStatus;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.header.RequirementPanelHeader;
-import com.larsvansoest.runelite.clueitems.toolbar.palette.EmoteClueItemsPanelPalette;
+import com.larsvansoest.runelite.clueitems.toolbar.component.EmoteClueItemsPanelPalette;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;

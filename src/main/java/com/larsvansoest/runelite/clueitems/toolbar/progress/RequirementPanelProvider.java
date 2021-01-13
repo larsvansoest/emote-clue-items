@@ -26,24 +26,23 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.toolbar.component.requirement;
+package com.larsvansoest.runelite.clueitems.toolbar.progress;
 
 import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
 import com.larsvansoest.runelite.clueitems.data.RequirementStatus;
 import com.larsvansoest.runelite.clueitems.data.util.EmoteClueAssociations;
 import com.larsvansoest.runelite.clueitems.data.util.EmoteClueImages;
+import com.larsvansoest.runelite.clueitems.toolbar.component.EmoteClueItemsPanelPalette;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementContainer;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.impl.EmoteClueItemPanel;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.impl.EmoteClueSubItemPanel;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.impl.EmoteClueSubPanel;
-import com.larsvansoest.runelite.clueitems.toolbar.palette.EmoteClueItemsPanelPalette;
 import com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.EmoteClue;
 import java.util.AbstractMap;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.swing.ImageIcon;
@@ -53,7 +52,6 @@ import org.apache.commons.lang3.ArrayUtils;
 
 public class RequirementPanelProvider
 {
-	private final Map<Object, List<? extends UpdatablePanel>> requirementPanelsMap;
 	private final Map<EmoteClueItem, EmoteClueItemPanel[]> emoteClueItemPanelsMap;
 	private final RequirementContainer requirementContainer;
 
@@ -86,6 +84,13 @@ public class RequirementPanelProvider
 				emoteClue -> new EmoteClueSubPanel(emoteClueItemsPanelPalette, emoteClue)
 			));
 
+		// Create ItemId for all emoteclueitem parents
+		Map<Integer, EmoteClueSubItemPanel> emoteClueSubItemPanelMap = EmoteClueAssociations.ItemIdToEmoteClueItemParents.keySet().stream()
+			.collect(Collectors.toMap(
+				Function.identity(),
+				EmoteClueSubItemPanel::new
+			));
+
 		// Add EmoteClues to EmoteClueItem requirements.
 		emoteClueItemParentPanelMap.forEach((emoteClueItem, emoteClueItemPanel) -> {
 			EmoteClue[] emoteClues = EmoteClueAssociations.EmoteClueItemParentToEmoteClues.get(emoteClueItem);
@@ -99,12 +104,9 @@ public class RequirementPanelProvider
 			emoteClueItemPanel.setQuantity(emoteClues.length);
 			difficulties.stream().map(EmoteClueImages::getRibbon).map(ImageIcon::new).map(JLabel::new).forEach(emoteClueItemPanel::addIcon);
 
+			Arrays.stream(EmoteClueAssociations.EmoteClueItemParentToItemIds.get(emoteClueItem)).map(emoteClueSubItemPanelMap::get).forEach(emoteClueItemPanel::addChild);
 			Arrays.stream(emoteClues).map(emoteClueSubPanelMap::get).forEach(emoteClueItemPanel::addChild);
 		});
-
-		this.requirementPanelsMap = new HashMap<>();
-		this.addToRequirementPanelsMap(emoteClueItemParentPanelMap);
-		this.addToRequirementPanelsMap(emoteClueSubPanelMap);
 
 		this.requirementContainer.load(emoteClueItemParentPanelMap.values());
 	}
@@ -113,30 +115,7 @@ public class RequirementPanelProvider
 		return this.requirementContainer;
 	}
 
-	private <T extends UpdatablePanel> void addToRequirementPanelsMap(Map<?, T> requirementPanelMap)
-	{
-		this.requirementPanelsMap.putAll(requirementPanelMap.entrySet().stream().collect(Collectors.toMap(
-			Map.Entry::getKey,
-			entry -> new ArrayList<T>()
-			{{
-				this.add(entry.getValue());
-			}},
-			(l1, l2) -> {
-				l1.addAll(l2);
-				return l1;
-			}
-		)));
-	}
-
 	public final void processPlayerBank(Item[] bankItems) {
-		Arrays.stream(bankItems)
-			.map(Item::getId)
-			.map(EmoteClueAssociations.ItemIdToEmoteClueItems::get)
-			.filter(Objects::nonNull)
-			.flatMap(Arrays::stream)
-			.map(this.emoteClueItemPanelsMap::get)
-			.flatMap(Arrays::stream)
-			.forEach(emoteClueItemPanel -> emoteClueItemPanel.setStatus(RequirementStatus.InProgress));
 	}
 
 	public final void processPlayerInventory(Item[] inventoryItems) {
@@ -145,6 +124,5 @@ public class RequirementPanelProvider
 
 	public final void updateRequirementPanels(Object key, RequirementStatus status)
 	{
-		this.requirementPanelsMap.get(key).forEach(requirementPanel -> requirementPanel.setStatus(status));
 	}
 }

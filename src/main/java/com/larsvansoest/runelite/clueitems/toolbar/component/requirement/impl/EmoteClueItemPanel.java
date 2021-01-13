@@ -30,12 +30,10 @@ package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.impl;
 
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementContainer;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementPanel;
-import com.larsvansoest.runelite.clueitems.toolbar.palette.EmoteClueItemsPanelPalette;
+import com.larsvansoest.runelite.clueitems.toolbar.component.EmoteClueItemsPanelPalette;
 
 public class EmoteClueItemPanel extends RequirementPanel
 {
-
-
 	public EmoteClueItemPanel(RequirementContainer parent, EmoteClueItemsPanelPalette emoteClueItemsPanelPalette, String name) {
 		super(parent, emoteClueItemsPanelPalette, name);
 	}

@@ -693,7 +693,6 @@ public enum EmoteClueItem implements ItemRequirement
 		this.itemId = null;
 		this.children = emoteClueItems;
 		this.name = name;
-		//this.itemIds = Arrays.stream(emoteClueItems).flatMap(emoteClueItem -> emoteClueItem.getItemIds().stream()).collect(Collectors.toCollection(LinkedList::new));
 	}
 
 	public final EmoteClueItem[] getChildren()

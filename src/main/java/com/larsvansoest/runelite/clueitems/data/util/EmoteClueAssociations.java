@@ -34,6 +34,7 @@ import com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluesc
 import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -42,12 +43,12 @@ import org.apache.commons.lang3.ArrayUtils;
 
 public abstract class EmoteClueAssociations
 {
-	public static Stream<EmoteClueItem> flattenSuccessors(EmoteClueItem emoteClueItem)
+	private static Stream<EmoteClueItem> flattenSuccessors(EmoteClueItem emoteClueItem)
 	{
 		EmoteClueItem[] children = emoteClueItem.getChildren();
 		return Stream.concat(
 			Stream.of(emoteClueItem),
-			children == null ? Stream.empty() : Arrays.stream(children)
+			children == null ? Stream.empty() : Arrays.stream(children).flatMap(EmoteClueAssociations::flattenSuccessors)
 		);
 	}
 
@@ -77,12 +78,18 @@ public abstract class EmoteClueAssociations
 			ArrayUtils::addAll
 		));
 
-	public static Map<Integer, EmoteClueItem[]> ItemIdToEmoteClueItems = EmoteClueItemParentToSuccessors.entrySet().stream()
-		.flatMap(entry -> Arrays.stream(entry.getValue())
-			.map(successor -> new AbstractMap.SimpleImmutableEntry<EmoteClueItem, Integer>(entry.getKey(), successor.getItemId())))
+	public static Map<EmoteClueItem, Integer[]> EmoteClueItemParentToItemIds = EmoteClueItemParentToSuccessors.entrySet().stream()
 		.collect(Collectors.toMap(
-			Map.Entry::getValue,
-			entry -> new EmoteClueItem[] { entry.getKey() },
+			Map.Entry::getKey,
+			entry -> Arrays.stream(entry.getValue()).map(EmoteClueItem::getItemId).filter(Objects::nonNull).toArray(Integer[]::new)
+		));
+
+	public static Map<Integer, EmoteClueItem[]> ItemIdToEmoteClueItemParents = EmoteClueItemParentToItemIds.entrySet().stream()
+		.flatMap(entry -> Arrays.stream(entry.getValue())
+			.map(itemId -> new AbstractMap.SimpleImmutableEntry<Integer, EmoteClueItem>(itemId, entry.getKey())))
+		.collect(Collectors.toMap(
+			Map.Entry::getKey,
+			entry -> new EmoteClueItem[]{entry.getValue()},
 			ArrayUtils::addAll
 		));
 }
