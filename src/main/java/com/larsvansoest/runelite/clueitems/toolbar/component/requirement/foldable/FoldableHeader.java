@@ -26,9 +26,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.header;
+package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.foldable;
 
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementPanel;
 import com.larsvansoest.runelite.clueitems.toolbar.component.EmoteClueItemsPanelPalette;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -39,46 +38,46 @@ import java.util.LinkedList;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class RequirementPanelHeader extends JPanel
+public class FoldableHeader extends JPanel
 {
 	private final EmoteClueItemsPanelPalette emoteClueItemsPanelPalette;
-	private final RequirementPanelHeaderTextLabel name;
-	private final RequirementPanelHeaderTextLabel quantity;
-	private final RequirementPanel parent;
-	private final HeaderFoldIcon foldIcon;
+	private final FoldableHeaderText name;
+	private final FoldableHeaderText quantity;
+	private final FoldablePanel parent;
+	private final FoldIcon foldIcon;
 	private final GridBagConstraints c;
 	private final LinkedList<JLabel> icons;
 	private Boolean expanded;
 
-	public RequirementPanelHeader(RequirementPanel parent, EmoteClueItemsPanelPalette emoteClueItemsPanelPalette, Dimension dimension, String name)
+	public FoldableHeader(FoldablePanel parent, EmoteClueItemsPanelPalette emoteClueItemsPanelPalette, Dimension dimension, String name)
 	{
 		this.emoteClueItemsPanelPalette = emoteClueItemsPanelPalette;
-		this.name = new RequirementPanelHeaderTextLabel(dimension, name);
-		this.quantity = new RequirementPanelHeaderTextLabel(new Dimension(7, 15), "-1");
-		this.foldIcon = new HeaderFoldIcon();
+		this.name = new FoldableHeaderText(dimension, name);
+		this.quantity = new FoldableHeaderText(new Dimension(7, 15), "-1");
+		this.foldIcon = new FoldIcon();
 		this.parent = parent;
 		this.icons = new LinkedList<>();
 		this.expanded = false;
-		super.setBackground(RequirementPanelHeader.this.emoteClueItemsPanelPalette.getDefaultColor());
+		super.setBackground(FoldableHeader.this.emoteClueItemsPanelPalette.getDefaultColor());
 
 		super.addMouseListener(new MouseAdapter()
 		{
 			@Override
 			public void mousePressed(MouseEvent e)
 			{
-				RequirementPanelHeader.this.onMousePressed();
+				FoldableHeader.this.onMousePressed();
 			}
 
 			@Override
 			public void mouseEntered(MouseEvent e)
 			{
-				RequirementPanelHeader.super.setBackground(RequirementPanelHeader.this.emoteClueItemsPanelPalette.getHoverColor());
+				FoldableHeader.super.setBackground(FoldableHeader.this.emoteClueItemsPanelPalette.getHoverColor());
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e)
 			{
-				RequirementPanelHeader.super.setBackground(RequirementPanelHeader.this.expanded ? RequirementPanelHeader.this.emoteClueItemsPanelPalette.getSelectColor() : RequirementPanelHeader.this.emoteClueItemsPanelPalette.getDefaultColor());
+				FoldableHeader.super.setBackground(FoldableHeader.this.expanded ? FoldableHeader.this.emoteClueItemsPanelPalette.getSelectColor() : FoldableHeader.this.emoteClueItemsPanelPalette.getDefaultColor());
 			}
 		});
 		super.setLayout(new GridBagLayout());
@@ -124,7 +123,7 @@ public class RequirementPanelHeader extends JPanel
 		this.quantity.setText(String.valueOf(quantity));
 	}
 
-	public final RequirementPanelHeaderTextLabel getNameLabel()
+	public final FoldableHeaderText getNameLabel()
 	{
 		return this.name;
 	}

@@ -26,20 +26,20 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.header;
+package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.foldable;
 
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImage;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-public class HeaderFoldIcon extends JLabel
+public class FoldIcon extends JLabel
 {
 	private static class Arrow {
 		static ImageIcon DOWN = new ImageIcon(EmoteClueImage.Toolbar.Chevron.DOWN);
 		static ImageIcon LEFT = new ImageIcon(EmoteClueImage.Toolbar.Chevron.LEFT);
 	}
 
-	public HeaderFoldIcon() {
+	public FoldIcon() {
 		super.setIcon(Arrow.LEFT);
 	}
 

@@ -26,7 +26,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.header;
+package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.foldable;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -34,13 +34,13 @@ import javax.swing.JLabel;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 
-public class RequirementPanelHeaderTextLabel extends JShadowedLabel
+public class FoldableHeaderText extends JShadowedLabel
 {
 	private static final Color TRANSPARENT = new Color(0, 0, 0, 0);
 
 	private final Color shadow;
 
-	public RequirementPanelHeaderTextLabel(Dimension dimension, String text) {
+	public FoldableHeaderText(Dimension dimension, String text) {
 		super.setHorizontalAlignment(JLabel.CENTER);
 		super.setVerticalAlignment(JLabel.CENTER);
 
@@ -54,7 +54,7 @@ public class RequirementPanelHeaderTextLabel extends JShadowedLabel
 	}
 
 	public void disableShadow() {
-		super.setShadow(RequirementPanelHeaderTextLabel.TRANSPARENT);
+		super.setShadow(FoldableHeaderText.TRANSPARENT);
 	}
 
 	public void enableShadow() {

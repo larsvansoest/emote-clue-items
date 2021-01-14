@@ -29,93 +29,41 @@
 package com.larsvansoest.runelite.clueitems.toolbar.component.requirement;
 
 import com.larsvansoest.runelite.clueitems.data.RequirementStatus;
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.header.RequirementPanelHeader;
 import com.larsvansoest.runelite.clueitems.toolbar.component.EmoteClueItemsPanelPalette;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.foldable.FoldablePanel;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
-public abstract class RequirementPanel extends UpdatablePanel
+public abstract class RequirementPanel extends FoldablePanel
 {
 	private final RequirementContainer parent;
 	private Integer quantity;
-	private final RequirementPanelHeader requirementPanelHeader;
-	private final JPanel foldContent;
-	private final LinkedList<JPanel> foldContentElements;
-	private final GridBagConstraints foldConstraints;
 	private final Map<Object, Object> filterables;
-	private Boolean expanded;
 
 	public RequirementPanel(RequirementContainer parent, EmoteClueItemsPanelPalette emoteClueItemsPanelPalette, String name)
 	{
-		super.setLayout(new GridBagLayout());
-		super.setBackground(emoteClueItemsPanelPalette.getDefaultColor());
-		super.setName(name);
+		super(emoteClueItemsPanelPalette, name);
 
 		this.parent = parent;
-		this.expanded = false;
-
-		this.requirementPanelHeader = new RequirementPanelHeader(this, emoteClueItemsPanelPalette, new Dimension(155, 20), name);
-
-		this.foldContentElements = new LinkedList<>();
-		this.foldContent = new JPanel(new GridBagLayout());
-		this.foldContent.setBackground(emoteClueItemsPanelPalette.getFoldContentColor());
-		this.foldConstraints = new GridBagConstraints();
 		this.filterables = new HashMap<>();
 		this.setFilterable("name", name);
 
 		this.setStatus(RequirementStatus.Unknown);
-		this.requirementPanelHeader.getNameLabel().disableShadow();
-
-		GridBagConstraints c = new GridBagConstraints();
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.gridx = 0;
-		c.gridy = 0;
-		c.weightx = 1;
-		super.add(this.requirementPanelHeader, c);
-
-		c.gridy++;
-		this.foldContent.setVisible(this.expanded);
-		super.add(this.foldContent, c);
+		super.getFoldableHeader().getNameLabel().disableShadow();
 	}
 
 	public final void setStatus(RequirementStatus status)
 	{
-		this.requirementPanelHeader.getNameLabel().enableShadow();
-		this.requirementPanelHeader.getNameLabel().setForeground(status.colour);
+		super.getFoldableHeader().getNameLabel().enableShadow();
+		super.getFoldableHeader().getNameLabel().setForeground(status.colour);
 		this.setFilterable("status", status);
 	}
 
+	@Override
 	public final void onHeaderMousePressed()
 	{
 		this.parent.toggleFold(this);
-	}
-
-	public final void fold()
-	{
-		this.foldContentElements.forEach(this.foldContent::remove);
-		this.requirementPanelHeader.fold();
-		this.foldContent.setVisible(false);
-		this.expanded = false;
-		super.foldKids();
-	}
-
-	public final void unfold()
-	{
-		this.foldConstraints.gridy = 0;
-		this.foldContentElements.forEach(element -> {
-			this.foldContent.add(element, this.foldConstraints);
-			this.foldConstraints.gridy++;
-		});
-		this.requirementPanelHeader.unfold();
-		this.foldContent.setVisible(true);
-		this.expanded = true;
-		super.unfoldKids();
 	}
 
 	public final void setFilterable(Object key, Object value)
@@ -128,14 +76,9 @@ public abstract class RequirementPanel extends UpdatablePanel
 		return this.filterables.get(key);
 	}
 
-	public final void addChild(JPanel content)
-	{
-		this.foldContentElements.add(content);
-	}
-
 	public final void addIcon(JLabel icon)
 	{
-		this.requirementPanelHeader.addIcon(icon);
+		super.getFoldableHeader().addIcon(icon);
 	}
 
 	public Integer getQuantity()
@@ -145,12 +88,7 @@ public abstract class RequirementPanel extends UpdatablePanel
 
 	public void setQuantity(Integer quantity)
 	{
-		this.requirementPanelHeader.setQuantity(quantity);
+		super.getFoldableHeader().setQuantity(quantity);
 		this.quantity = quantity;
-	}
-
-	public final Boolean isExpanded()
-	{
-		return this.expanded;
 	}
 }

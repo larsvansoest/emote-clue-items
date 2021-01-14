@@ -29,16 +29,26 @@
 package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.impl;
 
 import com.larsvansoest.runelite.clueitems.data.RequirementStatus;
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.UpdatablePanel;
-import javax.swing.JLabel;
+import com.larsvansoest.runelite.clueitems.toolbar.component.EmoteClueItemsPanelPalette;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.foldable.FoldablePanel;
 
-public class EmoteClueItemSubPanel extends UpdatablePanel
+public class EmoteClueItemSubPanel extends FoldablePanel
 {
-	private JLabel itemName;
+	public EmoteClueItemSubPanel(EmoteClueItemsPanelPalette emoteClueItemsPanelPalette, String name) {
+		super(emoteClueItemsPanelPalette, name);
+	}
 
-	public EmoteClueItemSubPanel(String name) {
-		this.itemName = new JLabel(name);
-		super.add(this.itemName);
+	@Override
+	public void onHeaderMousePressed()
+	{
+		if (super.isExpanded())
+		{
+			super.fold();
+		}
+		else
+		{
+			super.unfold();
+		}
 	}
 
 	@Override
@@ -46,6 +56,4 @@ public class EmoteClueItemSubPanel extends UpdatablePanel
 	{
 
 	}
-
-
 }

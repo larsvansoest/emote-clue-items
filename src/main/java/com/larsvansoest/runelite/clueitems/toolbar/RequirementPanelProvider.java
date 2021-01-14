@@ -33,11 +33,11 @@ import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
 import com.larsvansoest.runelite.clueitems.data.util.EmoteClueAssociations;
 import com.larsvansoest.runelite.clueitems.data.util.EmoteClueImages;
 import com.larsvansoest.runelite.clueitems.toolbar.component.EmoteClueItemsPanelPalette;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.foldable.FoldablePanel;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementContainer;
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.UpdatablePanel;
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.impl.EmoteClueItemSubPanel;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.impl.EmoteClueItemPanel;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.impl.EmoteClueItemSlotPanel;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.impl.EmoteClueItemSubPanel;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.impl.EmoteCluePanel;
 import com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.EmoteClue;
 import java.util.Arrays;
@@ -54,7 +54,7 @@ public class RequirementPanelProvider
 	private final RequirementContainer requirementContainer;
 	private final Map<EmoteClueItem, EmoteClueItemPanel> emoteClueItemParentPanelMap2;
 
-	public RequirementPanelProvider(EmoteClueItemsPanelPalette emoteClueItemsPanelPalette)
+	public RequirementPanelProvider(EmoteClueItemsPanelPalette palette)
 	{
 		/* Create EmoteClueItem requirement panel network. */
 		this.requirementContainer = new RequirementContainer();
@@ -63,25 +63,25 @@ public class RequirementPanelProvider
 		Map<EmoteClueItem, EmoteClueItemPanel> emoteClueItemPanelMap = EmoteClueAssociations.EmoteClueItemToEmoteClues.keySet().stream()
 			.collect(Collectors.toMap(
 				Function.identity(),
-				key -> new EmoteClueItemPanel(this.requirementContainer, emoteClueItemsPanelPalette, key.getCollectiveName())
+				key -> new EmoteClueItemPanel(this.requirementContainer, palette, key.getCollectiveName())
 			));
 
 		// Create an item panel for all required items.
-		Map<EmoteClueItem, EmoteClueItemSlotPanel> emoteClueItemSlotPanelMap = EmoteClueAssociations.ItemIdToEmoteClueItemSlot.values().stream()
+		Map<EmoteClueItem, EmoteClueItemSlotPanel> slotPanelMap = EmoteClueAssociations.ItemIdToEmoteClueItemSlot.values().stream()
 			.collect(Collectors.toMap(
 				Function.identity(),
 				emoteClueItem -> new EmoteClueItemSlotPanel(emoteClueItem.getCollectiveName())
 			));
 
 		// Create nested parent requirement panels
-		Map<EmoteClueItem, EmoteClueItemSubPanel> emoteClueItemSubPanelMap = new HashMap<>();
-		emoteClueItemPanelMap.forEach((parent, parentPanel) -> this.setNestedPanels(emoteClueItemSubPanelMap, emoteClueItemSlotPanelMap, parent, parentPanel));
+		Map<EmoteClueItem, EmoteClueItemSubPanel> subPanelMap = new HashMap<>();
+		emoteClueItemPanelMap.forEach((parent, parentPanel) -> this.setNestedPanels(subPanelMap, slotPanelMap, palette, parent, parentPanel));
 
 		// Create EmoteClueItem-EmoteClue (*-1) sub-panels.
 		Map<EmoteClue, EmoteCluePanel> emoteCluePanelMap = EmoteClue.CLUES.stream()
 			.collect(Collectors.toMap(
 				Function.identity(),
-				emoteClue -> new EmoteCluePanel(emoteClueItemsPanelPalette, emoteClue)
+				emoteClue -> new EmoteCluePanel(palette, emoteClue)
 			));
 
 		// Add EmoteClue properties to EmoteClueItem requirements.
@@ -99,28 +99,28 @@ public class RequirementPanelProvider
 		this.emoteClueItemParentPanelMap2 = emoteClueItemPanelMap;
 	}
 
-	private void setNestedPanels(Map<EmoteClueItem, EmoteClueItemSubPanel> emoteClueItemSubPanelMap, Map<EmoteClueItem, EmoteClueItemSlotPanel> emoteClueItemSlotPanelMap, EmoteClueItem child, UpdatablePanel updatablePanel) {
-		EmoteClueItemSlotPanel childSlotPanel = emoteClueItemSlotPanelMap.get(child);
+	private void setNestedPanels(Map<EmoteClueItem, EmoteClueItemSubPanel> subPanelMap, Map<EmoteClueItem, EmoteClueItemSlotPanel> slotPanelMap, EmoteClueItemsPanelPalette palette, EmoteClueItem child, FoldablePanel updatablePanel) {
+		EmoteClueItemSlotPanel childSlotPanel = slotPanelMap.get(child);
 		if(childSlotPanel != null) {
-			updatablePanel.addKid(childSlotPanel);
+			updatablePanel.addChild(childSlotPanel);
 			return;
 		}
 
-		EmoteClueItemSubPanel mappedChildPanel = emoteClueItemSubPanelMap.get(child);
+		EmoteClueItemSubPanel mappedChildPanel = subPanelMap.get(child);
 		EmoteClueItemSubPanel childPanel;
 		if(mappedChildPanel == null) {
-			childPanel = new EmoteClueItemSubPanel(child.getCollectiveName());
-			emoteClueItemSubPanelMap.put(child, childPanel);
+			childPanel = new EmoteClueItemSubPanel(palette, child.getCollectiveName());
+			subPanelMap.put(child, childPanel);
 		}
 		else {
 			childPanel = mappedChildPanel;
 		}
-		updatablePanel.addKid(childPanel);
+		updatablePanel.addChild(childPanel);
 
 		List<EmoteClueItem> successors = child.getChildren();
 		if (successors != null) {
 			for(EmoteClueItem successor : successors) {
-				this.setNestedPanels(emoteClueItemSubPanelMap, emoteClueItemSlotPanelMap, successor, childPanel)
+				this.setNestedPanels(subPanelMap, slotPanelMap, palette, successor, childPanel);
 			}
 		}
 	}
