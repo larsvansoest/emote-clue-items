@@ -34,23 +34,17 @@ import com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluesc
 import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import net.runelite.client.plugins.cluescrolls.clues.item.SlotLimitationRequirement;
 import org.apache.commons.lang3.ArrayUtils;
 
 public abstract class EmoteClueAssociations
 {
-	private static Stream<EmoteClueItem> flattenSuccessors(EmoteClueItem emoteClueItem)
-	{
-		EmoteClueItem[] children = emoteClueItem.getChildren();
-		return Stream.concat(
-			Stream.of(emoteClueItem),
-			children == null ? Stream.empty() : Arrays.stream(children).flatMap(EmoteClueAssociations::flattenSuccessors)
-		);
-	}
+	public static Map<Integer, EmoteClueItem> ItemIdToEmoteClueItemSlot = Arrays.stream(EmoteClueItem.values()).filter(emoteClueItem -> emoteClueItem.getItemId() != null).collect(Collectors.toMap(
+		EmoteClueItem::getItemId,
+		Function.identity()
+	));
 
 	public static Map<EmoteClueDifficulty, EmoteClue[]> DifficultyToEmoteClues = EmoteClue.CLUES.stream()
 		.map(emoteClue -> new AbstractMap.SimpleImmutableEntry<>(emoteClue, emoteClue.getEmoteClueDifficulty()))
@@ -60,7 +54,7 @@ public abstract class EmoteClueAssociations
 			ArrayUtils::addAll
 		));
 
-	public static Map<EmoteClueItem, EmoteClue[]> EmoteClueItemParentToEmoteClues = EmoteClue.CLUES.stream()
+	public static Map<EmoteClueItem, EmoteClue[]> EmoteClueItemToEmoteClues = EmoteClue.CLUES.stream()
 		.flatMap(emoteClue -> Arrays.stream(emoteClue.getItemRequirements())
 			.filter(itemRequirement -> !(itemRequirement instanceof SlotLimitationRequirement))
 			.map(itemRequirement -> (EmoteClueItem) itemRequirement)
@@ -68,28 +62,6 @@ public abstract class EmoteClueAssociations
 		.collect(Collectors.toMap(
 			AbstractMap.SimpleImmutableEntry::getValue,
 			entry -> new EmoteClue[]{entry.getKey()},
-			ArrayUtils::addAll
-		));
-
-	public static Map<EmoteClueItem, EmoteClueItem[]> EmoteClueItemParentToSuccessors = EmoteClueItemParentToEmoteClues.keySet().stream()
-		.collect(Collectors.toMap(
-			Function.identity(),
-			parent -> EmoteClueAssociations.flattenSuccessors(parent).toArray(EmoteClueItem[]::new),
-			ArrayUtils::addAll
-		));
-
-	public static Map<EmoteClueItem, Integer[]> EmoteClueItemParentToItemIds = EmoteClueItemParentToSuccessors.entrySet().stream()
-		.collect(Collectors.toMap(
-			Map.Entry::getKey,
-			entry -> Arrays.stream(entry.getValue()).map(EmoteClueItem::getItemId).filter(Objects::nonNull).toArray(Integer[]::new)
-		));
-
-	public static Map<Integer, EmoteClueItem[]> ItemIdToEmoteClueItemParents = EmoteClueItemParentToItemIds.entrySet().stream()
-		.flatMap(entry -> Arrays.stream(entry.getValue())
-			.map(itemId -> new AbstractMap.SimpleImmutableEntry<Integer, EmoteClueItem>(itemId, entry.getKey())))
-		.collect(Collectors.toMap(
-			Map.Entry::getKey,
-			entry -> new EmoteClueItem[]{entry.getValue()},
 			ArrayUtils::addAll
 		));
 }

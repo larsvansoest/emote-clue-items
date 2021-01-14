@@ -29,9 +29,43 @@
 package com.larsvansoest.runelite.clueitems.toolbar.component.requirement;
 
 import com.larsvansoest.runelite.clueitems.data.RequirementStatus;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.util.LinkedList;
 import javax.swing.JPanel;
 
 public abstract class UpdatablePanel extends JPanel
 {
+	private final JPanel foldContent;
+	private final LinkedList<UpdatablePanel> foldContentElements;
+	private final GridBagConstraints foldConstraints;
+
+	public UpdatablePanel() {
+		this.foldContent = new JPanel(new GridBagLayout());
+		this.foldContentElements = new LinkedList<>();
+		this.foldConstraints = new GridBagConstraints();
+	}
+
+	public void addKid(UpdatablePanel kid) {
+		this.foldContentElements.add(kid);
+	}
+
+	public void foldKids() {
+		this.foldContentElements.forEach(this.foldContent::remove);
+		this.foldContent.setVisible(false);
+		this.foldContentElements.forEach(UpdatablePanel::foldKids);
+	}
+
+	public void unfoldKids() {
+		this.foldConstraints.gridy = 0;
+		this.foldContentElements.forEach(element -> {
+			this.foldContent.add(element, this.foldConstraints);
+			this.foldConstraints.gridy++;
+		});
+		this.foldContentElements.forEach(UpdatablePanel::unfoldKids);
+	}
+
 	public abstract void setStatus(RequirementStatus requirementStatus);
+	{
+	}
 }

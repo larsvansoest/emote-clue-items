@@ -36,7 +36,6 @@ import com.larsvansoest.runelite.clueitems.toolbar.component.footer.FooterPanel;
 import com.larsvansoest.runelite.clueitems.toolbar.component.input.FilterButton;
 import com.larsvansoest.runelite.clueitems.toolbar.component.input.SearchBarFactory;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementContainer;
-import com.larsvansoest.runelite.clueitems.toolbar.progress.RequirementPanelProvider;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementSortType;
 import com.larsvansoest.runelite.clueitems.toolbar.component.EmoteClueItemsPanelPalette;
 import java.awt.Dimension;

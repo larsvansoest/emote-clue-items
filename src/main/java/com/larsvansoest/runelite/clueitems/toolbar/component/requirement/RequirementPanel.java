@@ -102,6 +102,7 @@ public abstract class RequirementPanel extends UpdatablePanel
 		this.requirementPanelHeader.fold();
 		this.foldContent.setVisible(false);
 		this.expanded = false;
+		super.foldKids();
 	}
 
 	public final void unfold()
@@ -114,6 +115,7 @@ public abstract class RequirementPanel extends UpdatablePanel
 		this.requirementPanelHeader.unfold();
 		this.foldContent.setVisible(true);
 		this.expanded = true;
+		super.unfoldKids();
 	}
 
 	public final void setFilterable(Object key, Object value)

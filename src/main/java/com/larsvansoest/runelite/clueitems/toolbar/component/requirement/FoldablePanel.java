@@ -26,43 +26,9 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.toolbar.progress;
+package com.larsvansoest.runelite.clueitems.toolbar.component.requirement;
 
-import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
-
-class EmoteClueItemData
+abstract class FoldablePanel extends UpdatablePanel
 {
-	private final EmoteClueItem[] requirements;
 
-	private Integer bankQuantity;
-	private Integer inventoryQuantity;
-
-	public EmoteClueItemData(EmoteClueItem[] requirements) {
-		this.requirements = requirements;
-	}
-
-	public EmoteClueItem[] getRequirements()
-	{
-		return this.requirements;
-	}
-
-	public Integer getBankQuantity()
-	{
-		return this.bankQuantity;
-	}
-
-	public void setBankQuantity(Integer bankQuantity)
-	{
-		this.bankQuantity = bankQuantity;
-	}
-
-	public Integer getInventoryQuantity()
-	{
-		return this.inventoryQuantity;
-	}
-
-	public void setInventoryQuantity(Integer inventoryQuantity)
-	{
-		this.inventoryQuantity = inventoryQuantity;
-	}
 }

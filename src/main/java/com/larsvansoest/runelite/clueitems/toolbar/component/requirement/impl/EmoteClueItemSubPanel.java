@@ -32,19 +32,20 @@ import com.larsvansoest.runelite.clueitems.data.RequirementStatus;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.UpdatablePanel;
 import javax.swing.JLabel;
 
-public class EmoteClueSubItemPanel extends UpdatablePanel
+public class EmoteClueItemSubPanel extends UpdatablePanel
 {
-	private JLabel itemIdLabel;
+	private JLabel itemName;
 
-	public EmoteClueSubItemPanel(Integer itemId) {
-		this.itemIdLabel = new JLabel(String.valueOf(itemId));
-		super.add(this.itemIdLabel);
+	public EmoteClueItemSubPanel(String name) {
+		this.itemName = new JLabel(name);
+		super.add(this.itemName);
 	}
-
 
 	@Override
 	public void setStatus(RequirementStatus requirementStatus)
 	{
 
 	}
+
+
 }

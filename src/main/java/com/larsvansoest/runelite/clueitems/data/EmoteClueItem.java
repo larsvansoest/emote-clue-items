@@ -28,6 +28,9 @@
 
 package com.larsvansoest.runelite.clueitems.data;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
@@ -675,33 +678,54 @@ public enum EmoteClueItem implements ItemRequirement
 	ANY_MENAPHITE_SET("Menaphite set", false, EmoteClueItem.ALL_MENAPHITE_SET_PURPLE, ALL_MENAPHITE_SET_RED);
 
 	private final ItemRequirement itemRequirement;
-	private final EmoteClueItem[] children;
 	private final Integer itemId;
 	private final String name;
+
+	private final List<EmoteClueItem> children;
+	private final List<EmoteClueItem> parents;
 
 	EmoteClueItem(String name, int itemId)
 	{
 		this.itemRequirement = ItemRequirements.item(itemId);
 		this.itemId = itemId;
-		this.children = null;
 		this.name = name;
+		this.children = null;
+		this.parents = new LinkedList<>();
 	}
 
 	EmoteClueItem(String name, Boolean isStrong, EmoteClueItem... emoteClueItems)
 	{
 		this.itemRequirement = isStrong ? ItemRequirements.all(emoteClueItems) : ItemRequirements.any(name, emoteClueItems);
 		this.itemId = null;
-		this.children = emoteClueItems;
 		this.name = name;
+		this.children = Arrays.asList(emoteClueItems);
+		for(EmoteClueItem child : emoteClueItems) {
+			child.addParent(this);
+		}
+		this.parents = new LinkedList<>();
 	}
 
-	public final EmoteClueItem[] getChildren()
+	public final List<EmoteClueItem> getChildren()
 	{
 		return this.children;
 	}
 
+	public final List<EmoteClueItem> getParents()
+	{
+		return this.parents;
+	}
+
 	public final Integer getItemId() {
 		return this.itemId;
+	}
+
+	public final void addParent(EmoteClueItem parent) {
+		this.parents.add(parent);
+	}
+
+	public ItemRequirement getItemRequirement()
+	{
+		return this.itemRequirement;
 	}
 
 	@Override
@@ -717,8 +741,10 @@ public enum EmoteClueItem implements ItemRequirement
 	}
 
 	@Override
-	public String getCollectiveName(Client client)
+	public String getCollectiveName(Client $)
 	{
-		return this.name;
+		return this.getCollectiveName();
 	}
+
+	public String getCollectiveName() { return this.name; }
 }

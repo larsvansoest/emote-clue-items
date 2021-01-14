@@ -33,8 +33,10 @@ import com.larsvansoest.runelite.clueitems.data.EmoteClueImage;
 import com.larsvansoest.runelite.clueitems.data.util.EmoteClueImages;
 import com.larsvansoest.runelite.clueitems.overlay.EmoteClueItemOverlay;
 import com.larsvansoest.runelite.clueitems.toolbar.EmoteClueItemsPanel;
-import com.larsvansoest.runelite.clueitems.toolbar.progress.RequirementPanelProvider;
+import com.larsvansoest.runelite.clueitems.toolbar.RequirementPanelProvider;
 import com.larsvansoest.runelite.clueitems.toolbar.component.EmoteClueItemsPanelPalette;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.impl.EmoteClueItemPanel;
+import com.larsvansoest.runelite.clueitems.toolbar.progress.EmoteClueItemsInventoryMonitor;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -75,6 +77,7 @@ public class EmoteClueItemsPlugin extends Plugin
 	private NavigationButton navigationButton;
 	private RequirementPanelProvider requirementPanelProvider;
 	private EmoteClueItemsPanel emoteClueItemsPanel;
+	private EmoteClueItemsInventoryMonitor emoteClueItemMonitor;
 
 	@Override
 	protected void startUp()
@@ -96,15 +99,22 @@ public class EmoteClueItemsPlugin extends Plugin
 			.build();
 
 		this.clientToolbar.addNavigation(this.navigationButton);
+
+		this.emoteClueItemMonitor = new EmoteClueItemsInventoryMonitor();
 	}
 
 	@Subscribe
 	protected void onItemContainerChanged(ItemContainerChanged event) {
-		if(event.getContainerId() == 95) {
-			//this.requirementPanelProvider.processPlayerBank(event.getItemContainer().getItems());
-			//Arrays.stream(EmoteClueRequirements.Monitor(event.getItemContainer().getItems()))
-			//	.forEach(requirement -> this.requirementPanelProvider.updateRequirementPanels(requirement, RequirementStatus.Complete));
-			//this.emoteClueItemsPanel.search();
+		if(event.getContainerId() == 95 || event.getContainerId() == 93) {
+			this.emoteClueItemMonitor.processItems(event.getItemContainer().getItems());
+			this.emoteClueItemMonitor.getRequirementStatusMap()
+				.forEach(((emoteClueItem, requirementStatus) -> {
+					EmoteClueItemPanel panel = this.requirementPanelProvider.getEmoteClueItemPanel(emoteClueItem);
+					if (panel != null) {
+						panel.setStatus(requirementStatus);
+					}
+				}));
+			this.emoteClueItemsPanel.removeDisclaimer();
 		}
 	}
 

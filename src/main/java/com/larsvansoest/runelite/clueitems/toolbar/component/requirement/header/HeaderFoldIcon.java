@@ -32,7 +32,7 @@ import com.larsvansoest.runelite.clueitems.data.EmoteClueImage;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-class HeaderFoldIcon extends JLabel
+public class HeaderFoldIcon extends JLabel
 {
 	private static class Arrow {
 		static ImageIcon DOWN = new ImageIcon(EmoteClueImage.Toolbar.Chevron.DOWN);

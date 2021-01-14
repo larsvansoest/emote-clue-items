@@ -26,17 +26,28 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.toolbar.progress;
+package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.impl;
 
-import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
-import java.util.LinkedList;
+import com.larsvansoest.runelite.clueitems.data.RequirementStatus;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.UpdatablePanel;
+import com.larsvansoest.runelite.clueitems.toolbar.component.EmoteClueItemsPanelPalette;
+import com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.EmoteClue;
+import java.awt.GridBagLayout;
+import java.util.concurrent.ThreadLocalRandom;
+import javax.swing.JLabel;
 
-public class EmoteClueItemCollector
+public class EmoteCluePanel extends UpdatablePanel
 {
-	private final EmoteClueItem emoteClueItem;
-	private LinkedList<Integer> itemIds;
+	public EmoteCluePanel(EmoteClueItemsPanelPalette emoteClueItemsPanelPalette, EmoteClue clue) {
+		super.setLayout(new GridBagLayout());
+		super.setBackground(emoteClueItemsPanelPalette.getFoldContentElementColor());
+		JLabel debug = new JLabel();
+		debug.setText(String.valueOf(ThreadLocalRandom.current().nextInt(0, 100)));
+		super.add(debug);
+	}
 
-	public EmoteClueItemCollector(EmoteClueItem emoteClueItem) {
-		this.emoteClueItem = emoteClueItem;
+	@Override
+	public void setStatus(RequirementStatus requirementStatus)
+	{
 	}
 }
