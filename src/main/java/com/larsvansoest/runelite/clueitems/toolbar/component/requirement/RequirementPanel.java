@@ -53,11 +53,11 @@ public abstract class RequirementPanel extends FoldablePanel
 		super.getFoldableHeader().getNameLabel().disableShadow();
 	}
 
+	@Override
 	public final void setStatus(RequirementStatus status)
 	{
-		super.getFoldableHeader().getNameLabel().enableShadow();
-		super.getFoldableHeader().getNameLabel().setForeground(status.colour);
 		this.setFilterable("status", status);
+		super.setStatus(status);
 	}
 
 	@Override

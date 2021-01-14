@@ -30,11 +30,13 @@ package com.larsvansoest.runelite.clueitems.toolbar;
 
 import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
+import com.larsvansoest.runelite.clueitems.data.RequirementStatus;
 import com.larsvansoest.runelite.clueitems.data.util.EmoteClueAssociations;
 import com.larsvansoest.runelite.clueitems.data.util.EmoteClueImages;
 import com.larsvansoest.runelite.clueitems.toolbar.component.EmoteClueItemsPanelPalette;
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.foldable.FoldablePanel;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementContainer;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.UpdatablePanel;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.foldable.FoldablePanel;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.impl.EmoteClueItemPanel;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.impl.EmoteClueItemSlotPanel;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.impl.EmoteClueItemSubPanel;
@@ -42,6 +44,7 @@ import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.impl.Em
 import com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.EmoteClue;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -52,12 +55,13 @@ import javax.swing.JLabel;
 public class RequirementPanelProvider
 {
 	private final RequirementContainer requirementContainer;
-	private final Map<EmoteClueItem, EmoteClueItemPanel> emoteClueItemParentPanelMap2;
+	private final Map<EmoteClueItem, LinkedList<UpdatablePanel>> updatablePanelMap;
 
 	public RequirementPanelProvider(EmoteClueItemsPanelPalette palette)
 	{
 		/* Create EmoteClueItem requirement panel network. */
 		this.requirementContainer = new RequirementContainer();
+		this.updatablePanelMap = new HashMap<>();
 
 		// Create parent EmoteClueItem panels.
 		Map<EmoteClueItem, EmoteClueItemPanel> emoteClueItemPanelMap = EmoteClueAssociations.EmoteClueItemToEmoteClues.keySet().stream()
@@ -95,41 +99,73 @@ public class RequirementPanelProvider
 			Arrays.stream(emoteClues).map(emoteCluePanelMap::get).forEach(emoteClueItemPanel::addChild);
 		});
 
+		this.addToRequirementPanelsMap(emoteClueItemPanelMap);
+		this.addToRequirementPanelsMap(slotPanelMap);
+		this.addToRequirementPanelsMap(subPanelMap);
+
 		this.requirementContainer.load(emoteClueItemPanelMap.values());
-		this.emoteClueItemParentPanelMap2 = emoteClueItemPanelMap;
 	}
 
-	private void setNestedPanels(Map<EmoteClueItem, EmoteClueItemSubPanel> subPanelMap, Map<EmoteClueItem, EmoteClueItemSlotPanel> slotPanelMap, EmoteClueItemsPanelPalette palette, EmoteClueItem child, FoldablePanel updatablePanel) {
+	private void setNestedPanels(Map<EmoteClueItem, EmoteClueItemSubPanel> subPanelMap, Map<EmoteClueItem, EmoteClueItemSlotPanel> slotPanelMap, EmoteClueItemsPanelPalette palette, EmoteClueItem child, FoldablePanel updatablePanel)
+	{
 		EmoteClueItemSlotPanel childSlotPanel = slotPanelMap.get(child);
-		if(childSlotPanel != null) {
+		if (childSlotPanel != null)
+		{
 			updatablePanel.addChild(childSlotPanel);
 			return;
 		}
 
 		EmoteClueItemSubPanel mappedChildPanel = subPanelMap.get(child);
 		EmoteClueItemSubPanel childPanel;
-		if(mappedChildPanel == null) {
+		if (mappedChildPanel == null)
+		{
 			childPanel = new EmoteClueItemSubPanel(palette, child.getCollectiveName());
 			subPanelMap.put(child, childPanel);
 		}
-		else {
+		else
+		{
 			childPanel = mappedChildPanel;
 		}
 		updatablePanel.addChild(childPanel);
 
 		List<EmoteClueItem> successors = child.getChildren();
-		if (successors != null) {
-			for(EmoteClueItem successor : successors) {
+		if (successors != null)
+		{
+			for (EmoteClueItem successor : successors)
+			{
 				this.setNestedPanels(subPanelMap, slotPanelMap, palette, successor, childPanel);
 			}
 		}
 	}
 
-	public RequirementContainer getRequirementContainer() {
-		return this.requirementContainer;
+	private void addToRequirementPanelsMap(Map<EmoteClueItem, ? extends UpdatablePanel> requirementPanelMap)
+	{
+		requirementPanelMap.forEach((emoteClueItem, updatablePanel) ->
+			this.updatablePanelMap.merge(emoteClueItem, new LinkedList<UpdatablePanel>()
+				{{
+					this.add(updatablePanel);
+				}},
+				(l1, l2) -> {
+					l1.addAll(l2);
+					return l1;
+				}
+			));
 	}
 
-	public EmoteClueItemPanel getEmoteClueItemPanel(EmoteClueItem emoteClueItem) {
-		return this.emoteClueItemParentPanelMap2.get(emoteClueItem);
+	public void setStatus(EmoteClueItem emoteClueItem, RequirementStatus status)
+	{
+		LinkedList<UpdatablePanel> panels = this.updatablePanelMap.get(emoteClueItem);
+		if (panels != null)
+		{
+			for (UpdatablePanel panel : panels)
+			{
+				panel.setStatus(status);
+			}
+		}
+	}
+
+	public RequirementContainer getRequirementContainer()
+	{
+		return this.requirementContainer;
 	}
 }

@@ -35,7 +35,6 @@ import com.larsvansoest.runelite.clueitems.overlay.EmoteClueItemOverlay;
 import com.larsvansoest.runelite.clueitems.toolbar.EmoteClueItemsPanel;
 import com.larsvansoest.runelite.clueitems.toolbar.RequirementPanelProvider;
 import com.larsvansoest.runelite.clueitems.toolbar.component.EmoteClueItemsPanelPalette;
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.impl.EmoteClueItemPanel;
 import com.larsvansoest.runelite.clueitems.toolbar.progress.EmoteClueItemsInventoryMonitor;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -109,10 +108,7 @@ public class EmoteClueItemsPlugin extends Plugin
 			this.emoteClueItemMonitor.processItems(event.getItemContainer().getItems());
 			this.emoteClueItemMonitor.getRequirementStatusMap()
 				.forEach(((emoteClueItem, requirementStatus) -> {
-					EmoteClueItemPanel panel = this.requirementPanelProvider.getEmoteClueItemPanel(emoteClueItem);
-					if (panel != null) {
-						panel.setStatus(requirementStatus);
-					}
+					this.requirementPanelProvider.setStatus(emoteClueItem, requirementStatus);
 				}));
 			this.emoteClueItemsPanel.removeDisclaimer();
 		}

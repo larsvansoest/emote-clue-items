@@ -54,6 +54,7 @@ public class FoldableHeader extends JPanel
 		this.emoteClueItemsPanelPalette = emoteClueItemsPanelPalette;
 		this.name = new FoldableHeaderText(dimension, name);
 		this.quantity = new FoldableHeaderText(new Dimension(7, 15), "-1");
+		this.quantity.setVisible(false);
 		this.foldIcon = new FoldIcon();
 		this.parent = parent;
 		this.icons = new LinkedList<>();
@@ -121,6 +122,7 @@ public class FoldableHeader extends JPanel
 
 	public final void setQuantity(int quantity) {
 		this.quantity.setText(String.valueOf(quantity));
+		this.quantity.setVisible(true);
 	}
 
 	public final FoldableHeaderText getNameLabel()

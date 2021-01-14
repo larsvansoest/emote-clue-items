@@ -37,6 +37,4 @@ public abstract class UpdatablePanel extends JPanel
 	}
 
 	public abstract void setStatus(RequirementStatus requirementStatus);
-	{
-	}
 }

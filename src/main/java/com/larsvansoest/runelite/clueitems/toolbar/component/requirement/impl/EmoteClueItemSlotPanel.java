@@ -45,6 +45,6 @@ public class EmoteClueItemSlotPanel extends UpdatablePanel
 	@Override
 	public void setStatus(RequirementStatus requirementStatus)
 	{
-
+		this.itemName.setForeground(requirementStatus.colour);
 	}
 }

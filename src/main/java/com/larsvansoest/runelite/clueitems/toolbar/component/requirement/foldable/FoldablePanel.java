@@ -28,6 +28,7 @@
 
 package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.foldable;
 
+import com.larsvansoest.runelite.clueitems.data.RequirementStatus;
 import com.larsvansoest.runelite.clueitems.toolbar.component.EmoteClueItemsPanelPalette;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.UpdatablePanel;
 import java.awt.Dimension;
@@ -83,10 +84,11 @@ public abstract class FoldablePanel extends UpdatablePanel
 		this.foldableHeader.fold();
 		this.foldContentElements.forEach(this.foldContent::remove);
 		this.expanded = false;
+		super.revalidate();
+		super.repaint();
 	}
 
 	public void unfold() {
-		this.foldContentFoldablePanels.forEach(FoldablePanel::unfold);
 		this.foldConstraints.gridy = 0;
 		this.foldableHeader.unfold();
 		this.foldContentElements.forEach(element -> {
@@ -95,6 +97,15 @@ public abstract class FoldablePanel extends UpdatablePanel
 		});
 		this.foldContent.setVisible(true);
 		this.expanded = true;
+		super.revalidate();
+		super.repaint();
+	}
+
+	@Override
+	public void setStatus(RequirementStatus requirementStatus)
+	{
+		this.foldableHeader.getNameLabel().enableShadow();
+		this.foldableHeader.getNameLabel().setForeground(requirementStatus.colour);
 	}
 
 	public final Boolean isExpanded()

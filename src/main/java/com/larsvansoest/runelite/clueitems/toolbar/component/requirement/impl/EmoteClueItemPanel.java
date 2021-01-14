@@ -37,6 +37,4 @@ public class EmoteClueItemPanel extends RequirementPanel
 	public EmoteClueItemPanel(RequirementContainer parent, EmoteClueItemsPanelPalette emoteClueItemsPanelPalette, String name) {
 		super(parent, emoteClueItemsPanelPalette, name);
 	}
-
-
 }
