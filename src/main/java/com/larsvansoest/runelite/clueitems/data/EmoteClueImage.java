@@ -80,6 +80,7 @@ public abstract class EmoteClueImage
 		public static class Requirement {
 			private static final String folder = path(Toolbar.folder, "requirement");
 			public static final BufferedImage INVENTORY = bufferedImage(Requirement.folder, "inventory.png");
+			public static final BufferedImage STASH_UNIT = bufferedImage(Requirement.folder, "stash-unit.png");
 		}
 	}
 

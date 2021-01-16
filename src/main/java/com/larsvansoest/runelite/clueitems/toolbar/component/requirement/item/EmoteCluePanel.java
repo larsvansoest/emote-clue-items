@@ -26,7 +26,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.impl;
+package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.item;
 
 import com.larsvansoest.runelite.clueitems.data.RequirementStatus;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.UpdatablePanel;

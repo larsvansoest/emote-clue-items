@@ -26,44 +26,41 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.foldable;
+package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.item.inventory;
 
+import com.larsvansoest.runelite.clueitems.data.EmoteClueImage;
 import java.awt.Color;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import javax.swing.JComponent;
+import java.awt.Dimension;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.JLayeredPane;
+import javax.swing.SwingConstants;
+import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 
-public class FoldableHeaderIconsPanel extends JPanel
+public class StashUnitLabel extends JLayeredPane
 {
-	private final GridBagConstraints c;
+	private static final Dimension SIZE = new Dimension(16,20);
 
-	public FoldableHeaderIconsPanel(boolean alignRight, JLabel... iconLabels) {
-		super(new GridBagLayout());
+	public StashUnitLabel(String toolTip, Character c) {
+		super.setToolTipText(toolTip);
+		super.setLayout(null);
+
+		super.setPreferredSize(StashUnitLabel.SIZE);
+		super.setMinimumSize(StashUnitLabel.SIZE);
+		super.setMaximumSize(StashUnitLabel.SIZE);
 		super.setBackground(new Color(0, 0, 0, 0));
-		this.c = new GridBagConstraints();
-		this.c.gridx = 0;
-		this.c.gridy = 0;
-		this.c.fill	= GridBagConstraints.BOTH;
-		this.c.weightx = 0;
 
-		if(alignRight) {
-			this.c.anchor = GridBagConstraints.EAST;
-			this.c.insets.left = 5;
-		}
-		else {
-			this.c.anchor = GridBagConstraints.WEST;
-			this.c.insets.right = 5;
-		}
+		JLabel stashIcon = new JLabel(new ImageIcon(EmoteClueImage.Toolbar.Requirement.STASH_UNIT));
+		stashIcon.setBounds(0, 0, 16, 17);
 
-		for(JLabel iconLabel : iconLabels) {
-			this.addIcon(iconLabel);
-		}
-	}
+		JLabel stashChar = new JShadowedLabel(c.toString().toLowerCase());
+		stashChar.setHorizontalAlignment(SwingConstants.RIGHT);
+		stashChar.setVerticalAlignment(SwingConstants.BOTTOM);
+		stashChar.setFont(FontManager.getRunescapeBoldFont());
+		stashChar.setBounds(0, 3, 16, 17);
 
-	public void addIcon(JComponent iconLabel) {
-		super.add(iconLabel, this.c);
-		this.c.gridx++;
+		super.add(stashIcon, Integer.valueOf(0), 0);
+		super.add(stashChar,  Integer.valueOf(1), 0);
 	}
 }

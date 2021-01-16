@@ -26,43 +26,29 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.impl;
+package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.item;
 
-import com.larsvansoest.runelite.clueitems.data.RequirementStatus;
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.UpdatablePanel;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import com.larsvansoest.runelite.clueitems.toolbar.component.EmoteClueItemsPanelPalette;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementContainer;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementPanel;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.foldable.FoldablePanel;
+import java.util.List;
 import javax.swing.JLabel;
-import net.runelite.client.util.AsyncBufferedImage;
 
-public class EmoteClueItemSlotPanel extends UpdatablePanel
+public class EmoteClueItemPanel extends RequirementPanel
 {
-	JLabel itemSlotStatus;
-
-	public EmoteClueItemSlotPanel(AsyncBufferedImage itemImg, String name) {
-		super.setLayout(new GridBagLayout());
-		JLabel itemIcon = new JLabel();
-		itemImg.addTo(itemIcon);
-		itemIcon.setToolTipText(name);
-		this.itemSlotStatus = new JLabel();
-
-		GridBagConstraints c = new GridBagConstraints();
-		c.gridx = 0;
-		c.gridy = 0;
-		c.fill = GridBagConstraints.BOTH;
-		c.weightx = 1;
-
-		super.add(itemIcon, c);
-
-		c.gridy++;
-		super.add(this.itemSlotStatus, c);
+	public EmoteClueItemPanel(RequirementContainer parent, EmoteClueItemsPanelPalette emoteClueItemsPanelPalette, String name) {
+		super(parent, emoteClueItemsPanelPalette, name);
+		super.getFoldableHeader().getNameLabel().setHorizontalAlignment(JLabel.CENTER);
 	}
-
 
 	@Override
-	public void setStatus(RequirementStatus requirementStatus)
+	public void unfold()
 	{
-		this.itemSlotStatus.setForeground(requirementStatus.colour);
+		List<FoldablePanel> foldablePanels = super.getFoldContentFoldablePanels();
+		if (foldablePanels.size() > 0) {
+			foldablePanels.get(0).unfold();
+		}
+		super.unfold();
 	}
-
 }

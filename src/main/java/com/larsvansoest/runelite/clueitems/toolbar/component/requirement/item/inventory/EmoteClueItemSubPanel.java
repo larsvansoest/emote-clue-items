@@ -26,7 +26,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.impl;
+package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.item.inventory;
 
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImage;
 import com.larsvansoest.runelite.clueitems.data.RequirementStatus;
@@ -59,11 +59,8 @@ public class EmoteClueItemSubPanel extends FoldablePanel
 
 		this.amountLabel = new FoldableHeaderText("");
 		this.amountLabel.setHorizontalAlignment(JLabel.CENTER);
-		this.setCompletedAmount(0);
-		this.setRequiredAmount(0);
 
 		super.addLeftIcon(new JLabel(new ImageIcon(EmoteClueImage.Toolbar.Requirement.INVENTORY)));
-		super.addRightIcon(this.amountLabel);
 
 		this.foldContentConstraints = new GridBagConstraints();
 		this.foldContentConstraints.weightx = 0;
@@ -134,6 +131,14 @@ public class EmoteClueItemSubPanel extends FoldablePanel
 
 	private void updateAmount() {
 		this.amountLabel.setText(String.format("%s/%s", this.completedAmount, this.requiredAmount));
+	}
+
+	public void addAmountLabel() {
+		super.addRightIcon(this.amountLabel);
+	}
+
+	public void addStashUnitIcon(StashUnitLabel stashUnitLabel) {
+		super.addRightIcon(stashUnitLabel);
 	}
 
 	public int getCompletedAmount()

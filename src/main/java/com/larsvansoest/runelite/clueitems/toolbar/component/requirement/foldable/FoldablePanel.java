@@ -36,6 +36,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.LinkedList;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -140,7 +141,7 @@ public abstract class FoldablePanel extends UpdatablePanel
 
 	public abstract void onHeaderMousePressed();
 
-	public final void addRightIcon(JLabel iconLabel) {
+	public final void addRightIcon(JComponent iconLabel) {
 		this.foldableHeader.addRightIcon(iconLabel);
 	}
 

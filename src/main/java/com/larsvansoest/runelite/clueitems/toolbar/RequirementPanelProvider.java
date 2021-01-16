@@ -36,10 +36,11 @@ import com.larsvansoest.runelite.clueitems.data.util.EmoteClueImages;
 import com.larsvansoest.runelite.clueitems.toolbar.component.EmoteClueItemsPanelPalette;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementContainer;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.UpdatablePanel;
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.impl.EmoteClueItemPanel;
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.impl.EmoteClueItemSlotPanel;
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.impl.EmoteClueItemSubPanel;
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.impl.EmoteCluePanel;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.item.EmoteClueItemPanel;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.item.EmoteClueItemSlotPanel;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.item.EmoteCluePanel;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.item.inventory.EmoteClueItemSubPanel;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.item.inventory.StashUnitLabel;
 import com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.EmoteClue;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -51,6 +52,7 @@ import java.util.stream.Collectors;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit;
 import net.runelite.client.plugins.cluescrolls.clues.item.AllRequirementsCollection;
 import net.runelite.client.plugins.cluescrolls.clues.item.AnyRequirementCollection;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
@@ -91,13 +93,27 @@ public class RequirementPanelProvider
 
 		// Add EmoteClue properties to EmoteClueItem requirements.
 		emoteClueItemPanelMap.forEach((emoteClueItem, emoteClueItemPanel) -> {
+			EmoteClue[] emoteClues = EmoteClueAssociations.EmoteClueItemToEmoteClues.get(emoteClueItem);
+
+			// Add item panels & info
 			EmoteClueItemSubPanel subPanel = new EmoteClueItemSubPanel(palette, "Bank overview");
 			this.addSubItems(slotPanelMap, subPanel, emoteClueItem);
+
+			for(EmoteClue emoteClue : emoteClues) {
+				STASHUnit stashUnit = emoteClue.getStashUnit();
+				if (stashUnit != null) {
+					String locationName = emoteClue.getLocationName();
+					StashUnitLabel stashUnitLabel = new StashUnitLabel(locationName, locationName.charAt(0));
+					subPanel.addStashUnitIcon(stashUnitLabel);
+				}
+			}
+
 			subPanel.setRequiredAmount(this.getRequiredAmount(emoteClueItem));
+			subPanel.addAmountLabel();
 			emoteClueItemPanel.addChild(subPanel);
 			subPanelMap.put(emoteClueItem, subPanel);
 
-			EmoteClue[] emoteClues = EmoteClueAssociations.EmoteClueItemToEmoteClues.get(emoteClueItem);
+			// Add emote clue panels & info
 			List<EmoteClueDifficulty> difficulties = Arrays.stream(emoteClues).map(EmoteClue::getEmoteClueDifficulty).distinct().collect(Collectors.toList());
 			emoteClueItemPanel.setFilterable("difficulty", difficulties);
 			emoteClueItemPanel.setFilterable("quantity", emoteClues.length);

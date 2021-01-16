@@ -34,6 +34,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -139,7 +140,7 @@ public class FoldableHeader extends JPanel
 		return this.name;
 	}
 
-	public final void addRightIcon(JLabel iconLabel) {
+	public final void addRightIcon(JComponent iconLabel) {
 		this.rightIconsPanel.addIcon(iconLabel);
 	}
 
