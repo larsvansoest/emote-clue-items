@@ -33,12 +33,11 @@ import com.larsvansoest.runelite.clueitems.toolbar.component.EmoteClueItemsPanel
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.foldable.FoldablePanel;
 import java.util.HashMap;
 import java.util.Map;
-import javax.swing.JLabel;
 
 public abstract class RequirementPanel extends FoldablePanel
 {
 	private final RequirementContainer parent;
-	private Integer quantity;
+	private String quantityText;
 	private final Map<Object, Object> filterables;
 
 	public RequirementPanel(RequirementContainer parent, EmoteClueItemsPanelPalette emoteClueItemsPanelPalette, String name)
@@ -76,19 +75,14 @@ public abstract class RequirementPanel extends FoldablePanel
 		return this.filterables.get(key);
 	}
 
-	public final void addIcon(JLabel icon)
+	public String getQuantity()
 	{
-		super.getFoldableHeader().addIcon(icon);
+		return this.quantityText;
 	}
 
-	public Integer getQuantity()
+	public void setQuantity(String text)
 	{
-		return this.quantity;
-	}
-
-	public void setQuantity(Integer quantity)
-	{
-		super.getFoldableHeader().setQuantity(quantity);
-		this.quantity = quantity;
+		super.getFoldableHeader().setQuantityLabel(text);
+		this.quantityText = text;
 	}
 }

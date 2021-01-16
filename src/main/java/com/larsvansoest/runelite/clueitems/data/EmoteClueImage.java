@@ -77,6 +77,10 @@ public abstract class EmoteClueImage
 			public static final BufferedImage QUESTION_CIRCLE = bufferedImage(Disclaimer.folder, "question-circle.png");
 			public static final BufferedImage CLOSE = bufferedImage(Disclaimer.folder, "close.png");
 		}
+		public static class Requirement {
+			private static final String folder = path(Toolbar.folder, "requirement");
+			public static final BufferedImage INVENTORY = bufferedImage(Requirement.folder, "inventory.png");
+		}
 	}
 
 	private static BufferedImage bufferedImage(String folder, String name) {

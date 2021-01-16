@@ -28,25 +28,121 @@
 
 package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.impl;
 
+import com.larsvansoest.runelite.clueitems.data.EmoteClueImage;
+import com.larsvansoest.runelite.clueitems.data.RequirementStatus;
 import com.larsvansoest.runelite.clueitems.toolbar.component.EmoteClueItemsPanelPalette;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.UpdatablePanel;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.foldable.FoldableHeaderText;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.foldable.FoldablePanel;
+import java.awt.GridBagConstraints;
+import java.util.LinkedList;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 public class EmoteClueItemSubPanel extends FoldablePanel
 {
+	private final static int ROW_SIZE = 6;
+
+	private final GridBagConstraints foldContentConstraints;
+	private Boolean expanded;
+	private int completedAmount;
+	private int requiredAmount;
+	private final FoldableHeaderText amountLabel;
+
 	public EmoteClueItemSubPanel(EmoteClueItemsPanelPalette emoteClueItemsPanelPalette, String name) {
 		super(emoteClueItemsPanelPalette, name);
+		super.getFoldContent().setBackground(emoteClueItemsPanelPalette.getSubPanelBackgroundColor());
+		super.setStatus(RequirementStatus.Unknown);
+		super.getFoldableHeader().getNameLabel().disableShadow();
+		super.getFoldableHeader().getNameLabel().setHorizontalAlignment(JLabel.LEFT);
+
+		this.amountLabel = new FoldableHeaderText("");
+		this.amountLabel.setHorizontalAlignment(JLabel.CENTER);
+		this.setCompletedAmount(0);
+		this.setRequiredAmount(0);
+
+		super.addLeftIcon(new JLabel(new ImageIcon(EmoteClueImage.Toolbar.Requirement.INVENTORY)));
+		super.addRightIcon(this.amountLabel);
+
+		this.foldContentConstraints = new GridBagConstraints();
+		this.foldContentConstraints.weightx = 0;
+		this.foldContentConstraints.fill = GridBagConstraints.BOTH;
+		this.expanded = false;
+	}
+
+	@Override
+	public void fold() {
+		this.expanded = false;
+		super.fold();
+	}
+
+	@Override
+	public void unfold()
+	{
+		JPanel foldContent = super.getFoldContent();
+		LinkedList<UpdatablePanel> itemSlots = super.getFoldContentElements();
+		super.getFoldableHeader().unfold();
+		this.foldContentConstraints.gridx = 0;
+		this.foldContentConstraints.gridy = 0;
+
+		int i = 0;
+		while(i < itemSlots.size()) {
+			foldContent.add(itemSlots.get(i), this.foldContentConstraints);
+			i++;
+			int x = i % ROW_SIZE;
+			if (x == 0) {
+				this.foldContentConstraints.gridy++;
+			}
+			this.foldContentConstraints.gridx = x;
+		}
+
+		this.expanded = true;
+		foldContent.setVisible(true);
+		super.revalidate();
+		super.repaint();
+	}
+
+	@Override
+	public void addChild(UpdatablePanel child)
+	{
+		super.addChild(child);
 	}
 
 	@Override
 	public void onHeaderMousePressed()
 	{
-		if (super.isExpanded())
+		if (this.expanded)
 		{
-			super.fold();
+			this.fold();
 		}
 		else
 		{
-			super.unfold();
+			this.unfold();
 		}
+	}
+
+	public void setRequiredAmount(int amount) {
+		this.requiredAmount = amount;
+		this.updateAmount();
+	}
+
+	public void setCompletedAmount(int amount) {
+		this.completedAmount = amount;
+		this.updateAmount();
+	}
+
+	private void updateAmount() {
+		this.amountLabel.setText(String.format("%s/%s", this.completedAmount, this.requiredAmount));
+	}
+
+	public int getCompletedAmount()
+	{
+		return this.completedAmount;
+	}
+
+	public int getRequiredAmount()
+	{
+		return this.requiredAmount;
 	}
 }

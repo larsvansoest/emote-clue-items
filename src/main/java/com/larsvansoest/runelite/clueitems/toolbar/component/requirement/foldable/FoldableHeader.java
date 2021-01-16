@@ -34,7 +34,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.LinkedList;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -46,7 +45,8 @@ public class FoldableHeader extends JPanel
 	private final FoldablePanel parent;
 	private final FoldIcon foldIcon;
 	private final GridBagConstraints c;
-	private final LinkedList<JLabel> icons;
+	private final FoldableHeaderIconsPanel leftIconsPanel;
+	private final FoldableHeaderIconsPanel rightIconsPanel;
 	private Boolean expanded;
 
 	public FoldableHeader(FoldablePanel parent, EmoteClueItemsPanelPalette emoteClueItemsPanelPalette, Dimension dimension, String name)
@@ -57,7 +57,8 @@ public class FoldableHeader extends JPanel
 		this.quantity.setVisible(false);
 		this.foldIcon = new FoldIcon();
 		this.parent = parent;
-		this.icons = new LinkedList<>();
+		this.leftIconsPanel = new FoldableHeaderIconsPanel(false);
+		this.rightIconsPanel = new FoldableHeaderIconsPanel(true);
 		this.expanded = false;
 		super.setBackground(FoldableHeader.this.emoteClueItemsPanelPalette.getDefaultColor());
 
@@ -82,25 +83,33 @@ public class FoldableHeader extends JPanel
 			}
 		});
 		super.setLayout(new GridBagLayout());
-
 		this.c = new GridBagConstraints();
 		this.c.fill = GridBagConstraints.BOTH;
 		this.c.gridx = 0;
-		this.c.insets.top = 3;
-		this.c.insets.bottom = 1;
-		this.c.weightx = 0;
+		this.c.gridy = 0;
+		this.c.insets.top = 2;
+		this.c.insets.bottom = 2;
+		this.c.insets.left = 5;
+		super.add(this.leftIconsPanel, this.c);
+
+		this.c.gridx++;
+		this.c.insets.left = 0;
 		super.add(this.name, this.c);
 
 		this.c.gridx++;
 		this.c.weightx = 1;
 		super.add(new JLabel(), this.c);
 
+		this.c.gridx++;
 		this.c.weightx = 0;
-		this.c.insets.left = 0;
 		this.c.insets.right = 5;
-		this.c.anchor = GridBagConstraints.EAST;
-		this.addIcon(this.foldIcon);
-		this.addIcon(this.quantity);
+		super.add(this.rightIconsPanel, this.c);
+
+		this.c.gridx++;
+		super.add(this.quantity, this.c);
+
+		this.c.gridx++;
+		super.add(this.foldIcon, this.c);
 	}
 
 	private void onMousePressed()
@@ -120,8 +129,8 @@ public class FoldableHeader extends JPanel
 		this.expanded = true;
 	}
 
-	public final void setQuantity(int quantity) {
-		this.quantity.setText(String.valueOf(quantity));
+	public final void setQuantityLabel(String text) {
+		this.quantity.setText(text);
 		this.quantity.setVisible(true);
 	}
 
@@ -130,15 +139,11 @@ public class FoldableHeader extends JPanel
 		return this.name;
 	}
 
-	public final void addIcon(JLabel iconLabel) {
-		this.icons.forEach(super::remove);
-		this.icons.addFirst(iconLabel);
-		this.c.gridx = 2;
-		this.icons.forEach(label -> {
-			super.add(label, this.c);
-			this.c.gridx++;
-		});
-		super.revalidate();
-		super.repaint();
+	public final void addRightIcon(JLabel iconLabel) {
+		this.rightIconsPanel.addIcon(iconLabel);
+	}
+
+	public final void addLeftIcon(JLabel iconLabel) {
+		this.leftIconsPanel.addIcon(iconLabel);
 	}
 }

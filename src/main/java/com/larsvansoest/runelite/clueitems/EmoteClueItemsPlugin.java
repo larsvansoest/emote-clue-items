@@ -86,7 +86,7 @@ public class EmoteClueItemsPlugin extends Plugin
 		this.overlayManager.add(this.overlay);
 
 		EmoteClueItemsPanelPalette emoteClueItemsPalette = EmoteClueItemsPanelPalette.DARK;
-		this.requirementPanelProvider = new RequirementPanelProvider(emoteClueItemsPalette);
+		this.requirementPanelProvider = new RequirementPanelProvider(emoteClueItemsPalette, this.itemManager);
 		this.emoteClueItemsPanel = new EmoteClueItemsPanel(emoteClueItemsPalette, this.requirementPanelProvider);
 		this.emoteClueItemsPanel.setDisclaimer("To start display of progression, please open your bank once.");
 

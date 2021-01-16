@@ -26,29 +26,43 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.impl;
+package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.foldable;
 
-import com.larsvansoest.runelite.clueitems.toolbar.component.EmoteClueItemsPanelPalette;
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementContainer;
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementPanel;
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.foldable.FoldablePanel;
-import java.util.List;
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
-public class EmoteClueItemPanel extends RequirementPanel
+public class FoldableHeaderIconsPanel extends JPanel
 {
-	public EmoteClueItemPanel(RequirementContainer parent, EmoteClueItemsPanelPalette emoteClueItemsPanelPalette, String name) {
-		super(parent, emoteClueItemsPanelPalette, name);
-		super.getFoldableHeader().getNameLabel().setHorizontalAlignment(JLabel.CENTER);
+	private final GridBagConstraints c;
+
+	public FoldableHeaderIconsPanel(boolean alignRight, JLabel... iconLabels) {
+		super(new GridBagLayout());
+		super.setBackground(new Color(0, 0, 0, 0));
+		this.c = new GridBagConstraints();
+		this.c.gridx = 0;
+		this.c.gridy = 0;
+		this.c.fill	= GridBagConstraints.BOTH;
+		this.c.weightx = 0;
+
+		if(alignRight) {
+			this.c.anchor = GridBagConstraints.EAST;
+			this.c.insets.left = 5;
+		}
+		else {
+			this.c.anchor = GridBagConstraints.WEST;
+			this.c.insets.right = 5;
+		}
+
+		for(JLabel iconLabel : iconLabels) {
+			this.addIcon(iconLabel);
+		}
 	}
 
-	@Override
-	public void unfold()
-	{
-		List<FoldablePanel> foldablePanels = super.getFoldContentFoldablePanels();
-		if (foldablePanels.size() > 0) {
-			foldablePanels.get(0).unfold();
-		}
-		super.unfold();
+	public void addIcon(JLabel iconLabel) {
+		super.add(iconLabel, this.c);
+		this.c.gridx++;
 	}
 }

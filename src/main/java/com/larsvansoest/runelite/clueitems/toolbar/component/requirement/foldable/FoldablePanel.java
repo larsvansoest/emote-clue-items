@@ -34,7 +34,9 @@ import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.Updatab
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.util.LinkedList;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public abstract class FoldablePanel extends UpdatablePanel
@@ -53,13 +55,16 @@ public abstract class FoldablePanel extends UpdatablePanel
 		this.foldContent = new JPanel(new GridBagLayout());
 		this.foldContent.setBackground(emoteClueItemsPanelPalette.getFoldContentColor());
 		this.foldConstraints = new GridBagConstraints();
+		this.foldConstraints.fill = GridBagConstraints.BOTH;
+		this.foldConstraints.weightx = 1;
+		this.foldConstraints.insets = new Insets(5, 5, 5, 5);
 		this.foldContentElements = new LinkedList<>();
 		this.foldContentFoldablePanels = new LinkedList<>();
-		this.foldableHeader = new FoldableHeader(this, emoteClueItemsPanelPalette, new Dimension(155, 20), name);
+		this.foldableHeader = new FoldableHeader(this, emoteClueItemsPanelPalette, new Dimension(140, 20), name);
 		this.expanded = false;
 
 		GridBagConstraints c = new GridBagConstraints();
-		c.fill = GridBagConstraints.HORIZONTAL;
+		c.fill = GridBagConstraints.BOTH;
 		c.gridx = 0;
 		c.gridy = 0;
 		c.weightx = 1;
@@ -108,7 +113,22 @@ public abstract class FoldablePanel extends UpdatablePanel
 		this.foldableHeader.getNameLabel().setForeground(requirementStatus.colour);
 	}
 
-	public final Boolean isExpanded()
+	public JPanel getFoldContent()
+	{
+		return this.foldContent;
+	}
+
+	public LinkedList<UpdatablePanel> getFoldContentElements()
+	{
+		return this.foldContentElements;
+	}
+
+	public LinkedList<FoldablePanel> getFoldContentFoldablePanels()
+	{
+		return this.foldContentFoldablePanels;
+	}
+
+	public Boolean isExpanded()
 	{
 		return this.expanded;
 	}
@@ -119,4 +139,12 @@ public abstract class FoldablePanel extends UpdatablePanel
 	}
 
 	public abstract void onHeaderMousePressed();
+
+	public final void addRightIcon(JLabel iconLabel) {
+		this.foldableHeader.addRightIcon(iconLabel);
+	}
+
+	public final void addLeftIcon(JLabel iconLabel) {
+		this.foldableHeader.addLeftIcon(iconLabel);
+	}
 }
