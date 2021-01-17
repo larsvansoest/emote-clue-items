@@ -37,8 +37,8 @@ import com.larsvansoest.runelite.clueitems.toolbar.component.EmoteClueItemsPanel
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementContainer;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.UpdatablePanel;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.item.EmoteClueItemPanel;
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.item.EmoteClueItemSlotPanel;
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.item.EmoteCluePanel;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.item.inventory.EmoteClueItemSlotPanel;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.item.clue.EmoteCluePanel;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.item.inventory.EmoteClueItemSubPanel;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.item.inventory.StashUnitLabel;
 import com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.EmoteClue;
@@ -96,7 +96,7 @@ public class RequirementPanelProvider
 			EmoteClue[] emoteClues = EmoteClueAssociations.EmoteClueItemToEmoteClues.get(emoteClueItem);
 
 			// Add item panels & info
-			EmoteClueItemSubPanel subPanel = new EmoteClueItemSubPanel(palette, "Bank overview");
+			EmoteClueItemSubPanel subPanel = new EmoteClueItemSubPanel(palette, "Item Log");
 			this.addSubItems(slotPanelMap, subPanel, emoteClueItem);
 
 			for(EmoteClue emoteClue : emoteClues) {

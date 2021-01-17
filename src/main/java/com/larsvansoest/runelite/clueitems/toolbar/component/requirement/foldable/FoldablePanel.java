@@ -54,11 +54,13 @@ public abstract class FoldablePanel extends UpdatablePanel
 		super.setBackground(emoteClueItemsPanelPalette.getDefaultColor());
 		super.setName(name);
 		this.foldContent = new JPanel(new GridBagLayout());
+
 		this.foldContent.setBackground(emoteClueItemsPanelPalette.getFoldContentColor());
 		this.foldConstraints = new GridBagConstraints();
 		this.foldConstraints.fill = GridBagConstraints.BOTH;
 		this.foldConstraints.weightx = 1;
-		this.foldConstraints.insets = new Insets(5, 5, 5, 5);
+		this.foldConstraints.insets = new Insets(0, 5, 5, 5);
+
 		this.foldContentElements = new LinkedList<>();
 		this.foldContentFoldablePanels = new LinkedList<>();
 		this.foldableHeader = new FoldableHeader(this, emoteClueItemsPanelPalette, new Dimension(140, 20), name);
@@ -97,10 +99,13 @@ public abstract class FoldablePanel extends UpdatablePanel
 	public void unfold() {
 		this.foldConstraints.gridy = 0;
 		this.foldableHeader.unfold();
-		this.foldContentElements.forEach(element -> {
-			this.foldContent.add(element, this.foldConstraints);
+
+		for(int i = 0; i < this.foldContentElements.size(); i++) {
+			this.foldConstraints.insets.top	= i == 0 ? 5 : 0;
+			this.foldContent.add(this.foldContentElements.get(i), this.foldConstraints);
 			this.foldConstraints.gridy++;
-		});
+		}
+
 		this.foldContent.setVisible(true);
 		this.expanded = true;
 		super.revalidate();
@@ -137,6 +142,11 @@ public abstract class FoldablePanel extends UpdatablePanel
 	public FoldableHeader getFoldableHeader()
 	{
 		return this.foldableHeader;
+	}
+
+	public GridBagConstraints getFoldConstraints()
+	{
+		return this.foldConstraints;
 	}
 
 	public abstract void onHeaderMousePressed();

@@ -39,6 +39,7 @@ import java.util.LinkedList;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import net.runelite.client.ui.ColorScheme;
 
 public class EmoteClueItemSubPanel extends FoldablePanel
 {
@@ -54,8 +55,14 @@ public class EmoteClueItemSubPanel extends FoldablePanel
 		super(emoteClueItemsPanelPalette, name);
 		super.getFoldContent().setBackground(emoteClueItemsPanelPalette.getSubPanelBackgroundColor());
 		super.setStatus(RequirementStatus.Unknown);
-		super.getFoldableHeader().getNameLabel().disableShadow();
-		super.getFoldableHeader().getNameLabel().setHorizontalAlignment(JLabel.LEFT);
+
+		JLabel nameLabel = super.getFoldableHeader().getNameLabel();
+		nameLabel.setHorizontalAlignment(JLabel.LEFT);
+		nameLabel.setPreferredSize(null);
+		nameLabel.setMinimumSize(null);
+		nameLabel.setMaximumSize(null);
+		nameLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+		// TODO clean up code
 
 		this.amountLabel = new FoldableHeaderText("");
 		this.amountLabel.setHorizontalAlignment(JLabel.CENTER);

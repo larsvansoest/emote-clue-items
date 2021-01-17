@@ -81,6 +81,15 @@ public abstract class EmoteClueImage
 			private static final String folder = path(Toolbar.folder, "requirement");
 			public static final BufferedImage INVENTORY = bufferedImage(Requirement.folder, "inventory.png");
 			public static final BufferedImage STASH_UNIT = bufferedImage(Requirement.folder, "stash-unit.png");
+			public static class Scroll {
+				private static final String folder = path(Requirement.folder, "scroll");
+				public static final BufferedImage BEGINNER = bufferedImage(Scroll.folder, "beginner.png");
+				public static final BufferedImage EASY = bufferedImage(Scroll.folder, "easy.png");
+				public static final BufferedImage MEDIUM = bufferedImage(Scroll.folder, "medium.png");
+				public static final BufferedImage HARD = bufferedImage(Scroll.folder, "hard.png");
+				public static final BufferedImage ELITE = bufferedImage(Scroll.folder, "elite.png");
+				public static final BufferedImage MASTER = bufferedImage(Scroll.folder, "master.png");
+			}
 		}
 	}
 

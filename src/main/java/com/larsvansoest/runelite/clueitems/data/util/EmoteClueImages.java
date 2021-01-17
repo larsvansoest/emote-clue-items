@@ -47,6 +47,18 @@ public abstract class EmoteClueImages
 		}
 	}
 
+	public static BufferedImage getScroll(EmoteClueDifficulty emoteClueDifficulty) {
+		switch (emoteClueDifficulty) {
+			case Beginner: return EmoteClueImage.Toolbar.Requirement.Scroll.BEGINNER;
+			case Easy: return EmoteClueImage.Toolbar.Requirement.Scroll.EASY;
+			case Medium: return EmoteClueImage.Toolbar.Requirement.Scroll.MEDIUM;
+			case Hard: return EmoteClueImage.Toolbar.Requirement.Scroll.HARD;
+			case Elite: return EmoteClueImage.Toolbar.Requirement.Scroll.ELITE;
+			case Master: return EmoteClueImage.Toolbar.Requirement.Scroll.MASTER;
+			default: throw new IllegalArgumentException();
+		}
+	}
+
 	public static BufferedImage illuminate(BufferedImage bufferedImage, float scale) {
 		return ImageUtil.luminanceScale(bufferedImage, scale);
 	}
