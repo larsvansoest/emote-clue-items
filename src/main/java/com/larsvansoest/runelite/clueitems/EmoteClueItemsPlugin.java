@@ -35,7 +35,7 @@ import com.larsvansoest.runelite.clueitems.overlay.EmoteClueItemOverlay;
 import com.larsvansoest.runelite.clueitems.toolbar.EmoteClueItemsPanel;
 import com.larsvansoest.runelite.clueitems.toolbar.RequirementPanelProvider;
 import com.larsvansoest.runelite.clueitems.toolbar.component.EmoteClueItemsPanelPalette;
-import com.larsvansoest.runelite.clueitems.toolbar.progress.EmoteClueItemsInventoryMonitor;
+import com.larsvansoest.runelite.clueitems.toolbar.progress.RequirementStatusManager;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -74,9 +74,7 @@ public class EmoteClueItemsPlugin extends Plugin
 
 	private EmoteClueItemOverlay overlay;
 	private NavigationButton navigationButton;
-	private RequirementPanelProvider requirementPanelProvider;
-	private EmoteClueItemsPanel emoteClueItemsPanel;
-	private EmoteClueItemsInventoryMonitor emoteClueItemMonitor;
+	private RequirementStatusManager requirementStatusManager;
 
 	@Override
 	protected void startUp()
@@ -86,32 +84,25 @@ public class EmoteClueItemsPlugin extends Plugin
 		this.overlayManager.add(this.overlay);
 
 		EmoteClueItemsPanelPalette emoteClueItemsPalette = EmoteClueItemsPanelPalette.DARK;
-		this.requirementPanelProvider = new RequirementPanelProvider(emoteClueItemsPalette, this.itemManager);
-		this.emoteClueItemsPanel = new EmoteClueItemsPanel(emoteClueItemsPalette, this.requirementPanelProvider);
-		this.emoteClueItemsPanel.setDisclaimer("To start display of progression, please open your bank once.");
+		RequirementPanelProvider requirementPanelProvider = new RequirementPanelProvider(emoteClueItemsPalette, this.itemManager);
+		EmoteClueItemsPanel emoteClueItemsPanel = new EmoteClueItemsPanel(emoteClueItemsPalette, requirementPanelProvider);
+		emoteClueItemsPanel.setDisclaimer("To start display of progression, please open your bank once.");
 
 		this.navigationButton = NavigationButton.builder()
 			.tooltip("Emote Clue Items")
 			.icon(EmoteClueImages.resizeCanvas(EmoteClueImage.Ribbon.ALL, 16, 16))
 			.priority(7)
-			.panel(this.emoteClueItemsPanel)
+			.panel(emoteClueItemsPanel)
 			.build();
 
 		this.clientToolbar.addNavigation(this.navigationButton);
 
-		this.emoteClueItemMonitor = new EmoteClueItemsInventoryMonitor();
+		this.requirementStatusManager = new RequirementStatusManager(requirementPanelProvider);
 	}
 
 	@Subscribe
 	protected void onItemContainerChanged(ItemContainerChanged event) {
-		if(event.getContainerId() == 95 || event.getContainerId() == 93) {
-			this.emoteClueItemMonitor.processItems(event.getItemContainer().getItems());
-			this.emoteClueItemMonitor.getRequirementStatusMap()
-				.forEach(((emoteClueItem, requirementStatus) -> {
-					this.requirementPanelProvider.setStatus(emoteClueItem, requirementStatus);
-				}));
-			this.emoteClueItemsPanel.removeDisclaimer();
-		}
+		this.requirementStatusManager.handleEmoteClueItemChanges(event);
 	}
 
 	@Override

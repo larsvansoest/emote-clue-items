@@ -31,55 +31,69 @@ package com.larsvansoest.runelite.clueitems.toolbar.progress;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
 import com.larsvansoest.runelite.clueitems.data.RequirementStatus;
 import com.larsvansoest.runelite.clueitems.data.util.EmoteClueAssociations;
+import com.larsvansoest.runelite.clueitems.toolbar.RequirementPanelProvider;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import net.runelite.api.Item;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.plugins.cluescrolls.clues.item.AllRequirementsCollection;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 
-public class EmoteClueItemsInventoryMonitor
+public class RequirementStatusManager
 {
-	private final Map<EmoteClueItem, RequirementStatus> requirementStatusMap;
+	private final Map<EmoteClueItem, RequirementStatus> statusMap;
+	private final EmoteClueItemsMonitor itemsMonitor;
+	private final RequirementPanelProvider panelProvider;
 
-	public EmoteClueItemsInventoryMonitor()
-	{
-		this.requirementStatusMap = Arrays.stream(EmoteClueItem.values()).collect(Collectors.toMap(Function.identity(), $ -> RequirementStatus.Unknown));
+	public RequirementStatusManager(RequirementPanelProvider panelProvider) {
+		this.statusMap = Arrays.stream(EmoteClueItem.values()).collect(Collectors.toMap(Function.identity(), $ -> RequirementStatus.InComplete));
+		this.itemsMonitor = new EmoteClueItemsMonitor();
+		this.panelProvider = panelProvider;
 	}
 
-	public Map<EmoteClueItem, RequirementStatus> getRequirementStatusMap()
-	{
-		return this.requirementStatusMap;
-	}
+	public void handleEmoteClueItemChanges(ItemContainerChanged event) {
+		List<Item> emoteClueItemChanges = this.itemsMonitor.fetchEmoteClueItemChanges(event);
 
-	public void processItems(Item[] items)
-	{
-		this.requirementStatusMap.forEach(((emoteClueItem, $) -> this.requirementStatusMap.put(emoteClueItem, RequirementStatus.InComplete)));
-		List<EmoteClueItem> emoteClueItems = Arrays.stream(items)
-			.map(Item::getId)
-			.map(EmoteClueAssociations.ItemIdToEmoteClueItemSlot::get)
-			.filter(Objects::nonNull)
-			.collect(Collectors.toList());
-		emoteClueItems.forEach(emoteClueItem -> this.requirementStatusMap.put(emoteClueItem, RequirementStatus.Complete));
-		this.processRequirements(emoteClueItems);
-	}
+		LinkedList<EmoteClueItem> completedParents = new LinkedList<>();
+		// Set single item (sub-)requirement status
+		for(Item item : emoteClueItemChanges) {
+			int quantity = item.getQuantity();
+			EmoteClueItem emoteClueItem = EmoteClueAssociations.ItemIdToEmoteClueItemSlot.get(item.getId());
 
-	private void processRequirements(List<EmoteClueItem> emoteClueItems)
-	{
-		while (!emoteClueItems.isEmpty())
-		{
-			Stream<EmoteClueItem> completedParents = emoteClueItems.stream().map(EmoteClueItem::getParents).flatMap(List::stream)
-				.filter(parent -> {
-						RequirementStatus parentStatus = this.getParentStatus(parent);
-						this.requirementStatusMap.put(parent, parentStatus);
-						return parentStatus == RequirementStatus.Complete;
+			if(quantity > 0) {
+				this.statusMap.put(emoteClueItem, RequirementStatus.Complete);
+				completedParents.add(emoteClueItem);
+			}
+			else {
+				this.statusMap.put(emoteClueItem, RequirementStatus.InComplete);
+			}
+
+			this.panelProvider.setItemSlotStatus(emoteClueItem, quantity);
+		}
+
+		LinkedList<EmoteClueItem> parentCache = new LinkedList<>();
+		// Update requirement ancestors accordingly
+		while(completedParents.size() > 0) {
+			while(completedParents.size() > 0) {
+				parentCache.add(completedParents.poll());
+			}
+			while(parentCache.size() > 0) {
+				EmoteClueItem child = parentCache.poll();
+				for(EmoteClueItem parent : child.getParents()) {
+					RequirementStatus parentStatus = this.getParentStatus(parent);
+					if(parentStatus == RequirementStatus.Complete) {
+						completedParents.add(parent);
 					}
-				);
-			emoteClueItems = completedParents.collect(Collectors.toList());
+					if(this.statusMap.get(parent) != parentStatus) {
+						this.statusMap.put(parent, parentStatus);
+						this.panelProvider.setStatus(parent, parentStatus);
+					}
+				}
+			}
 		}
 	}
 
@@ -96,7 +110,7 @@ public class EmoteClueItemsInventoryMonitor
 		boolean allMatch = true;
 		for (EmoteClueItem child : children)
 		{
-			if (this.requirementStatusMap.get(child) == RequirementStatus.Complete)
+			if (this.statusMap.get(child) == RequirementStatus.Complete)
 			{
 				anyMatch = true;
 			}

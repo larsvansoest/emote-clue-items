@@ -96,6 +96,7 @@ public class RequirementPanelProvider
 			EmoteClue[] emoteClues = EmoteClueAssociations.EmoteClueItemToEmoteClues.get(emoteClueItem);
 
 			// Add item panels & info
+			// TODO move stash unit icons to emote clue panels, and set status to their location names.
 			EmoteClueItemSubPanel subPanel = new EmoteClueItemSubPanel(palette, "Item Log");
 			this.addSubItems(slotPanelMap, subPanel, emoteClueItem);
 
@@ -176,6 +177,14 @@ public class RequirementPanelProvider
 			));
 	}
 
+	public void setItemSlotStatus(EmoteClueItem emoteClueItem, int quantity) {
+
+	}
+
+	public void setStatus(EmoteClueItem emoteClueItem, RequirementStatus status) {
+
+	}
+/*
 	public void setStatus(EmoteClueItem emoteClueItem, RequirementStatus status)
 	{
 		LinkedList<UpdatablePanel> panels = this.updatablePanelMap.get(emoteClueItem);
@@ -186,7 +195,7 @@ public class RequirementPanelProvider
 				panel.setStatus(status);
 			}
 		}
-	}
+	} */
 
 	public RequirementContainer getRequirementContainer()
 	{

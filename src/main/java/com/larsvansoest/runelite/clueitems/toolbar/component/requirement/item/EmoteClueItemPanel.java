@@ -46,8 +46,9 @@ public class EmoteClueItemPanel extends RequirementPanel
 	public void unfold()
 	{
 		List<FoldablePanel> foldablePanels = super.getFoldContentFoldablePanels();
-		for(FoldablePanel foldablePanel : foldablePanels) {
-			foldablePanel.unfold();
+		if (foldablePanels.size() > 1) {
+			foldablePanels.get(0).unfold();
+			foldablePanels.get(1).unfold();
 		}
 		super.unfold();
 	}

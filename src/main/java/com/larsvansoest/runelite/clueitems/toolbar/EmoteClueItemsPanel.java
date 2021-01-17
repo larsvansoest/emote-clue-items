@@ -52,7 +52,6 @@ import net.runelite.client.ui.components.IconTextField;
 
 public class EmoteClueItemsPanel extends PluginPanel
 {
-	private final RequirementSearchData requirementSearchData;
 	private final EmoteClueItemsPanelPalette emoteClueItemsPanelPalette;
 
 	private final IconTextField searchBar;
@@ -84,8 +83,6 @@ public class EmoteClueItemsPanel extends PluginPanel
 		this.requirementStatusFilterButton = this.createRequirementStatusFilterButton(emoteClueItemsPanelPalette);
 		this.difficultyFilterButton = this.createDifficultyFilterButton(emoteClueItemsPanelPalette);
 		this.sortFilterButton = this.createSortFilterButton(emoteClueItemsPanelPalette);
-
-		this.requirementSearchData = new RequirementSearchData(this.searchBar.getText(), this.difficultyFilterButton.getSelectedValue(), this.requirementStatusFilterButton.getSelectedValue());
 
 		FooterPanel footerPanel = new FooterPanel(emoteClueItemsPanelPalette, "Emote Clue Items", "v2.0.0", "https://github.com/larsvansoest/emote-clue-items");
 

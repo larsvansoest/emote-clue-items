@@ -26,51 +26,53 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.toolbar;
+package com.larsvansoest.runelite.clueitems.toolbar.progress;
 
-import com.larsvansoest.runelite.clueitems.data.RequirementStatus;
-import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
+import java.util.LinkedList;
+import java.util.List;
+import lombok.NonNull;
+import net.runelite.api.Item;
 
-class RequirementSearchData
+class EmoteClueItemsTracker
 {
-	private String requirementName;
-	private EmoteClueDifficulty requirementEmoteClueDifficulty;
-	private RequirementStatus requirementStatus;
+	private final Item[] items;
 
-	public RequirementSearchData(String requirementName, EmoteClueDifficulty requirementEmoteClueDifficulty, RequirementStatus requirementStatus)
-	{
-		this.requirementName = requirementName;
-		this.requirementEmoteClueDifficulty = requirementEmoteClueDifficulty;
-		this.requirementStatus = requirementStatus;
+	public EmoteClueItemsTracker(int capacity) {
+		this.items = new Item[capacity];
+		for(int i = 0; i < capacity; i++) {
+			this.items[i] = new Item(-1, 0);
+		}
 	}
 
-	public String getRequirementName()
-	{
-		return this.requirementName;
-	}
+	public List<Item> writeDeltas(@NonNull Item[] items) {
+		LinkedList<Item> deltas = new LinkedList<>();
+		for(int i = 0; i < items.length; i++)
+		{
+			Item previousItem = this.items[i];
+			Item currentItem  = items[i];
+			this.items[i] = currentItem;
 
-	public void setRequirementName(String requirementName)
-	{
-		this.requirementName = requirementName;
-	}
+			int currentItemId = currentItem.getId();
+			int currentQuantity = currentItem.getQuantity();
+			int previousItemId = previousItem.getId();
+			int previousQuantity = previousItem.getQuantity();
 
-	public EmoteClueDifficulty getRequirementDifficulty()
-	{
-		return this.requirementEmoteClueDifficulty;
-	}
-
-	public void setRequirementDifficulty(EmoteClueDifficulty requirementEmoteClueDifficulty)
-	{
-		this.requirementEmoteClueDifficulty = requirementEmoteClueDifficulty;
-	}
-
-	public RequirementStatus getRequirementStatus()
-	{
-		return this.requirementStatus;
-	}
-
-	public void setRequirementStatus(RequirementStatus requirementStatus)
-	{
-		this.requirementStatus = requirementStatus;
+			if(previousItemId != currentItemId) {
+				if(previousItemId == -1) {
+					deltas.add(currentItem);
+				}
+				else if(currentItemId == -1) {
+					deltas.add(new Item(previousItemId, -previousQuantity));
+				}
+				else {
+					deltas.add(currentItem);
+					deltas.add(new Item(previousItemId, -previousQuantity));
+				}
+			}
+			else if(previousQuantity != currentQuantity) {
+				deltas.add(new Item(currentItemId, currentQuantity - previousQuantity));
+			}
+		}
+		return deltas;
 	}
 }
