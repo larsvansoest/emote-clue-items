@@ -40,7 +40,11 @@ class EmoteClueItemsTracker
 	public EmoteClueItemsTracker(int capacity)
 	{
 		this.items = new Item[capacity];
-		for (int i = 0; i < capacity; i++)
+		this.reset();
+	}
+
+	public void reset() {
+		for (int i = 0; i < this.items.length; i++)
 		{
 			this.items[i] = new Item(-1, 0);
 		}

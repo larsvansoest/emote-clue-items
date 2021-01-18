@@ -44,6 +44,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -64,6 +65,9 @@ public class EmoteClueItemsPlugin extends Plugin
 {
 	@Inject
 	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Inject
 	private EmoteClueItemsConfig config;
@@ -102,7 +106,7 @@ public class EmoteClueItemsPlugin extends Plugin
 
 		this.clientToolbar.addNavigation(this.navigationButton);
 
-		this.requirementStatusManager = new RequirementStatusManager(requirementPanelProvider);
+		this.requirementStatusManager = new RequirementStatusManager(requirementPanelProvider, this.client, this.clientThread);
 	}
 
 	@Subscribe
@@ -118,7 +122,7 @@ public class EmoteClueItemsPlugin extends Plugin
 	@Subscribe
 	protected void onGameStateChanged(GameStateChanged event)
 	{
-		if (event.getGameState() == GameState.LOGGED_IN)
+		if (event.getGameState() == GameState.LOGIN_SCREEN)
 		{
 			this.requirementStatusManager.reset();
 			this.emoteClueItemsPanel.setDisclaimer("To start display of progression, please open your bank once.");

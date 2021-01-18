@@ -32,9 +32,7 @@ import com.larsvansoest.runelite.clueitems.data.util.EmoteClueAssociations;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 import net.runelite.api.Item;
-import net.runelite.api.events.ItemContainerChanged;
 
 class EmoteClueItemsMonitor
 {
@@ -48,19 +46,22 @@ class EmoteClueItemsMonitor
 		this.inventoryTracker = new EmoteClueItemsTracker(28);
 		this.bankTracker = new EmoteClueItemsTracker(816);
 		this.equipmentTracker = new EmoteClueItemsTracker(13);
+		this.collectionLog = new HashMap<>(EmoteClueAssociations.ItemIdToEmoteClueItemSlot.keySet().size());
+		this.reset();
+	}
 
-		Set<Integer> itemIds = EmoteClueAssociations.ItemIdToEmoteClueItemSlot.keySet();
-		this.collectionLog = new HashMap<>(itemIds.size());
-		for (Integer itemId : itemIds)
+	public void reset() {
+		for (Integer itemId : EmoteClueAssociations.ItemIdToEmoteClueItemSlot.keySet())
 		{
 			this.collectionLog.put(itemId, 0);
 		}
+		this.inventoryTracker.reset();
+		this.bankTracker.reset();
+		this.equipmentTracker.reset();
 	}
 
-	public List<Item> fetchEmoteClueItemChanges(ItemContainerChanged event)
+	public List<Item> fetchEmoteClueItemChanges(int containerId, Item[] items)
 	{
-		Item[] items = event.getItemContainer().getItems();
-		int containerId = event.getContainerId();
 		List<Item> deltas;
 		switch (containerId)
 		{
