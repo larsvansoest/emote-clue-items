@@ -112,10 +112,8 @@ public abstract class FoldablePanel extends UpdatablePanel
 		super.repaint();
 	}
 
-	@Override
 	public void setStatus(RequirementStatus requirementStatus)
 	{
-		this.foldableHeader.getNameLabel().enableShadow();
 		this.foldableHeader.getNameLabel().setForeground(requirementStatus.colour);
 	}
 

@@ -26,41 +26,51 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.item.inventory;
+package com.larsvansoest.runelite.clueitems;
 
-import com.larsvansoest.runelite.clueitems.data.EmoteClueImage;
-import java.awt.Color;
-import java.awt.Dimension;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
-import javax.swing.SwingConstants;
-import net.runelite.client.ui.FontManager;
-import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
+import com.larsvansoest.runelite.clueitems.overlay.widget.ItemWidgetContainer;
 
-public class StashUnitLabel extends JLayeredPane
+/**
+ * Functions as a facade for {@link EmoteClueItemsConfig}, provides methods surrounding user-defined configuration parameters.
+ * @since 1.2.0
+ * @author Lars van Soest
+ */
+public class EmoteClueItemsConfigProvider
 {
-	private static final Dimension SIZE = new Dimension(16,20);
+	private final EmoteClueItemsConfig config;
 
-	public StashUnitLabel(String toolTip, Character c) {
-		super.setToolTipText(toolTip);
-		super.setLayout(null);
+	public EmoteClueItemsConfigProvider(EmoteClueItemsConfig config)
+	{
+		this.config = config;
+	}
 
-		super.setPreferredSize(StashUnitLabel.SIZE);
-		super.setMinimumSize(StashUnitLabel.SIZE);
-		super.setMaximumSize(StashUnitLabel.SIZE);
-		super.setBackground(new Color(0, 0, 0, 0));
+	public boolean interfaceGroupSelected(ItemWidgetContainer container)
+	{
+		switch (container)
+		{
+			case Bank:
+				return this.config.highlightBank();
 
-		JLabel stashIcon = new JLabel(new ImageIcon(EmoteClueImage.Toolbar.Requirement.STASH_UNIT));
-		stashIcon.setBounds(0, 0, 16, 17);
+			case DepositBox:
+				return this.config.highlightDepositBox();
 
-		JLabel stashChar = new JShadowedLabel(c.toString().toLowerCase());
-		stashChar.setHorizontalAlignment(SwingConstants.RIGHT);
-		stashChar.setVerticalAlignment(SwingConstants.BOTTOM);
-		stashChar.setFont(FontManager.getRunescapeBoldFont());
-		stashChar.setBounds(0, 3, 16, 17);
+			case Inventory:
+				return this.config.highlightInventory();
 
-		super.add(stashIcon, 0, 0);
-		super.add(stashChar,  1, 0);
+			case Equipment:
+				return this.config.highlightEquipment();
+
+			case Shop:
+				return this.config.highlightShop();
+
+			case KeptOnDeath:
+				return this.config.highlightKeptOnDeath();
+
+			case GuidePrices:
+				return this.config.highlightGuidePrices();
+
+			default:
+				return false;
+		}
 	}
 }

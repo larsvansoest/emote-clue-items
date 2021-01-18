@@ -28,9 +28,17 @@
 
 package com.larsvansoest.runelite.clueitems.toolbar.component;
 
+import com.larsvansoest.runelite.clueitems.toolbar.EmoteClueItemsPanel;
 import java.awt.Color;
+import javax.swing.JComponent;
 import net.runelite.client.ui.ColorScheme;
 
+/**
+ * Contains all {@link Color} instances used for any ui-related requirement progress display {@link JComponent} objects for the {@link EmoteClueItemsPanel}.
+ *
+ * @author Lars van Soest
+ * @since 2.0.0
+ */
 public enum EmoteClueItemsPanelPalette
 {
 	DARK(ColorScheme.DARKER_GRAY_COLOR, ColorScheme.DARKER_GRAY_HOVER_COLOR, ColorScheme.DARKER_GRAY_HOVER_COLOR, ColorScheme.DARK_GRAY_HOVER_COLOR, ColorScheme.DARK_GRAY_HOVER_COLOR, ColorScheme.BRAND_ORANGE, ColorScheme.MEDIUM_GRAY_COLOR, ColorScheme.DARKER_GRAY_HOVER_COLOR, ColorScheme.DARK_GRAY_COLOR);
@@ -45,7 +53,8 @@ public enum EmoteClueItemsPanelPalette
 	private final Color dislaimerColor;
 	private final Color subPanelBackgroundColor;
 
-	EmoteClueItemsPanelPalette(Color defaultColor, Color hoverColor, Color selectColor, Color foldContentColor, Color foldContentElementColor, Color separatorColor, Color footerColor, Color disclaimerColor, Color subPanelBackgroundColor) {
+	EmoteClueItemsPanelPalette(Color defaultColor, Color hoverColor, Color selectColor, Color foldContentColor, Color foldContentElementColor, Color separatorColor, Color footerColor, Color disclaimerColor, Color subPanelBackgroundColor)
+	{
 		this.defaultColor = defaultColor;
 		this.hoverColor = hoverColor;
 		this.selectColor = selectColor;
@@ -77,13 +86,20 @@ public enum EmoteClueItemsPanelPalette
 		return this.foldContentColor;
 	}
 
-	public Color getFoldContentElementColor() {
+	public Color getFoldContentElementColor()
+	{
 		return this.foldContentElementColor;
 	}
 
-	public Color getSeparatorColor() { return this.separatorColor; }
+	public Color getSeparatorColor()
+	{
+		return this.separatorColor;
+	}
 
-	public Color getFooterColor() { return this.footerColor; }
+	public Color getFooterColor()
+	{
+		return this.footerColor;
+	}
 
 	public Color getDislaimerColor()
 	{

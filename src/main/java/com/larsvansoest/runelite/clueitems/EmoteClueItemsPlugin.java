@@ -44,6 +44,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -82,8 +83,8 @@ public class EmoteClueItemsPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
-		ConfigProvider configProvider = new ConfigProvider(this.config);
-		this.overlay = new EmoteClueItemOverlay(this.itemManager, configProvider);
+		EmoteClueItemsConfigProvider emoteClueItemsConfigProvider = new EmoteClueItemsConfigProvider(this.config);
+		this.overlay = new EmoteClueItemOverlay(this.itemManager, emoteClueItemsConfigProvider);
 		this.overlayManager.add(this.overlay);
 
 		EmoteClueItemsPanelPalette emoteClueItemsPalette = EmoteClueItemsPanelPalette.DARK;
@@ -119,6 +120,18 @@ public class EmoteClueItemsPlugin extends Plugin
 		{
 			this.requirementStatusManager.reset();
 			this.emoteClueItemsPanel.setDisclaimer("To start display of progression, please open your bank once.");
+		}
+	}
+
+	@Subscribe
+	protected void onConfigChanged(ConfigChanged event) {
+		if(event.getKey().equals("DisplayProgressPanel")) {
+			if(event.getNewValue().equals("false")) {
+				this.clientToolbar.removeNavigation(this.navigationButton);
+			}
+			else {
+				this.clientToolbar.addNavigation(this.navigationButton);
+			}
 		}
 	}
 

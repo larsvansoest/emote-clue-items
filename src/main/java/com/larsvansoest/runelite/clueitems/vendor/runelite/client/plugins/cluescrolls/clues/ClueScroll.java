@@ -31,6 +31,7 @@ import lombok.Setter;
 import net.runelite.api.Varbits;
 import net.runelite.client.plugins.cluescrolls.clues.Enemy;
 
+
 public abstract class ClueScroll
 {
 	@Setter(AccessLevel.PROTECTED)

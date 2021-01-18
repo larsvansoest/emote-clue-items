@@ -40,6 +40,12 @@ import java.util.Map;
 import java.util.stream.Stream;
 import javax.swing.JPanel;
 
+/**
+ * Lists {@link RequirementPanel} entries, provides functionality to display filtered sub-sets.
+ *
+ * @author Lars van Soest
+ * @since 2.0.0
+ */
 public class RequirementContainer extends JPanel
 {
 	private final GridBagConstraints c;
@@ -92,7 +98,8 @@ public class RequirementContainer extends JPanel
 			.filter(requirementPanel -> this.filterables.entrySet().stream()
 				.allMatch(filter -> {
 					Object requirementValue = requirementPanel.getFilterable(filter.getKey());
-					if (requirementValue instanceof Collection<?>) {
+					if (requirementValue instanceof Collection<?>)
+					{
 						return ((Collection<?>) requirementValue).stream().anyMatch(filterValueElement -> this.filterValueMatches(filterValueElement, filter.getValue()));
 					}
 					return this.filterValueMatches(requirementValue, filter.getValue());
@@ -100,7 +107,8 @@ public class RequirementContainer extends JPanel
 			));
 	}
 
-	private Boolean filterValueMatches(Object filterValue, Object value) {
+	private Boolean filterValueMatches(Object filterValue, Object value)
+	{
 		return filterValue == null
 			|| value == null
 			|| (value instanceof String) && (filterValue instanceof String) && ((String) filterValue).toLowerCase().contains(((String) value).toLowerCase())

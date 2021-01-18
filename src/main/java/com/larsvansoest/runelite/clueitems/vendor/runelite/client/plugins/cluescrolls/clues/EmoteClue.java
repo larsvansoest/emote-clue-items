@@ -25,6 +25,7 @@
 package com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues;
 
 import com.google.common.collect.ImmutableSet;
+import com.larsvansoest.runelite.clueitems.EmoteClueItemsPlugin;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
 import static com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty.Beginner;
 import static com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty.Easy;
@@ -53,6 +54,11 @@ import static net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit.*;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.emptySlot;
 
+/**
+ * Data set vendored from RuneLite source. Replaces original {@link ItemRequirement} objects with {@link EmoteClueItem} entries to use in the {@link EmoteClueItemsPlugin}.
+ * <p>
+ * Source: https://github.com/runelite/runelite/tree/master/runelite-client/src/main/java/net/runelite/client/plugins/cluescrolls/clues
+ */
 @Getter
 public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClueScroll
 {

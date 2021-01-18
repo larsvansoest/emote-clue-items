@@ -29,11 +29,10 @@
 package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.item.clue;
 
 import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementStatus;
 import com.larsvansoest.runelite.clueitems.data.util.EmoteClueImages;
 import com.larsvansoest.runelite.clueitems.toolbar.component.EmoteClueItemsPanelPalette;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementStatus;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.foldable.FoldablePanel;
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.item.inventory.StashUnitLabel;
 import com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.EmoteClue;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
@@ -46,7 +45,6 @@ import javax.swing.JSeparator;
 import javax.swing.border.MatteBorder;
 import net.runelite.client.plugins.cluescrolls.clues.Enemy;
 import net.runelite.client.plugins.cluescrolls.clues.emote.Emote;
-import net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
@@ -68,13 +66,6 @@ public class EmoteCluePanel extends FoldablePanel
 		boolean requiresSpade = emoteClue.isRequiresSpade();
 		Enemy enemy = emoteClue.getEnemy();
 		String description = emoteClue.getText();
-
-		STASHUnit stashUnit = emoteClue.getStashUnit();
-		if (stashUnit != null) {
-			String locationName = emoteClue.getLocationName();
-			StashUnitLabel stashUnitLabel = new StashUnitLabel(locationName, locationName.charAt(0));
-			super.addRightIcon(stashUnitLabel);
-		}
 
 		JPanel foldContent = super.getFoldContent();
 		foldContent.setBackground(emoteClueItemsPanelPalette.getSubPanelBackgroundColor());

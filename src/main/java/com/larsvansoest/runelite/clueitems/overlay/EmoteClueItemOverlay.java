@@ -28,7 +28,7 @@
 
 package com.larsvansoest.runelite.clueitems.overlay;
 
-import com.larsvansoest.runelite.clueitems.ConfigProvider;
+import com.larsvansoest.runelite.clueitems.EmoteClueItemsConfigProvider;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImage;
 import com.larsvansoest.runelite.clueitems.data.util.EmoteClueAssociations;
@@ -64,17 +64,17 @@ public class EmoteClueItemOverlay extends WidgetItemOverlay
 	}
 
 	private final ItemManager itemManager;
-	private final ConfigProvider configProvider;
+	private final EmoteClueItemsConfigProvider emoteClueItemsConfigProvider;
 
 	// Single object allocations, re-used every sequential iteration.
 	private final ItemWidgetData itemWidgetData;
 	private final Point point;
 
 	@Inject
-	public EmoteClueItemOverlay(ItemManager itemManager, ConfigProvider config)
+	public EmoteClueItemOverlay(ItemManager itemManager, EmoteClueItemsConfigProvider config)
 	{
 		this.itemManager = itemManager;
-		this.configProvider = config;
+		this.emoteClueItemsConfigProvider = config;
 
 		this.itemWidgetData = new ItemWidgetData();
 		this.point = new Point();
@@ -92,7 +92,7 @@ public class EmoteClueItemOverlay extends WidgetItemOverlay
 		ItemWidgetContext context = this.itemWidgetData.getContext();
 
 		// Filter unsupported and turned off interfaces.
-		if (context == null || container == null || !this.configProvider.interfaceGroupSelected(container))
+		if (context == null || container == null || !this.emoteClueItemsConfigProvider.interfaceGroupSelected(container))
 		{
 			return;
 		}

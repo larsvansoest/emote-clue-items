@@ -37,19 +37,22 @@ class EmoteClueItemsTracker
 {
 	private final Item[] items;
 
-	public EmoteClueItemsTracker(int capacity) {
+	public EmoteClueItemsTracker(int capacity)
+	{
 		this.items = new Item[capacity];
-		for(int i = 0; i < capacity; i++) {
+		for (int i = 0; i < capacity; i++)
+		{
 			this.items[i] = new Item(-1, 0);
 		}
 	}
 
-	public List<Item> writeDeltas(@NonNull Item[] items) {
+	public List<Item> writeDeltas(@NonNull Item[] items)
+	{
 		LinkedList<Item> deltas = new LinkedList<>();
-		for(int i = 0; i < items.length; i++)
+		for (int i = 0; i < items.length; i++)
 		{
 			Item previousItem = this.items[i];
-			Item currentItem  = items[i];
+			Item currentItem = items[i];
 			this.items[i] = currentItem;
 
 			int currentItemId = currentItem.getId();
@@ -57,19 +60,24 @@ class EmoteClueItemsTracker
 			int previousItemId = previousItem.getId();
 			int previousQuantity = previousItem.getQuantity();
 
-			if(previousItemId != currentItemId) {
-				if(previousItemId == -1) {
+			if (previousItemId != currentItemId)
+			{
+				if (previousItemId == -1)
+				{
 					deltas.add(currentItem);
 				}
-				else if(currentItemId == -1) {
+				else if (currentItemId == -1)
+				{
 					deltas.add(new Item(previousItemId, -previousQuantity));
 				}
-				else {
+				else
+				{
 					deltas.add(currentItem);
 					deltas.add(new Item(previousItemId, -previousQuantity));
 				}
 			}
-			else if(previousQuantity != currentQuantity) {
+			else if (previousQuantity != currentQuantity)
+			{
 				deltas.add(new Item(currentItemId, currentQuantity - previousQuantity));
 			}
 		}

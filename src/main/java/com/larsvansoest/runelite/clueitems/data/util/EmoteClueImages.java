@@ -33,37 +33,63 @@ import com.larsvansoest.runelite.clueitems.data.EmoteClueImage;
 import java.awt.image.BufferedImage;
 import net.runelite.client.util.ImageUtil;
 
+/**
+ * Static facade which provides utilities to get images from the {@link EmoteClueImage} class.
+ *
+ * @author Lars van Soest
+ * @since 2.0.0
+ */
 public abstract class EmoteClueImages
 {
-	public static BufferedImage getRibbon(EmoteClueDifficulty emoteClueDifficulty) {
-		switch (emoteClueDifficulty) {
-			case Beginner: return EmoteClueImage.Ribbon.BEGINNER;
-			case Easy: return EmoteClueImage.Ribbon.EASY;
-			case Medium: return EmoteClueImage.Ribbon.MEDIUM;
-			case Hard: return EmoteClueImage.Ribbon.HARD;
-			case Elite: return EmoteClueImage.Ribbon.ELITE;
-			case Master: return EmoteClueImage.Ribbon.MASTER;
-			default: throw new IllegalArgumentException();
+	public static BufferedImage getRibbon(EmoteClueDifficulty emoteClueDifficulty)
+	{
+		switch (emoteClueDifficulty)
+		{
+			case Beginner:
+				return EmoteClueImage.Ribbon.BEGINNER;
+			case Easy:
+				return EmoteClueImage.Ribbon.EASY;
+			case Medium:
+				return EmoteClueImage.Ribbon.MEDIUM;
+			case Hard:
+				return EmoteClueImage.Ribbon.HARD;
+			case Elite:
+				return EmoteClueImage.Ribbon.ELITE;
+			case Master:
+				return EmoteClueImage.Ribbon.MASTER;
+			default:
+				throw new IllegalArgumentException();
 		}
 	}
 
-	public static BufferedImage getScroll(EmoteClueDifficulty emoteClueDifficulty) {
-		switch (emoteClueDifficulty) {
-			case Beginner: return EmoteClueImage.Toolbar.Requirement.Scroll.BEGINNER;
-			case Easy: return EmoteClueImage.Toolbar.Requirement.Scroll.EASY;
-			case Medium: return EmoteClueImage.Toolbar.Requirement.Scroll.MEDIUM;
-			case Hard: return EmoteClueImage.Toolbar.Requirement.Scroll.HARD;
-			case Elite: return EmoteClueImage.Toolbar.Requirement.Scroll.ELITE;
-			case Master: return EmoteClueImage.Toolbar.Requirement.Scroll.MASTER;
-			default: throw new IllegalArgumentException();
+	public static BufferedImage getScroll(EmoteClueDifficulty emoteClueDifficulty)
+	{
+		switch (emoteClueDifficulty)
+		{
+			case Beginner:
+				return EmoteClueImage.Toolbar.Requirement.Scroll.BEGINNER;
+			case Easy:
+				return EmoteClueImage.Toolbar.Requirement.Scroll.EASY;
+			case Medium:
+				return EmoteClueImage.Toolbar.Requirement.Scroll.MEDIUM;
+			case Hard:
+				return EmoteClueImage.Toolbar.Requirement.Scroll.HARD;
+			case Elite:
+				return EmoteClueImage.Toolbar.Requirement.Scroll.ELITE;
+			case Master:
+				return EmoteClueImage.Toolbar.Requirement.Scroll.MASTER;
+			default:
+				throw new IllegalArgumentException();
 		}
 	}
 
-	public static BufferedImage illuminate(BufferedImage bufferedImage, float scale) {
+	public static BufferedImage illuminate(BufferedImage bufferedImage, float scale)
+	{
 		return ImageUtil.luminanceScale(bufferedImage, scale);
 	}
 
-	public static BufferedImage resizeCanvas(BufferedImage bufferedImage, int width, int height) {
+	public static BufferedImage resizeCanvas(BufferedImage bufferedImage, int width, int height)
+	{
 		return ImageUtil.resizeCanvas(bufferedImage, width, height);
 	}
 }

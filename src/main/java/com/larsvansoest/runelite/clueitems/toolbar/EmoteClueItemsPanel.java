@@ -28,8 +28,10 @@
 
 package com.larsvansoest.runelite.clueitems.toolbar;
 
+import com.larsvansoest.runelite.clueitems.EmoteClueItemsPlugin;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImage;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementStatus;
 import com.larsvansoest.runelite.clueitems.toolbar.component.disclaimer.DisclaimerPanel;
 import com.larsvansoest.runelite.clueitems.toolbar.component.footer.FooterPanel;
@@ -50,6 +52,14 @@ import javax.swing.border.MatteBorder;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.IconTextField;
 
+/**
+ * Main {@link PluginPanel} of the {@link EmoteClueItemsPlugin}, which displays {@link EmoteClueItem} requirement status progression.
+ * <p>
+ * Includes search bar, {@link FilterButton} buttons to filter and sort by properties, such as {@link RequirementStatus}, requirement name, and more.
+ *
+ * @author Lars van Soest
+ * @since 2.0.0
+ */
 public class EmoteClueItemsPanel extends PluginPanel
 {
 	private final EmoteClueItemsPanelPalette emoteClueItemsPanelPalette;
@@ -72,7 +82,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 		this.emoteClueItemsPanelPalette = emoteClueItemsPanelPalette;
 		this.searchBar = new SearchBarFactory(this::onSearchBarTextChanged).defaultColor(emoteClueItemsPanelPalette.getDefaultColor()).hoverColor(emoteClueItemsPanelPalette.getHoverColor()).build();
 		this.requirementContainer = requirementPanelProvider.getRequirementContainer();
-		this.requirementContainer.sort(RequirementSortType.Name, false);
+		this.requirementContainer.sort(RequirementSortType.Quantity, true);
 
 		this.separator = new JSeparator();
 		this.setSeparatorColor(null);
@@ -120,12 +130,14 @@ public class EmoteClueItemsPanel extends PluginPanel
 		super.add(footerPanel, c);
 	}
 
-	public void setDisclaimer(String text) {
+	public void setDisclaimer(String text)
+	{
 		this.disclaimerPanel.setText(text);
 		this.disclaimerPanel.setVisible(true);
 	}
 
-	public void removeDisclaimer() {
+	public void removeDisclaimer()
+	{
 		this.disclaimerPanel.setVisible(false);
 	}
 
@@ -160,7 +172,6 @@ public class EmoteClueItemsPanel extends PluginPanel
 		FilterButton<RequirementStatus> requirementStatusFilterButton = new FilterButton<>(null, new ImageIcon(EmoteClueImage.Toolbar.CheckSquare.ALL), this.getToolTipText("Toggle show %s statuses.", "all"), new Dimension(25, 30), emoteClueItemsPanelPalette.getDefaultColor(), emoteClueItemsPanelPalette.getHoverColor(), 4, this::onRequirementStatusFilterChanged);
 		String toolTipTextFormat = "Toggle show %s status.";
 		requirementStatusFilterButton.addOption(RequirementStatus.InComplete, new ImageIcon(EmoteClueImage.Toolbar.CheckSquare.INCOMPLETE), this.getToolTipText(toolTipTextFormat, "incomplete"));
-		requirementStatusFilterButton.addOption(RequirementStatus.InProgress, new ImageIcon(EmoteClueImage.Toolbar.CheckSquare.IN_PROGRESS), this.getToolTipText(toolTipTextFormat, "in progress"));
 		requirementStatusFilterButton.addOption(RequirementStatus.Complete, new ImageIcon(EmoteClueImage.Toolbar.CheckSquare.COMPLETE), this.getToolTipText(toolTipTextFormat, "complete"));
 		return requirementStatusFilterButton;
 	}
@@ -180,11 +191,10 @@ public class EmoteClueItemsPanel extends PluginPanel
 
 	private FilterButton<Map.Entry<RequirementSortType, Boolean>> createSortFilterButton(EmoteClueItemsPanelPalette emoteClueItemsPanelPalette)
 	{
-		FilterButton<Map.Entry<RequirementSortType, Boolean>> sortFilterButton = new FilterButton<>(new AbstractMap.SimpleImmutableEntry<>(RequirementSortType.Name, false), new ImageIcon(EmoteClueImage.Toolbar.SortType.NAME_ASCENDING), this.getToolTipText("Toggle order by %s (ascending).", "name"), new Dimension(25, 30), emoteClueItemsPanelPalette.getDefaultColor(), emoteClueItemsPanelPalette.getHoverColor(), 7, this::onSortFilterChanged);
-		sortFilterButton.addOption(new AbstractMap.SimpleImmutableEntry<>(RequirementSortType.Name, true), new ImageIcon(EmoteClueImage.Toolbar.SortType.NAME_DESCENDING), this.getToolTipText("Toggle order by %s (descending).", "name"));
+		FilterButton<Map.Entry<RequirementSortType, Boolean>> sortFilterButton = new FilterButton<>(new AbstractMap.SimpleImmutableEntry<>(RequirementSortType.Quantity, true), new ImageIcon(EmoteClueImage.Toolbar.SortType.QUANTITY_DESCENDING), this.getToolTipText("Toggle order by %s (descending).", "quantity"), new Dimension(25, 30), emoteClueItemsPanelPalette.getDefaultColor(), emoteClueItemsPanelPalette.getHoverColor(), 7, this::onSortFilterChanged);
 		sortFilterButton.addOption(new AbstractMap.SimpleImmutableEntry<>(RequirementSortType.Quantity, false), new ImageIcon(EmoteClueImage.Toolbar.SortType.QUANTITY_ASCENDING), this.getToolTipText("Toggle order by %s (ascending).", "quantity"));
-		sortFilterButton.addOption(new AbstractMap.SimpleImmutableEntry<>(RequirementSortType.Quantity, true), new ImageIcon(EmoteClueImage.Toolbar.SortType.QUANTITY_DESCENDING), this.getToolTipText("Toggle order by %s (descending).", "quantity"));
-
+		sortFilterButton.addOption(new AbstractMap.SimpleImmutableEntry<>(RequirementSortType.Name, true), new ImageIcon(EmoteClueImage.Toolbar.SortType.NAME_DESCENDING), this.getToolTipText("Toggle order by %s (descending).", "name"));
+		sortFilterButton.addOption(new AbstractMap.SimpleImmutableEntry<>(RequirementSortType.Name, false), new ImageIcon(EmoteClueImage.Toolbar.SortType.NAME_ASCENDING), this.getToolTipText("Toggle order by %s (ascending).", "name"));
 		return sortFilterButton;
 	}
 

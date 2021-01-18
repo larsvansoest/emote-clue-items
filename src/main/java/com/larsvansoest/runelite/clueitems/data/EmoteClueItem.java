@@ -34,9 +34,16 @@ import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
+import net.runelite.client.plugins.cluescrolls.clues.EmoteClue;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements;
 
+/**
+ * Contains and wraps all {@link ItemRequirement} used by {@link EmoteClue}, integrated in vendored {@link com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.EmoteClue} class.
+ *
+ * @author Lars van Soest
+ * @since 2.0.0
+ */
 public enum EmoteClueItem implements ItemRequirement
 {
 	ABYSSAL_WHIP("Abyssal whip", ItemID.ABYSSAL_WHIP),
@@ -701,7 +708,8 @@ public enum EmoteClueItem implements ItemRequirement
 		this.itemId = null;
 		this.name = name;
 		this.children = Arrays.asList(emoteClueItems);
-		for(EmoteClueItem child : emoteClueItems) {
+		for (EmoteClueItem child : emoteClueItems)
+		{
 			child.addParent(this);
 		}
 		this.parents = new LinkedList<>();
@@ -717,11 +725,13 @@ public enum EmoteClueItem implements ItemRequirement
 		return this.parents;
 	}
 
-	public final Integer getItemId() {
+	public final Integer getItemId()
+	{
 		return this.itemId;
 	}
 
-	public final void addParent(EmoteClueItem parent) {
+	public final void addParent(EmoteClueItem parent)
+	{
 		this.parents.add(parent);
 	}
 
@@ -748,5 +758,8 @@ public enum EmoteClueItem implements ItemRequirement
 		return this.getCollectiveName();
 	}
 
-	public String getCollectiveName() { return this.name; }
+	public String getCollectiveName()
+	{
+		return this.name;
+	}
 }

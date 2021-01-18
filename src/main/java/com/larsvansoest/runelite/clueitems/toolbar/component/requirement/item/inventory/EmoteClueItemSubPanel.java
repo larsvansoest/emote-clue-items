@@ -29,10 +29,9 @@
 package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.item.inventory;
 
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImage;
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementStatus;
 import com.larsvansoest.runelite.clueitems.toolbar.component.EmoteClueItemsPanelPalette;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementStatus;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.UpdatablePanel;
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.foldable.FoldableHeaderText;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.foldable.FoldablePanel;
 import java.awt.GridBagConstraints;
 import java.util.LinkedList;
@@ -47,9 +46,6 @@ public class EmoteClueItemSubPanel extends FoldablePanel
 
 	private final GridBagConstraints foldContentConstraints;
 	private Boolean expanded;
-	private int completedAmount;
-	private int requiredAmount;
-	private final FoldableHeaderText amountLabel;
 
 	public EmoteClueItemSubPanel(EmoteClueItemsPanelPalette emoteClueItemsPanelPalette) {
 		super(emoteClueItemsPanelPalette, "Collection log");
@@ -63,9 +59,6 @@ public class EmoteClueItemSubPanel extends FoldablePanel
 		nameLabel.setMaximumSize(null);
 		nameLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 		// TODO clean up code
-
-		this.amountLabel = new FoldableHeaderText("");
-		this.amountLabel.setHorizontalAlignment(JLabel.CENTER);
 
 		super.addLeftIcon(new JLabel(new ImageIcon(EmoteClueImage.Toolbar.Requirement.INVENTORY)));
 
@@ -124,37 +117,5 @@ public class EmoteClueItemSubPanel extends FoldablePanel
 		{
 			this.unfold();
 		}
-	}
-
-	public void setRequiredAmount(int amount) {
-		this.requiredAmount = amount;
-		this.updateAmount();
-	}
-
-	public void setCompletedAmount(int amount) {
-		this.completedAmount = amount;
-		this.updateAmount();
-	}
-
-	private void updateAmount() {
-		this.amountLabel.setText(String.format("%s/%s", this.completedAmount, this.requiredAmount));
-	}
-
-	public void addAmountLabel() {
-		super.addRightIcon(this.amountLabel);
-	}
-
-	public void addStashUnitIcon(StashUnitLabel stashUnitLabel) {
-		super.addRightIcon(stashUnitLabel);
-	}
-
-	public int getCompletedAmount()
-	{
-		return this.completedAmount;
-	}
-
-	public int getRequiredAmount()
-	{
-		return this.requiredAmount;
 	}
 }

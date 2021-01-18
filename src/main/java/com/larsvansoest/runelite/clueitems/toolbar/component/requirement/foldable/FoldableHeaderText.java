@@ -28,17 +28,13 @@
 
 package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.foldable;
 
-import java.awt.Color;
 import java.awt.Dimension;
+import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 
 public class FoldableHeaderText extends JShadowedLabel
 {
-	private static final Color TRANSPARENT = new Color(0, 0, 0, 0);
-
-	private final Color shadow;
-
 	public FoldableHeaderText(Dimension dimension, String text) {
 		this(text);
 		super.setPreferredSize(dimension);
@@ -49,14 +45,6 @@ public class FoldableHeaderText extends JShadowedLabel
 	public FoldableHeaderText(String text) {
 		super.setText(text);
 		super.setFont(FontManager.getRunescapeSmallFont());
-		this.shadow = super.getShadow();
-	}
-
-	public void disableShadow() {
-		super.setShadow(FoldableHeaderText.TRANSPARENT);
-	}
-
-	public void enableShadow() {
-		super.setShadow(this.shadow);
+		super.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 	}
 }

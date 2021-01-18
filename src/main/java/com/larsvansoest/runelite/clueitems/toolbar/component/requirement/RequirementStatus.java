@@ -28,9 +28,16 @@
 
 package com.larsvansoest.runelite.clueitems.toolbar.component.requirement;
 
+import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
 import java.awt.Color;
 import net.runelite.client.ui.ColorScheme;
 
+/**
+ * Represents values for {@link EmoteClueItem} completion status.
+ *
+ * @author Lars van Soest
+ * @since 2.0.0
+ */
 public enum RequirementStatus
 {
 	Complete(ColorScheme.PROGRESS_COMPLETE_COLOR),
@@ -43,7 +50,8 @@ public enum RequirementStatus
 
 	public final Color colour;
 
-	RequirementStatus(Color colour) {
+	RequirementStatus(Color colour)
+	{
 		this.colour = colour;
 	}
 }

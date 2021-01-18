@@ -28,6 +28,7 @@
 
 package com.larsvansoest.runelite.clueitems.toolbar;
 
+import com.larsvansoest.runelite.clueitems.EmoteClueItemsPlugin;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementStatus;
 import com.larsvansoest.runelite.clueitems.data.util.EmoteClueAssociations;
@@ -44,7 +45,18 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.plugins.cluescrolls.clues.item.SingleItemRequirement;
 
+/**
+ * Creates front-end ui requirement visualisation panels, and caches requirement-panel mappings to display requirement status, provided by {@link EmoteClueItemsPlugin}.
+ *
+ * @author Lars van Soest
+ * @see javax.swing.JPanel
+ * @see EmoteClueItemPanel
+ * @see EmoteClueItemSubPanel
+ * @see EmoteClueItemSlotPanel
+ * @since 2.0.0
+ */
 public class RequirementPanelProvider
 {
 	private final RequirementContainer requirementContainer;
@@ -90,7 +102,8 @@ public class RequirementPanelProvider
 		this.requirementContainer.load(this.emoteClueItemPanelMap.values());
 	}
 
-	private void addSubItems(EmoteClueItemSubPanel subPanel, EmoteClueItem child) {
+	private void addSubItems(EmoteClueItemSubPanel subPanel, EmoteClueItem child)
+	{
 		EmoteClueItemSlotPanel childSlotPanel = this.slotPanelMap.get(child);
 		if (childSlotPanel != null)
 		{
@@ -108,16 +121,32 @@ public class RequirementPanelProvider
 		}
 	}
 
-	public void setItemSlotStatus(EmoteClueItem emoteClueItem, int quantity) {
+	/**
+	 * Changes an item sprite to represent given quantity, if a mapping to {@link EmoteClueItemSlotPanel} exists.
+	 *
+	 * @param emoteClueItem the {@link SingleItemRequirement} {@link EmoteClueItem} requirement containing the item sprite.
+	 * @param quantity      the item quantity the item sprite should show.
+	 */
+	public void setItemSlotStatus(EmoteClueItem emoteClueItem, int quantity)
+	{
 		EmoteClueItemSlotPanel slotPanel = this.slotPanelMap.get(emoteClueItem);
-		if(slotPanel != null) {
+		if (slotPanel != null)
+		{
 			slotPanel.setStatus(quantity);
 		}
 	}
 
-	public void setEmoteClueItemStatus(EmoteClueItem emoteClueItem, RequirementStatus status) {
+	/**
+	 * Changes an {@link EmoteClue} {@link EmoteClueItem} status panel to represent given {@link RequirementStatus} status, if a mapping to {@link EmoteClueItemPanel} exists.
+	 *
+	 * @param emoteClueItem the {@link EmoteClue} {@link EmoteClueItem} requirement to display.
+	 * @param status        the desired {@link RequirementStatus} status to display.
+	 */
+	public void setEmoteClueItemStatus(EmoteClueItem emoteClueItem, RequirementStatus status)
+	{
 		EmoteClueItemPanel emoteClueItemPanel = this.emoteClueItemPanelMap.get(emoteClueItem);
-		if(emoteClueItemPanel != null) {
+		if (emoteClueItemPanel != null)
+		{
 			emoteClueItemPanel.setStatus(status);
 		}
 	}

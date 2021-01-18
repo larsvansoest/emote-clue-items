@@ -30,6 +30,8 @@ package com.larsvansoest.runelite.clueitems.data.util;
 
 import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
+import com.larsvansoest.runelite.clueitems.toolbar.RequirementPanelProvider;
+import com.larsvansoest.runelite.clueitems.toolbar.progress.RequirementStatusManager;
 import com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.EmoteClue;
 import java.util.AbstractMap;
 import java.util.Arrays;
@@ -39,6 +41,14 @@ import java.util.stream.Collectors;
 import net.runelite.client.plugins.cluescrolls.clues.item.SlotLimitationRequirement;
 import org.apache.commons.lang3.ArrayUtils;
 
+/**
+ * Provides static predicate mappings over {@link EmoteClueItem} data set.
+ * <p>
+ * Use-case examples are requirement progression inference by {@link RequirementStatusManager} class, nested requirement visualisation by {@link RequirementPanelProvider}.
+ *
+ * @author Lars van Soest
+ * @since 2.0.0
+ */
 public abstract class EmoteClueAssociations
 {
 	public static Map<Integer, EmoteClueItem> ItemIdToEmoteClueItemSlot = Arrays.stream(EmoteClueItem.values()).filter(emoteClueItem -> emoteClueItem.getItemId() != null).collect(Collectors.toMap(

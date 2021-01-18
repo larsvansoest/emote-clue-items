@@ -33,6 +33,12 @@ import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.foldabl
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Abstract class which represents requirement visualisation in a {@link RequirementContainer}.
+ *
+ * @author Lars van Soest
+ * @since 2.0.0
+ */
 public abstract class RequirementPanel extends FoldablePanel
 {
 	private final RequirementContainer parent;

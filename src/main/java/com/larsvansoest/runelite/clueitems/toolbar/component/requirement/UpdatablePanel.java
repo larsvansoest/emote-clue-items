@@ -28,12 +28,23 @@
 
 package com.larsvansoest.runelite.clueitems.toolbar.component.requirement;
 
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.foldable.FoldablePanel;
 import javax.swing.JPanel;
 
+/**
+ * A requirement progression visualisation {@link JPanel} extension with changeable {@link RequirementStatus} representation.
+ *
+ * @since 2.0.0
+ * @author Lars van Soest
+ * @see FoldablePanel
+ */
 public abstract class UpdatablePanel extends JPanel
 {
 	public UpdatablePanel() {
 	}
 
+	/**
+	 * Change item requirement panel to display desired {@link RequirementStatus}.
+	 */
 	public abstract void setStatus(RequirementStatus requirementStatus);
 }

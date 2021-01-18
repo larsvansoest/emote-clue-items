@@ -48,10 +48,11 @@ public class FilterButton<T> extends JPanel
 	private final JLabel optionLabel;
 	private final Queue<FilterButtonOption<T>> optionQueue;
 	private final Runnable onChange;
-	private final String defaultToolTip;
 
 	private FilterButtonOption<T> currentOption;
 	private Map.Entry<T, Icon> currentValue;
+
+	private final String defaultToolTip;
 
 	public FilterButton(T defaultValue, Icon defaultIcon, String defaultToolTip, Dimension dimension, Color defaultColor, Color hoverColor, int capacity, Runnable onChange) {
 		this(new AbstractMap.SimpleImmutableEntry<>(defaultValue, defaultIcon), defaultToolTip, dimension, defaultColor, hoverColor, capacity, onChange);

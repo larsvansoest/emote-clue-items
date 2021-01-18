@@ -28,8 +28,15 @@
 
 package com.larsvansoest.runelite.clueitems.data;
 
+import com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.EmoteClue;
 import java.awt.Color;
 
+/**
+ * Contains values for all {@link EmoteClue} difficulties.
+ *
+ * @author Lars van Soest
+ * @since 2.0.0
+ */
 public enum EmoteClueDifficulty
 {
 	Beginner(new Color(169, 158, 157)),

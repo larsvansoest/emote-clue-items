@@ -30,6 +30,7 @@ package com.larsvansoest.runelite.clueitems.toolbar.progress;
 
 import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
 import com.larsvansoest.runelite.clueitems.data.util.EmoteClueAssociations;
+import com.larsvansoest.runelite.clueitems.toolbar.EmoteClueItemsPanel;
 import com.larsvansoest.runelite.clueitems.toolbar.RequirementPanelProvider;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementStatus;
 import java.util.HashMap;
@@ -37,10 +38,20 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.plugins.cluescrolls.clues.item.AllRequirementsCollection;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 
+/**
+ * Monitors player owned items and subsequent changes to {@link ItemContainer} objects for Inventory, Bank and Equipment.
+ * <p>
+ * Uses {@link RequirementPanelProvider} to represent requirement statuses on {@link EmoteClueItemsPanel} accordingly.
+ *
+ * @author Lars van Soest
+ * @see EmoteClueItem
+ * @since 2.0.0
+ */
 public class RequirementStatusManager
 {
 	private final Map<EmoteClueItem, RequirementStatus> statusMap;
@@ -55,8 +66,10 @@ public class RequirementStatusManager
 		this.reset();
 	}
 
-	public void reset() {
-		for(EmoteClueItem emoteClueItem : EmoteClueItem.values()) {
+	public void reset()
+	{
+		for (EmoteClueItem emoteClueItem : EmoteClueItem.values())
+		{
 			this.statusMap.put(emoteClueItem, RequirementStatus.InComplete);
 			this.panelProvider.setEmoteClueItemStatus(emoteClueItem, RequirementStatus.InComplete);
 		}
@@ -107,7 +120,8 @@ public class RequirementStatusManager
 						{
 							completedParents.add(parent);
 						}
-						else {
+						else
+						{
 							this.panelProvider.setEmoteClueItemStatus(parent, parentStatus);
 						}
 						this.statusMap.put(parent, parentStatus);
