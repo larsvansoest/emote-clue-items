@@ -60,7 +60,7 @@ public class StashUnitLabel extends JLayeredPane
 		stashChar.setFont(FontManager.getRunescapeBoldFont());
 		stashChar.setBounds(0, 3, 16, 17);
 
-		super.add(stashIcon, Integer.valueOf(0), 0);
-		super.add(stashChar,  Integer.valueOf(1), 0);
+		super.add(stashIcon, 0, 0);
+		super.add(stashChar,  1, 0);
 	}
 }

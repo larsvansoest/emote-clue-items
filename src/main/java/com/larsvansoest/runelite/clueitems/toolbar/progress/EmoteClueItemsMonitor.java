@@ -40,12 +40,14 @@ class EmoteClueItemsMonitor
 {
 	private final EmoteClueItemsTracker inventoryTracker;
 	private final EmoteClueItemsTracker bankTracker;
+	private final EmoteClueItemsTracker equipmentTracker;
 	private final HashMap<Integer, Integer> collectionLog;
 
 	public EmoteClueItemsMonitor()
 	{
-		this.inventoryTracker = new EmoteClueItemsTracker(26);
+		this.inventoryTracker = new EmoteClueItemsTracker(28);
 		this.bankTracker = new EmoteClueItemsTracker(816);
+		this.equipmentTracker = new EmoteClueItemsTracker(13);
 
 		Set<Integer> itemIds = EmoteClueAssociations.ItemIdToEmoteClueItemSlot.keySet();
 		this.collectionLog = new HashMap<>(itemIds.size());
@@ -57,20 +59,22 @@ class EmoteClueItemsMonitor
 
 	public List<Item> fetchEmoteClueItemChanges(ItemContainerChanged event)
 	{
+		Item[] items = event.getItemContainer().getItems();
 		int containerId = event.getContainerId();
-
 		List<Item> deltas;
-		if (containerId == 93)
+		switch (containerId)
 		{
-			deltas = this.inventoryTracker.writeDeltas(event.getItemContainer().getItems());
-		}
-		else if (containerId == 95)
-		{
-			deltas = this.bankTracker.writeDeltas(event.getItemContainer().getItems());
-		}
-		else
-		{
-			return null;
+			case 93:
+				deltas = this.inventoryTracker.writeDeltas(items);
+				break;
+			case 94:
+				deltas = this.equipmentTracker.writeDeltas(items);
+				break;
+			case 95:
+				deltas = this.bankTracker.writeDeltas(items);
+				break;
+			default:
+				return null;
 		}
 
 		List<Item> emoteClueDeltas = new LinkedList<>();
