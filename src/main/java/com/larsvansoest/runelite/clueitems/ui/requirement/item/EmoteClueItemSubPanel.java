@@ -58,7 +58,6 @@ public class EmoteClueItemSubPanel extends FoldablePanel
 		nameLabel.setMinimumSize(null);
 		nameLabel.setMaximumSize(null);
 		nameLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
-		// TODO clean up code
 
 		super.addLeftIcon(new JLabel(new ImageIcon(EmoteClueImage.Toolbar.Requirement.INVENTORY)));
 

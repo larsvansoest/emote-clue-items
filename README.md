@@ -11,12 +11,15 @@ Among other interfaces, items in your bank, inventory and equipment are highligh
 ### Requirement status overview
 Celebrating grossing over 2500 active installs, version 2.0.0 of Emote Clue Items marks the release of the requirement overview display through the RuneLite Toolbar. Moreover, the panel displays item collection progression for required items for Old School Runescape's emote clue steps. Furthermore, requirement status progression is updated dynamically as the player collects items.
 
-### Dynamic item collection log
-Whenever the user picks up an item, the item collection log of related emote clue item steps are updated and displayed.
+#### Requirement lookup
+The overview panel allows for querying and sorting the data. Moreover, the input header allows for any combination of requirement name, difficulty and completion status filtering.
+[![Image from Gyazo](https://i.gyazo.com/722ac8754f6146629b1b1509d7e1a276.gif)](https://gyazo.com/722ac8754f6146629b1b1509d7e1a276)
 
+#### Dynamic item collection log caching
+Whenever the user picks up an item, the item collection log of related emote clue item requirement status are updated, cached, and displayed.
+[![Image from Gyazo](https://i.gyazo.com/2ad018318568ac2a0e4bc92450ef4e96.gif)](https://gyazo.com/2ad018318568ac2a0e4bc92450ef4e96)
 
-
-#### Planned Updates
+### Planned future updates
 -   STASH unit build and fill status integration.
 -   Add buttons to display EmoteClue locations on the in-game world map.
 -   Tab to display item collection log only.
