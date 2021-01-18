@@ -28,7 +28,7 @@
 
 package com.larsvansoest.runelite.clueitems.overlay;
 
-import com.larsvansoest.runelite.clueitems.EmoteClueItemsConfigProvider;
+import com.larsvansoest.runelite.clueitems.config.EmoteClueItemsConfigProvider;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImage;
 import com.larsvansoest.runelite.clueitems.data.util.EmoteClueAssociations;

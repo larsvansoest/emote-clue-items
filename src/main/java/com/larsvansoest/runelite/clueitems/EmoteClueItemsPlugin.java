@@ -29,6 +29,8 @@
 package com.larsvansoest.runelite.clueitems;
 
 import com.google.inject.Provides;
+import com.larsvansoest.runelite.clueitems.config.EmoteClueItemsConfig;
+import com.larsvansoest.runelite.clueitems.config.EmoteClueItemsConfigProvider;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImage;
 import com.larsvansoest.runelite.clueitems.data.util.EmoteClueImages;
 import com.larsvansoest.runelite.clueitems.overlay.EmoteClueItemOverlay;

@@ -26,7 +26,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems;
+package com.larsvansoest.runelite.clueitems.config;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
