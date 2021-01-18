@@ -28,7 +28,7 @@
 
 package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.foldable;
 
-import com.larsvansoest.runelite.clueitems.data.RequirementStatus;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementStatus;
 import com.larsvansoest.runelite.clueitems.toolbar.component.EmoteClueItemsPanelPalette;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.UpdatablePanel;
 import java.awt.Dimension;

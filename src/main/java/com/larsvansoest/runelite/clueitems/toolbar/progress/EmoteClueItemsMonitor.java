@@ -77,10 +77,12 @@ class EmoteClueItemsMonitor
 		for (Item delta : deltas)
 		{
 			int id = delta.getId();
-			Integer quantity = this.collectionLog.get(id);
-			if (quantity != null)
+			Integer logQuantity = this.collectionLog.get(id);
+			if (logQuantity != null)
 			{
-				emoteClueDeltas.add(new Item(id, quantity + delta.getQuantity()));
+				int quantity = logQuantity + delta.getQuantity();
+				this.collectionLog.put(id, quantity);
+				emoteClueDeltas.add(new Item(id, quantity));
 			}
 		}
 		return emoteClueDeltas;

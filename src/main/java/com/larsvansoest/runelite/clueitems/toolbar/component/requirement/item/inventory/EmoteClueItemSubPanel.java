@@ -29,7 +29,7 @@
 package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.item.inventory;
 
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImage;
-import com.larsvansoest.runelite.clueitems.data.RequirementStatus;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementStatus;
 import com.larsvansoest.runelite.clueitems.toolbar.component.EmoteClueItemsPanelPalette;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.UpdatablePanel;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.foldable.FoldableHeaderText;
@@ -51,8 +51,8 @@ public class EmoteClueItemSubPanel extends FoldablePanel
 	private int requiredAmount;
 	private final FoldableHeaderText amountLabel;
 
-	public EmoteClueItemSubPanel(EmoteClueItemsPanelPalette emoteClueItemsPanelPalette, String name) {
-		super(emoteClueItemsPanelPalette, name);
+	public EmoteClueItemSubPanel(EmoteClueItemsPanelPalette emoteClueItemsPanelPalette) {
+		super(emoteClueItemsPanelPalette, "Collection log");
 		super.getFoldContent().setBackground(emoteClueItemsPanelPalette.getSubPanelBackgroundColor());
 		super.setStatus(RequirementStatus.Unknown);
 

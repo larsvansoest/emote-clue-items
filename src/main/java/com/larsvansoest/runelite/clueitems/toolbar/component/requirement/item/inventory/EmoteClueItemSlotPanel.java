@@ -28,41 +28,55 @@
 
 package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.item.inventory;
 
-import com.larsvansoest.runelite.clueitems.data.RequirementStatus;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementStatus;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.UpdatablePanel;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.util.AsyncBufferedImage;
+import net.runelite.client.util.ImageUtil;
 
 public class EmoteClueItemSlotPanel extends UpdatablePanel
 {
-	JLabel itemSlotStatus;
+	private final ItemManager itemManager;
+	private final int itemId;
+	private final JLabel itemIcon;
+	private ImageIcon transparentIcon;
 
-	public EmoteClueItemSlotPanel(AsyncBufferedImage itemImg, String name) {
+	public EmoteClueItemSlotPanel(ItemManager itemManager, int itemId, String name) {
 		super.setLayout(new GridBagLayout());
-		JLabel itemIcon = new JLabel();
-		itemImg.addTo(itemIcon);
-		itemIcon.setToolTipText(name);
-		this.itemSlotStatus = new JLabel();
+		super.setToolTipText(name);
+
+		this.itemManager = itemManager;
+		this.itemId = itemId;
+		this.itemIcon = new JLabel();
+		this.itemIcon.setOpaque(false);
+		this.transparentIcon = new ImageIcon();
+
+		AsyncBufferedImage itemImage = itemManager.getImage(this.itemId, 0, true);
+		itemImage.onLoaded(() -> {
+			this.transparentIcon = new ImageIcon(ImageUtil.alphaOffset(itemImage, 0.38f));
+			this.itemIcon.setIcon(this.transparentIcon);
+		});
 
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
-		c.fill = GridBagConstraints.BOTH;
 		c.weightx = 1;
+		c.weighty = 1;
+		c.fill = GridBagConstraints.BOTH;
 
-		super.add(itemIcon, c);
-
-		c.gridy++;
-		super.add(this.itemSlotStatus, c);
+		super.add(this.itemIcon, c);
 	}
 
+	public void setStatus(int quantity) {
+		this.itemIcon.setIcon(quantity > 0 ? new ImageIcon(this.itemManager.getImage(this.itemId, quantity, true)) : this.transparentIcon);
+	}
 
 	@Override
 	public void setStatus(RequirementStatus requirementStatus)
 	{
-		this.itemSlotStatus.setForeground(requirementStatus.colour);
 	}
-
 }

@@ -28,7 +28,6 @@
 
 package com.larsvansoest.runelite.clueitems.toolbar.component.requirement;
 
-import com.larsvansoest.runelite.clueitems.data.RequirementStatus;
 import javax.swing.JPanel;
 
 public abstract class UpdatablePanel extends JPanel

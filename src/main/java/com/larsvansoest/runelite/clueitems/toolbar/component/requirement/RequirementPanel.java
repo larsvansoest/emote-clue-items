@@ -28,7 +28,6 @@
 
 package com.larsvansoest.runelite.clueitems.toolbar.component.requirement;
 
-import com.larsvansoest.runelite.clueitems.data.RequirementStatus;
 import com.larsvansoest.runelite.clueitems.toolbar.component.EmoteClueItemsPanelPalette;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.foldable.FoldablePanel;
 import java.util.HashMap;
@@ -49,7 +48,6 @@ public abstract class RequirementPanel extends FoldablePanel
 		this.setFilterable("name", name);
 
 		this.setStatus(RequirementStatus.Unknown);
-		super.getFoldableHeader().getNameLabel().disableShadow();
 	}
 
 	@Override

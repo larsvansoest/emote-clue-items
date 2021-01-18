@@ -29,15 +29,13 @@
 package com.larsvansoest.runelite.clueitems.toolbar.progress;
 
 import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
-import com.larsvansoest.runelite.clueitems.data.RequirementStatus;
 import com.larsvansoest.runelite.clueitems.data.util.EmoteClueAssociations;
 import com.larsvansoest.runelite.clueitems.toolbar.RequirementPanelProvider;
-import java.util.Arrays;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementStatus;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import net.runelite.api.Item;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.plugins.cluescrolls.clues.item.AllRequirementsCollection;
@@ -49,48 +47,70 @@ public class RequirementStatusManager
 	private final EmoteClueItemsMonitor itemsMonitor;
 	private final RequirementPanelProvider panelProvider;
 
-	public RequirementStatusManager(RequirementPanelProvider panelProvider) {
-		this.statusMap = Arrays.stream(EmoteClueItem.values()).collect(Collectors.toMap(Function.identity(), $ -> RequirementStatus.InComplete));
+	public RequirementStatusManager(RequirementPanelProvider panelProvider)
+	{
+		this.statusMap = new HashMap<>(EmoteClueItem.values().length);
 		this.itemsMonitor = new EmoteClueItemsMonitor();
 		this.panelProvider = panelProvider;
+		this.reset();
 	}
 
-	public void handleEmoteClueItemChanges(ItemContainerChanged event) {
+	public void reset() {
+		for(EmoteClueItem emoteClueItem : EmoteClueItem.values()) {
+			this.statusMap.put(emoteClueItem, RequirementStatus.InComplete);
+			this.panelProvider.setEmoteClueItemStatus(emoteClueItem, RequirementStatus.InComplete);
+		}
+	}
+
+	public void handleEmoteClueItemChanges(ItemContainerChanged event)
+	{
 		List<Item> emoteClueItemChanges = this.itemsMonitor.fetchEmoteClueItemChanges(event);
 
-		LinkedList<EmoteClueItem> completedParents = new LinkedList<>();
-		// Set single item (sub-)requirement status
-		for(Item item : emoteClueItemChanges) {
-			int quantity = item.getQuantity();
-			EmoteClueItem emoteClueItem = EmoteClueAssociations.ItemIdToEmoteClueItemSlot.get(item.getId());
+		if (emoteClueItemChanges != null)
+		{
+			LinkedList<EmoteClueItem> completedParents = new LinkedList<>();
+			// Set single item (sub-)requirement status
+			for (Item item : emoteClueItemChanges)
+			{
+				int quantity = item.getQuantity();
+				EmoteClueItem emoteClueItem = EmoteClueAssociations.ItemIdToEmoteClueItemSlot.get(item.getId());
 
-			if(quantity > 0) {
-				this.statusMap.put(emoteClueItem, RequirementStatus.Complete);
-				completedParents.add(emoteClueItem);
-			}
-			else {
-				this.statusMap.put(emoteClueItem, RequirementStatus.InComplete);
+				if (quantity > 0)
+				{
+					completedParents.add(emoteClueItem);
+				}
+				else
+				{
+					this.panelProvider.setEmoteClueItemStatus(emoteClueItem, RequirementStatus.InComplete);
+					this.statusMap.put(emoteClueItem, RequirementStatus.InComplete);
+				}
+
+				this.panelProvider.setItemSlotStatus(emoteClueItem, quantity);
 			}
 
-			this.panelProvider.setItemSlotStatus(emoteClueItem, quantity);
-		}
-
-		LinkedList<EmoteClueItem> parentCache = new LinkedList<>();
-		// Update requirement ancestors accordingly
-		while(completedParents.size() > 0) {
-			while(completedParents.size() > 0) {
-				parentCache.add(completedParents.poll());
-			}
-			while(parentCache.size() > 0) {
-				EmoteClueItem child = parentCache.poll();
-				for(EmoteClueItem parent : child.getParents()) {
-					RequirementStatus parentStatus = this.getParentStatus(parent);
-					if(parentStatus == RequirementStatus.Complete) {
-						completedParents.add(parent);
-					}
-					if(this.statusMap.get(parent) != parentStatus) {
+			LinkedList<EmoteClueItem> parentCache = new LinkedList<>();
+			// Update requirement ancestors accordingly
+			while (completedParents.size() > 0)
+			{
+				while (completedParents.size() > 0)
+				{
+					parentCache.add(completedParents.poll());
+				}
+				while (parentCache.size() > 0)
+				{
+					EmoteClueItem child = parentCache.poll();
+					this.panelProvider.setEmoteClueItemStatus(child, RequirementStatus.Complete);
+					for (EmoteClueItem parent : child.getParents())
+					{
+						RequirementStatus parentStatus = this.getParentStatus(parent);
+						if (parentStatus == RequirementStatus.Complete)
+						{
+							completedParents.add(parent);
+						}
+						else {
+							this.panelProvider.setEmoteClueItemStatus(parent, parentStatus);
+						}
 						this.statusMap.put(parent, parentStatus);
-						this.panelProvider.setStatus(parent, parentStatus);
 					}
 				}
 			}

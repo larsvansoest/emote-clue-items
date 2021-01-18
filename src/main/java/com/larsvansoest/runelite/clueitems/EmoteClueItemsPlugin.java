@@ -39,6 +39,8 @@ import com.larsvansoest.runelite.clueitems.toolbar.progress.RequirementStatusMan
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -75,6 +77,7 @@ public class EmoteClueItemsPlugin extends Plugin
 	private EmoteClueItemOverlay overlay;
 	private NavigationButton navigationButton;
 	private RequirementStatusManager requirementStatusManager;
+	private EmoteClueItemsPanel emoteClueItemsPanel;
 
 	@Override
 	protected void startUp()
@@ -85,14 +88,13 @@ public class EmoteClueItemsPlugin extends Plugin
 
 		EmoteClueItemsPanelPalette emoteClueItemsPalette = EmoteClueItemsPanelPalette.DARK;
 		RequirementPanelProvider requirementPanelProvider = new RequirementPanelProvider(emoteClueItemsPalette, this.itemManager);
-		EmoteClueItemsPanel emoteClueItemsPanel = new EmoteClueItemsPanel(emoteClueItemsPalette, requirementPanelProvider);
-		emoteClueItemsPanel.setDisclaimer("To start display of progression, please open your bank once.");
+		this.emoteClueItemsPanel = new EmoteClueItemsPanel(emoteClueItemsPalette, requirementPanelProvider);
 
 		this.navigationButton = NavigationButton.builder()
 			.tooltip("Emote Clue Items")
 			.icon(EmoteClueImages.resizeCanvas(EmoteClueImage.Ribbon.ALL, 16, 16))
 			.priority(7)
-			.panel(emoteClueItemsPanel)
+			.panel(this.emoteClueItemsPanel)
 			.build();
 
 		this.clientToolbar.addNavigation(this.navigationButton);
@@ -101,8 +103,23 @@ public class EmoteClueItemsPlugin extends Plugin
 	}
 
 	@Subscribe
-	protected void onItemContainerChanged(ItemContainerChanged event) {
+	protected void onItemContainerChanged(ItemContainerChanged event)
+	{
 		this.requirementStatusManager.handleEmoteClueItemChanges(event);
+		if (event.getContainerId() == 95)
+		{
+			this.emoteClueItemsPanel.removeDisclaimer();
+		}
+	}
+
+	@Subscribe
+	protected void onGameStateChanged(GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOGGED_IN)
+		{
+			this.requirementStatusManager.reset();
+			this.emoteClueItemsPanel.setDisclaimer("To start display of progression, please open your bank once.");
+		}
 	}
 
 	@Override

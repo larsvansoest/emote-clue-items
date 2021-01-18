@@ -28,17 +28,31 @@
 
 package com.larsvansoest.runelite.clueitems.toolbar.component.requirement.item;
 
+import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
+import com.larsvansoest.runelite.clueitems.data.util.EmoteClueAssociations;
+import com.larsvansoest.runelite.clueitems.data.util.EmoteClueImages;
 import com.larsvansoest.runelite.clueitems.toolbar.component.EmoteClueItemsPanelPalette;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementContainer;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementPanel;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.foldable.FoldablePanel;
+import com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.EmoteClue;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 public class EmoteClueItemPanel extends RequirementPanel
 {
-	public EmoteClueItemPanel(RequirementContainer parent, EmoteClueItemsPanelPalette emoteClueItemsPanelPalette, String name) {
-		super(parent, emoteClueItemsPanelPalette, name);
+	public EmoteClueItemPanel(RequirementContainer parent, EmoteClueItemsPanelPalette emoteClueItemsPanelPalette, EmoteClueItem emoteClueItem) {
+		super(parent, emoteClueItemsPanelPalette, emoteClueItem.getCollectiveName());
+		EmoteClue[] emoteClues = EmoteClueAssociations.EmoteClueItemToEmoteClues.get(emoteClueItem);
+		List<EmoteClueDifficulty> difficulties = Arrays.stream(emoteClues).map(EmoteClue::getEmoteClueDifficulty).distinct().collect(Collectors.toList());
+		super.setFilterable("difficulty", difficulties);
+		super.setFilterable("quantity", emoteClues.length);
+		super.setQuantity(String.valueOf(emoteClues.length));
+		difficulties.stream().map(EmoteClueImages::getRibbon).map(ImageIcon::new).map(JLabel::new).forEach(super::addRightIcon);
 		super.getFoldableHeader().getNameLabel().setHorizontalAlignment(JLabel.CENTER);
 	}
 

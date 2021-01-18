@@ -28,58 +28,46 @@
 
 package com.larsvansoest.runelite.clueitems.toolbar;
 
-import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
-import com.larsvansoest.runelite.clueitems.data.RequirementStatus;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementStatus;
 import com.larsvansoest.runelite.clueitems.data.util.EmoteClueAssociations;
-import com.larsvansoest.runelite.clueitems.data.util.EmoteClueImages;
 import com.larsvansoest.runelite.clueitems.toolbar.component.EmoteClueItemsPanelPalette;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementContainer;
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.UpdatablePanel;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.item.EmoteClueItemPanel;
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.item.inventory.EmoteClueItemSlotPanel;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.item.clue.EmoteCluePanel;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.item.inventory.EmoteClueItemSlotPanel;
 import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.item.inventory.EmoteClueItemSubPanel;
-import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.item.inventory.StashUnitLabel;
 import com.larsvansoest.runelite.clueitems.vendor.runelite.client.plugins.cluescrolls.clues.EmoteClue;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit;
-import net.runelite.client.plugins.cluescrolls.clues.item.AllRequirementsCollection;
-import net.runelite.client.plugins.cluescrolls.clues.item.AnyRequirementCollection;
-import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 
 public class RequirementPanelProvider
 {
 	private final RequirementContainer requirementContainer;
-	private final Map<EmoteClueItem, LinkedList<UpdatablePanel>> updatablePanelMap;
+	private final Map<EmoteClueItem, EmoteClueItemPanel> emoteClueItemPanelMap;
+	private final Map<EmoteClueItem, EmoteClueItemSlotPanel> slotPanelMap;
 
 	public RequirementPanelProvider(EmoteClueItemsPanelPalette palette, ItemManager itemManager)
 	{
 		/* Create EmoteClueItem requirement panel network. */
 		this.requirementContainer = new RequirementContainer();
-		this.updatablePanelMap = new HashMap<>();
 
 		// Create parent EmoteClueItem panels.
-		Map<EmoteClueItem, EmoteClueItemPanel> emoteClueItemPanelMap = EmoteClueAssociations.EmoteClueItemToEmoteClues.keySet().stream()
+		this.emoteClueItemPanelMap = EmoteClueAssociations.EmoteClueItemToEmoteClues.keySet().stream()
 			.collect(Collectors.toMap(
 				Function.identity(),
-				key -> new EmoteClueItemPanel(this.requirementContainer, palette, key.getCollectiveName())
+				emoteClueItem -> new EmoteClueItemPanel(this.requirementContainer, palette, emoteClueItem)
 			));
 
 		// Create an item panel for all required items.
-		Map<EmoteClueItem, EmoteClueItemSlotPanel> slotPanelMap = EmoteClueAssociations.ItemIdToEmoteClueItemSlot.entrySet().stream()
+		this.slotPanelMap = EmoteClueAssociations.ItemIdToEmoteClueItemSlot.entrySet().stream()
 			.collect(Collectors.toMap(
 				Map.Entry::getValue,
-				entry -> new EmoteClueItemSlotPanel(itemManager.getImage(entry.getKey()), entry.getValue().getCollectiveName())
+				entry -> new EmoteClueItemSlotPanel(itemManager, entry.getKey(), entry.getValue().getCollectiveName())
 			));
 
 		// Create EmoteClueItem-EmoteClue (*-1) sub-panels.
@@ -89,50 +77,21 @@ public class RequirementPanelProvider
 				emoteClue -> new EmoteCluePanel(palette, emoteClue)
 			));
 
-		Map<EmoteClueItem, EmoteClueItemSubPanel> subPanelMap = new HashMap<>();
-
-		// Add EmoteClue properties to EmoteClueItem requirements.
-		emoteClueItemPanelMap.forEach((emoteClueItem, emoteClueItemPanel) -> {
-			EmoteClue[] emoteClues = EmoteClueAssociations.EmoteClueItemToEmoteClues.get(emoteClueItem);
-
-			// Add item panels & info
-			// TODO move stash unit icons to emote clue panels, and set status to their location names.
-			EmoteClueItemSubPanel subPanel = new EmoteClueItemSubPanel(palette, "Item Log");
-			this.addSubItems(slotPanelMap, subPanel, emoteClueItem);
-
-			for(EmoteClue emoteClue : emoteClues) {
-				STASHUnit stashUnit = emoteClue.getStashUnit();
-				if (stashUnit != null) {
-					String locationName = emoteClue.getLocationName();
-					StashUnitLabel stashUnitLabel = new StashUnitLabel(locationName, locationName.charAt(0));
-					subPanel.addStashUnitIcon(stashUnitLabel);
-				}
-			}
-
-			subPanel.setRequiredAmount(this.getRequiredAmount(emoteClueItem));
-			subPanel.addAmountLabel();
+		this.emoteClueItemPanelMap.forEach((emoteClueItem, emoteClueItemPanel) -> {
+			// Add item collection log
+			EmoteClueItemSubPanel subPanel = new EmoteClueItemSubPanel(palette);
+			this.addSubItems(subPanel, emoteClueItem);
 			emoteClueItemPanel.addChild(subPanel);
-			subPanelMap.put(emoteClueItem, subPanel);
 
 			// Add emote clue panels & info
-			List<EmoteClueDifficulty> difficulties = Arrays.stream(emoteClues).map(EmoteClue::getEmoteClueDifficulty).distinct().collect(Collectors.toList());
-			emoteClueItemPanel.setFilterable("difficulty", difficulties);
-			emoteClueItemPanel.setFilterable("quantity", emoteClues.length);
-			emoteClueItemPanel.setQuantity(String.valueOf(emoteClues.length));
-			difficulties.stream().map(EmoteClueImages::getRibbon).map(ImageIcon::new).map(JLabel::new).forEach(emoteClueItemPanel::addRightIcon);
-			Arrays.stream(emoteClues).map(emoteCluePanelMap::get).forEach(emoteClueItemPanel::addChild);
+			Arrays.stream(EmoteClueAssociations.EmoteClueItemToEmoteClues.get(emoteClueItem)).map(emoteCluePanelMap::get).forEach(emoteClueItemPanel::addChild);
 		});
 
-		this.addToRequirementPanelsMap(emoteClueItemPanelMap);
-		this.addToRequirementPanelsMap(slotPanelMap);
-		this.addToRequirementPanelsMap(subPanelMap);
-
-		this.requirementContainer.load(emoteClueItemPanelMap.values());
+		this.requirementContainer.load(this.emoteClueItemPanelMap.values());
 	}
 
-	private void addSubItems(Map<EmoteClueItem, EmoteClueItemSlotPanel> slotPanelMap, EmoteClueItemSubPanel subPanel, EmoteClueItem child) {
-
-		EmoteClueItemSlotPanel childSlotPanel = slotPanelMap.get(child);
+	private void addSubItems(EmoteClueItemSubPanel subPanel, EmoteClueItem child) {
+		EmoteClueItemSlotPanel childSlotPanel = this.slotPanelMap.get(child);
 		if (childSlotPanel != null)
 		{
 			subPanel.addChild(childSlotPanel);
@@ -144,58 +103,24 @@ public class RequirementPanelProvider
 		{
 			for (EmoteClueItem successor : successors)
 			{
-				this.addSubItems(slotPanelMap, subPanel, successor);
+				this.addSubItems(subPanel, successor);
 			}
 		}
-	}
-
-	private int getRequiredAmount(EmoteClueItem child) {
-		ItemRequirement itemRequirement = child.getItemRequirement();
-
-		if(itemRequirement instanceof AnyRequirementCollection) {
-			return child.getChildren().stream().map(this::getRequiredAmount).reduce((n, m) -> n < m ? n : m).orElse(0);
-		}
-
-		if(itemRequirement instanceof AllRequirementsCollection) {
-			return child.getChildren().stream().map(this::getRequiredAmount).reduce(Integer::sum).orElse(0);
-		}
-
-		return 1;
-	}
-
-	private void addToRequirementPanelsMap(Map<EmoteClueItem, ? extends UpdatablePanel> requirementPanelMap)
-	{
-		requirementPanelMap.forEach((emoteClueItem, updatablePanel) ->
-			this.updatablePanelMap.merge(emoteClueItem, new LinkedList<UpdatablePanel>()
-				{{
-					this.add(updatablePanel);
-				}},
-				(l1, l2) -> {
-					l1.addAll(l2);
-					return l1;
-				}
-			));
 	}
 
 	public void setItemSlotStatus(EmoteClueItem emoteClueItem, int quantity) {
-
-	}
-
-	public void setStatus(EmoteClueItem emoteClueItem, RequirementStatus status) {
-
-	}
-/*
-	public void setStatus(EmoteClueItem emoteClueItem, RequirementStatus status)
-	{
-		LinkedList<UpdatablePanel> panels = this.updatablePanelMap.get(emoteClueItem);
-		if (panels != null)
-		{
-			for (UpdatablePanel panel : panels)
-			{
-				panel.setStatus(status);
-			}
+		EmoteClueItemSlotPanel slotPanel = this.slotPanelMap.get(emoteClueItem);
+		if(slotPanel != null) {
+			slotPanel.setStatus(quantity);
 		}
-	} */
+	}
+
+	public void setEmoteClueItemStatus(EmoteClueItem emoteClueItem, RequirementStatus status) {
+		EmoteClueItemPanel emoteClueItemPanel = this.emoteClueItemPanelMap.get(emoteClueItem);
+		if(emoteClueItemPanel != null) {
+			emoteClueItemPanel.setStatus(status);
+		}
+	}
 
 	public RequirementContainer getRequirementContainer()
 	{

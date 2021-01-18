@@ -30,7 +30,7 @@ package com.larsvansoest.runelite.clueitems.toolbar;
 
 import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImage;
-import com.larsvansoest.runelite.clueitems.data.RequirementStatus;
+import com.larsvansoest.runelite.clueitems.toolbar.component.requirement.RequirementStatus;
 import com.larsvansoest.runelite.clueitems.toolbar.component.disclaimer.DisclaimerPanel;
 import com.larsvansoest.runelite.clueitems.toolbar.component.footer.FooterPanel;
 import com.larsvansoest.runelite.clueitems.toolbar.component.input.FilterButton;
