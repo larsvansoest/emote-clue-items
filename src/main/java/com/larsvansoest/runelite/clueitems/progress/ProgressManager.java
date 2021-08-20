@@ -30,7 +30,6 @@ package com.larsvansoest.runelite.clueitems.progress;
 
 import com.larsvansoest.runelite.clueitems.data.EmoteClueAssociations;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
-import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPanel;
 import com.larsvansoest.runelite.clueitems.ui.content.requirement.RequirementPanelProvider;
 import com.larsvansoest.runelite.clueitems.ui.content.requirement.Status;
 import net.runelite.api.Client;
@@ -47,7 +46,7 @@ import java.util.*;
 /**
  * Monitors player owned items and subsequent changes to {@link ItemContainer} objects for Inventory, Bank and Equipment.
  * <p>
- * Uses {@link RequirementPanelProvider} to represent requirement statuses on {@link EmoteClueItemsPanel} accordingly.
+ * Uses {@link RequirementPanelProvider} to represent requirement statuses on {@link com.larsvansoest.runelite.clueitems.ui.ClueItemsPanel} accordingly.
  *
  * @author Lars van Soest
  * @see EmoteClueItem

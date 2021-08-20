@@ -111,7 +111,7 @@ public class EmoteClueItemsPlugin extends Plugin
 		this.progressManager.handleEmoteClueItemChanges(event);
 		if (event.getContainerId() == 95)
 		{
-			this.emoteClueItemsPanel.removeDisclaimer();
+			//this.emoteClueItemsPanel.removeDisclaimer();
 		}
 	}
 
@@ -121,7 +121,7 @@ public class EmoteClueItemsPlugin extends Plugin
 		if (event.getGameState() == GameState.LOGIN_SCREEN)
 		{
 			this.progressManager.reset();
-			this.emoteClueItemsPanel.setDisclaimer("To start display of progression, please open your bank once.");
+			//this.emoteClueItemsPanel.setDisclaimer("To start display of progression, please open your bank once.");
 		}
 	}
 

@@ -36,7 +36,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Contains all {@link Color} instances used for any ui-related requirement progress display {@link JComponent} objects for the {@link EmoteClueItemsPanel}.
+ * Contains all {@link Color} instances used for any ui-related requirement progress display {@link JComponent} objects for the {@link ClueItemsPanel}.
  *
  * @author Lars van Soest
  * @since 2.0.0
