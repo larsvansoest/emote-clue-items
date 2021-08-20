@@ -28,7 +28,7 @@
 
 package com.larsvansoest.runelite.clueitems.ui.content.requirement;
 
-import com.larsvansoest.runelite.clueitems.clues.EmoteClueItem;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
 import net.runelite.client.ui.ColorScheme;
 
 import java.awt.*;

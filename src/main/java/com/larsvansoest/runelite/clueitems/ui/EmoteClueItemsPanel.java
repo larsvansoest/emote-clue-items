@@ -29,9 +29,9 @@
 package com.larsvansoest.runelite.clueitems.ui;
 
 import com.larsvansoest.runelite.clueitems.EmoteClueItemsPlugin;
-import com.larsvansoest.runelite.clueitems.Image;
-import com.larsvansoest.runelite.clueitems.clues.Difficulty;
-import com.larsvansoest.runelite.clueitems.clues.EmoteClueItem;
+import com.larsvansoest.runelite.clueitems.data.Difficulty;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
 import com.larsvansoest.runelite.clueitems.ui.content.requirement.RequirementContainer;
 import com.larsvansoest.runelite.clueitems.ui.content.requirement.RequirementPanelProvider;
 import com.larsvansoest.runelite.clueitems.ui.content.requirement.SortType;
@@ -166,9 +166,8 @@ public class EmoteClueItemsPanel extends PluginPanel
 
 	private FilterButton<Status> createRequirementStatusFilterButton(final Palette palette)
 	{
-		final FilterButton<Status> requirementStatusFilterButton = new FilterButton<>(
-				null,
-				new ImageIcon(Image.Toolbar.CheckSquare.ALL),
+		final FilterButton<Status> requirementStatusFilterButton = new FilterButton<>(null,
+				new ImageIcon(EmoteClueImages.Toolbar.CheckSquare.ALL),
 				this.getToolTipText("Toggle show %s statuses.", "all"),
 				new Dimension(25, 30),
 				palette.getDefaultColor(),
@@ -177,16 +176,15 @@ public class EmoteClueItemsPanel extends PluginPanel
 				this::onRequirementStatusFilterChanged
 		);
 		final String toolTipTextFormat = "Toggle show %s status.";
-		requirementStatusFilterButton.addOption(Status.InComplete, new ImageIcon(Image.Toolbar.CheckSquare.INCOMPLETE), this.getToolTipText(toolTipTextFormat, "incomplete"));
-		requirementStatusFilterButton.addOption(Status.Complete, new ImageIcon(Image.Toolbar.CheckSquare.COMPLETE), this.getToolTipText(toolTipTextFormat, "complete"));
+		requirementStatusFilterButton.addOption(Status.InComplete, new ImageIcon(EmoteClueImages.Toolbar.CheckSquare.INCOMPLETE), this.getToolTipText(toolTipTextFormat, "incomplete"));
+		requirementStatusFilterButton.addOption(Status.Complete, new ImageIcon(EmoteClueImages.Toolbar.CheckSquare.COMPLETE), this.getToolTipText(toolTipTextFormat, "complete"));
 		return requirementStatusFilterButton;
 	}
 
 	private FilterButton<Difficulty> createDifficultyFilterButton(final Palette palette)
 	{
-		final FilterButton<Difficulty> difficultyFilterButton = new FilterButton<>(
-				null,
-				new ImageIcon(Image.Ribbon.ALL),
+		final FilterButton<Difficulty> difficultyFilterButton = new FilterButton<>(null,
+				new ImageIcon(EmoteClueImages.Ribbon.ALL),
 				this.getToolTipText("Toggle show %s difficulties.", "all"),
 				new Dimension(25, 30),
 				palette.getDefaultColor(),
@@ -195,20 +193,19 @@ public class EmoteClueItemsPanel extends PluginPanel
 				this::onDifficultyFilterChanged
 		);
 		final String toolTipTextFormat = "Toggle show %s difficulty.";
-		difficultyFilterButton.addOption(Difficulty.Beginner, new ImageIcon(Image.Ribbon.BEGINNER), this.getToolTipText(toolTipTextFormat, "beginner"));
-		difficultyFilterButton.addOption(Difficulty.Easy, new ImageIcon(Image.Ribbon.EASY), this.getToolTipText(toolTipTextFormat, "easy"));
-		difficultyFilterButton.addOption(Difficulty.Medium, new ImageIcon(Image.Ribbon.MEDIUM), this.getToolTipText(toolTipTextFormat, "medium"));
-		difficultyFilterButton.addOption(Difficulty.Hard, new ImageIcon(Image.Ribbon.HARD), this.getToolTipText(toolTipTextFormat, "hard"));
-		difficultyFilterButton.addOption(Difficulty.Elite, new ImageIcon(Image.Ribbon.ELITE), this.getToolTipText(toolTipTextFormat, "elite"));
-		difficultyFilterButton.addOption(Difficulty.Master, new ImageIcon(Image.Ribbon.MASTER), this.getToolTipText(toolTipTextFormat, "master"));
+		difficultyFilterButton.addOption(Difficulty.Beginner, new ImageIcon(EmoteClueImages.Ribbon.BEGINNER), this.getToolTipText(toolTipTextFormat, "beginner"));
+		difficultyFilterButton.addOption(Difficulty.Easy, new ImageIcon(EmoteClueImages.Ribbon.EASY), this.getToolTipText(toolTipTextFormat, "easy"));
+		difficultyFilterButton.addOption(Difficulty.Medium, new ImageIcon(EmoteClueImages.Ribbon.MEDIUM), this.getToolTipText(toolTipTextFormat, "medium"));
+		difficultyFilterButton.addOption(Difficulty.Hard, new ImageIcon(EmoteClueImages.Ribbon.HARD), this.getToolTipText(toolTipTextFormat, "hard"));
+		difficultyFilterButton.addOption(Difficulty.Elite, new ImageIcon(EmoteClueImages.Ribbon.ELITE), this.getToolTipText(toolTipTextFormat, "elite"));
+		difficultyFilterButton.addOption(Difficulty.Master, new ImageIcon(EmoteClueImages.Ribbon.MASTER), this.getToolTipText(toolTipTextFormat, "master"));
 		return difficultyFilterButton;
 	}
 
 	private FilterButton<Map.Entry<SortType, Boolean>> createSortFilterButton(final Palette palette)
 	{
-		final FilterButton<Map.Entry<SortType, Boolean>> sortFilterButton = new FilterButton<>(
-				new AbstractMap.SimpleImmutableEntry<>(SortType.Quantity, true),
-				new ImageIcon(Image.Toolbar.SortType.QUANTITY_DESCENDING),
+		final FilterButton<Map.Entry<SortType, Boolean>> sortFilterButton = new FilterButton<>(new AbstractMap.SimpleImmutableEntry<>(SortType.Quantity, true),
+				new ImageIcon(EmoteClueImages.Toolbar.SortType.QUANTITY_DESCENDING),
 				this.getToolTipText("Toggle order by %s (descending).", "quantity"),
 				new Dimension(25, 30),
 				palette.getDefaultColor(),
@@ -216,19 +213,16 @@ public class EmoteClueItemsPanel extends PluginPanel
 				7,
 				this::onSortFilterChanged
 		);
-		sortFilterButton.addOption(
-				new AbstractMap.SimpleImmutableEntry<>(SortType.Quantity, false),
-				new ImageIcon(Image.Toolbar.SortType.QUANTITY_ASCENDING),
+		sortFilterButton.addOption(new AbstractMap.SimpleImmutableEntry<>(SortType.Quantity, false),
+				new ImageIcon(EmoteClueImages.Toolbar.SortType.QUANTITY_ASCENDING),
 				this.getToolTipText("Toggle order by %s (ascending).", "quantity")
 		);
-		sortFilterButton.addOption(
-				new AbstractMap.SimpleImmutableEntry<>(SortType.Name, true),
-				new ImageIcon(Image.Toolbar.SortType.NAME_DESCENDING),
+		sortFilterButton.addOption(new AbstractMap.SimpleImmutableEntry<>(SortType.Name, true),
+				new ImageIcon(EmoteClueImages.Toolbar.SortType.NAME_DESCENDING),
 				this.getToolTipText("Toggle order by %s (descending).", "name")
 		);
-		sortFilterButton.addOption(
-				new AbstractMap.SimpleImmutableEntry<>(SortType.Name, false),
-				new ImageIcon(Image.Toolbar.SortType.NAME_ASCENDING),
+		sortFilterButton.addOption(new AbstractMap.SimpleImmutableEntry<>(SortType.Name, false),
+				new ImageIcon(EmoteClueImages.Toolbar.SortType.NAME_ASCENDING),
 				this.getToolTipText("Toggle order by %s (ascending).", "name")
 		);
 		return sortFilterButton;

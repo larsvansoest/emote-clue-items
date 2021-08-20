@@ -28,9 +28,9 @@
 
 package com.larsvansoest.runelite.clueitems.ui.content.clue;
 
-import com.larsvansoest.runelite.clueitems.Images;
-import com.larsvansoest.runelite.clueitems.clues.Difficulty;
-import com.larsvansoest.runelite.clueitems.clues.EmoteClue;
+import com.larsvansoest.runelite.clueitems.data.Difficulty;
+import com.larsvansoest.runelite.clueitems.data.EmoteClue;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
 import com.larsvansoest.runelite.clueitems.ui.Palette;
 import com.larsvansoest.runelite.clueitems.ui.content.foldable.FoldablePanel;
 import com.larsvansoest.runelite.clueitems.ui.content.requirement.Status;
@@ -54,7 +54,7 @@ public class EmoteCluePanel extends FoldablePanel
 		super(palette, emoteClue.getLocationName());
 
 		final Difficulty difficulty = emoteClue.getDifficulty();
-		super.addLeftIcon(new JLabel(new ImageIcon(Images.getScroll(difficulty))));
+		super.addLeftIcon(new JLabel(new ImageIcon(EmoteClueImages.getScroll(difficulty))));
 
 		final Emote firstEmote = emoteClue.getFirstEmote();
 		final Emote secondEmote = emoteClue.getSecondEmote();
@@ -161,7 +161,7 @@ public class EmoteCluePanel extends FoldablePanel
 
 		return descriptionPanel;
 	}
- 
+
 	@Override
 	public void setStatus(final Status status)
 	{

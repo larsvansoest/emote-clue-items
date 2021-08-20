@@ -26,8 +26,9 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems;
+package com.larsvansoest.runelite.clueitems.data;
 
+import com.larsvansoest.runelite.clueitems.EmoteClueItemsPlugin;
 import net.runelite.client.util.ImageUtil;
 
 import java.awt.image.BufferedImage;
@@ -38,7 +39,7 @@ import java.awt.image.BufferedImage;
  * @author Lars van Soest
  * @since 2.0.0
  */
-public abstract class Image
+public abstract class EmoteClueImages
 {
 	private static final String folder = "/icons";
 
@@ -52,9 +53,61 @@ public abstract class Image
 		return String.format("%s/%s", current, next);
 	}
 
+	public static BufferedImage getRibbon(final Difficulty difficulty)
+	{
+		switch (difficulty)
+		{
+			case Beginner:
+				return EmoteClueImages.Ribbon.BEGINNER;
+			case Easy:
+				return EmoteClueImages.Ribbon.EASY;
+			case Medium:
+				return EmoteClueImages.Ribbon.MEDIUM;
+			case Hard:
+				return EmoteClueImages.Ribbon.HARD;
+			case Elite:
+				return EmoteClueImages.Ribbon.ELITE;
+			case Master:
+				return EmoteClueImages.Ribbon.MASTER;
+			default:
+				throw new IllegalArgumentException();
+		}
+	}
+
+	public static BufferedImage getScroll(final Difficulty difficulty)
+	{
+		switch (difficulty)
+		{
+			case Beginner:
+				return EmoteClueImages.Toolbar.Requirement.Scroll.BEGINNER;
+			case Easy:
+				return EmoteClueImages.Toolbar.Requirement.Scroll.EASY;
+			case Medium:
+				return EmoteClueImages.Toolbar.Requirement.Scroll.MEDIUM;
+			case Hard:
+				return EmoteClueImages.Toolbar.Requirement.Scroll.HARD;
+			case Elite:
+				return EmoteClueImages.Toolbar.Requirement.Scroll.ELITE;
+			case Master:
+				return EmoteClueImages.Toolbar.Requirement.Scroll.MASTER;
+			default:
+				throw new IllegalArgumentException();
+		}
+	}
+
+	public static BufferedImage illuminate(final BufferedImage bufferedImage, final float scale)
+	{
+		return ImageUtil.luminanceScale(bufferedImage, scale);
+	}
+
+	public static BufferedImage resizeCanvas(final BufferedImage bufferedImage, final int width, final int height)
+	{
+		return ImageUtil.resizeCanvas(bufferedImage, width, height);
+	}
+
 	public static class Ribbon
 	{
-		private static final String folder = path(Image.folder, "ribbon");
+		private static final String folder = path(EmoteClueImages.folder, "ribbon");
 		public static final BufferedImage ALL = bufferedImage(Ribbon.folder, "all.png");
 		public static final BufferedImage BEGINNER = bufferedImage(Ribbon.folder, "beginner.png");
 		public static final BufferedImage EASY = bufferedImage(Ribbon.folder, "easy.png");
@@ -66,7 +119,7 @@ public abstract class Image
 
 	public static class Toolbar
 	{
-		private static final String folder = path(Image.folder, "toolbar");
+		private static final String folder = path(EmoteClueImages.folder, "toolbar");
 
 		public static class CheckSquare
 		{

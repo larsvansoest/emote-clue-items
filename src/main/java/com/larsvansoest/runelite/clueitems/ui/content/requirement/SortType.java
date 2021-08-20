@@ -31,5 +31,5 @@ package com.larsvansoest.runelite.clueitems.ui.content.requirement;
 public enum SortType
 {
 	Name(),
-	Quantity();
+	Quantity()
 }

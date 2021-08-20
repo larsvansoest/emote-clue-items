@@ -26,7 +26,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.clues;
+package com.larsvansoest.runelite.clueitems.data;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

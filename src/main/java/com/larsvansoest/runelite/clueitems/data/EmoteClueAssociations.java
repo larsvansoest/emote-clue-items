@@ -26,7 +26,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.clues;
+package com.larsvansoest.runelite.clueitems.data;
 
 import com.larsvansoest.runelite.clueitems.progress.ProgressManager;
 import com.larsvansoest.runelite.clueitems.ui.content.requirement.RequirementPanelProvider;

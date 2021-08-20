@@ -28,7 +28,7 @@
 
 package com.larsvansoest.runelite.clueitems.progress;
 
-import com.larsvansoest.runelite.clueitems.clues.EmoteClueAssociations;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueAssociations;
 import net.runelite.api.Item;
 
 import java.util.HashMap;

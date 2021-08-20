@@ -28,18 +28,14 @@
 
 package com.larsvansoest.runelite.clueitems.ui.content.foldable;
 
-import com.larsvansoest.runelite.clueitems.Image;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
+
+import javax.swing.*;
 
 public class FoldIcon extends JLabel
 {
-	private static class Arrow {
-		static ImageIcon DOWN = new ImageIcon(Image.Toolbar.Chevron.DOWN);
-		static ImageIcon LEFT = new ImageIcon(Image.Toolbar.Chevron.LEFT);
-	}
-
-	public FoldIcon() {
+	public FoldIcon()
+	{
 		super.setIcon(Arrow.LEFT);
 	}
 
@@ -51,5 +47,11 @@ public class FoldIcon extends JLabel
 	public void fold()
 	{
 		super.setIcon(Arrow.LEFT);
+	}
+
+	private static class Arrow
+	{
+		static ImageIcon DOWN = new ImageIcon(EmoteClueImages.Toolbar.Chevron.DOWN);
+		static ImageIcon LEFT = new ImageIcon(EmoteClueImages.Toolbar.Chevron.LEFT);
 	}
 }

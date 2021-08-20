@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.larsvansoest.runelite.clueitems.clues;
+package com.larsvansoest.runelite.clueitems.data;
 
 import com.google.common.collect.ImmutableSet;
 import com.larsvansoest.runelite.clueitems.EmoteClueItemsPlugin;
@@ -38,7 +38,7 @@ import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 
 import java.util.Set;
 
-import static com.larsvansoest.runelite.clueitems.clues.Difficulty.*;
+import static com.larsvansoest.runelite.clueitems.data.Difficulty.*;
 import static net.runelite.api.EquipmentInventorySlot.*;
 import static net.runelite.client.plugins.cluescrolls.clues.Enemy.*;
 import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.*;

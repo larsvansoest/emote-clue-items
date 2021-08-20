@@ -28,12 +28,12 @@
 
 package com.larsvansoest.runelite.clueitems.ui;
 
-import java.awt.Color;
-import javax.swing.JComponent;
-
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.client.ui.ColorScheme;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * Contains all {@link Color} instances used for any ui-related requirement progress display {@link JComponent} objects for the {@link EmoteClueItemsPanel}.
@@ -45,7 +45,17 @@ import net.runelite.client.ui.ColorScheme;
 @RequiredArgsConstructor
 public enum Palette
 {
-	RUNELITE(ColorScheme.DARKER_GRAY_COLOR, ColorScheme.DARKER_GRAY_HOVER_COLOR, ColorScheme.DARKER_GRAY_HOVER_COLOR, ColorScheme.DARK_GRAY_HOVER_COLOR, ColorScheme.DARK_GRAY_HOVER_COLOR, ColorScheme.BRAND_ORANGE, ColorScheme.MEDIUM_GRAY_COLOR, ColorScheme.DARKER_GRAY_HOVER_COLOR, ColorScheme.DARK_GRAY_COLOR);
+	RUNELITE(
+			ColorScheme.DARKER_GRAY_COLOR,
+			ColorScheme.DARKER_GRAY_HOVER_COLOR,
+			ColorScheme.DARKER_GRAY_HOVER_COLOR,
+			ColorScheme.DARK_GRAY_HOVER_COLOR,
+			ColorScheme.DARK_GRAY_HOVER_COLOR,
+			ColorScheme.BRAND_ORANGE,
+			ColorScheme.MEDIUM_GRAY_COLOR,
+			ColorScheme.DARKER_GRAY_HOVER_COLOR,
+			ColorScheme.DARK_GRAY_COLOR
+	);
 
 	private final Color defaultColor;
 	private final Color hoverColor;

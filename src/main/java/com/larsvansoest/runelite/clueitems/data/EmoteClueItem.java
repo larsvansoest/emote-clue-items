@@ -26,7 +26,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.clues;
+package com.larsvansoest.runelite.clueitems.data;
 
 import net.runelite.api.Client;
 import net.runelite.api.Item;
@@ -40,7 +40,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Contains and wraps all {@link ItemRequirement} used by {@link EmoteClue}, integrated in vendored {@link com.larsvansoest.runelite.clueitems.clues.EmoteClue} class.
+ * Contains and wraps all {@link ItemRequirement} used by {@link EmoteClue}, integrated in vendored {@link com.larsvansoest.runelite.clueitems.data.EmoteClue} class.
  *
  * @author Lars van Soest
  * @since 2.0.0
@@ -892,8 +892,7 @@ public enum EmoteClueItem implements ItemRequirement
 	),
 	ANY_LAVA_BATTLESTAFF("Lava battlestaff", false, EmoteClueItem.LAVA_BATTLESTAFF, EmoteClueItem.LAVA_BATTLESTAFF_21198),
 
-	ANY_MITRE(
-			"Any mitre",
+	ANY_MITRE("Any mitre",
 			false,
 			EmoteClueItem.GUTHIX_MITRE,
 			EmoteClueItem.SARADOMIN_MITRE,
@@ -1122,8 +1121,7 @@ public enum EmoteClueItem implements ItemRequirement
 	ALL_TORAGS_SET("Torags set", true, EmoteClueItem.ANY_TORAGS_HAMMERS, EmoteClueItem.ANY_TORAGS_HELM, EmoteClueItem.ANY_TORAGS_PLATEBODY, EmoteClueItem.ANY_TORAGS_PLATELEGS),
 	ALL_VERACS_SET("Veracs set", true, ANY_VERACS_BRASSARD, ANY_VERACS_FLAIL, ANY_VERACS_HELM, ANY_VERACS_PLATESKIRT),
 
-	ANY_BARROWS_SET(
-			"Any barrows set",
+	ANY_BARROWS_SET("Any barrows set",
 			false,
 			EmoteClueItem.ALL_AHRIMS_SET,
 			EmoteClueItem.ALL_DHAROKS_SET,

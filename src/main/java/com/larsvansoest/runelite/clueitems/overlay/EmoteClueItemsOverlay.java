@@ -29,9 +29,9 @@
 package com.larsvansoest.runelite.clueitems.overlay;
 
 import com.larsvansoest.runelite.clueitems.EmoteClueItemsConfig;
-import com.larsvansoest.runelite.clueitems.Image;
-import com.larsvansoest.runelite.clueitems.clues.Difficulty;
-import com.larsvansoest.runelite.clueitems.clues.EmoteClueAssociations;
+import com.larsvansoest.runelite.clueitems.data.Difficulty;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueAssociations;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
@@ -145,12 +145,12 @@ public class EmoteClueItemsOverlay extends WidgetItemOverlay
 	{
 		static class Ribbon
 		{
-			static ImageComponent BEGINNER = new ImageComponent(Image.Ribbon.BEGINNER);
-			static ImageComponent EASY = new ImageComponent(Image.Ribbon.EASY);
-			static ImageComponent MEDIUM = new ImageComponent(Image.Ribbon.MEDIUM);
-			static ImageComponent HARD = new ImageComponent(Image.Ribbon.HARD);
-			static ImageComponent ELITE = new ImageComponent(Image.Ribbon.ELITE);
-			static ImageComponent MASTER = new ImageComponent(Image.Ribbon.MASTER);
+			static ImageComponent BEGINNER = new ImageComponent(EmoteClueImages.Ribbon.BEGINNER);
+			static ImageComponent EASY = new ImageComponent(EmoteClueImages.Ribbon.EASY);
+			static ImageComponent MEDIUM = new ImageComponent(EmoteClueImages.Ribbon.MEDIUM);
+			static ImageComponent HARD = new ImageComponent(EmoteClueImages.Ribbon.HARD);
+			static ImageComponent ELITE = new ImageComponent(EmoteClueImages.Ribbon.ELITE);
+			static ImageComponent MASTER = new ImageComponent(EmoteClueImages.Ribbon.MASTER);
 		}
 	}
 }

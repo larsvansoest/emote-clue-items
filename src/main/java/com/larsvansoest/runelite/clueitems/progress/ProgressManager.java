@@ -28,8 +28,8 @@
 
 package com.larsvansoest.runelite.clueitems.progress;
 
-import com.larsvansoest.runelite.clueitems.clues.EmoteClueAssociations;
-import com.larsvansoest.runelite.clueitems.clues.EmoteClueItem;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueAssociations;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPanel;
 import com.larsvansoest.runelite.clueitems.ui.content.requirement.RequirementPanelProvider;
 import com.larsvansoest.runelite.clueitems.ui.content.requirement.Status;
@@ -55,7 +55,7 @@ import java.util.*;
  */
 public class ProgressManager
 {
-	private final Map<com.larsvansoest.runelite.clueitems.clues.EmoteClueItem, Status> statusMap;
+	private final Map<com.larsvansoest.runelite.clueitems.data.EmoteClueItem, Status> statusMap;
 	private final ItemMonitor itemsMonitor;
 	private final RequirementPanelProvider panelProvider;
 	private final Client client;
@@ -64,7 +64,7 @@ public class ProgressManager
 
 	public ProgressManager(final RequirementPanelProvider panelProvider, final Client client, final ClientThread clientThread)
 	{
-		this.statusMap = new HashMap<>(com.larsvansoest.runelite.clueitems.clues.EmoteClueItem.values().length);
+		this.statusMap = new HashMap<>(com.larsvansoest.runelite.clueitems.data.EmoteClueItem.values().length);
 		this.itemsMonitor = new ItemMonitor();
 		this.panelProvider = panelProvider;
 		this.client = client;
@@ -74,7 +74,7 @@ public class ProgressManager
 
 	public void reset()
 	{
-		for (final com.larsvansoest.runelite.clueitems.clues.EmoteClueItem emoteClueItem : com.larsvansoest.runelite.clueitems.clues.EmoteClueItem.values())
+		for (final com.larsvansoest.runelite.clueitems.data.EmoteClueItem emoteClueItem : com.larsvansoest.runelite.clueitems.data.EmoteClueItem.values())
 		{
 			this.statusMap.put(emoteClueItem, Status.InComplete);
 			this.panelProvider.setEmoteClueItemStatus(emoteClueItem, Status.InComplete);
@@ -110,13 +110,13 @@ public class ProgressManager
 	{
 		if (emoteClueItemChanges != null)
 		{
-			final LinkedList<Map.Entry<com.larsvansoest.runelite.clueitems.clues.EmoteClueItem, Status>> parents = new LinkedList<>();
+			final LinkedList<Map.Entry<com.larsvansoest.runelite.clueitems.data.EmoteClueItem, Status>> parents = new LinkedList<>();
 
 			// Set single item (sub-)requirement status
 			for (final Item item : emoteClueItemChanges)
 			{
 				final int quantity = item.getQuantity();
-				final com.larsvansoest.runelite.clueitems.clues.EmoteClueItem emoteClueItem = EmoteClueAssociations.ItemIdToEmoteClueItemSlot.get(item.getId());
+				final com.larsvansoest.runelite.clueitems.data.EmoteClueItem emoteClueItem = EmoteClueAssociations.ItemIdToEmoteClueItemSlot.get(item.getId());
 
 				final Status status = quantity > 0 ? Status.Complete : Status.InComplete;
 				this.statusMap.put(emoteClueItem, status);
@@ -125,7 +125,7 @@ public class ProgressManager
 				this.panelProvider.setItemSlotStatus(emoteClueItem, quantity);
 			}
 
-			final LinkedList<Map.Entry<com.larsvansoest.runelite.clueitems.clues.EmoteClueItem, Status>> parentCache = new LinkedList<>();
+			final LinkedList<Map.Entry<com.larsvansoest.runelite.clueitems.data.EmoteClueItem, Status>> parentCache = new LinkedList<>();
 			// Update requirement ancestors accordingly
 			while (parents.size() > 0)
 			{
@@ -135,11 +135,11 @@ public class ProgressManager
 				}
 				while (parentCache.size() > 0)
 				{
-					final Map.Entry<com.larsvansoest.runelite.clueitems.clues.EmoteClueItem, Status> childEntry = parentCache.poll();
-					final com.larsvansoest.runelite.clueitems.clues.EmoteClueItem child = childEntry.getKey();
+					final Map.Entry<com.larsvansoest.runelite.clueitems.data.EmoteClueItem, Status> childEntry = parentCache.poll();
+					final com.larsvansoest.runelite.clueitems.data.EmoteClueItem child = childEntry.getKey();
 					final Status status = childEntry.getValue();
 					this.panelProvider.setEmoteClueItemStatus(child, status);
-					for (final com.larsvansoest.runelite.clueitems.clues.EmoteClueItem parent : child.getParents())
+					for (final com.larsvansoest.runelite.clueitems.data.EmoteClueItem parent : child.getParents())
 					{
 						final Status parentStatus = this.getParentStatus(parent);
 						parents.add(new AbstractMap.SimpleEntry<>(parent, parentStatus));
@@ -150,16 +150,16 @@ public class ProgressManager
 		}
 	}
 
-	private Status getParentStatus(final com.larsvansoest.runelite.clueitems.clues.EmoteClueItem parent)
+	private Status getParentStatus(final com.larsvansoest.runelite.clueitems.data.EmoteClueItem parent)
 	{
 		final ItemRequirement parentRequirement = parent.getItemRequirement();
-		final List<com.larsvansoest.runelite.clueitems.clues.EmoteClueItem> children = parent.getChildren();
+		final List<com.larsvansoest.runelite.clueitems.data.EmoteClueItem> children = parent.getChildren();
 		return (parentRequirement instanceof AllRequirementsCollection) ? this.getParentAllStatus(children) : this.getParentAnyStatus(children);
 	}
 
-	private Status getParentAnyStatus(final List<com.larsvansoest.runelite.clueitems.clues.EmoteClueItem> children)
+	private Status getParentAnyStatus(final List<com.larsvansoest.runelite.clueitems.data.EmoteClueItem> children)
 	{
-		for (final com.larsvansoest.runelite.clueitems.clues.EmoteClueItem child : children)
+		for (final com.larsvansoest.runelite.clueitems.data.EmoteClueItem child : children)
 		{
 			if (this.statusMap.get(child) == Status.Complete)
 			{
@@ -169,11 +169,11 @@ public class ProgressManager
 		return Status.InComplete;
 	}
 
-	private Status getParentAllStatus(final List<com.larsvansoest.runelite.clueitems.clues.EmoteClueItem> children)
+	private Status getParentAllStatus(final List<com.larsvansoest.runelite.clueitems.data.EmoteClueItem> children)
 	{
 		boolean anyMatch = false;
 		boolean allMatch = true;
-		for (final com.larsvansoest.runelite.clueitems.clues.EmoteClueItem child : children)
+		for (final com.larsvansoest.runelite.clueitems.data.EmoteClueItem child : children)
 		{
 			if (this.statusMap.get(child) == Status.Complete)
 			{

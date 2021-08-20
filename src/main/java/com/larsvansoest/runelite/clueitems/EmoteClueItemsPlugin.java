@@ -29,6 +29,7 @@
 package com.larsvansoest.runelite.clueitems;
 
 import com.google.inject.Provides;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
 import com.larsvansoest.runelite.clueitems.overlay.EmoteClueItemsOverlay;
 import com.larsvansoest.runelite.clueitems.progress.ProgressManager;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPanel;
@@ -94,7 +95,13 @@ public class EmoteClueItemsPlugin extends Plugin
 		final RequirementPanelProvider requirementPanelProvider = new RequirementPanelProvider(emoteClueItemsPalette, this.itemManager);
 		this.emoteClueItemsPanel = new EmoteClueItemsPanel(emoteClueItemsPalette, requirementPanelProvider);
 
-		this.navigationButton = NavigationButton.builder().tooltip("Emote Clue Items").icon(Images.resizeCanvas(Image.Ribbon.ALL, 16, 16)).priority(7).panel(this.emoteClueItemsPanel).build();
+		this.navigationButton = NavigationButton
+				.builder()
+				.tooltip("Emote Clue Items")
+				.icon(EmoteClueImages.resizeCanvas(EmoteClueImages.Ribbon.ALL, 16, 16))
+				.priority(7)
+				.panel(this.emoteClueItemsPanel)
+				.build();
 
 		this.clientToolbar.addNavigation(this.navigationButton);
 

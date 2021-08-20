@@ -28,10 +28,10 @@
 
 package com.larsvansoest.runelite.clueitems.ui.content.item;
 
-import com.larsvansoest.runelite.clueitems.Images;
-import com.larsvansoest.runelite.clueitems.clues.Difficulty;
-import com.larsvansoest.runelite.clueitems.clues.EmoteClue;
-import com.larsvansoest.runelite.clueitems.clues.EmoteClueAssociations;
+import com.larsvansoest.runelite.clueitems.data.Difficulty;
+import com.larsvansoest.runelite.clueitems.data.EmoteClue;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueAssociations;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
 import com.larsvansoest.runelite.clueitems.ui.Palette;
 import com.larsvansoest.runelite.clueitems.ui.content.foldable.FoldablePanel;
 import com.larsvansoest.runelite.clueitems.ui.content.requirement.RequirementContainer;
@@ -44,7 +44,7 @@ import java.util.stream.Collectors;
 
 public class ItemPanel extends RequirementPanel
 {
-	public ItemPanel(final RequirementContainer parent, final Palette palette, final com.larsvansoest.runelite.clueitems.clues.EmoteClueItem emoteClueItem)
+	public ItemPanel(final RequirementContainer parent, final Palette palette, final com.larsvansoest.runelite.clueitems.data.EmoteClueItem emoteClueItem)
 	{
 		super(parent, palette, emoteClueItem.getCollectiveName());
 		final EmoteClue[] emoteClues = EmoteClueAssociations.EmoteClueItemToEmoteClues.get(emoteClueItem);
@@ -52,7 +52,7 @@ public class ItemPanel extends RequirementPanel
 		super.setFilterable("difficulty", difficulties);
 		super.setFilterable("quantity", emoteClues.length);
 		super.setQuantity(String.valueOf(emoteClues.length));
-		difficulties.stream().map(Images::getRibbon).map(ImageIcon::new).map(JLabel::new).forEach(super::addRightIcon);
+		difficulties.stream().map(EmoteClueImages::getRibbon).map(ImageIcon::new).map(JLabel::new).forEach(super::addRightIcon);
 		super.getHeader().getNameLabel().setHorizontalAlignment(JLabel.CENTER);
 	}
 
