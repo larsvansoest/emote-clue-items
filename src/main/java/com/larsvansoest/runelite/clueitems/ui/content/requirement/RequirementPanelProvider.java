@@ -59,8 +59,8 @@ import java.util.stream.Collectors;
 public class RequirementPanelProvider
 {
 	private final RequirementContainer requirementContainer;
-	private final Map<com.larsvansoest.runelite.clueitems.data.EmoteClueItem, ItemPanel> emoteClueItemPanelMap;
-	private final Map<com.larsvansoest.runelite.clueitems.data.EmoteClueItem, ItemSlotPanel> slotPanelMap;
+	private final Map<EmoteClueItem, ItemPanel> emoteClueItemPanelMap;
+	private final Map<EmoteClueItem, ItemSlotPanel> slotPanelMap;
 
 	public RequirementPanelProvider(final Palette palette, final ItemManager itemManager)
 	{
@@ -96,7 +96,7 @@ public class RequirementPanelProvider
 		this.requirementContainer.load(this.emoteClueItemPanelMap.values());
 	}
 
-	private void addSubItems(final ItemSubPanel subPanel, final com.larsvansoest.runelite.clueitems.data.EmoteClueItem child)
+	private void addSubItems(final ItemSubPanel subPanel, final EmoteClueItem child)
 	{
 		final ItemSlotPanel childSlotPanel = this.slotPanelMap.get(child);
 		if (childSlotPanel != null)
@@ -105,10 +105,10 @@ public class RequirementPanelProvider
 			return;
 		}
 
-		final List<com.larsvansoest.runelite.clueitems.data.EmoteClueItem> successors = child.getChildren();
+		final List<EmoteClueItem> successors = child.getChildren();
 		if (successors != null)
 		{
-			for (final com.larsvansoest.runelite.clueitems.data.EmoteClueItem successor : successors)
+			for (final EmoteClueItem successor : successors)
 			{
 				this.addSubItems(subPanel, successor);
 			}
@@ -121,7 +121,7 @@ public class RequirementPanelProvider
 	 * @param emoteClueItem the {@link SingleItemRequirement} {@link EmoteClueItem} requirement containing the item sprite.
 	 * @param quantity      the item quantity the item sprite should show.
 	 */
-	public void setItemSlotStatus(final com.larsvansoest.runelite.clueitems.data.EmoteClueItem emoteClueItem, final int quantity)
+	public void setItemSlotStatus(final EmoteClueItem emoteClueItem, final int quantity)
 	{
 		final ItemSlotPanel slotPanel = this.slotPanelMap.get(emoteClueItem);
 		if (slotPanel != null)
@@ -136,7 +136,7 @@ public class RequirementPanelProvider
 	 * @param emoteClueItem the {@link EmoteClue} {@link EmoteClueItem} requirement to display.
 	 * @param status        the desired {@link Status} status to display.
 	 */
-	public void setEmoteClueItemStatus(final com.larsvansoest.runelite.clueitems.data.EmoteClueItem emoteClueItem, final Status status)
+	public void setEmoteClueItemStatus(final EmoteClueItem emoteClueItem, final Status status)
 	{
 		final ItemPanel itemPanel = this.emoteClueItemPanelMap.get(emoteClueItem);
 		if (itemPanel != null)
