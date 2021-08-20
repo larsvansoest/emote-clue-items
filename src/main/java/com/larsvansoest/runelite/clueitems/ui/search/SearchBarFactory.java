@@ -28,12 +28,13 @@
 
 package com.larsvansoest.runelite.clueitems.ui.search;
 
-import java.awt.Color;
-import java.awt.event.KeyEvent;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.IconTextField;
+
+import java.awt.*;
+import java.awt.event.KeyEvent;
 
 public class SearchBarFactory
 {
@@ -42,24 +43,28 @@ public class SearchBarFactory
 	private Color defaultColor;
 	private Color hoverColor;
 
-	public SearchBarFactory(Runnable onChange) {
+	public SearchBarFactory(final Runnable onChange)
+	{
 		this.onChange = onChange;
 		this.defaultColor = ColorScheme.DARKER_GRAY_COLOR;
 		this.hoverColor = ColorScheme.DARKER_GRAY_COLOR;
 	}
 
-	public SearchBarFactory defaultColor(Color color){
+	public SearchBarFactory defaultColor(final Color color)
+	{
 		this.defaultColor = color;
 		return this;
 	}
 
-	public SearchBarFactory hoverColor(Color color){
+	public SearchBarFactory hoverColor(final Color color)
+	{
 		this.hoverColor = color;
 		return this;
 	}
 
-	public IconTextField build() {
-		IconTextField searchBar = new IconTextField();
+	public IconTextField build()
+	{
+		final IconTextField searchBar = new IconTextField();
 		searchBar.setIcon(IconTextField.Icon.SEARCH);
 		searchBar.setBackground(this.defaultColor);
 		searchBar.setHoverBackgroundColor(this.hoverColor);
@@ -67,17 +72,17 @@ public class SearchBarFactory
 		searchBar.addKeyListener(new KeyListener()
 		{
 			@Override
-			public void keyTyped(KeyEvent e)
+			public void keyTyped(final KeyEvent e)
 			{
 			}
 
 			@Override
-			public void keyPressed(KeyEvent e)
+			public void keyPressed(final KeyEvent e)
 			{
 			}
 
 			@Override
-			public void keyReleased(KeyEvent e)
+			public void keyReleased(final KeyEvent e)
 			{
 				SearchBarFactory.this.onChange.run();
 			}

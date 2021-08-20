@@ -81,7 +81,7 @@ public interface EmoteClueItemsConfig extends Config
 	{
 		return false;
 	}
-  
+
 	@ConfigItem(keyName = "HighlightGuidePrices",
 	            name = "Guide Prices",
 	            description = "Show highlights on guide prices interface.",

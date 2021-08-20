@@ -28,8 +28,8 @@
 
 package com.larsvansoest.runelite.clueitems.ui.content.clue;
 
-import com.larsvansoest.runelite.clueitems.data.Difficulty;
 import com.larsvansoest.runelite.clueitems.data.EmoteClue;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
 import com.larsvansoest.runelite.clueitems.ui.Palette;
 import com.larsvansoest.runelite.clueitems.ui.content.foldable.FoldablePanel;
@@ -53,8 +53,8 @@ public class EmoteCluePanel extends FoldablePanel
 	{
 		super(palette, emoteClue.getLocationName());
 
-		final Difficulty difficulty = emoteClue.getDifficulty();
-		super.addLeftIcon(new JLabel(new ImageIcon(EmoteClueImages.getScroll(difficulty))));
+		final EmoteClueDifficulty emoteClueDifficulty = emoteClue.getEmoteClueDifficulty();
+		super.addLeftIcon(new JLabel(new ImageIcon(EmoteClueImages.getScroll(emoteClueDifficulty))));
 
 		final Emote firstEmote = emoteClue.getFirstEmote();
 		final Emote secondEmote = emoteClue.getSecondEmote();
@@ -65,7 +65,7 @@ public class EmoteCluePanel extends FoldablePanel
 		foldContent.setBackground(palette.getSubPanelBackgroundColor());
 		foldContent.setVisible(false);
 
-		final JPanel difficultyPanel = this.getPropertyPanel("Difficulty", difficulty.name());
+		final JPanel difficultyPanel = this.getPropertyPanel("Difficulty", emoteClueDifficulty.name());
 		final JPanel firstEmotePanel = this.getPropertyPanel("First emote", firstEmote.getName());
 		final JPanel secondEmotePanel = this.getPropertyPanel("Second emote", secondEmote == null ? "none" : secondEmote.getName());
 		final JPanel enemyPanel = this.getPropertyPanel("Enemy", enemy == null ? "none" : enemy.getText());

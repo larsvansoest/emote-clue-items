@@ -28,15 +28,14 @@
 
 package com.larsvansoest.runelite.clueitems.ui.content.item;
 
-import com.larsvansoest.runelite.clueitems.ui.content.requirement.Status;
 import com.larsvansoest.runelite.clueitems.ui.content.UpdatablePanel;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
+import com.larsvansoest.runelite.clueitems.ui.content.requirement.Status;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.util.ImageUtil;
+
+import javax.swing.*;
+import java.awt.*;
 
 public class ItemSlotPanel extends UpdatablePanel
 {
@@ -45,7 +44,8 @@ public class ItemSlotPanel extends UpdatablePanel
 	private final JLabel itemIcon;
 	private ImageIcon transparentIcon;
 
-	public ItemSlotPanel(ItemManager itemManager, int itemId, String name) {
+	public ItemSlotPanel(final ItemManager itemManager, final int itemId, final String name)
+	{
 		super.setLayout(new GridBagLayout());
 		super.setToolTipText(name);
 
@@ -55,13 +55,14 @@ public class ItemSlotPanel extends UpdatablePanel
 		this.itemIcon.setOpaque(false);
 		this.transparentIcon = new ImageIcon();
 
-		AsyncBufferedImage itemImage = itemManager.getImage(this.itemId, 0, true);
-		itemImage.onLoaded(() -> {
+		final AsyncBufferedImage itemImage = itemManager.getImage(this.itemId, 0, true);
+		itemImage.onLoaded(() ->
+		{
 			this.transparentIcon = new ImageIcon(ImageUtil.alphaOffset(itemImage, 0.38f));
 			this.itemIcon.setIcon(this.transparentIcon);
 		});
 
-		GridBagConstraints c = new GridBagConstraints();
+		final GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
 		c.weightx = 1;
@@ -71,12 +72,13 @@ public class ItemSlotPanel extends UpdatablePanel
 		super.add(this.itemIcon, c);
 	}
 
-	public void setStatus(int quantity) {
+	public void setStatus(final int quantity)
+	{
 		this.itemIcon.setIcon(quantity > 0 ? new ImageIcon(this.itemManager.getImage(this.itemId, quantity, true)) : this.transparentIcon);
 	}
 
 	@Override
-	public void setStatus(Status status)
+	public void setStatus(final Status status)
 	{
 	}
 }

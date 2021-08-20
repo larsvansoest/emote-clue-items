@@ -28,46 +28,50 @@
 
 package com.larsvansoest.runelite.clueitems.ui.search;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.AbstractMap;
-import java.util.ArrayDeque;
-import java.util.Map;
-import java.util.Objects;
 import java.util.Queue;
-import javax.swing.Icon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import java.util.*;
 
 public class FilterButton<T> extends JPanel
 {
 	private final JLabel optionLabel;
 	private final Queue<FilterButtonOption<T>> optionQueue;
 	private final Runnable onChange;
-
+	private final String defaultToolTip;
 	private FilterButtonOption<T> currentOption;
 	private Map.Entry<T, Icon> currentValue;
 
-	private final String defaultToolTip;
-
-	public FilterButton(T defaultValue, Icon defaultIcon, String defaultToolTip, Dimension dimension, Color defaultColor, Color hoverColor, int capacity, Runnable onChange) {
+	public FilterButton(final T defaultValue, final Icon defaultIcon, final String defaultToolTip, final Dimension dimension, final Color defaultColor, final Color hoverColor, final int capacity, final Runnable onChange)
+	{
 		this(new AbstractMap.SimpleImmutableEntry<>(defaultValue, defaultIcon), defaultToolTip, dimension, defaultColor, hoverColor, capacity, onChange);
 	}
 
-	FilterButton(Map.Entry<T, Icon> primary, String defaultToolTip, Dimension dimension, Color defaultColor, Color hoverColor, int capacity, Runnable onChange) {
+	FilterButton(final Map.Entry<T, Icon> primary, final String defaultToolTip, final Dimension dimension, final Color defaultColor, final Color hoverColor, final int capacity, final Runnable onChange)
+	{
 		this(primary, primary, defaultToolTip, dimension, defaultColor, hoverColor, capacity, onChange);
 	}
 
-	public FilterButton(T defaultPrimaryValue, Icon defaultPrimaryIcon, T defaultSecondaryValue, Icon defaultSecondaryIcon, String defaultToolTip, Dimension dimension, Color defaultColor, Color hoverColor, int capacity, Runnable onChange)
+	public FilterButton(
+			final T defaultPrimaryValue, final Icon defaultPrimaryIcon, final T defaultSecondaryValue, final Icon defaultSecondaryIcon, final String defaultToolTip, final Dimension dimension, final Color defaultColor, final Color hoverColor,
+			final int capacity, final Runnable onChange)
 	{
-		this(new AbstractMap.SimpleImmutableEntry<>(defaultPrimaryValue, defaultPrimaryIcon), new AbstractMap.SimpleImmutableEntry<>(defaultSecondaryValue, defaultSecondaryIcon), defaultToolTip, dimension, defaultColor, hoverColor, capacity, onChange);
+		this(
+				new AbstractMap.SimpleImmutableEntry<>(defaultPrimaryValue, defaultPrimaryIcon),
+				new AbstractMap.SimpleImmutableEntry<>(defaultSecondaryValue, defaultSecondaryIcon),
+				defaultToolTip,
+				dimension,
+				defaultColor,
+				hoverColor,
+				capacity,
+				onChange
+		);
 	}
 
-	FilterButton(Map.Entry<T, Icon> primary, Map.Entry<T, Icon> secondary, String defaultToolTip, Dimension dimension, Color defaultColor, Color hoverColor, int capacity, Runnable onChange) {
+	FilterButton(final Map.Entry<T, Icon> primary, final Map.Entry<T, Icon> secondary, final String defaultToolTip, final Dimension dimension, final Color defaultColor, final Color hoverColor, final int capacity, final Runnable onChange)
+	{
 		super(new GridBagLayout());
 		super.setPreferredSize(dimension);
 		super.setMinimumSize(dimension);
@@ -77,19 +81,19 @@ public class FilterButton<T> extends JPanel
 		super.addMouseListener(new MouseAdapter()
 		{
 			@Override
-			public void mousePressed(MouseEvent e)
+			public void mousePressed(final MouseEvent e)
 			{
 				FilterButton.this.next(e.getButton() == MouseEvent.BUTTON1);
 			}
 
 			@Override
-			public void mouseEntered(MouseEvent e)
+			public void mouseEntered(final MouseEvent e)
 			{
 				FilterButton.super.setBackground(hoverColor);
 			}
 
 			@Override
-			public void mouseExited(MouseEvent e)
+			public void mouseExited(final MouseEvent e)
 			{
 				FilterButton.super.setBackground(defaultColor);
 			}
@@ -106,15 +110,16 @@ public class FilterButton<T> extends JPanel
 		this.currentValue = primary;
 		this.onChange = onChange;
 
-		GridBagConstraints c = new GridBagConstraints();
+		final GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
 		super.add(this.optionLabel, c);
 	}
 
-	private void next(Boolean isPrimaryMouseKey)
+	private void next(final Boolean isPrimaryMouseKey)
 	{
-		FilterButtonOption<T> option;
-		if(isPrimaryMouseKey || this.currentOption.getPrimary() == this.currentOption.getSecondary()) {
+		final FilterButtonOption<T> option;
+		if (isPrimaryMouseKey || this.currentOption.getPrimary() == this.currentOption.getSecondary())
+		{
 			option = Objects.requireNonNull(this.optionQueue.poll());
 			this.optionQueue.add(this.currentOption);
 			this.currentOption = option;
@@ -124,25 +129,25 @@ public class FilterButton<T> extends JPanel
 		else
 		{
 			option = this.currentOption;
-			Boolean isPrimaryValue = this.isPrimaryValue();
+			final Boolean isPrimaryValue = this.isPrimaryValue();
 			this.currentValue = isPrimaryValue ? this.currentOption.getSecondary() : this.currentOption.getPrimary();
 			this.optionLabel.setIcon(isPrimaryValue ? this.currentOption.getSecondary().getValue() : this.currentOption.getPrimary().getValue());
 		}
-		String toolTip = option.getToolTip();
+		final String toolTip = option.getToolTip();
 		super.setToolTipText(toolTip == null ? this.defaultToolTip : toolTip);
 		this.onChange.run();
 	}
 
-	public void addOption(T value, Icon icon, String toolTip)
+	public void addOption(final T value, final Icon icon, final String toolTip)
 	{
-		Map.Entry<T, Icon> primary = new AbstractMap.SimpleImmutableEntry<>(value, icon);
+		final Map.Entry<T, Icon> primary = new AbstractMap.SimpleImmutableEntry<>(value, icon);
 		this.optionQueue.add(new FilterButtonOption<>(primary, primary, toolTip));
 	}
 
-	public void addOption(T primaryValue, Icon primaryIcon, T secondaryValue, Icon secondaryIcon, String toolTip)
+	public void addOption(final T primaryValue, final Icon primaryIcon, final T secondaryValue, final Icon secondaryIcon, final String toolTip)
 	{
-		Map.Entry<T, Icon> primary = new AbstractMap.SimpleImmutableEntry<>(primaryValue, primaryIcon);
-		Map.Entry<T, Icon> secondary = new AbstractMap.SimpleImmutableEntry<>(secondaryValue, secondaryIcon);
+		final Map.Entry<T, Icon> primary = new AbstractMap.SimpleImmutableEntry<>(primaryValue, primaryIcon);
+		final Map.Entry<T, Icon> secondary = new AbstractMap.SimpleImmutableEntry<>(secondaryValue, secondaryIcon);
 		this.optionQueue.add(new FilterButtonOption<>(primary, secondary, toolTip));
 	}
 
@@ -151,5 +156,8 @@ public class FilterButton<T> extends JPanel
 		return this.currentValue.getKey();
 	}
 
-	public Boolean isPrimaryValue() { return this.currentValue == this.currentOption.getPrimary(); }
+	public Boolean isPrimaryValue()
+	{
+		return this.currentValue == this.currentOption.getPrimary();
+	}
 }

@@ -28,19 +28,14 @@
 
 package com.larsvansoest.runelite.clueitems.ui.content.foldable;
 
-import com.larsvansoest.runelite.clueitems.ui.content.requirement.Status;
 import com.larsvansoest.runelite.clueitems.ui.Palette;
 import com.larsvansoest.runelite.clueitems.ui.content.UpdatablePanel;
+import com.larsvansoest.runelite.clueitems.ui.content.requirement.Status;
 import lombok.Getter;
 
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import javax.swing.*;
+import java.awt.*;
 import java.util.LinkedList;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 @Getter
 public abstract class FoldablePanel extends UpdatablePanel
@@ -52,7 +47,8 @@ public abstract class FoldablePanel extends UpdatablePanel
 	private final Header header;
 	private Boolean expanded;
 
-	public FoldablePanel(Palette palette, String name) {
+	public FoldablePanel(final Palette palette, final String name)
+	{
 		super.setLayout(new GridBagLayout());
 		super.setBackground(palette.getDefaultColor());
 		super.setName(name);
@@ -69,7 +65,7 @@ public abstract class FoldablePanel extends UpdatablePanel
 		this.header = new Header(this, palette, new Dimension(140, 20), name);
 		this.expanded = false;
 
-		GridBagConstraints c = new GridBagConstraints();
+		final GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
 		c.gridx = 0;
 		c.gridy = 0;
@@ -80,16 +76,19 @@ public abstract class FoldablePanel extends UpdatablePanel
 		super.add(this.foldContent, c);
 	}
 
-	public void addChild(FoldablePanel child) {
+	public void addChild(final FoldablePanel child)
+	{
 		this.foldContentElements.add(child);
 		this.foldContentFoldablePanels.add((child));
 	}
 
-	public void addChild(UpdatablePanel child) {
+	public void addChild(final UpdatablePanel child)
+	{
 		this.foldContentElements.add(child);
 	}
 
-	public void fold() {
+	public void fold()
+	{
 		this.foldContentFoldablePanels.forEach(FoldablePanel::fold);
 		this.foldContent.setVisible(false);
 		this.header.fold();
@@ -99,12 +98,14 @@ public abstract class FoldablePanel extends UpdatablePanel
 		super.repaint();
 	}
 
-	public void unfold() {
+	public void unfold()
+	{
 		this.foldConstraints.gridy = 0;
 		this.header.unfold();
 
-		for(int i = 0; i < this.foldContentElements.size(); i++) {
-			this.foldConstraints.insets.top	= i == 0 ? 5 : 0;
+		for (int i = 0; i < this.foldContentElements.size(); i++)
+		{
+			this.foldConstraints.insets.top = i == 0 ? 5 : 0;
 			this.foldContent.add(this.foldContentElements.get(i), this.foldConstraints);
 			this.foldConstraints.gridy++;
 		}
@@ -115,16 +116,18 @@ public abstract class FoldablePanel extends UpdatablePanel
 		super.repaint();
 	}
 
-	public void setStatus(Status status)
+	public void setStatus(final Status status)
 	{
 		this.header.getNameLabel().setForeground(status.colour);
 	}
 
-	public final void addRightIcon(JComponent iconLabel) {
+	public final void addRightIcon(final JComponent iconLabel)
+	{
 		this.header.addRightIcon(iconLabel);
 	}
 
-	public final void addLeftIcon(JLabel iconLabel) {
+	public final void addLeftIcon(final JLabel iconLabel)
+	{
 		this.header.addLeftIcon(iconLabel);
 	}
 

@@ -41,7 +41,7 @@ import java.awt.*;
  */
 @Getter
 @RequiredArgsConstructor
-public enum Difficulty
+public enum EmoteClueDifficulty
 {
 	Beginner(new Color(169, 158, 157)),
 

@@ -28,17 +28,11 @@
 
 package com.larsvansoest.runelite.clueitems.ui.content.requirement;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
+import javax.swing.*;
+import java.awt.*;
 import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Stream;
-import javax.swing.JPanel;
 
 /**
  * Lists {@link RequirementPanel} entries, provides functionality to display filtered sub-sets.
@@ -64,15 +58,15 @@ public class RequirementContainer extends JPanel
 		this.c.weightx = 1;
 	}
 
-	public void load(Collection<? extends RequirementPanel> requirementPanelCollection)
+	public void load(final Collection<? extends RequirementPanel> requirementPanelCollection)
 	{
 		this.requirementPanels = new ArrayList<>(requirementPanelCollection);
 		this.display(this.requirementPanels.stream());
 	}
 
-	public void toggleFold(RequirementPanel requirementPanel)
+	public void toggleFold(final RequirementPanel requirementPanel)
 	{
-		RequirementPanel previous = this.expandedPanel;
+		final RequirementPanel previous = this.expandedPanel;
 		if (this.expandedPanel != null)
 		{
 			this.expandedPanel.fold();
@@ -87,35 +81,32 @@ public class RequirementContainer extends JPanel
 		super.repaint();
 	}
 
-	public void setFilter(String key, Object value)
+	public void setFilter(final String key, final Object value)
 	{
 		this.filterables.put(key, value);
 	}
 
 	public void runFilters()
 	{
-		this.display(this.requirementPanels.stream()
-			.filter(requirementPanel -> this.filterables.entrySet().stream()
-				.allMatch(filter -> {
-					Object requirementValue = requirementPanel.getFilterable(filter.getKey());
-					if (requirementValue instanceof Collection<?>)
-					{
-						return ((Collection<?>) requirementValue).stream().anyMatch(filterValueElement -> this.filterValueMatches(filterValueElement, filter.getValue()));
-					}
-					return this.filterValueMatches(requirementValue, filter.getValue());
-				})
-			));
+		this.display(this.requirementPanels.stream().filter(requirementPanel -> this.filterables.entrySet().stream().allMatch(filter ->
+		{
+			final Object requirementValue = requirementPanel.getFilterable(filter.getKey());
+			if (requirementValue instanceof Collection<?>)
+			{
+				return ((Collection<?>) requirementValue).stream().anyMatch(filterValueElement -> this.filterValueMatches(filterValueElement, filter.getValue()));
+			}
+			return this.filterValueMatches(requirementValue, filter.getValue());
+		})));
 	}
 
-	private Boolean filterValueMatches(Object filterValue, Object value)
+	private Boolean filterValueMatches(final Object filterValue, final Object value)
 	{
-		return filterValue == null
-			|| value == null
-			|| (value instanceof String) && (filterValue instanceof String) && ((String) filterValue).toLowerCase().contains(((String) value).toLowerCase())
-			|| value.equals(filterValue);
+		return filterValue == null || value == null || (value instanceof String) && (filterValue instanceof String) && ((String) filterValue)
+				.toLowerCase()
+				.contains(((String) value).toLowerCase()) || value.equals(filterValue);
 	}
 
-	public void sort(SortType sortType, Boolean reversed)
+	public void sort(final SortType sortType, final Boolean reversed)
 	{
 		switch (sortType)
 		{
@@ -135,12 +126,13 @@ public class RequirementContainer extends JPanel
 		this.runFilters();
 	}
 
-	private void display(Stream<? extends RequirementPanel> requirementPanels)
+	private void display(final Stream<? extends RequirementPanel> requirementPanels)
 	{
 		super.removeAll();
 		this.c.gridy = 0;
 
-		requirementPanels.forEachOrdered(requirementPanel -> {
+		requirementPanels.forEachOrdered(requirementPanel ->
+		{
 			super.add(requirementPanel, this.c);
 			this.c.gridy++;
 		});

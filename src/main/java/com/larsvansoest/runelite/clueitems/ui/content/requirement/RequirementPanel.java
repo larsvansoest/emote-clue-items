@@ -28,8 +28,9 @@
 
 package com.larsvansoest.runelite.clueitems.ui.content.requirement;
 
-import com.larsvansoest.runelite.clueitems.ui.content.foldable.FoldablePanel;
 import com.larsvansoest.runelite.clueitems.ui.Palette;
+import com.larsvansoest.runelite.clueitems.ui.content.foldable.FoldablePanel;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,10 +43,10 @@ import java.util.Map;
 public abstract class RequirementPanel extends FoldablePanel
 {
 	private final RequirementContainer parent;
-	private String quantityText;
 	private final Map<Object, Object> filterables;
+	private String quantityText;
 
-	public RequirementPanel(RequirementContainer parent, Palette palette, String name)
+	public RequirementPanel(final RequirementContainer parent, final Palette palette, final String name)
 	{
 		super(palette, name);
 
@@ -57,7 +58,7 @@ public abstract class RequirementPanel extends FoldablePanel
 	}
 
 	@Override
-	public final void setStatus(Status status)
+	public final void setStatus(final Status status)
 	{
 		this.setFilterable("status", status);
 		super.setStatus(status);
@@ -69,12 +70,12 @@ public abstract class RequirementPanel extends FoldablePanel
 		this.parent.toggleFold(this);
 	}
 
-	public final void setFilterable(Object key, Object value)
+	public final void setFilterable(final Object key, final Object value)
 	{
 		this.filterables.put(key, value);
 	}
 
-	public final Object getFilterable(Object key)
+	public final Object getFilterable(final Object key)
 	{
 		return this.filterables.get(key);
 	}
@@ -84,7 +85,7 @@ public abstract class RequirementPanel extends FoldablePanel
 		return this.quantityText;
 	}
 
-	public void setQuantity(String text)
+	public void setQuantity(final String text)
 	{
 		super.getHeader().setQuantityLabel(text);
 		this.quantityText = text;

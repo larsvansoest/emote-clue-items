@@ -49,17 +49,17 @@ import java.util.stream.Collectors;
  */
 public abstract class EmoteClueAssociations
 {
-	public static Map<Integer, EmoteClueItem> ItemIdToEmoteClueItemSlot = Arrays
+	public static final Map<Integer, EmoteClueItem> ItemIdToEmoteClueItemSlot = Arrays
 			.stream(EmoteClueItem.values())
 			.filter(emoteClueItem -> emoteClueItem.getItemId() != null)
 			.collect(Collectors.toMap(EmoteClueItem::getItemId, Function.identity()));
 
-	public static Map<Difficulty, EmoteClue[]> DifficultyToEmoteClues = EmoteClue.CLUES
+	public static final Map<EmoteClueDifficulty, EmoteClue[]> DifficultyToEmoteClues = EmoteClue.CLUES
 			.stream()
-			.map(emoteClue -> new AbstractMap.SimpleImmutableEntry<>(emoteClue, emoteClue.getDifficulty()))
+			.map(emoteClue -> new AbstractMap.SimpleImmutableEntry<>(emoteClue, emoteClue.getEmoteClueDifficulty()))
 			.collect(Collectors.toMap(AbstractMap.SimpleImmutableEntry::getValue, entry -> new EmoteClue[]{entry.getKey()}, ArrayUtils::addAll));
 
-	public static Map<EmoteClueItem, EmoteClue[]> EmoteClueItemToEmoteClues = EmoteClue.CLUES
+	public static final Map<EmoteClueItem, EmoteClue[]> EmoteClueItemToEmoteClues = EmoteClue.CLUES
 			.stream()
 			.flatMap(emoteClue -> Arrays
 					.stream(emoteClue.getItemRequirements())

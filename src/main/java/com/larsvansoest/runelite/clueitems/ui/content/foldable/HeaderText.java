@@ -28,21 +28,24 @@
 
 package com.larsvansoest.runelite.clueitems.ui.content.foldable;
 
-import java.awt.Dimension;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 
+import java.awt.*;
+
 public class HeaderText extends JShadowedLabel
 {
-	public HeaderText(Dimension dimension, String text) {
+	public HeaderText(final Dimension dimension, final String text)
+	{
 		this(text);
 		super.setPreferredSize(dimension);
 		super.setMaximumSize(dimension);
 		super.setMinimumSize(dimension);
 	}
 
-	public HeaderText(String text) {
+	public HeaderText(final String text)
+	{
 		super.setText(text);
 		super.setFont(FontManager.getRunescapeSmallFont());
 		super.setForeground(ColorScheme.LIGHT_GRAY_COLOR);

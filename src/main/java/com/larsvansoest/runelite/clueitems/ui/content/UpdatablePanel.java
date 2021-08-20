@@ -31,14 +31,14 @@ package com.larsvansoest.runelite.clueitems.ui.content;
 import com.larsvansoest.runelite.clueitems.ui.content.foldable.FoldablePanel;
 import com.larsvansoest.runelite.clueitems.ui.content.requirement.Status;
 
-import javax.swing.JPanel;
+import javax.swing.*;
 
 /**
  * A requirement progression visualisation {@link JPanel} extension with changeable {@link Status} representation.
  *
- * @since 2.0.0
  * @author Lars van Soest
  * @see FoldablePanel
+ * @since 2.0.0
  */
 public abstract class UpdatablePanel extends JPanel
 {

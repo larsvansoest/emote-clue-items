@@ -29,8 +29,8 @@
 package com.larsvansoest.runelite.clueitems.overlay;
 
 import com.larsvansoest.runelite.clueitems.EmoteClueItemsConfig;
-import com.larsvansoest.runelite.clueitems.data.Difficulty;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueAssociations;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
@@ -81,12 +81,12 @@ public class EmoteClueItemsOverlay extends WidgetItemOverlay
 		final Rectangle bounds = itemWidget.getCanvasBounds();
 		final int x = bounds.x + bounds.width + this.getXOffset(widgetContainer, widgetContext);
 		int y = bounds.y;
-		y = this.renderClueItemDetection(graphics, Difficulty.Beginner, Component.Ribbon.BEGINNER, item, x, y);
-		y = this.renderClueItemDetection(graphics, Difficulty.Easy, Component.Ribbon.EASY, item, x, y);
-		y = this.renderClueItemDetection(graphics, Difficulty.Medium, Component.Ribbon.MEDIUM, item, x, y);
-		y = this.renderClueItemDetection(graphics, Difficulty.Hard, Component.Ribbon.HARD, item, x, y);
-		y = this.renderClueItemDetection(graphics, Difficulty.Elite, Component.Ribbon.ELITE, item, x, y);
-		this.renderClueItemDetection(graphics, Difficulty.Master, Component.Ribbon.MASTER, item, x, y);
+		y = this.renderClueItemDetection(graphics, EmoteClueDifficulty.Beginner, Component.Ribbon.BEGINNER, item, x, y);
+		y = this.renderClueItemDetection(graphics, EmoteClueDifficulty.Easy, Component.Ribbon.EASY, item, x, y);
+		y = this.renderClueItemDetection(graphics, EmoteClueDifficulty.Medium, Component.Ribbon.MEDIUM, item, x, y);
+		y = this.renderClueItemDetection(graphics, EmoteClueDifficulty.Hard, Component.Ribbon.HARD, item, x, y);
+		y = this.renderClueItemDetection(graphics, EmoteClueDifficulty.Elite, Component.Ribbon.ELITE, item, x, y);
+		this.renderClueItemDetection(graphics, EmoteClueDifficulty.Master, Component.Ribbon.MASTER, item, x, y);
 	}
 
 	private boolean interfaceGroupSelected(final WidgetContainer widgetContainer)
@@ -124,10 +124,11 @@ public class EmoteClueItemsOverlay extends WidgetItemOverlay
 		return widgetContainer == WidgetContainer.Equipment ? -10 : widgetContext == WidgetContext.Default ? -1 : -5;
 	}
 
-	private int renderClueItemDetection(final Graphics2D graphics, final Difficulty difficulty, final ImageComponent component, final int id, final int x, final int y)
+	private int renderClueItemDetection(
+			final Graphics2D graphics, final EmoteClueDifficulty emoteClueDifficulty, final ImageComponent component, final int id, final int x, final int y)
 	{
 		return Arrays
-				.stream(EmoteClueAssociations.DifficultyToEmoteClues.get(difficulty))
+				.stream(EmoteClueAssociations.DifficultyToEmoteClues.get(emoteClueDifficulty))
 				.anyMatch(emoteClue -> Arrays.stream(emoteClue.getItemRequirements()).anyMatch(itemRequirement -> itemRequirement.fulfilledBy(id))) ? (int) (y + this
 				.renderRibbon(graphics, component, x, y)
 				.getHeight()) + 1 : y;

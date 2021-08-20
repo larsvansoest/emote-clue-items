@@ -28,9 +28,9 @@
 
 package com.larsvansoest.runelite.clueitems.ui.content.item;
 
-import com.larsvansoest.runelite.clueitems.data.Difficulty;
 import com.larsvansoest.runelite.clueitems.data.EmoteClue;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueAssociations;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
 import com.larsvansoest.runelite.clueitems.ui.Palette;
 import com.larsvansoest.runelite.clueitems.ui.content.foldable.FoldablePanel;
@@ -48,7 +48,7 @@ public class ItemPanel extends RequirementPanel
 	{
 		super(parent, palette, emoteClueItem.getCollectiveName());
 		final EmoteClue[] emoteClues = EmoteClueAssociations.EmoteClueItemToEmoteClues.get(emoteClueItem);
-		final List<Difficulty> difficulties = Arrays.stream(emoteClues).map(EmoteClue::getDifficulty).distinct().collect(Collectors.toList());
+		final List<EmoteClueDifficulty> difficulties = Arrays.stream(emoteClues).map(EmoteClue::getEmoteClueDifficulty).distinct().collect(Collectors.toList());
 		super.setFilterable("difficulty", difficulties);
 		super.setFilterable("quantity", emoteClues.length);
 		super.setQuantity(String.valueOf(emoteClues.length));

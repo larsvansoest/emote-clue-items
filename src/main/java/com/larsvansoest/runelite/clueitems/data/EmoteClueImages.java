@@ -53,9 +53,9 @@ public abstract class EmoteClueImages
 		return String.format("%s/%s", current, next);
 	}
 
-	public static BufferedImage getRibbon(final Difficulty difficulty)
+	public static BufferedImage getRibbon(final EmoteClueDifficulty emoteClueDifficulty)
 	{
-		switch (difficulty)
+		switch (emoteClueDifficulty)
 		{
 			case Beginner:
 				return EmoteClueImages.Ribbon.BEGINNER;
@@ -74,9 +74,9 @@ public abstract class EmoteClueImages
 		}
 	}
 
-	public static BufferedImage getScroll(final Difficulty difficulty)
+	public static BufferedImage getScroll(final EmoteClueDifficulty emoteClueDifficulty)
 	{
-		switch (difficulty)
+		switch (emoteClueDifficulty)
 		{
 			case Beginner:
 				return EmoteClueImages.Toolbar.Requirement.Scroll.BEGINNER;

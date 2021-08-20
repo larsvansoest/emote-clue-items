@@ -29,7 +29,7 @@
 package com.larsvansoest.runelite.clueitems.ui;
 
 import com.larsvansoest.runelite.clueitems.EmoteClueItemsPlugin;
-import com.larsvansoest.runelite.clueitems.data.Difficulty;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
 import com.larsvansoest.runelite.clueitems.ui.content.requirement.RequirementContainer;
@@ -67,7 +67,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 	private final RequirementContainer requirementContainer;
 
 	private final FilterButton<Status> requirementStatusFilterButton;
-	private final FilterButton<Difficulty> difficultyFilterButton;
+	private final FilterButton<EmoteClueDifficulty> difficultyFilterButton;
 	private final FilterButton<Map.Entry<SortType, Boolean>> sortFilterButton;
 
 	public EmoteClueItemsPanel(final Palette palette, final RequirementPanelProvider requirementPanelProvider)
@@ -152,9 +152,9 @@ public class EmoteClueItemsPanel extends PluginPanel
 
 	private void onDifficultyFilterChanged()
 	{
-		final Difficulty difficulty = this.difficultyFilterButton.getSelectedValue();
-		this.requirementContainer.setFilter("difficulty", difficulty);
-		this.setSeparatorColor(difficulty);
+		final EmoteClueDifficulty emoteClueDifficulty = this.difficultyFilterButton.getSelectedValue();
+		this.requirementContainer.setFilter("difficulty", emoteClueDifficulty);
+		this.setSeparatorColor(emoteClueDifficulty);
 		this.search();
 	}
 
@@ -166,7 +166,8 @@ public class EmoteClueItemsPanel extends PluginPanel
 
 	private FilterButton<Status> createRequirementStatusFilterButton(final Palette palette)
 	{
-		final FilterButton<Status> requirementStatusFilterButton = new FilterButton<>(null,
+		final FilterButton<Status> requirementStatusFilterButton = new FilterButton<>(
+				null,
 				new ImageIcon(EmoteClueImages.Toolbar.CheckSquare.ALL),
 				this.getToolTipText("Toggle show %s statuses.", "all"),
 				new Dimension(25, 30),
@@ -181,9 +182,10 @@ public class EmoteClueItemsPanel extends PluginPanel
 		return requirementStatusFilterButton;
 	}
 
-	private FilterButton<Difficulty> createDifficultyFilterButton(final Palette palette)
+	private FilterButton<EmoteClueDifficulty> createDifficultyFilterButton(final Palette palette)
 	{
-		final FilterButton<Difficulty> difficultyFilterButton = new FilterButton<>(null,
+		final FilterButton<EmoteClueDifficulty> difficultyFilterButton = new FilterButton<>(
+				null,
 				new ImageIcon(EmoteClueImages.Ribbon.ALL),
 				this.getToolTipText("Toggle show %s difficulties.", "all"),
 				new Dimension(25, 30),
@@ -193,18 +195,19 @@ public class EmoteClueItemsPanel extends PluginPanel
 				this::onDifficultyFilterChanged
 		);
 		final String toolTipTextFormat = "Toggle show %s difficulty.";
-		difficultyFilterButton.addOption(Difficulty.Beginner, new ImageIcon(EmoteClueImages.Ribbon.BEGINNER), this.getToolTipText(toolTipTextFormat, "beginner"));
-		difficultyFilterButton.addOption(Difficulty.Easy, new ImageIcon(EmoteClueImages.Ribbon.EASY), this.getToolTipText(toolTipTextFormat, "easy"));
-		difficultyFilterButton.addOption(Difficulty.Medium, new ImageIcon(EmoteClueImages.Ribbon.MEDIUM), this.getToolTipText(toolTipTextFormat, "medium"));
-		difficultyFilterButton.addOption(Difficulty.Hard, new ImageIcon(EmoteClueImages.Ribbon.HARD), this.getToolTipText(toolTipTextFormat, "hard"));
-		difficultyFilterButton.addOption(Difficulty.Elite, new ImageIcon(EmoteClueImages.Ribbon.ELITE), this.getToolTipText(toolTipTextFormat, "elite"));
-		difficultyFilterButton.addOption(Difficulty.Master, new ImageIcon(EmoteClueImages.Ribbon.MASTER), this.getToolTipText(toolTipTextFormat, "master"));
+		difficultyFilterButton.addOption(EmoteClueDifficulty.Beginner, new ImageIcon(EmoteClueImages.Ribbon.BEGINNER), this.getToolTipText(toolTipTextFormat, "beginner"));
+		difficultyFilterButton.addOption(EmoteClueDifficulty.Easy, new ImageIcon(EmoteClueImages.Ribbon.EASY), this.getToolTipText(toolTipTextFormat, "easy"));
+		difficultyFilterButton.addOption(EmoteClueDifficulty.Medium, new ImageIcon(EmoteClueImages.Ribbon.MEDIUM), this.getToolTipText(toolTipTextFormat, "medium"));
+		difficultyFilterButton.addOption(EmoteClueDifficulty.Hard, new ImageIcon(EmoteClueImages.Ribbon.HARD), this.getToolTipText(toolTipTextFormat, "hard"));
+		difficultyFilterButton.addOption(EmoteClueDifficulty.Elite, new ImageIcon(EmoteClueImages.Ribbon.ELITE), this.getToolTipText(toolTipTextFormat, "elite"));
+		difficultyFilterButton.addOption(EmoteClueDifficulty.Master, new ImageIcon(EmoteClueImages.Ribbon.MASTER), this.getToolTipText(toolTipTextFormat, "master"));
 		return difficultyFilterButton;
 	}
 
 	private FilterButton<Map.Entry<SortType, Boolean>> createSortFilterButton(final Palette palette)
 	{
-		final FilterButton<Map.Entry<SortType, Boolean>> sortFilterButton = new FilterButton<>(new AbstractMap.SimpleImmutableEntry<>(SortType.Quantity, true),
+		final FilterButton<Map.Entry<SortType, Boolean>> sortFilterButton = new FilterButton<>(
+				new AbstractMap.SimpleImmutableEntry<>(SortType.Quantity, true),
 				new ImageIcon(EmoteClueImages.Toolbar.SortType.QUANTITY_DESCENDING),
 				this.getToolTipText("Toggle order by %s (descending).", "quantity"),
 				new Dimension(25, 30),
@@ -213,15 +216,18 @@ public class EmoteClueItemsPanel extends PluginPanel
 				7,
 				this::onSortFilterChanged
 		);
-		sortFilterButton.addOption(new AbstractMap.SimpleImmutableEntry<>(SortType.Quantity, false),
+		sortFilterButton.addOption(
+				new AbstractMap.SimpleImmutableEntry<>(SortType.Quantity, false),
 				new ImageIcon(EmoteClueImages.Toolbar.SortType.QUANTITY_ASCENDING),
 				this.getToolTipText("Toggle order by %s (ascending).", "quantity")
 		);
-		sortFilterButton.addOption(new AbstractMap.SimpleImmutableEntry<>(SortType.Name, true),
+		sortFilterButton.addOption(
+				new AbstractMap.SimpleImmutableEntry<>(SortType.Name, true),
 				new ImageIcon(EmoteClueImages.Toolbar.SortType.NAME_DESCENDING),
 				this.getToolTipText("Toggle order by %s (descending).", "name")
 		);
-		sortFilterButton.addOption(new AbstractMap.SimpleImmutableEntry<>(SortType.Name, false),
+		sortFilterButton.addOption(
+				new AbstractMap.SimpleImmutableEntry<>(SortType.Name, false),
 				new ImageIcon(EmoteClueImages.Toolbar.SortType.NAME_ASCENDING),
 				this.getToolTipText("Toggle order by %s (ascending).", "name")
 		);
@@ -233,9 +239,9 @@ public class EmoteClueItemsPanel extends PluginPanel
 		return String.format("<html>%s</html>", String.format(format, String.format("<b>%s</b>", keyword)));
 	}
 
-	private void setSeparatorColor(final Difficulty difficulty)
+	private void setSeparatorColor(final EmoteClueDifficulty emoteClueDifficulty)
 	{
-		this.separator.setBorder(new MatteBorder(1, 0, 0, 0, difficulty == null ? this.palette.getSeparatorColor() : difficulty.getColor()));
+		this.separator.setBorder(new MatteBorder(1, 0, 0, 0, emoteClueDifficulty == null ? this.palette.getSeparatorColor() : emoteClueDifficulty.getColor()));
 	}
 
 	public void search()

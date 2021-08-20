@@ -28,41 +28,42 @@
 
 package com.larsvansoest.runelite.clueitems.ui.content.foldable;
 
-import java.awt.Color;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
+import java.awt.*;
 
 public class HeaderIconsPanel extends JPanel
 {
 	private final GridBagConstraints c;
 
-	public HeaderIconsPanel(boolean alignRight, JLabel... iconLabels) {
+	public HeaderIconsPanel(final boolean alignRight, final JLabel... iconLabels)
+	{
 		super(new GridBagLayout());
 		super.setBackground(new Color(0, 0, 0, 0));
 		this.c = new GridBagConstraints();
 		this.c.gridx = 0;
 		this.c.gridy = 0;
-		this.c.fill	= GridBagConstraints.BOTH;
+		this.c.fill = GridBagConstraints.BOTH;
 		this.c.weightx = 0;
 
-		if(alignRight) {
+		if (alignRight)
+		{
 			this.c.anchor = GridBagConstraints.EAST;
 			this.c.insets.left = 5;
 		}
-		else {
+		else
+		{
 			this.c.anchor = GridBagConstraints.WEST;
 			this.c.insets.right = 5;
 		}
 
-		for(JLabel iconLabel : iconLabels) {
+		for (final JLabel iconLabel : iconLabels)
+		{
 			this.addIcon(iconLabel);
 		}
 	}
 
-	public void addIcon(JComponent iconLabel) {
+	public void addIcon(final JComponent iconLabel)
+	{
 		super.add(iconLabel, this.c);
 		this.c.gridx++;
 	}

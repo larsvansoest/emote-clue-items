@@ -29,14 +29,11 @@
 package com.larsvansoest.runelite.clueitems.ui.content.foldable;
 
 import com.larsvansoest.runelite.clueitems.ui.Palette;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 public class Header extends JPanel
 {
@@ -50,7 +47,7 @@ public class Header extends JPanel
 	private final HeaderIconsPanel rightIconsPanel;
 	private Boolean expanded;
 
-	public Header(FoldablePanel parent, Palette palette, Dimension dimension, String name)
+	public Header(final FoldablePanel parent, final Palette palette, final Dimension dimension, final String name)
 	{
 		this.palette = palette;
 		this.name = new HeaderText(dimension, name);
@@ -66,19 +63,19 @@ public class Header extends JPanel
 		super.addMouseListener(new MouseAdapter()
 		{
 			@Override
-			public void mousePressed(MouseEvent e)
+			public void mousePressed(final MouseEvent e)
 			{
 				Header.this.onMousePressed();
 			}
 
 			@Override
-			public void mouseEntered(MouseEvent e)
+			public void mouseEntered(final MouseEvent e)
 			{
 				Header.super.setBackground(Header.this.palette.getHoverColor());
 			}
 
 			@Override
-			public void mouseExited(MouseEvent e)
+			public void mouseExited(final MouseEvent e)
 			{
 				Header.super.setBackground(Header.this.expanded ? Header.this.palette.getSelectColor() : Header.this.palette.getDefaultColor());
 			}
@@ -118,19 +115,22 @@ public class Header extends JPanel
 		this.parent.onHeaderMousePressed();
 	}
 
-	public void fold() {
+	public void fold()
+	{
 		this.foldIcon.fold();
 		super.setBackground(this.palette.getDefaultColor());
 		this.expanded = false;
 	}
 
-	public void unfold() {
+	public void unfold()
+	{
 		this.foldIcon.unfold();
 		super.setBackground(this.palette.getSelectColor());
 		this.expanded = true;
 	}
 
-	public final void setQuantityLabel(String text) {
+	public final void setQuantityLabel(final String text)
+	{
 		this.quantity.setText(text);
 		this.quantity.setVisible(true);
 	}
@@ -140,11 +140,13 @@ public class Header extends JPanel
 		return this.name;
 	}
 
-	public final void addRightIcon(JComponent iconLabel) {
+	public final void addRightIcon(final JComponent iconLabel)
+	{
 		this.rightIconsPanel.addIcon(iconLabel);
 	}
 
-	public final void addLeftIcon(JLabel iconLabel) {
+	public final void addLeftIcon(final JLabel iconLabel)
+	{
 		this.leftIconsPanel.addIcon(iconLabel);
 	}
 }

@@ -28,8 +28,8 @@
 
 package com.larsvansoest.runelite.clueitems.ui.search;
 
+import javax.swing.*;
 import java.util.Map;
-import javax.swing.Icon;
 
 class FilterButtonOption<T>
 {
@@ -37,7 +37,8 @@ class FilterButtonOption<T>
 	private final Map.Entry<T, Icon> secondary;
 	private final String toolTip;
 
-	public FilterButtonOption(Map.Entry<T, Icon> primary, Map.Entry<T, Icon> secondary, String toolTip) {
+	public FilterButtonOption(final Map.Entry<T, Icon> primary, final Map.Entry<T, Icon> secondary, final String toolTip)
+	{
 		this.primary = primary;
 		this.secondary = secondary;
 		this.toolTip = toolTip;
@@ -53,5 +54,8 @@ class FilterButtonOption<T>
 		return this.secondary;
 	}
 
-	public String getToolTip() { return this.toolTip; }
+	public String getToolTip()
+	{
+		return this.toolTip;
+	}
 }
