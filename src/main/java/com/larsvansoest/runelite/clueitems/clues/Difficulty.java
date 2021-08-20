@@ -31,7 +31,7 @@ package com.larsvansoest.runelite.clueitems.clues;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.awt.Color;
+import java.awt.*;
 
 /**
  * Contains values for all {@link EmoteClue} difficulties.

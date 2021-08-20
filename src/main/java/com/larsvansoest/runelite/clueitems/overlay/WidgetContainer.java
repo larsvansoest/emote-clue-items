@@ -28,7 +28,7 @@
 
 package com.larsvansoest.runelite.clueitems.overlay;
 
-protected enum WidgetContainer
+enum WidgetContainer
 {
 	Inventory(),
 

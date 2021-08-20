@@ -28,27 +28,27 @@
 
 package com.larsvansoest.runelite.clueitems.ui.content.item;
 
-import com.larsvansoest.runelite.clueitems.clues.Difficulty;
-import com.larsvansoest.runelite.clueitems.clues.ClueItem;
-import com.larsvansoest.runelite.clueitems.clues.Associations;
 import com.larsvansoest.runelite.clueitems.Images;
+import com.larsvansoest.runelite.clueitems.clues.Difficulty;
+import com.larsvansoest.runelite.clueitems.clues.EmoteClue;
+import com.larsvansoest.runelite.clueitems.clues.EmoteClueAssociations;
 import com.larsvansoest.runelite.clueitems.ui.Palette;
+import com.larsvansoest.runelite.clueitems.ui.content.foldable.FoldablePanel;
 import com.larsvansoest.runelite.clueitems.ui.content.requirement.RequirementContainer;
 import com.larsvansoest.runelite.clueitems.ui.content.requirement.RequirementPanel;
-import com.larsvansoest.runelite.clueitems.ui.content.foldable.FoldablePanel;
-import com.larsvansoest.runelite.clueitems.clues.EmoteClue;
+
+import javax.swing.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 
 public class ItemPanel extends RequirementPanel
 {
-	public ItemPanel(RequirementContainer parent, Palette palette, ClueItem clueItem) {
-		super(parent, palette, clueItem.getCollectiveName());
-		EmoteClue[] emoteClues = Associations.EmoteClueItemToEmoteClues.get(clueItem);
-		List<Difficulty> difficulties = Arrays.stream(emoteClues).map(EmoteClue::getDifficulty).distinct().collect(Collectors.toList());
+	public ItemPanel(final RequirementContainer parent, final Palette palette, final com.larsvansoest.runelite.clueitems.clues.EmoteClueItem emoteClueItem)
+	{
+		super(parent, palette, emoteClueItem.getCollectiveName());
+		final EmoteClue[] emoteClues = EmoteClueAssociations.EmoteClueItemToEmoteClues.get(emoteClueItem);
+		final List<Difficulty> difficulties = Arrays.stream(emoteClues).map(EmoteClue::getDifficulty).distinct().collect(Collectors.toList());
 		super.setFilterable("difficulty", difficulties);
 		super.setFilterable("quantity", emoteClues.length);
 		super.setQuantity(String.valueOf(emoteClues.length));
@@ -59,8 +59,9 @@ public class ItemPanel extends RequirementPanel
 	@Override
 	public void unfold()
 	{
-		List<FoldablePanel> foldablePanels = super.getFoldContentFoldablePanels();
-		if (foldablePanels.size() > 1) {
+		final List<FoldablePanel> foldablePanels = super.getFoldContentFoldablePanels();
+		if (foldablePanels.size() > 1)
+		{
 			foldablePanels.get(0).unfold();
 			foldablePanels.get(1).unfold();
 		}

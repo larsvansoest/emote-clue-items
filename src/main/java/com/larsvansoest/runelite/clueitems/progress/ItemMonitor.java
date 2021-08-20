@@ -28,11 +28,12 @@
 
 package com.larsvansoest.runelite.clueitems.progress;
 
-import com.larsvansoest.runelite.clueitems.clues.Associations;
+import com.larsvansoest.runelite.clueitems.clues.EmoteClueAssociations;
+import net.runelite.api.Item;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import net.runelite.api.Item;
 
 class ItemMonitor
 {
@@ -46,12 +47,13 @@ class ItemMonitor
 		this.inventoryTracker = new ItemTracker(28);
 		this.bankTracker = new ItemTracker(816);
 		this.equipmentTracker = new ItemTracker(13);
-		this.collectionLog = new HashMap<>(Associations.ItemIdToEmoteClueItemSlot.keySet().size());
+		this.collectionLog = new HashMap<>(EmoteClueAssociations.ItemIdToEmoteClueItemSlot.keySet().size());
 		this.reset();
 	}
 
-	public void reset() {
-		for (Integer itemId : Associations.ItemIdToEmoteClueItemSlot.keySet())
+	public void reset()
+	{
+		for (final Integer itemId : EmoteClueAssociations.ItemIdToEmoteClueItemSlot.keySet())
 		{
 			this.collectionLog.put(itemId, 0);
 		}
@@ -60,9 +62,9 @@ class ItemMonitor
 		this.equipmentTracker.reset();
 	}
 
-	public List<Item> fetchEmoteClueItemChanges(int containerId, Item[] items)
+	public List<Item> fetchEmoteClueItemChanges(final int containerId, final Item[] items)
 	{
-		List<Item> deltas;
+		final List<Item> deltas;
 		switch (containerId)
 		{
 			case 93:
@@ -78,14 +80,14 @@ class ItemMonitor
 				return null;
 		}
 
-		List<Item> emoteClueDeltas = new LinkedList<>();
-		for (Item delta : deltas)
+		final List<Item> emoteClueDeltas = new LinkedList<>();
+		for (final Item delta : deltas)
 		{
-			int id = delta.getId();
-			Integer logQuantity = this.collectionLog.get(id);
+			final int id = delta.getId();
+			final Integer logQuantity = this.collectionLog.get(id);
 			if (logQuantity != null)
 			{
-				int quantity = logQuantity + delta.getQuantity();
+				final int quantity = logQuantity + delta.getQuantity();
 				this.collectionLog.put(id, quantity);
 				emoteClueDeltas.add(new Item(id, quantity));
 			}

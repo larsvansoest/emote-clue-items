@@ -29,31 +29,28 @@
 package com.larsvansoest.runelite.clueitems.ui;
 
 import com.larsvansoest.runelite.clueitems.EmoteClueItemsPlugin;
-import com.larsvansoest.runelite.clueitems.clues.Difficulty;
 import com.larsvansoest.runelite.clueitems.Image;
-import com.larsvansoest.runelite.clueitems.clues.ClueItem;
+import com.larsvansoest.runelite.clueitems.clues.Difficulty;
+import com.larsvansoest.runelite.clueitems.clues.EmoteClueItem;
+import com.larsvansoest.runelite.clueitems.ui.content.requirement.RequirementContainer;
 import com.larsvansoest.runelite.clueitems.ui.content.requirement.RequirementPanelProvider;
+import com.larsvansoest.runelite.clueitems.ui.content.requirement.SortType;
 import com.larsvansoest.runelite.clueitems.ui.content.requirement.Status;
 import com.larsvansoest.runelite.clueitems.ui.disclaimer.DisclaimerPanel;
 import com.larsvansoest.runelite.clueitems.ui.footer.FooterPanel;
 import com.larsvansoest.runelite.clueitems.ui.search.FilterButton;
 import com.larsvansoest.runelite.clueitems.ui.search.SearchBarFactory;
-import com.larsvansoest.runelite.clueitems.ui.content.requirement.RequirementContainer;
-import com.larsvansoest.runelite.clueitems.ui.content.requirement.SortType;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.util.AbstractMap;
-import java.util.Map;
-import javax.swing.ImageIcon;
-import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
-import javax.swing.border.MatteBorder;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.IconTextField;
 
+import javax.swing.*;
+import javax.swing.border.MatteBorder;
+import java.awt.*;
+import java.util.AbstractMap;
+import java.util.Map;
+
 /**
- * Main {@link PluginPanel} of the {@link EmoteClueItemsPlugin}, which displays {@link ClueItem} requirement status progression.
+ * Main {@link PluginPanel} of the {@link EmoteClueItemsPlugin}, which displays {@link EmoteClueItem} requirement status progression.
  * <p>
  * Includes search bar, {@link FilterButton} buttons to filter and sort by properties, such as {@link Status}, requirement name, and more.
  *
@@ -73,7 +70,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 	private final FilterButton<Difficulty> difficultyFilterButton;
 	private final FilterButton<Map.Entry<SortType, Boolean>> sortFilterButton;
 
-	public EmoteClueItemsPanel(Palette palette, RequirementPanelProvider requirementPanelProvider)
+	public EmoteClueItemsPanel(final Palette palette, final RequirementPanelProvider requirementPanelProvider)
 	{
 		super();
 		super.setLayout(new GridBagLayout());
@@ -94,9 +91,9 @@ public class EmoteClueItemsPanel extends PluginPanel
 		this.difficultyFilterButton = this.createDifficultyFilterButton(palette);
 		this.sortFilterButton = this.createSortFilterButton(palette);
 
-		FooterPanel footerPanel = new FooterPanel(palette, "Emote Clue Items", "v2.0.2", "https://github.com/larsvansoest/emote-clue-items");
+		final FooterPanel footerPanel = new FooterPanel(palette, "Emote Clue Items", "v2.0.2", "https://github.com/larsvansoest/emote-clue-items");
 
-		GridBagConstraints c = new GridBagConstraints();
+		final GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
 		c.gridx = 0;
 		c.gridy = 0;
@@ -130,7 +127,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 		super.add(footerPanel, c);
 	}
 
-	public void setDisclaimer(String text)
+	public void setDisclaimer(final String text)
 	{
 		this.disclaimerPanel.setText(text);
 		this.disclaimerPanel.setVisible(true);
@@ -155,7 +152,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 
 	private void onDifficultyFilterChanged()
 	{
-		Difficulty difficulty = this.difficultyFilterButton.getSelectedValue();
+		final Difficulty difficulty = this.difficultyFilterButton.getSelectedValue();
 		this.requirementContainer.setFilter("difficulty", difficulty);
 		this.setSeparatorColor(difficulty);
 		this.search();
@@ -163,23 +160,41 @@ public class EmoteClueItemsPanel extends PluginPanel
 
 	private void onSortFilterChanged()
 	{
-		Map.Entry<SortType, Boolean> selected = this.sortFilterButton.getSelectedValue();
+		final Map.Entry<SortType, Boolean> selected = this.sortFilterButton.getSelectedValue();
 		this.requirementContainer.sort(selected.getKey(), selected.getValue());
 	}
 
-	private FilterButton<Status> createRequirementStatusFilterButton(Palette palette)
+	private FilterButton<Status> createRequirementStatusFilterButton(final Palette palette)
 	{
-		FilterButton<Status> requirementStatusFilterButton = new FilterButton<>(null, new ImageIcon(Image.Toolbar.CheckSquare.ALL), this.getToolTipText("Toggle show %s statuses.", "all"), new Dimension(25, 30), palette.getDefaultColor(), palette.getHoverColor(), 4, this::onRequirementStatusFilterChanged);
-		String toolTipTextFormat = "Toggle show %s status.";
+		final FilterButton<Status> requirementStatusFilterButton = new FilterButton<>(
+				null,
+				new ImageIcon(Image.Toolbar.CheckSquare.ALL),
+				this.getToolTipText("Toggle show %s statuses.", "all"),
+				new Dimension(25, 30),
+				palette.getDefaultColor(),
+				palette.getHoverColor(),
+				4,
+				this::onRequirementStatusFilterChanged
+		);
+		final String toolTipTextFormat = "Toggle show %s status.";
 		requirementStatusFilterButton.addOption(Status.InComplete, new ImageIcon(Image.Toolbar.CheckSquare.INCOMPLETE), this.getToolTipText(toolTipTextFormat, "incomplete"));
 		requirementStatusFilterButton.addOption(Status.Complete, new ImageIcon(Image.Toolbar.CheckSquare.COMPLETE), this.getToolTipText(toolTipTextFormat, "complete"));
 		return requirementStatusFilterButton;
 	}
 
-	private FilterButton<Difficulty> createDifficultyFilterButton(Palette palette)
+	private FilterButton<Difficulty> createDifficultyFilterButton(final Palette palette)
 	{
-		FilterButton<Difficulty> difficultyFilterButton = new FilterButton<>(null, new ImageIcon(Image.Ribbon.ALL), this.getToolTipText("Toggle show %s difficulties.", "all"), new Dimension(25, 30), palette.getDefaultColor(), palette.getHoverColor(), 7, this::onDifficultyFilterChanged);
-		String toolTipTextFormat = "Toggle show %s difficulty.";
+		final FilterButton<Difficulty> difficultyFilterButton = new FilterButton<>(
+				null,
+				new ImageIcon(Image.Ribbon.ALL),
+				this.getToolTipText("Toggle show %s difficulties.", "all"),
+				new Dimension(25, 30),
+				palette.getDefaultColor(),
+				palette.getHoverColor(),
+				7,
+				this::onDifficultyFilterChanged
+		);
+		final String toolTipTextFormat = "Toggle show %s difficulty.";
 		difficultyFilterButton.addOption(Difficulty.Beginner, new ImageIcon(Image.Ribbon.BEGINNER), this.getToolTipText(toolTipTextFormat, "beginner"));
 		difficultyFilterButton.addOption(Difficulty.Easy, new ImageIcon(Image.Ribbon.EASY), this.getToolTipText(toolTipTextFormat, "easy"));
 		difficultyFilterButton.addOption(Difficulty.Medium, new ImageIcon(Image.Ribbon.MEDIUM), this.getToolTipText(toolTipTextFormat, "medium"));
@@ -189,21 +204,42 @@ public class EmoteClueItemsPanel extends PluginPanel
 		return difficultyFilterButton;
 	}
 
-	private FilterButton<Map.Entry<SortType, Boolean>> createSortFilterButton(Palette palette)
+	private FilterButton<Map.Entry<SortType, Boolean>> createSortFilterButton(final Palette palette)
 	{
-		FilterButton<Map.Entry<SortType, Boolean>> sortFilterButton = new FilterButton<>(new AbstractMap.SimpleImmutableEntry<>(SortType.Quantity, true), new ImageIcon(Image.Toolbar.SortType.QUANTITY_DESCENDING), this.getToolTipText("Toggle order by %s (descending).", "quantity"), new Dimension(25, 30), palette.getDefaultColor(), palette.getHoverColor(), 7, this::onSortFilterChanged);
-		sortFilterButton.addOption(new AbstractMap.SimpleImmutableEntry<>(SortType.Quantity, false), new ImageIcon(Image.Toolbar.SortType.QUANTITY_ASCENDING), this.getToolTipText("Toggle order by %s (ascending).", "quantity"));
-		sortFilterButton.addOption(new AbstractMap.SimpleImmutableEntry<>(SortType.Name, true), new ImageIcon(Image.Toolbar.SortType.NAME_DESCENDING), this.getToolTipText("Toggle order by %s (descending).", "name"));
-		sortFilterButton.addOption(new AbstractMap.SimpleImmutableEntry<>(SortType.Name, false), new ImageIcon(Image.Toolbar.SortType.NAME_ASCENDING), this.getToolTipText("Toggle order by %s (ascending).", "name"));
+		final FilterButton<Map.Entry<SortType, Boolean>> sortFilterButton = new FilterButton<>(
+				new AbstractMap.SimpleImmutableEntry<>(SortType.Quantity, true),
+				new ImageIcon(Image.Toolbar.SortType.QUANTITY_DESCENDING),
+				this.getToolTipText("Toggle order by %s (descending).", "quantity"),
+				new Dimension(25, 30),
+				palette.getDefaultColor(),
+				palette.getHoverColor(),
+				7,
+				this::onSortFilterChanged
+		);
+		sortFilterButton.addOption(
+				new AbstractMap.SimpleImmutableEntry<>(SortType.Quantity, false),
+				new ImageIcon(Image.Toolbar.SortType.QUANTITY_ASCENDING),
+				this.getToolTipText("Toggle order by %s (ascending).", "quantity")
+		);
+		sortFilterButton.addOption(
+				new AbstractMap.SimpleImmutableEntry<>(SortType.Name, true),
+				new ImageIcon(Image.Toolbar.SortType.NAME_DESCENDING),
+				this.getToolTipText("Toggle order by %s (descending).", "name")
+		);
+		sortFilterButton.addOption(
+				new AbstractMap.SimpleImmutableEntry<>(SortType.Name, false),
+				new ImageIcon(Image.Toolbar.SortType.NAME_ASCENDING),
+				this.getToolTipText("Toggle order by %s (ascending).", "name")
+		);
 		return sortFilterButton;
 	}
 
-	private String getToolTipText(String format, String keyword)
+	private String getToolTipText(final String format, final String keyword)
 	{
 		return String.format("<html>%s</html>", String.format(format, String.format("<b>%s</b>", keyword)));
 	}
 
-	private void setSeparatorColor(Difficulty difficulty)
+	private void setSeparatorColor(final Difficulty difficulty)
 	{
 		this.separator.setBorder(new MatteBorder(1, 0, 0, 0, difficulty == null ? this.palette.getSeparatorColor() : difficulty.getColor()));
 	}

@@ -28,70 +28,54 @@
 
 package com.larsvansoest.runelite.clueitems.overlay;
 
+import com.larsvansoest.runelite.clueitems.EmoteClueItemsConfig;
 import com.larsvansoest.runelite.clueitems.Image;
 import com.larsvansoest.runelite.clueitems.clues.Difficulty;
-import com.larsvansoest.runelite.clueitems.clues.Associations;
-
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.util.Arrays;
-import javax.inject.Inject;
+import com.larsvansoest.runelite.clueitems.clues.EmoteClueAssociations;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
 import net.runelite.client.ui.overlay.components.ImageComponent;
+
+import javax.inject.Inject;
+import java.awt.*;
+import java.util.Arrays;
 
 /**
  * Extends {@link WidgetItemOverlay}. Scans and marks items required for emote clue scroll steps.
  */
 public class EmoteClueItemsOverlay extends WidgetItemOverlay
 {
-	static class Component {
-		static class Ribbon {
-			static ImageComponent BEGINNER = new ImageComponent(Image.Ribbon.BEGINNER);
-			static ImageComponent EASY = new ImageComponent(Image.Ribbon.EASY);
-			static ImageComponent MEDIUM = new ImageComponent(Image.Ribbon.MEDIUM);
-			static ImageComponent HARD = new ImageComponent(Image.Ribbon.HARD);
-			static ImageComponent ELITE = new ImageComponent(Image.Ribbon.ELITE);
-			static ImageComponent MASTER = new ImageComponent(Image.Ribbon.MASTER);
-		}
-	}
-
+	private final EmoteClueItemsConfig config;
 	private final ItemManager itemManager;
-	private final ConfigProvider configProvider;
-
 	// Single object allocations, re-used every sequential iteration.
 	private final WidgetData widgetData;
 	private final Point point;
 
 	@Inject
-	public EmoteClueItemsOverlay(ItemManager itemManager, ConfigProvider config)
+	public EmoteClueItemsOverlay(final ItemManager itemManager, final EmoteClueItemsConfig config)
 	{
 		this.itemManager = itemManager;
-		this.configProvider = config;
 
+		this.config = config;
 		this.widgetData = new WidgetData();
 		this.point = new Point();
 
-		super.showOnInterfaces(
-			Arrays.stream(Widget.values()).mapToInt(widget -> widget.groupId).toArray()
-		);
+		super.showOnInterfaces(Arrays.stream(Widget.values()).mapToInt(widget -> widget.groupId).toArray());
 	}
 
 	@Override
-	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem itemWidget)
+	public void renderItemOverlay(final Graphics2D graphics, final int itemId, final WidgetItem itemWidget)
 	{
 		WidgetInspector.Inspect(itemWidget, this.widgetData, 3);
-		WidgetContainer widgetContainer = this.widgetData.getWidgetContainer();
-		WidgetContext widgetContext = this.widgetData.getWidgetContext();
+		final WidgetContainer widgetContainer = this.widgetData.getWidgetContainer();
+		final WidgetContext widgetContext = this.widgetData.getWidgetContext();
 
 		// Filter unsupported and turned off interfaces.
-		if (widgetContext == null || widgetContainer == null || !this.configProvider.interfaceGroupSelected(widgetContainer))
+		if (widgetContext == null || widgetContainer == null || !this.interfaceGroupSelected(widgetContainer))
 		{
 			return;
 		}
-
 		final int item = this.itemManager.canonicalize(itemId);
 
 		final Rectangle bounds = itemWidget.getCanvasBounds();
@@ -105,21 +89,68 @@ public class EmoteClueItemsOverlay extends WidgetItemOverlay
 		this.renderClueItemDetection(graphics, Difficulty.Master, Component.Ribbon.MASTER, item, x, y);
 	}
 
-	private int getXOffset(WidgetContainer widgetContainer, WidgetContext widgetContext)
+	private boolean interfaceGroupSelected(final WidgetContainer widgetContainer)
+	{
+		switch (widgetContainer)
+		{
+			case Bank:
+				return this.config.highlightBank();
+
+			case DepositBox:
+				return this.config.highlightDepositBox();
+
+			case Inventory:
+				return this.config.highlightInventory();
+
+			case Equipment:
+				return this.config.highlightEquipment();
+
+			case Shop:
+				return this.config.highlightShop();
+
+			case KeptOnDeath:
+				return this.config.highlightKeptOnDeath();
+
+			case GuidePrices:
+				return this.config.highlightGuidePrices();
+
+			default:
+				return false;
+		}
+	}
+
+	private int getXOffset(final WidgetContainer widgetContainer, final WidgetContext widgetContext)
 	{
 		return widgetContainer == WidgetContainer.Equipment ? -10 : widgetContext == WidgetContext.Default ? -1 : -5;
 	}
 
-	private int renderClueItemDetection(Graphics2D graphics, Difficulty difficulty, ImageComponent component, int id, int x, int y)
+	private int renderClueItemDetection(final Graphics2D graphics, final Difficulty difficulty, final ImageComponent component, final int id, final int x, final int y)
 	{
-		return Arrays.stream(Associations.DifficultyToEmoteClues.get(difficulty)).anyMatch(emoteClue -> Arrays.stream(emoteClue.getItemRequirements()).anyMatch(itemRequirement -> itemRequirement.fulfilledBy(id))) ? (int) (y + this.renderRibbon(graphics, component, x, y).getHeight()) + 1 : y;
+		return Arrays
+				.stream(EmoteClueAssociations.DifficultyToEmoteClues.get(difficulty))
+				.anyMatch(emoteClue -> Arrays.stream(emoteClue.getItemRequirements()).anyMatch(itemRequirement -> itemRequirement.fulfilledBy(id))) ? (int) (y + this
+				.renderRibbon(graphics, component, x, y)
+				.getHeight()) + 1 : y;
 	}
 
-	private Rectangle renderRibbon(Graphics2D graphics, ImageComponent ribbon, int x, int y)
+	private Rectangle renderRibbon(final Graphics2D graphics, final ImageComponent ribbon, final int x, final int y)
 	{
 		this.point.setLocation(x, y);
 		ribbon.setPreferredLocation(this.point);
 		ribbon.render(graphics);
 		return ribbon.getBounds();
+	}
+
+	static class Component
+	{
+		static class Ribbon
+		{
+			static ImageComponent BEGINNER = new ImageComponent(Image.Ribbon.BEGINNER);
+			static ImageComponent EASY = new ImageComponent(Image.Ribbon.EASY);
+			static ImageComponent MEDIUM = new ImageComponent(Image.Ribbon.MEDIUM);
+			static ImageComponent HARD = new ImageComponent(Image.Ribbon.HARD);
+			static ImageComponent ELITE = new ImageComponent(Image.Ribbon.ELITE);
+			static ImageComponent MASTER = new ImageComponent(Image.Ribbon.MASTER);
+		}
 	}
 }

@@ -28,8 +28,9 @@
 
 package com.larsvansoest.runelite.clueitems;
 
-import java.awt.image.BufferedImage;
 import net.runelite.client.util.ImageUtil;
+
+import java.awt.image.BufferedImage;
 
 /**
  * Provides static objects for each image used by {@link EmoteClueItemsPlugin}.
@@ -40,6 +41,16 @@ import net.runelite.client.util.ImageUtil;
 public abstract class Image
 {
 	private static final String folder = "/icons";
+
+	private static BufferedImage bufferedImage(final String folder, final String name)
+	{
+		return ImageUtil.getResourceStreamFromClass(EmoteClueItemsPlugin.class, path(folder, name));
+	}
+
+	private static String path(final String current, final String next)
+	{
+		return String.format("%s/%s", current, next);
+	}
 
 	public static class Ribbon
 	{
@@ -112,15 +123,5 @@ public abstract class Image
 				public static final BufferedImage MASTER = bufferedImage(Scroll.folder, "master.png");
 			}
 		}
-	}
-
-	private static BufferedImage bufferedImage(String folder, String name)
-	{
-		return ImageUtil.getResourceStreamFromClass(EmoteClueItemsPlugin.class, path(folder, name));
-	}
-
-	private static String path(String current, String next)
-	{
-		return String.format("%s/%s", current, next);
 	}
 }

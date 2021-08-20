@@ -28,12 +28,13 @@
 
 package com.larsvansoest.runelite.clueitems.ui.content.requirement;
 
-import com.larsvansoest.runelite.clueitems.clues.ClueItem;
-import java.awt.Color;
+import com.larsvansoest.runelite.clueitems.clues.EmoteClueItem;
 import net.runelite.client.ui.ColorScheme;
 
+import java.awt.*;
+
 /**
- * Represents values for {@link ClueItem} completion status.
+ * Represents values for {@link EmoteClueItem} completion status.
  *
  * @author Lars van Soest
  * @since 2.0.0
@@ -50,7 +51,7 @@ public enum Status
 
 	public final Color colour;
 
-	Status(Color colour)
+	Status(final Color colour)
 	{
 		this.colour = colour;
 	}

@@ -28,41 +28,45 @@
 
 package com.larsvansoest.runelite.clueitems.progress;
 
-import java.util.LinkedList;
-import java.util.List;
 import lombok.NonNull;
 import net.runelite.api.Item;
+
+import java.util.LinkedList;
+import java.util.List;
 
 class ItemTracker
 {
 	private final Item[] items;
 
-	public ItemTracker(int capacity)
+	public ItemTracker(final int capacity)
 	{
 		this.items = new Item[capacity];
 		this.reset();
 	}
 
-	public void reset() {
+	public void reset()
+	{
 		for (int i = 0; i < this.items.length; i++)
 		{
 			this.items[i] = new Item(-1, 0);
 		}
 	}
 
-	public List<Item> writeDeltas(@NonNull Item[] items)
+	public List<Item> writeDeltas(
+			@NonNull
+			final Item[] items)
 	{
-		LinkedList<Item> deltas = new LinkedList<>();
+		final LinkedList<Item> deltas = new LinkedList<>();
 		for (int i = 0; i < items.length; i++)
 		{
-			Item previousItem = this.items[i];
-			Item currentItem = items[i];
+			final Item previousItem = this.items[i];
+			final Item currentItem = items[i];
 			this.items[i] = currentItem;
 
-			int currentItemId = currentItem.getId();
-			int currentQuantity = currentItem.getQuantity();
-			int previousItemId = previousItem.getId();
-			int previousQuantity = previousItem.getQuantity();
+			final int currentItemId = currentItem.getId();
+			final int currentQuantity = currentItem.getQuantity();
+			final int previousItemId = previousItem.getId();
+			final int previousQuantity = previousItem.getQuantity();
 
 			if (previousItemId != currentItemId)
 			{

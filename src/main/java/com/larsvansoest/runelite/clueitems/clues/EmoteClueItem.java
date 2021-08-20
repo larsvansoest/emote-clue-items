@@ -28,9 +28,6 @@
 
 package com.larsvansoest.runelite.clueitems.clues;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
@@ -38,13 +35,17 @@ import net.runelite.client.plugins.cluescrolls.clues.EmoteClue;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Contains and wraps all {@link ItemRequirement} used by {@link EmoteClue}, integrated in vendored {@link com.larsvansoest.runelite.clueitems.clues.EmoteClue} class.
  *
  * @author Lars van Soest
  * @since 2.0.0
  */
-public enum ClueItem implements ItemRequirement
+public enum EmoteClueItem implements ItemRequirement
 {
 	ABYSSAL_WHIP("Abyssal whip", ItemID.ABYSSAL_WHIP),
 	ADAMANT_2H_SWORD("Adamant 2h sword", ItemID.ADAMANT_2H_SWORD),
@@ -625,96 +626,522 @@ public enum ClueItem implements ItemRequirement
 	SHAYZIEN_PLATEBODY_5("Shayzien platebody 5", ItemID.SHAYZIEN_BODY_5),
 	PYROMANCER_ROBE("Pyromancer robe", ItemID.PYROMANCER_ROBE),
 
-	ANY_ABYSSAL_WHIP("Abyssal whip", false, ClueItem.ABYSSAL_WHIP, ClueItem.VOLCANIC_ABYSSAL_WHIP, ClueItem.FROZEN_ABYSSAL_WHIP),
-	ANY_AHRIMS_HOOD("Ahrim's hood", false, ClueItem.AHRIMS_HOOD, ClueItem.AHRIMS_HOOD_0, ClueItem.AHRIMS_HOOD_25, ClueItem.AHRIMS_HOOD_50, ClueItem.AHRIMS_HOOD_75, ClueItem.AHRIMS_HOOD_100),
-	ANY_AHRIMS_ROBESKIRT("Ahrims robeskirt", false, ClueItem.AHRIMS_ROBESKIRT, ClueItem.AHRIMS_ROBESKIRT_0, ClueItem.AHRIMS_ROBESKIRT_25, ClueItem.AHRIMS_ROBESKIRT_50, ClueItem.AHRIMS_ROBESKIRT_75, ClueItem.AHRIMS_ROBESKIRT_100),
-	ANY_AHRIMS_ROBETOP("Ahrims robetop", false, ClueItem.AHRIMS_ROBETOP, ClueItem.AHRIMS_ROBETOP_0, ClueItem.AHRIMS_ROBETOP_25, ClueItem.AHRIMS_ROBETOP_50, ClueItem.AHRIMS_ROBETOP_75, ClueItem.AHRIMS_ROBETOP_100),
-	ANY_AHRIMS_STAFF("Ahrims staff", false, ClueItem.AHRIMS_STAFF, ClueItem.AHRIMS_STAFF_0, ClueItem.AHRIMS_STAFF_25, ClueItem.AHRIMS_STAFF_50, ClueItem.AHRIMS_STAFF_75, ClueItem.AHRIMS_STAFF_100),
-	ANY_AMULET_OF_GLORY("Any amulet of glory", false, ClueItem.AMULET_OF_GLORY, ClueItem.AMULET_OF_GLORY1, ClueItem.AMULET_OF_GLORY2, ClueItem.AMULET_OF_GLORY3, ClueItem.AMULET_OF_GLORY4, ClueItem.AMULET_OF_GLORY5, ClueItem.AMULET_OF_GLORY6),
-	ANY_AMULET_OF_THE_DAMNED("Amulet of the damned", false, ClueItem.AMULET_OF_THE_DAMNED, ClueItem.AMULET_OF_THE_DAMNED_FULL),
-	ANY_AVERNIC_DEFENDER("Avernic defender", false, ClueItem.AVERNIC_DEFENDER, ClueItem.AVERNIC_DEFENDER_L),
-	ANY_BANDOS_GODSWORD("Bandos godsword", false, ClueItem.BANDOS_GODSWORD, ClueItem.BANDOS_GODSWORD_OR),
-	ANY_BOATER("Any boater", false, ClueItem.RED_BOATER, ClueItem.ORANGE_BOATER, ClueItem.GREEN_BOATER, ClueItem.BLUE_BOATER, ClueItem.BLACK_BOATER, ClueItem.PINK_BOATER, ClueItem.PURPLE_BOATER, ClueItem.WHITE_BOATER),
-	ANY_BOBS_SHIRT("Any bob's shirt", false, ClueItem.BOBS_BLACK_SHIRT, ClueItem.BOBS_BLUE_SHIRT, ClueItem.BOBS_GREEN_SHIRT, ClueItem.BOBS_PURPLE_SHIRT, ClueItem.BOBS_RED_SHIRT),
-	ANY_BRYOPHYTAS_STAFF("Bryophytas' staff", false, ClueItem.BRYOPHYTAS_STAFF, ClueItem.BRYOPHYTAS_STAFF_UNCHARGED),
-	ANY_CASTLE_WARS_BRACELET("Castle wars bracelet", false, ClueItem.CASTLE_WARS_BRACELET3, ClueItem.CASTLE_WARS_BRACELET2, ClueItem.CASTLE_WARS_BRACELET1),
+	ANY_ABYSSAL_WHIP("Abyssal whip", false, EmoteClueItem.ABYSSAL_WHIP, EmoteClueItem.VOLCANIC_ABYSSAL_WHIP, EmoteClueItem.FROZEN_ABYSSAL_WHIP),
+	ANY_AHRIMS_HOOD("Ahrim's hood",
+			false,
+			EmoteClueItem.AHRIMS_HOOD,
+			EmoteClueItem.AHRIMS_HOOD_0,
+			EmoteClueItem.AHRIMS_HOOD_25,
+			EmoteClueItem.AHRIMS_HOOD_50,
+			EmoteClueItem.AHRIMS_HOOD_75,
+			EmoteClueItem.AHRIMS_HOOD_100
+	),
+	ANY_AHRIMS_ROBESKIRT("Ahrims robeskirt",
+			false,
+			EmoteClueItem.AHRIMS_ROBESKIRT,
+			EmoteClueItem.AHRIMS_ROBESKIRT_0,
+			EmoteClueItem.AHRIMS_ROBESKIRT_25,
+			EmoteClueItem.AHRIMS_ROBESKIRT_50,
+			EmoteClueItem.AHRIMS_ROBESKIRT_75,
+			EmoteClueItem.AHRIMS_ROBESKIRT_100
+	),
+	ANY_AHRIMS_ROBETOP("Ahrims robetop",
+			false,
+			EmoteClueItem.AHRIMS_ROBETOP,
+			EmoteClueItem.AHRIMS_ROBETOP_0,
+			EmoteClueItem.AHRIMS_ROBETOP_25,
+			EmoteClueItem.AHRIMS_ROBETOP_50,
+			EmoteClueItem.AHRIMS_ROBETOP_75,
+			EmoteClueItem.AHRIMS_ROBETOP_100
+	),
+	ANY_AHRIMS_STAFF("Ahrims staff",
+			false,
+			EmoteClueItem.AHRIMS_STAFF,
+			EmoteClueItem.AHRIMS_STAFF_0,
+			EmoteClueItem.AHRIMS_STAFF_25,
+			EmoteClueItem.AHRIMS_STAFF_50,
+			EmoteClueItem.AHRIMS_STAFF_75,
+			EmoteClueItem.AHRIMS_STAFF_100
+	),
+	ANY_AMULET_OF_GLORY("Any amulet of glory",
+			false,
+			EmoteClueItem.AMULET_OF_GLORY,
+			EmoteClueItem.AMULET_OF_GLORY1,
+			EmoteClueItem.AMULET_OF_GLORY2,
+			EmoteClueItem.AMULET_OF_GLORY3,
+			EmoteClueItem.AMULET_OF_GLORY4,
+			EmoteClueItem.AMULET_OF_GLORY5,
+			EmoteClueItem.AMULET_OF_GLORY6
+	),
+	ANY_AMULET_OF_THE_DAMNED("Amulet of the damned", false, EmoteClueItem.AMULET_OF_THE_DAMNED, EmoteClueItem.AMULET_OF_THE_DAMNED_FULL),
+	ANY_AVERNIC_DEFENDER("Avernic defender", false, EmoteClueItem.AVERNIC_DEFENDER, EmoteClueItem.AVERNIC_DEFENDER_L),
+	ANY_BANDOS_GODSWORD("Bandos godsword", false, EmoteClueItem.BANDOS_GODSWORD, EmoteClueItem.BANDOS_GODSWORD_OR),
+	ANY_BOATER("Any boater",
+			false,
+			EmoteClueItem.RED_BOATER,
+			EmoteClueItem.ORANGE_BOATER,
+			EmoteClueItem.GREEN_BOATER,
+			EmoteClueItem.BLUE_BOATER,
+			EmoteClueItem.BLACK_BOATER,
+			EmoteClueItem.PINK_BOATER,
+			EmoteClueItem.PURPLE_BOATER,
+			EmoteClueItem.WHITE_BOATER
+	),
+	ANY_BOBS_SHIRT("Any bob's shirt",
+			false,
+			EmoteClueItem.BOBS_BLACK_SHIRT,
+			EmoteClueItem.BOBS_BLUE_SHIRT,
+			EmoteClueItem.BOBS_GREEN_SHIRT,
+			EmoteClueItem.BOBS_PURPLE_SHIRT,
+			EmoteClueItem.BOBS_RED_SHIRT
+	),
+	ANY_BRYOPHYTAS_STAFF("Bryophytas' staff", false, EmoteClueItem.BRYOPHYTAS_STAFF, EmoteClueItem.BRYOPHYTAS_STAFF_UNCHARGED),
+	ANY_CASTLE_WARS_BRACELET("Castle wars bracelet", false, EmoteClueItem.CASTLE_WARS_BRACELET3, EmoteClueItem.CASTLE_WARS_BRACELET2, EmoteClueItem.CASTLE_WARS_BRACELET1),
 	ANY_COMBAT_BRACELET("Combat bracelet", false, COMBAT_BRACELET, COMBAT_BRACELET1, COMBAT_BRACELET2, COMBAT_BRACELET3, COMBAT_BRACELET4, COMBAT_BRACELET5, COMBAT_BRACELET6),
-	ANY_CROZIER("Any crozier", false, ClueItem.ANCIENT_CROZIER, ClueItem.ARMADYL_CROZIER, ClueItem.BANDOS_CROZIER, ClueItem.GUTHIX_CROZIER, ClueItem.SARADOMIN_CROZIER, ClueItem.ZAMORAK_CROZIER),
-	ANY_CRYSTAL_AXE("Crystal Axe", false, ClueItem.CRYSTAL_AXE, ClueItem.CRYSTAL_AXE_INACTIVE),
-	ANY_CRYSTAL_BOW("Crystal Bow", false, ClueItem.CRYSTAL_BOW, ClueItem.CRYSTAL_BOW_24123),
-	ANY_CRYSTAL_PICKAXE("Crystal Pickaxe", false, ClueItem.CRYSTAL_PICKAXE, ClueItem.CRYSTAL_PICKAXE_INACTIVE),
-	ANY_DHAROKS_GREATAXE("Dharoks greataxe", false, ClueItem.DHAROKS_GREATAXE, ClueItem.DHAROKS_GREATAXE_0, ClueItem.DHAROKS_GREATAXE_25, ClueItem.DHAROKS_GREATAXE_50, ClueItem.DHAROKS_GREATAXE_75, ClueItem.DHAROKS_GREATAXE_100),
-	ANY_DHAROKS_HELM("Dharoks helm", false, ClueItem.DHAROKS_HELM, ClueItem.DHAROKS_HELM_0, ClueItem.DHAROKS_HELM_25, ClueItem.DHAROKS_HELM_50, ClueItem.DHAROKS_HELM_75, ClueItem.DHAROKS_HELM_100),
-	ANY_DHAROKS_PLATEBODY("Dharoks platebody", false, ClueItem.DHAROKS_PLATEBODY, ClueItem.DHAROKS_PLATEBODY_0, ClueItem.DHAROKS_PLATEBODY_25, ClueItem.DHAROKS_PLATEBODY_50, ClueItem.DHAROKS_PLATEBODY_75, ClueItem.DHAROKS_PLATEBODY_100),
-	ANY_DHAROKS_PLATELEGS("Dharoks platelegs", false, ClueItem.DHAROKS_PLATELEGS, ClueItem.DHAROKS_PLATELEGS_0, ClueItem.DHAROKS_PLATELEGS_25, ClueItem.DHAROKS_PLATELEGS_50, ClueItem.DHAROKS_PLATELEGS_75, ClueItem.DHAROKS_PLATELEGS_100),
-	ANY_DRAGON_AXE("Dragon Axe", false, ClueItem.DRAGON_AXE, ClueItem.DRAGON_AXE_OR, ClueItem.INFERNAL_AXE, ClueItem.INFERNAL_AXE_UNCHARGED, ClueItem.INFERNAL_AXE_OR, ClueItem.INFERNAL_AXE_UNCHARGED_25371),
-	ANY_DRAGON_BOOTS("Dragon boots", false, ClueItem.DRAGON_BOOTS, ClueItem.DRAGON_BOOTS_G),
-	ANY_DRAGON_CHAINBODY("Dragon chainbody", false, ClueItem.DRAGON_CHAINBODY_3140, ClueItem.DRAGON_CHAINBODY_G),
-	ANY_DRAGON_DEFENDER("Dragon defender", false, ClueItem.DRAGON_DEFENDER, ClueItem.DRAGON_DEFENDER_T, ClueItem.DRAGON_DEFENDER_L),
-	ANY_DRAGON_OR_AVERNIC_DEFENDER("Dragon or Avernic defender", false, ClueItem.ANY_DRAGON_DEFENDER, ClueItem.ANY_AVERNIC_DEFENDER),
-	ANY_DRAGON_OR_CRYSTAL_AXE("Dragon or Crystal axe", false, ClueItem.ANY_DRAGON_AXE, ClueItem.ANY_CRYSTAL_AXE),
+	ANY_CROZIER("Any crozier",
+			false,
+			EmoteClueItem.ANCIENT_CROZIER,
+			EmoteClueItem.ARMADYL_CROZIER,
+			EmoteClueItem.BANDOS_CROZIER,
+			EmoteClueItem.GUTHIX_CROZIER,
+			EmoteClueItem.SARADOMIN_CROZIER,
+			EmoteClueItem.ZAMORAK_CROZIER
+	),
+	ANY_CRYSTAL_AXE("Crystal Axe", false, EmoteClueItem.CRYSTAL_AXE, EmoteClueItem.CRYSTAL_AXE_INACTIVE),
+	ANY_CRYSTAL_BOW("Crystal Bow", false, EmoteClueItem.CRYSTAL_BOW, EmoteClueItem.CRYSTAL_BOW_24123),
+	ANY_CRYSTAL_PICKAXE("Crystal Pickaxe", false, EmoteClueItem.CRYSTAL_PICKAXE, EmoteClueItem.CRYSTAL_PICKAXE_INACTIVE),
+	ANY_DHAROKS_GREATAXE("Dharoks greataxe",
+			false,
+			EmoteClueItem.DHAROKS_GREATAXE,
+			EmoteClueItem.DHAROKS_GREATAXE_0,
+			EmoteClueItem.DHAROKS_GREATAXE_25,
+			EmoteClueItem.DHAROKS_GREATAXE_50,
+			EmoteClueItem.DHAROKS_GREATAXE_75,
+			EmoteClueItem.DHAROKS_GREATAXE_100
+	),
+	ANY_DHAROKS_HELM("Dharoks helm",
+			false,
+			EmoteClueItem.DHAROKS_HELM,
+			EmoteClueItem.DHAROKS_HELM_0,
+			EmoteClueItem.DHAROKS_HELM_25,
+			EmoteClueItem.DHAROKS_HELM_50,
+			EmoteClueItem.DHAROKS_HELM_75,
+			EmoteClueItem.DHAROKS_HELM_100
+	),
+	ANY_DHAROKS_PLATEBODY("Dharoks platebody",
+			false,
+			EmoteClueItem.DHAROKS_PLATEBODY,
+			EmoteClueItem.DHAROKS_PLATEBODY_0,
+			EmoteClueItem.DHAROKS_PLATEBODY_25,
+			EmoteClueItem.DHAROKS_PLATEBODY_50,
+			EmoteClueItem.DHAROKS_PLATEBODY_75,
+			EmoteClueItem.DHAROKS_PLATEBODY_100
+	),
+	ANY_DHAROKS_PLATELEGS("Dharoks platelegs",
+			false,
+			EmoteClueItem.DHAROKS_PLATELEGS,
+			EmoteClueItem.DHAROKS_PLATELEGS_0,
+			EmoteClueItem.DHAROKS_PLATELEGS_25,
+			EmoteClueItem.DHAROKS_PLATELEGS_50,
+			EmoteClueItem.DHAROKS_PLATELEGS_75,
+			EmoteClueItem.DHAROKS_PLATELEGS_100
+	),
+	ANY_DRAGON_AXE("Dragon Axe",
+			false,
+			EmoteClueItem.DRAGON_AXE,
+			EmoteClueItem.DRAGON_AXE_OR,
+			EmoteClueItem.INFERNAL_AXE,
+			EmoteClueItem.INFERNAL_AXE_UNCHARGED,
+			EmoteClueItem.INFERNAL_AXE_OR,
+			EmoteClueItem.INFERNAL_AXE_UNCHARGED_25371
+	),
+	ANY_DRAGON_BOOTS("Dragon boots", false, EmoteClueItem.DRAGON_BOOTS, EmoteClueItem.DRAGON_BOOTS_G),
+	ANY_DRAGON_CHAINBODY("Dragon chainbody", false, EmoteClueItem.DRAGON_CHAINBODY_3140, EmoteClueItem.DRAGON_CHAINBODY_G),
+	ANY_DRAGON_DEFENDER("Dragon defender", false, EmoteClueItem.DRAGON_DEFENDER, EmoteClueItem.DRAGON_DEFENDER_T, EmoteClueItem.DRAGON_DEFENDER_L),
+	ANY_DRAGON_OR_AVERNIC_DEFENDER("Dragon or Avernic defender", false, EmoteClueItem.ANY_DRAGON_DEFENDER, EmoteClueItem.ANY_AVERNIC_DEFENDER),
+	ANY_DRAGON_OR_CRYSTAL_AXE("Dragon or Crystal axe", false, EmoteClueItem.ANY_DRAGON_AXE, EmoteClueItem.ANY_CRYSTAL_AXE),
 
-	ANY_DRAGON_PICKAXE("Dragon Pickaxe", false, ClueItem.DRAGON_PICKAXE, ClueItem.DRAGON_PICKAXE_12797, ClueItem.DRAGON_PICKAXE_OR, ClueItem.DRAGON_PICKAXE_OR_25376, ClueItem.INFERNAL_PICKAXE, ClueItem.INFERNAL_PICKAXE_UNCHARGED, ClueItem.INFERNAL_PICKAXE_OR, ClueItem.INFERNAL_PICKAXE_UNCHARGED_25369),
+	ANY_DRAGON_PICKAXE("Dragon Pickaxe",
+			false,
+			EmoteClueItem.DRAGON_PICKAXE,
+			EmoteClueItem.DRAGON_PICKAXE_12797,
+			EmoteClueItem.DRAGON_PICKAXE_OR,
+			EmoteClueItem.DRAGON_PICKAXE_OR_25376,
+			EmoteClueItem.INFERNAL_PICKAXE,
+			EmoteClueItem.INFERNAL_PICKAXE_UNCHARGED,
+			EmoteClueItem.INFERNAL_PICKAXE_OR,
+			EmoteClueItem.INFERNAL_PICKAXE_UNCHARGED_25369
+	),
 
-	ANY_DRAGON_OR_CRYSTAL_PICKAXE("Dragon or Crystal Pickaxe", false, ClueItem.ANY_DRAGON_PICKAXE, ClueItem.ANY_CRYSTAL_PICKAXE),
-	ANY_DRAGON_PLATESKIRT("Dragon plateskirt", false, ClueItem.DRAGON_PLATESKIRT, ClueItem.DRAGON_PLATESKIRT_G),
-	ANY_DRAGON_SQ_SHIELD("Dragon sq shield", false, ClueItem.DRAGON_SQ_SHIELD, ClueItem.DRAGON_SQ_SHIELD_G),
-	ANY_FARMERS_STRAWHAT("Farmer's strawhat", false, ClueItem.FARMERS_STRAWHAT, ClueItem.FARMERS_STRAWHAT_13647),
-	ANY_FIRE_CAPE("Fire cape", false, ClueItem.FIRE_CAPE, ClueItem.FIRE_CAPE_L, ClueItem.FIRE_MAX_CAPE, ClueItem.FIRE_MAX_CAPE_L, ClueItem.INFERNAL_CAPE, ClueItem.INFERNAL_CAPE_L, ClueItem.INFERNAL_MAX_CAPE_21285, ClueItem.INFERNAL_MAX_CAPE_L),
-	ANY_GOD_BOOK("Any god book", false, ClueItem.HOLY_BOOK, ClueItem.BOOK_OF_BALANCE, ClueItem.UNHOLY_BOOK, ClueItem.BOOK_OF_LAW, ClueItem.BOOK_OF_WAR, ClueItem.BOOK_OF_DARKNESS),
-	ANY_GUTHANS_CHAINSKIRT("Guthans chainskirt", false, ClueItem.GUTHANS_CHAINSKIRT, ClueItem.GUTHANS_CHAINSKIRT_0, ClueItem.GUTHANS_CHAINSKIRT_25, ClueItem.GUTHANS_CHAINSKIRT_50, ClueItem.GUTHANS_CHAINSKIRT_75, ClueItem.GUTHANS_CHAINSKIRT_100),
-	ANY_GUTHANS_HELM("Guthans helm", false, ClueItem.GUTHANS_HELM, ClueItem.GUTHANS_HELM_0, ClueItem.GUTHANS_HELM_25, ClueItem.GUTHANS_HELM_50, ClueItem.GUTHANS_HELM_75, ClueItem.GUTHANS_HELM_100),
-	ANY_GUTHANS_PLATEBODY("Guthans platebody", false, ClueItem.GUTHANS_PLATEBODY, ClueItem.GUTHANS_PLATEBODY_0, ClueItem.GUTHANS_PLATEBODY_25, ClueItem.GUTHANS_PLATEBODY_50, ClueItem.GUTHANS_PLATEBODY_75, ClueItem.GUTHANS_PLATEBODY_100),
-	ANY_GUTHANS_WARSPEAR("Guthans warspear", false, ClueItem.GUTHANS_WARSPEAR, ClueItem.GUTHANS_WARSPEAR_0, ClueItem.GUTHANS_WARSPEAR_25, ClueItem.GUTHANS_WARSPEAR_50, ClueItem.GUTHANS_WARSPEAR_75, ClueItem.GUTHANS_WARSPEAR_100),
-	ANY_HEADBAND("Any headband", false, ClueItem.BLACK_HEADBAND, ClueItem.BLUE_HEADBAND, ClueItem.BROWN_HEADBAND, ClueItem.GOLD_HEADBAND, ClueItem.GREEN_HEADBAND, ClueItem.PINK_HEADBAND, ClueItem.RED_HEADBAND, ClueItem.WHITE_HEADBAND),
-	ANY_HERALDIC_RUNE_HELM("Any heraldic rune helm", false, ClueItem.RUNE_HELM_H1, ClueItem.RUNE_HELM_H2, ClueItem.RUNE_HELM_H3, ClueItem.RUNE_HELM_H4, ClueItem.RUNE_HELM_H5),
-	ANY_HERALDIC_RUNE_SHIELD("Any heraldic rune shield", false, ClueItem.RUNE_SHIELD_H1, ClueItem.RUNE_SHIELD_H2, ClueItem.RUNE_SHIELD_H3, ClueItem.RUNE_SHIELD_H4, ClueItem.RUNE_SHIELD_H5),
-	ANY_IBANS_STAFF("Any iban's staff", false, ClueItem.IBANS_STAFF, ClueItem.IBANS_STAFF_U),
-	ANY_KARILS_COIF("Karils coif", false, ClueItem.KARILS_COIF, ClueItem.KARILS_COIF_0, ClueItem.KARILS_COIF_25, ClueItem.KARILS_COIF_50, ClueItem.KARILS_COIF_75, ClueItem.KARILS_COIF_100),
-	ANY_KARILS_CROSSBOW("Karils crossbow", false, ClueItem.KARILS_CROSSBOW, ClueItem.KARILS_CROSSBOW_0, ClueItem.KARILS_CROSSBOW_25, ClueItem.KARILS_CROSSBOW_50, ClueItem.KARILS_CROSSBOW_75, ClueItem.KARILS_CROSSBOW_100),
-	ANY_KARILS_LEATHERSKIRT("Karils leatherskirt", false, ClueItem.KARILS_LEATHERSKIRT, ClueItem.KARILS_LEATHERSKIRT_0, ClueItem.KARILS_LEATHERSKIRT_25, ClueItem.KARILS_LEATHERSKIRT_50, ClueItem.KARILS_LEATHERSKIRT_75, ClueItem.KARILS_LEATHERSKIRT_100),
-	ANY_KARILS_LEATHERTOP("Karils leathertop", false, ClueItem.KARILS_LEATHERTOP, ClueItem.KARILS_LEATHERTOP_0, ClueItem.KARILS_LEATHERTOP_25, ClueItem.KARILS_LEATHERTOP_50, ClueItem.KARILS_LEATHERTOP_75, ClueItem.KARILS_LEATHERTOP_100),
-	ANY_LAVA_BATTLESTAFF("Lava battlestaff", false, ClueItem.LAVA_BATTLESTAFF, ClueItem.LAVA_BATTLESTAFF_21198),
+	ANY_DRAGON_OR_CRYSTAL_PICKAXE("Dragon or Crystal Pickaxe", false, EmoteClueItem.ANY_DRAGON_PICKAXE, EmoteClueItem.ANY_CRYSTAL_PICKAXE),
+	ANY_DRAGON_PLATESKIRT("Dragon plateskirt", false, EmoteClueItem.DRAGON_PLATESKIRT, EmoteClueItem.DRAGON_PLATESKIRT_G),
+	ANY_DRAGON_SQ_SHIELD("Dragon sq shield", false, EmoteClueItem.DRAGON_SQ_SHIELD, EmoteClueItem.DRAGON_SQ_SHIELD_G),
+	ANY_FARMERS_STRAWHAT("Farmer's strawhat", false, EmoteClueItem.FARMERS_STRAWHAT, EmoteClueItem.FARMERS_STRAWHAT_13647),
+	ANY_FIRE_CAPE("Fire cape",
+			false,
+			EmoteClueItem.FIRE_CAPE,
+			EmoteClueItem.FIRE_CAPE_L,
+			EmoteClueItem.FIRE_MAX_CAPE,
+			EmoteClueItem.FIRE_MAX_CAPE_L,
+			EmoteClueItem.INFERNAL_CAPE,
+			EmoteClueItem.INFERNAL_CAPE_L,
+			EmoteClueItem.INFERNAL_MAX_CAPE_21285,
+			EmoteClueItem.INFERNAL_MAX_CAPE_L
+	),
+	ANY_GOD_BOOK("Any god book",
+			false,
+			EmoteClueItem.HOLY_BOOK,
+			EmoteClueItem.BOOK_OF_BALANCE,
+			EmoteClueItem.UNHOLY_BOOK,
+			EmoteClueItem.BOOK_OF_LAW,
+			EmoteClueItem.BOOK_OF_WAR,
+			EmoteClueItem.BOOK_OF_DARKNESS
+	),
+	ANY_GUTHANS_CHAINSKIRT("Guthans chainskirt",
+			false,
+			EmoteClueItem.GUTHANS_CHAINSKIRT,
+			EmoteClueItem.GUTHANS_CHAINSKIRT_0,
+			EmoteClueItem.GUTHANS_CHAINSKIRT_25,
+			EmoteClueItem.GUTHANS_CHAINSKIRT_50,
+			EmoteClueItem.GUTHANS_CHAINSKIRT_75,
+			EmoteClueItem.GUTHANS_CHAINSKIRT_100
+	),
+	ANY_GUTHANS_HELM("Guthans helm",
+			false,
+			EmoteClueItem.GUTHANS_HELM,
+			EmoteClueItem.GUTHANS_HELM_0,
+			EmoteClueItem.GUTHANS_HELM_25,
+			EmoteClueItem.GUTHANS_HELM_50,
+			EmoteClueItem.GUTHANS_HELM_75,
+			EmoteClueItem.GUTHANS_HELM_100
+	),
+	ANY_GUTHANS_PLATEBODY("Guthans platebody",
+			false,
+			EmoteClueItem.GUTHANS_PLATEBODY,
+			EmoteClueItem.GUTHANS_PLATEBODY_0,
+			EmoteClueItem.GUTHANS_PLATEBODY_25,
+			EmoteClueItem.GUTHANS_PLATEBODY_50,
+			EmoteClueItem.GUTHANS_PLATEBODY_75,
+			EmoteClueItem.GUTHANS_PLATEBODY_100
+	),
+	ANY_GUTHANS_WARSPEAR("Guthans warspear",
+			false,
+			EmoteClueItem.GUTHANS_WARSPEAR,
+			EmoteClueItem.GUTHANS_WARSPEAR_0,
+			EmoteClueItem.GUTHANS_WARSPEAR_25,
+			EmoteClueItem.GUTHANS_WARSPEAR_50,
+			EmoteClueItem.GUTHANS_WARSPEAR_75,
+			EmoteClueItem.GUTHANS_WARSPEAR_100
+	),
+	ANY_HEADBAND("Any headband",
+			false,
+			EmoteClueItem.BLACK_HEADBAND,
+			EmoteClueItem.BLUE_HEADBAND,
+			EmoteClueItem.BROWN_HEADBAND,
+			EmoteClueItem.GOLD_HEADBAND,
+			EmoteClueItem.GREEN_HEADBAND,
+			EmoteClueItem.PINK_HEADBAND,
+			EmoteClueItem.RED_HEADBAND,
+			EmoteClueItem.WHITE_HEADBAND
+	),
+	ANY_HERALDIC_RUNE_HELM("Any heraldic rune helm", false, EmoteClueItem.RUNE_HELM_H1, EmoteClueItem.RUNE_HELM_H2, EmoteClueItem.RUNE_HELM_H3, EmoteClueItem.RUNE_HELM_H4, EmoteClueItem.RUNE_HELM_H5),
+	ANY_HERALDIC_RUNE_SHIELD("Any heraldic rune shield",
+			false,
+			EmoteClueItem.RUNE_SHIELD_H1,
+			EmoteClueItem.RUNE_SHIELD_H2,
+			EmoteClueItem.RUNE_SHIELD_H3,
+			EmoteClueItem.RUNE_SHIELD_H4,
+			EmoteClueItem.RUNE_SHIELD_H5
+	),
+	ANY_IBANS_STAFF("Any iban's staff", false, EmoteClueItem.IBANS_STAFF, EmoteClueItem.IBANS_STAFF_U),
+	ANY_KARILS_COIF("Karils coif",
+			false,
+			EmoteClueItem.KARILS_COIF,
+			EmoteClueItem.KARILS_COIF_0,
+			EmoteClueItem.KARILS_COIF_25,
+			EmoteClueItem.KARILS_COIF_50,
+			EmoteClueItem.KARILS_COIF_75,
+			EmoteClueItem.KARILS_COIF_100
+	),
+	ANY_KARILS_CROSSBOW("Karils crossbow",
+			false,
+			EmoteClueItem.KARILS_CROSSBOW,
+			EmoteClueItem.KARILS_CROSSBOW_0,
+			EmoteClueItem.KARILS_CROSSBOW_25,
+			EmoteClueItem.KARILS_CROSSBOW_50,
+			EmoteClueItem.KARILS_CROSSBOW_75,
+			EmoteClueItem.KARILS_CROSSBOW_100
+	),
+	ANY_KARILS_LEATHERSKIRT("Karils leatherskirt",
+			false,
+			EmoteClueItem.KARILS_LEATHERSKIRT,
+			EmoteClueItem.KARILS_LEATHERSKIRT_0,
+			EmoteClueItem.KARILS_LEATHERSKIRT_25,
+			EmoteClueItem.KARILS_LEATHERSKIRT_50,
+			EmoteClueItem.KARILS_LEATHERSKIRT_75,
+			EmoteClueItem.KARILS_LEATHERSKIRT_100
+	),
+	ANY_KARILS_LEATHERTOP("Karils leathertop",
+			false,
+			EmoteClueItem.KARILS_LEATHERTOP,
+			EmoteClueItem.KARILS_LEATHERTOP_0,
+			EmoteClueItem.KARILS_LEATHERTOP_25,
+			EmoteClueItem.KARILS_LEATHERTOP_50,
+			EmoteClueItem.KARILS_LEATHERTOP_75,
+			EmoteClueItem.KARILS_LEATHERTOP_100
+	),
+	ANY_LAVA_BATTLESTAFF("Lava battlestaff", false, EmoteClueItem.LAVA_BATTLESTAFF, EmoteClueItem.LAVA_BATTLESTAFF_21198),
 
-	ANY_MITRE("Any mitre", false, ClueItem.GUTHIX_MITRE, ClueItem.SARADOMIN_MITRE, ClueItem.ZAMORAK_MITRE, ClueItem.ANCIENT_MITRE, ClueItem.BANDOS_MITRE, ClueItem.ARMADYL_MITRE),
-	ANY_PHARAOHS_SCEPTRE("Pharaoh's sceptre", false, ClueItem.PHARAOHS_SCEPTRE, ClueItem.PHARAOHS_SCEPTRE_1, ClueItem.PHARAOHS_SCEPTRE_2, ClueItem.PHARAOHS_SCEPTRE_3, ClueItem.PHARAOHS_SCEPTRE_4, ClueItem.PHARAOHS_SCEPTRE_5, ClueItem.PHARAOHS_SCEPTRE_6, ClueItem.PHARAOHS_SCEPTRE_7, ClueItem.PHARAOHS_SCEPTRE_8),
-	ANY_PIRATE_BANDANA("Any pirate bandana", false, ClueItem.PIRATE_BANDANA, ClueItem.PIRATE_BANDANA_7124, ClueItem.PIRATE_BANDANA_7130, ClueItem.PIRATE_BANDANA_7136),
-	ANY_RING_OF_DUELING("Ring of dueling", false, ClueItem.RING_OF_DUELING1, ClueItem.RING_OF_DUELING2, ClueItem.RING_OF_DUELING3, ClueItem.RING_OF_DUELING4, ClueItem.RING_OF_DUELING5, ClueItem.RING_OF_DUELING6, ClueItem.RING_OF_DUELING7, ClueItem.RING_OF_DUELING8),
-	ANY_RING_OF_WEALTH("Any ring of wealth", false, ClueItem.RING_OF_WEALTH, ClueItem.RING_OF_WEALTH_1, ClueItem.RING_OF_WEALTH_2, ClueItem.RING_OF_WEALTH_3, ClueItem.RING_OF_WEALTH_4, ClueItem.RING_OF_WEALTH_5, ClueItem.RING_OF_WEALTH_I, ClueItem.RING_OF_WEALTH_I1, ClueItem.RING_OF_WEALTH_I2, ClueItem.RING_OF_WEALTH_I3, ClueItem.RING_OF_WEALTH_I4, ClueItem.RING_OF_WEALTH_I5),
-	ANY_SLAYER_HELMET("Any slayer helmet", false, ClueItem.SLAYER_HELMET, ClueItem.BLACK_SLAYER_HELMET, ClueItem.GREEN_SLAYER_HELMET, ClueItem.PURPLE_SLAYER_HELMET, ClueItem.RED_SLAYER_HELMET, ClueItem.TURQUOISE_SLAYER_HELMET, ClueItem.SLAYER_HELMET_I, ClueItem.BLACK_SLAYER_HELMET_I, ClueItem.GREEN_SLAYER_HELMET_I, ClueItem.PURPLE_SLAYER_HELMET_I, ClueItem.RED_SLAYER_HELMET_I, ClueItem.TURQUOISE_SLAYER_HELMET_I, ClueItem.HYDRA_SLAYER_HELMET, ClueItem.HYDRA_SLAYER_HELMET_I, ClueItem.TWISTED_SLAYER_HELMET, ClueItem.TWISTED_SLAYER_HELMET_I, ClueItem.SLAYER_HELMET_I_25177, ClueItem.BLACK_SLAYER_HELMET_I_25179, ClueItem.GREEN_SLAYER_HELMET_I_25181, ClueItem.RED_SLAYER_HELMET_I_25183, ClueItem.PURPLE_SLAYER_HELMET_I_25185, ClueItem.TURQUOISE_SLAYER_HELMET_I_25187, ClueItem.HYDRA_SLAYER_HELMET_I_25189, ClueItem.TWISTED_SLAYER_HELMET_I_25191),
-	ANY_SPOTTED_CAPE("Spotted Cape", false, ClueItem.SPOTTED_CAPE, ClueItem.SPOTTED_CAPE_10073),
-	ANY_STOLE("Any stole", false, ClueItem.GUTHIX_STOLE, ClueItem.SARADOMIN_STOLE, ClueItem.BANDOS_STOLE, ClueItem.ANCIENT_STOLE, ClueItem.ZAMORAK_STOLE, ClueItem.ARMADYL_STOLE),
-	ANY_TEAM_CAPE("Any team cape", false, ClueItem.TEAM1_CAPE, ClueItem.TEAM2_CAPE, ClueItem.TEAM3_CAPE, ClueItem.TEAM4_CAPE, ClueItem.TEAM5_CAPE, ClueItem.TEAM6_CAPE, ClueItem.TEAM7_CAPE, ClueItem.TEAM8_CAPE, ClueItem.TEAM9_CAPE, ClueItem.TEAM10_CAPE, ClueItem.TEAM11_CAPE, ClueItem.TEAM12_CAPE, ClueItem.TEAM13_CAPE, ClueItem.TEAM14_CAPE, ClueItem.TEAM15_CAPE, ClueItem.TEAM16_CAPE, ClueItem.TEAM17_CAPE, ClueItem.TEAM18_CAPE, ClueItem.TEAM19_CAPE, ClueItem.TEAM20_CAPE, ClueItem.TEAM21_CAPE, ClueItem.TEAM22_CAPE, ClueItem.TEAM23_CAPE, ClueItem.TEAM24_CAPE, ClueItem.TEAM25_CAPE, ClueItem.TEAM26_CAPE, ClueItem.TEAM27_CAPE, ClueItem.TEAM28_CAPE, ClueItem.TEAM29_CAPE, ClueItem.TEAM30_CAPE, ClueItem.TEAM31_CAPE, ClueItem.TEAM32_CAPE, ClueItem.TEAM33_CAPE, ClueItem.TEAM34_CAPE, ClueItem.TEAM35_CAPE, ClueItem.TEAM36_CAPE, ClueItem.TEAM37_CAPE, ClueItem.TEAM38_CAPE, ClueItem.TEAM39_CAPE, ClueItem.TEAM40_CAPE, ClueItem.TEAM41_CAPE, ClueItem.TEAM42_CAPE, ClueItem.TEAM43_CAPE, ClueItem.TEAM44_CAPE, ClueItem.TEAM45_CAPE, ClueItem.TEAM46_CAPE, ClueItem.TEAM47_CAPE, ClueItem.TEAM48_CAPE, ClueItem.TEAM49_CAPE, ClueItem.TEAM50_CAPE, ClueItem.TEAM_CAPE_X, ClueItem.TEAM_CAPE_ZERO),
-	ANY_TORAGS_HAMMERS("Torags hammers", false, ClueItem.TORAGS_HAMMERS, ClueItem.TORAGS_HAMMERS_0, ClueItem.TORAGS_HAMMERS_25, ClueItem.TORAGS_HAMMERS_50, ClueItem.TORAGS_HAMMERS_75, ClueItem.TORAGS_HAMMERS_100),
-	ANY_TORAGS_HELM("Torags helm", false, ClueItem.TORAGS_HELM, ClueItem.TORAGS_HELM_0, ClueItem.TORAGS_HELM_25, ClueItem.TORAGS_HELM_50, ClueItem.TORAGS_HELM_75, ClueItem.TORAGS_HELM_100),
-	ANY_TORAGS_PLATEBODY("Torags platebody", false, ClueItem.TORAGS_PLATEBODY, ClueItem.TORAGS_PLATEBODY_0, ClueItem.TORAGS_PLATEBODY_25, ClueItem.TORAGS_PLATEBODY_50, ClueItem.TORAGS_PLATEBODY_75, ClueItem.TORAGS_PLATEBODY_100),
-	ANY_TORAGS_PLATELEGS("Torags platelegs", false, ClueItem.TORAGS_PLATELEGS, ClueItem.TORAGS_PLATELEGS_0, ClueItem.TORAGS_PLATELEGS_25, ClueItem.TORAGS_PLATELEGS_50, ClueItem.TORAGS_PLATELEGS_75, ClueItem.TORAGS_PLATELEGS_100),
-	ANY_VERACS_BRASSARD("Veracs brassard", false, ClueItem.VERACS_BRASSARD, ClueItem.VERACS_BRASSARD_0, ClueItem.VERACS_BRASSARD_25, ClueItem.VERACS_BRASSARD_50, ClueItem.VERACS_BRASSARD_75, ClueItem.VERACS_BRASSARD_100),
-	ANY_VERACS_FLAIL("Veracs flail", false, ClueItem.VERACS_FLAIL, ClueItem.VERACS_FLAIL_0, ClueItem.VERACS_FLAIL_25, ClueItem.VERACS_FLAIL_50, ClueItem.VERACS_FLAIL_75, ClueItem.VERACS_FLAIL_100),
-	ANY_VERACS_HELM("Veracs helm", false, ClueItem.VERACS_HELM, ClueItem.VERACS_HELM_0, ClueItem.VERACS_HELM_25, ClueItem.VERACS_HELM_50, ClueItem.VERACS_HELM_75, ClueItem.VERACS_HELM_100),
-	ANY_VERACS_PLATESKIRT("Veracs plateskirt", false, ClueItem.VERACS_PLATESKIRT, ClueItem.VERACS_PLATESKIRT_0, ClueItem.VERACS_PLATESKIRT_25, ClueItem.VERACS_PLATESKIRT_50, ClueItem.VERACS_PLATESKIRT_75, ClueItem.VERACS_PLATESKIRT_100),
-	ANY_ZAMORAK_GODSWORD("Zamorak godsword", false, ClueItem.ZAMORAK_GODSWORD, ClueItem.ZAMORAK_GODSWORD_OR),
+	ANY_MITRE(
+			"Any mitre",
+			false,
+			EmoteClueItem.GUTHIX_MITRE,
+			EmoteClueItem.SARADOMIN_MITRE,
+			EmoteClueItem.ZAMORAK_MITRE,
+			EmoteClueItem.ANCIENT_MITRE,
+			EmoteClueItem.BANDOS_MITRE,
+			EmoteClueItem.ARMADYL_MITRE
+	),
+	ANY_PHARAOHS_SCEPTRE("Pharaoh's sceptre",
+			false,
+			EmoteClueItem.PHARAOHS_SCEPTRE,
+			EmoteClueItem.PHARAOHS_SCEPTRE_1,
+			EmoteClueItem.PHARAOHS_SCEPTRE_2,
+			EmoteClueItem.PHARAOHS_SCEPTRE_3,
+			EmoteClueItem.PHARAOHS_SCEPTRE_4,
+			EmoteClueItem.PHARAOHS_SCEPTRE_5,
+			EmoteClueItem.PHARAOHS_SCEPTRE_6,
+			EmoteClueItem.PHARAOHS_SCEPTRE_7,
+			EmoteClueItem.PHARAOHS_SCEPTRE_8
+	),
+	ANY_PIRATE_BANDANA("Any pirate bandana", false, EmoteClueItem.PIRATE_BANDANA, EmoteClueItem.PIRATE_BANDANA_7124, EmoteClueItem.PIRATE_BANDANA_7130, EmoteClueItem.PIRATE_BANDANA_7136),
+	ANY_RING_OF_DUELING("Ring of dueling",
+			false,
+			EmoteClueItem.RING_OF_DUELING1,
+			EmoteClueItem.RING_OF_DUELING2,
+			EmoteClueItem.RING_OF_DUELING3,
+			EmoteClueItem.RING_OF_DUELING4,
+			EmoteClueItem.RING_OF_DUELING5,
+			EmoteClueItem.RING_OF_DUELING6,
+			EmoteClueItem.RING_OF_DUELING7,
+			EmoteClueItem.RING_OF_DUELING8
+	),
+	ANY_RING_OF_WEALTH("Any ring of wealth",
+			false,
+			EmoteClueItem.RING_OF_WEALTH,
+			EmoteClueItem.RING_OF_WEALTH_1,
+			EmoteClueItem.RING_OF_WEALTH_2,
+			EmoteClueItem.RING_OF_WEALTH_3,
+			EmoteClueItem.RING_OF_WEALTH_4,
+			EmoteClueItem.RING_OF_WEALTH_5,
+			EmoteClueItem.RING_OF_WEALTH_I,
+			EmoteClueItem.RING_OF_WEALTH_I1,
+			EmoteClueItem.RING_OF_WEALTH_I2,
+			EmoteClueItem.RING_OF_WEALTH_I3,
+			EmoteClueItem.RING_OF_WEALTH_I4,
+			EmoteClueItem.RING_OF_WEALTH_I5
+	),
+	ANY_SLAYER_HELMET("Any slayer helmet",
+			false,
+			EmoteClueItem.SLAYER_HELMET,
+			EmoteClueItem.BLACK_SLAYER_HELMET,
+			EmoteClueItem.GREEN_SLAYER_HELMET,
+			EmoteClueItem.PURPLE_SLAYER_HELMET,
+			EmoteClueItem.RED_SLAYER_HELMET,
+			EmoteClueItem.TURQUOISE_SLAYER_HELMET,
+			EmoteClueItem.SLAYER_HELMET_I,
+			EmoteClueItem.BLACK_SLAYER_HELMET_I,
+			EmoteClueItem.GREEN_SLAYER_HELMET_I,
+			EmoteClueItem.PURPLE_SLAYER_HELMET_I,
+			EmoteClueItem.RED_SLAYER_HELMET_I,
+			EmoteClueItem.TURQUOISE_SLAYER_HELMET_I,
+			EmoteClueItem.HYDRA_SLAYER_HELMET,
+			EmoteClueItem.HYDRA_SLAYER_HELMET_I,
+			EmoteClueItem.TWISTED_SLAYER_HELMET,
+			EmoteClueItem.TWISTED_SLAYER_HELMET_I,
+			EmoteClueItem.SLAYER_HELMET_I_25177,
+			EmoteClueItem.BLACK_SLAYER_HELMET_I_25179,
+			EmoteClueItem.GREEN_SLAYER_HELMET_I_25181,
+			EmoteClueItem.RED_SLAYER_HELMET_I_25183,
+			EmoteClueItem.PURPLE_SLAYER_HELMET_I_25185,
+			EmoteClueItem.TURQUOISE_SLAYER_HELMET_I_25187,
+			EmoteClueItem.HYDRA_SLAYER_HELMET_I_25189,
+			EmoteClueItem.TWISTED_SLAYER_HELMET_I_25191
+	),
+	ANY_SPOTTED_CAPE("Spotted Cape", false, EmoteClueItem.SPOTTED_CAPE, EmoteClueItem.SPOTTED_CAPE_10073),
+	ANY_STOLE("Any stole",
+			false,
+			EmoteClueItem.GUTHIX_STOLE,
+			EmoteClueItem.SARADOMIN_STOLE,
+			EmoteClueItem.BANDOS_STOLE,
+			EmoteClueItem.ANCIENT_STOLE,
+			EmoteClueItem.ZAMORAK_STOLE,
+			EmoteClueItem.ARMADYL_STOLE
+	),
+	ANY_TEAM_CAPE("Any team cape",
+			false,
+			EmoteClueItem.TEAM1_CAPE,
+			EmoteClueItem.TEAM2_CAPE,
+			EmoteClueItem.TEAM3_CAPE,
+			EmoteClueItem.TEAM4_CAPE,
+			EmoteClueItem.TEAM5_CAPE,
+			EmoteClueItem.TEAM6_CAPE,
+			EmoteClueItem.TEAM7_CAPE,
+			EmoteClueItem.TEAM8_CAPE,
+			EmoteClueItem.TEAM9_CAPE,
+			EmoteClueItem.TEAM10_CAPE,
+			EmoteClueItem.TEAM11_CAPE,
+			EmoteClueItem.TEAM12_CAPE,
+			EmoteClueItem.TEAM13_CAPE,
+			EmoteClueItem.TEAM14_CAPE,
+			EmoteClueItem.TEAM15_CAPE,
+			EmoteClueItem.TEAM16_CAPE,
+			EmoteClueItem.TEAM17_CAPE,
+			EmoteClueItem.TEAM18_CAPE,
+			EmoteClueItem.TEAM19_CAPE,
+			EmoteClueItem.TEAM20_CAPE,
+			EmoteClueItem.TEAM21_CAPE,
+			EmoteClueItem.TEAM22_CAPE,
+			EmoteClueItem.TEAM23_CAPE,
+			EmoteClueItem.TEAM24_CAPE,
+			EmoteClueItem.TEAM25_CAPE,
+			EmoteClueItem.TEAM26_CAPE,
+			EmoteClueItem.TEAM27_CAPE,
+			EmoteClueItem.TEAM28_CAPE,
+			EmoteClueItem.TEAM29_CAPE,
+			EmoteClueItem.TEAM30_CAPE,
+			EmoteClueItem.TEAM31_CAPE,
+			EmoteClueItem.TEAM32_CAPE,
+			EmoteClueItem.TEAM33_CAPE,
+			EmoteClueItem.TEAM34_CAPE,
+			EmoteClueItem.TEAM35_CAPE,
+			EmoteClueItem.TEAM36_CAPE,
+			EmoteClueItem.TEAM37_CAPE,
+			EmoteClueItem.TEAM38_CAPE,
+			EmoteClueItem.TEAM39_CAPE,
+			EmoteClueItem.TEAM40_CAPE,
+			EmoteClueItem.TEAM41_CAPE,
+			EmoteClueItem.TEAM42_CAPE,
+			EmoteClueItem.TEAM43_CAPE,
+			EmoteClueItem.TEAM44_CAPE,
+			EmoteClueItem.TEAM45_CAPE,
+			EmoteClueItem.TEAM46_CAPE,
+			EmoteClueItem.TEAM47_CAPE,
+			EmoteClueItem.TEAM48_CAPE,
+			EmoteClueItem.TEAM49_CAPE,
+			EmoteClueItem.TEAM50_CAPE,
+			EmoteClueItem.TEAM_CAPE_X,
+			EmoteClueItem.TEAM_CAPE_ZERO
+	),
+	ANY_TORAGS_HAMMERS("Torags hammers",
+			false,
+			EmoteClueItem.TORAGS_HAMMERS,
+			EmoteClueItem.TORAGS_HAMMERS_0,
+			EmoteClueItem.TORAGS_HAMMERS_25,
+			EmoteClueItem.TORAGS_HAMMERS_50,
+			EmoteClueItem.TORAGS_HAMMERS_75,
+			EmoteClueItem.TORAGS_HAMMERS_100
+	),
+	ANY_TORAGS_HELM("Torags helm",
+			false,
+			EmoteClueItem.TORAGS_HELM,
+			EmoteClueItem.TORAGS_HELM_0,
+			EmoteClueItem.TORAGS_HELM_25,
+			EmoteClueItem.TORAGS_HELM_50,
+			EmoteClueItem.TORAGS_HELM_75,
+			EmoteClueItem.TORAGS_HELM_100
+	),
+	ANY_TORAGS_PLATEBODY("Torags platebody",
+			false,
+			EmoteClueItem.TORAGS_PLATEBODY,
+			EmoteClueItem.TORAGS_PLATEBODY_0,
+			EmoteClueItem.TORAGS_PLATEBODY_25,
+			EmoteClueItem.TORAGS_PLATEBODY_50,
+			EmoteClueItem.TORAGS_PLATEBODY_75,
+			EmoteClueItem.TORAGS_PLATEBODY_100
+	),
+	ANY_TORAGS_PLATELEGS("Torags platelegs",
+			false,
+			EmoteClueItem.TORAGS_PLATELEGS,
+			EmoteClueItem.TORAGS_PLATELEGS_0,
+			EmoteClueItem.TORAGS_PLATELEGS_25,
+			EmoteClueItem.TORAGS_PLATELEGS_50,
+			EmoteClueItem.TORAGS_PLATELEGS_75,
+			EmoteClueItem.TORAGS_PLATELEGS_100
+	),
+	ANY_VERACS_BRASSARD("Veracs brassard",
+			false,
+			EmoteClueItem.VERACS_BRASSARD,
+			EmoteClueItem.VERACS_BRASSARD_0,
+			EmoteClueItem.VERACS_BRASSARD_25,
+			EmoteClueItem.VERACS_BRASSARD_50,
+			EmoteClueItem.VERACS_BRASSARD_75,
+			EmoteClueItem.VERACS_BRASSARD_100
+	),
+	ANY_VERACS_FLAIL("Veracs flail",
+			false,
+			EmoteClueItem.VERACS_FLAIL,
+			EmoteClueItem.VERACS_FLAIL_0,
+			EmoteClueItem.VERACS_FLAIL_25,
+			EmoteClueItem.VERACS_FLAIL_50,
+			EmoteClueItem.VERACS_FLAIL_75,
+			EmoteClueItem.VERACS_FLAIL_100
+	),
+	ANY_VERACS_HELM("Veracs helm",
+			false,
+			EmoteClueItem.VERACS_HELM,
+			EmoteClueItem.VERACS_HELM_0,
+			EmoteClueItem.VERACS_HELM_25,
+			EmoteClueItem.VERACS_HELM_50,
+			EmoteClueItem.VERACS_HELM_75,
+			EmoteClueItem.VERACS_HELM_100
+	),
+	ANY_VERACS_PLATESKIRT("Veracs plateskirt",
+			false,
+			EmoteClueItem.VERACS_PLATESKIRT,
+			EmoteClueItem.VERACS_PLATESKIRT_0,
+			EmoteClueItem.VERACS_PLATESKIRT_25,
+			EmoteClueItem.VERACS_PLATESKIRT_50,
+			EmoteClueItem.VERACS_PLATESKIRT_75,
+			EmoteClueItem.VERACS_PLATESKIRT_100
+	),
+	ANY_ZAMORAK_GODSWORD("Zamorak godsword", false, EmoteClueItem.ZAMORAK_GODSWORD, EmoteClueItem.ZAMORAK_GODSWORD_OR),
 
-	ALL_AHRIMS_SET("Ahrims set", true, ClueItem.ANY_AHRIMS_HOOD, ClueItem.ANY_AHRIMS_ROBESKIRT, ClueItem.ANY_AHRIMS_ROBETOP, ClueItem.ANY_AHRIMS_STAFF),
-	ALL_DHAROKS_SET("Dharoks set", true, ClueItem.ANY_DHAROKS_GREATAXE, ClueItem.ANY_DHAROKS_HELM, ClueItem.ANY_DHAROKS_PLATEBODY, ClueItem.ANY_DHAROKS_PLATELEGS),
-	ALL_GUTHANS_SET("Guthans set", true, ClueItem.ANY_GUTHANS_CHAINSKIRT, ClueItem.ANY_GUTHANS_HELM, ClueItem.ANY_GUTHANS_PLATEBODY, ClueItem.ANY_GUTHANS_WARSPEAR),
-	ALL_KARILS_SET("Karils set", true, ClueItem.ANY_KARILS_COIF, ClueItem.ANY_KARILS_CROSSBOW, ClueItem.ANY_KARILS_LEATHERSKIRT, ClueItem.ANY_KARILS_LEATHERTOP),
-	ALL_MENAPHITE_SET_PURPLE("Menaphite set (purple)", true, ClueItem.MENAPHITE_PURPLE_HAT, ClueItem.MENAPHITE_PURPLE_KILT, ClueItem.MENAPHITE_PURPLE_ROBE, ClueItem.MENAPHITE_PURPLE_TOP),
-	ALL_MENAPHITE_SET_RED("Menaphite set (red)", true, ClueItem.MENAPHITE_RED_HAT, ClueItem.MENAPHITE_RED_KILT, ClueItem.MENAPHITE_RED_ROBE, ClueItem.MENAPHITE_RED_TOP),
-	ALL_TORAGS_SET("Torags set", true, ClueItem.ANY_TORAGS_HAMMERS, ClueItem.ANY_TORAGS_HELM, ClueItem.ANY_TORAGS_PLATEBODY, ClueItem.ANY_TORAGS_PLATELEGS),
+	ALL_AHRIMS_SET("Ahrims set", true, EmoteClueItem.ANY_AHRIMS_HOOD, EmoteClueItem.ANY_AHRIMS_ROBESKIRT, EmoteClueItem.ANY_AHRIMS_ROBETOP, EmoteClueItem.ANY_AHRIMS_STAFF),
+	ALL_DHAROKS_SET("Dharoks set", true, EmoteClueItem.ANY_DHAROKS_GREATAXE, EmoteClueItem.ANY_DHAROKS_HELM, EmoteClueItem.ANY_DHAROKS_PLATEBODY, EmoteClueItem.ANY_DHAROKS_PLATELEGS),
+	ALL_GUTHANS_SET("Guthans set", true, EmoteClueItem.ANY_GUTHANS_CHAINSKIRT, EmoteClueItem.ANY_GUTHANS_HELM, EmoteClueItem.ANY_GUTHANS_PLATEBODY, EmoteClueItem.ANY_GUTHANS_WARSPEAR),
+	ALL_KARILS_SET("Karils set", true, EmoteClueItem.ANY_KARILS_COIF, EmoteClueItem.ANY_KARILS_CROSSBOW, EmoteClueItem.ANY_KARILS_LEATHERSKIRT, EmoteClueItem.ANY_KARILS_LEATHERTOP),
+	ALL_MENAPHITE_SET_PURPLE("Menaphite set (purple)",
+			true,
+			EmoteClueItem.MENAPHITE_PURPLE_HAT,
+			EmoteClueItem.MENAPHITE_PURPLE_KILT,
+			EmoteClueItem.MENAPHITE_PURPLE_ROBE,
+			EmoteClueItem.MENAPHITE_PURPLE_TOP
+	),
+	ALL_MENAPHITE_SET_RED("Menaphite set (red)", true, EmoteClueItem.MENAPHITE_RED_HAT, EmoteClueItem.MENAPHITE_RED_KILT, EmoteClueItem.MENAPHITE_RED_ROBE, EmoteClueItem.MENAPHITE_RED_TOP),
+	ALL_TORAGS_SET("Torags set", true, EmoteClueItem.ANY_TORAGS_HAMMERS, EmoteClueItem.ANY_TORAGS_HELM, EmoteClueItem.ANY_TORAGS_PLATEBODY, EmoteClueItem.ANY_TORAGS_PLATELEGS),
 	ALL_VERACS_SET("Veracs set", true, ANY_VERACS_BRASSARD, ANY_VERACS_FLAIL, ANY_VERACS_HELM, ANY_VERACS_PLATESKIRT),
 
-	ANY_BARROWS_SET("Any barrows set", false, ClueItem.ALL_AHRIMS_SET, ClueItem.ALL_DHAROKS_SET, ClueItem.ALL_GUTHANS_SET, ClueItem.ALL_KARILS_SET, ClueItem.ALL_TORAGS_SET, ClueItem.ALL_VERACS_SET),
-	ANY_MENAPHITE_SET("Menaphite set", false, ClueItem.ALL_MENAPHITE_SET_PURPLE, ALL_MENAPHITE_SET_RED);
+	ANY_BARROWS_SET(
+			"Any barrows set",
+			false,
+			EmoteClueItem.ALL_AHRIMS_SET,
+			EmoteClueItem.ALL_DHAROKS_SET,
+			EmoteClueItem.ALL_GUTHANS_SET,
+			EmoteClueItem.ALL_KARILS_SET,
+			EmoteClueItem.ALL_TORAGS_SET,
+			EmoteClueItem.ALL_VERACS_SET
+	),
+	ANY_MENAPHITE_SET("Menaphite set", false, EmoteClueItem.ALL_MENAPHITE_SET_PURPLE, ALL_MENAPHITE_SET_RED);
 
 	private final ItemRequirement itemRequirement;
 	private final Integer itemId;
 	private final String name;
 
-	private final List<ClueItem> children;
-	private final List<ClueItem> parents;
+	private final List<EmoteClueItem> children;
+	private final List<EmoteClueItem> parents;
 
-	ClueItem(String name, int itemId)
+	EmoteClueItem(final String name, final int itemId)
 	{
 		this.itemRequirement = ItemRequirements.item(itemId);
 		this.itemId = itemId;
@@ -723,25 +1150,25 @@ public enum ClueItem implements ItemRequirement
 		this.parents = new LinkedList<>();
 	}
 
-	ClueItem(String name, Boolean isStrong, ClueItem... clueItems)
+	EmoteClueItem(final String name, final Boolean isStrong, final EmoteClueItem... emoteClueItems)
 	{
-		this.itemRequirement = isStrong ? ItemRequirements.all(clueItems) : ItemRequirements.any(name, clueItems);
+		this.itemRequirement = isStrong ? ItemRequirements.all(emoteClueItems) : ItemRequirements.any(name, emoteClueItems);
 		this.itemId = null;
 		this.name = name;
-		this.children = Arrays.asList(clueItems);
-		for (ClueItem child : clueItems)
+		this.children = Arrays.asList(emoteClueItems);
+		for (final EmoteClueItem child : emoteClueItems)
 		{
 			child.addParent(this);
 		}
 		this.parents = new LinkedList<>();
 	}
 
-	public final List<ClueItem> getChildren()
+	public final List<EmoteClueItem> getChildren()
 	{
 		return this.children;
 	}
 
-	public final List<ClueItem> getParents()
+	public final List<EmoteClueItem> getParents()
 	{
 		return this.parents;
 	}
@@ -751,7 +1178,7 @@ public enum ClueItem implements ItemRequirement
 		return this.itemId;
 	}
 
-	public final void addParent(ClueItem parent)
+	public final void addParent(final EmoteClueItem parent)
 	{
 		this.parents.add(parent);
 	}
@@ -762,19 +1189,19 @@ public enum ClueItem implements ItemRequirement
 	}
 
 	@Override
-	public boolean fulfilledBy(int itemId)
+	public boolean fulfilledBy(final int itemId)
 	{
 		return this.itemRequirement.fulfilledBy(itemId);
 	}
 
 	@Override
-	public boolean fulfilledBy(Item[] items)
+	public boolean fulfilledBy(final Item[] items)
 	{
 		return this.itemRequirement.fulfilledBy(items);
 	}
 
 	@Override
-	public String getCollectiveName(Client $)
+	public String getCollectiveName(final Client $)
 	{
 		return this.getCollectiveName();
 	}

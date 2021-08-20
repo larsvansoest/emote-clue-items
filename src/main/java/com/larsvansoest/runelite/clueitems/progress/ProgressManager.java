@@ -28,22 +28,21 @@
 
 package com.larsvansoest.runelite.clueitems.progress;
 
-import com.larsvansoest.runelite.clueitems.clues.ClueItem;
-import com.larsvansoest.runelite.clueitems.clues.Associations;
+import com.larsvansoest.runelite.clueitems.clues.EmoteClueAssociations;
+import com.larsvansoest.runelite.clueitems.clues.EmoteClueItem;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPanel;
 import com.larsvansoest.runelite.clueitems.ui.content.requirement.RequirementPanelProvider;
 import com.larsvansoest.runelite.clueitems.ui.content.requirement.Status;
-import java.util.AbstractMap;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import net.runelite.api.*;
+import net.runelite.api.Client;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.plugins.cluescrolls.clues.item.AllRequirementsCollection;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
+
+import java.util.*;
 
 /**
  * Monitors player owned items and subsequent changes to {@link ItemContainer} objects for Inventory, Bank and Equipment.
@@ -51,21 +50,21 @@ import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
  * Uses {@link RequirementPanelProvider} to represent requirement statuses on {@link EmoteClueItemsPanel} accordingly.
  *
  * @author Lars van Soest
- * @see ClueItem
+ * @see EmoteClueItem
  * @since 2.0.0
  */
 public class ProgressManager
 {
-	private final Map<ClueItem, Status> statusMap;
+	private final Map<com.larsvansoest.runelite.clueitems.clues.EmoteClueItem, Status> statusMap;
 	private final ItemMonitor itemsMonitor;
 	private final RequirementPanelProvider panelProvider;
 	private final Client client;
 	private final ClientThread clientThread;
 	private boolean initialState;
 
-	public ProgressManager(RequirementPanelProvider panelProvider, Client client, ClientThread clientThread)
+	public ProgressManager(final RequirementPanelProvider panelProvider, final Client client, final ClientThread clientThread)
 	{
-		this.statusMap = new HashMap<>(ClueItem.values().length);
+		this.statusMap = new HashMap<>(com.larsvansoest.runelite.clueitems.clues.EmoteClueItem.values().length);
 		this.itemsMonitor = new ItemMonitor();
 		this.panelProvider = panelProvider;
 		this.client = client;
@@ -75,24 +74,25 @@ public class ProgressManager
 
 	public void reset()
 	{
-		for (ClueItem clueItem : ClueItem.values())
+		for (final com.larsvansoest.runelite.clueitems.clues.EmoteClueItem emoteClueItem : com.larsvansoest.runelite.clueitems.clues.EmoteClueItem.values())
 		{
-			this.statusMap.put(clueItem, Status.InComplete);
-			this.panelProvider.setEmoteClueItemStatus(clueItem, Status.InComplete);
-			this.panelProvider.setItemSlotStatus(clueItem, 0);
+			this.statusMap.put(emoteClueItem, Status.InComplete);
+			this.panelProvider.setEmoteClueItemStatus(emoteClueItem, Status.InComplete);
+			this.panelProvider.setItemSlotStatus(emoteClueItem, 0);
 			this.itemsMonitor.reset();
 			this.initialState = true;
 		}
 	}
 
-	public void handleEmoteClueItemChanges(ItemContainerChanged event)
+	public void handleEmoteClueItemChanges(final ItemContainerChanged event)
 	{
-		int containerId = event.getContainerId();
+		final int containerId = event.getContainerId();
 
 		if (this.initialState && containerId == 95)
 		{
-			this.clientThread.invoke(() -> {
-				ItemContainer bankContainer = this.client.getItemContainer(InventoryID.BANK);
+			this.clientThread.invoke(() ->
+			{
+				final ItemContainer bankContainer = this.client.getItemContainer(InventoryID.BANK);
 				if (bankContainer != null)
 				{
 					this.handleChanges(this.itemsMonitor.fetchEmoteClueItemChanges(95, bankContainer.getItems()));
@@ -106,26 +106,26 @@ public class ProgressManager
 		}
 	}
 
-	private void handleChanges(List<Item> emoteClueItemChanges)
+	private void handleChanges(final List<Item> emoteClueItemChanges)
 	{
 		if (emoteClueItemChanges != null)
 		{
-			LinkedList<Map.Entry<ClueItem, Status>> parents = new LinkedList<>();
+			final LinkedList<Map.Entry<com.larsvansoest.runelite.clueitems.clues.EmoteClueItem, Status>> parents = new LinkedList<>();
 
 			// Set single item (sub-)requirement status
-			for (Item item : emoteClueItemChanges)
+			for (final Item item : emoteClueItemChanges)
 			{
-				int quantity = item.getQuantity();
-				ClueItem clueItem = Associations.ItemIdToEmoteClueItemSlot.get(item.getId());
+				final int quantity = item.getQuantity();
+				final com.larsvansoest.runelite.clueitems.clues.EmoteClueItem emoteClueItem = EmoteClueAssociations.ItemIdToEmoteClueItemSlot.get(item.getId());
 
-				Status status = quantity > 0 ? Status.Complete : Status.InComplete;
-				this.statusMap.put(clueItem, status);
-				parents.add(new AbstractMap.SimpleEntry<>(clueItem, status));
+				final Status status = quantity > 0 ? Status.Complete : Status.InComplete;
+				this.statusMap.put(emoteClueItem, status);
+				parents.add(new AbstractMap.SimpleEntry<>(emoteClueItem, status));
 
-				this.panelProvider.setItemSlotStatus(clueItem, quantity);
+				this.panelProvider.setItemSlotStatus(emoteClueItem, quantity);
 			}
 
-			LinkedList<Map.Entry<ClueItem, Status>> parentCache = new LinkedList<>();
+			final LinkedList<Map.Entry<com.larsvansoest.runelite.clueitems.clues.EmoteClueItem, Status>> parentCache = new LinkedList<>();
 			// Update requirement ancestors accordingly
 			while (parents.size() > 0)
 			{
@@ -135,13 +135,13 @@ public class ProgressManager
 				}
 				while (parentCache.size() > 0)
 				{
-					Map.Entry<ClueItem, Status> childEntry = parentCache.poll();
-					ClueItem child = childEntry.getKey();
-					Status status = childEntry.getValue();
+					final Map.Entry<com.larsvansoest.runelite.clueitems.clues.EmoteClueItem, Status> childEntry = parentCache.poll();
+					final com.larsvansoest.runelite.clueitems.clues.EmoteClueItem child = childEntry.getKey();
+					final Status status = childEntry.getValue();
 					this.panelProvider.setEmoteClueItemStatus(child, status);
-					for (ClueItem parent : child.getParents())
+					for (final com.larsvansoest.runelite.clueitems.clues.EmoteClueItem parent : child.getParents())
 					{
-						Status parentStatus = this.getParentStatus(parent);
+						final Status parentStatus = this.getParentStatus(parent);
 						parents.add(new AbstractMap.SimpleEntry<>(parent, parentStatus));
 						this.statusMap.put(parent, parentStatus);
 					}
@@ -150,16 +150,16 @@ public class ProgressManager
 		}
 	}
 
-	private Status getParentStatus(ClueItem parent)
+	private Status getParentStatus(final com.larsvansoest.runelite.clueitems.clues.EmoteClueItem parent)
 	{
-		ItemRequirement parentRequirement = parent.getItemRequirement();
-		List<ClueItem> children = parent.getChildren();
+		final ItemRequirement parentRequirement = parent.getItemRequirement();
+		final List<com.larsvansoest.runelite.clueitems.clues.EmoteClueItem> children = parent.getChildren();
 		return (parentRequirement instanceof AllRequirementsCollection) ? this.getParentAllStatus(children) : this.getParentAnyStatus(children);
 	}
 
-	private Status getParentAnyStatus(List<ClueItem> children)
+	private Status getParentAnyStatus(final List<com.larsvansoest.runelite.clueitems.clues.EmoteClueItem> children)
 	{
-		for (ClueItem child : children)
+		for (final com.larsvansoest.runelite.clueitems.clues.EmoteClueItem child : children)
 		{
 			if (this.statusMap.get(child) == Status.Complete)
 			{
@@ -169,11 +169,11 @@ public class ProgressManager
 		return Status.InComplete;
 	}
 
-	private Status getParentAllStatus(List<ClueItem> children)
+	private Status getParentAllStatus(final List<com.larsvansoest.runelite.clueitems.clues.EmoteClueItem> children)
 	{
 		boolean anyMatch = false;
 		boolean allMatch = true;
-		for (ClueItem child : children)
+		for (final com.larsvansoest.runelite.clueitems.clues.EmoteClueItem child : children)
 		{
 			if (this.statusMap.get(child) == Status.Complete)
 			{

@@ -29,21 +29,22 @@
 package com.larsvansoest.runelite.clueitems.ui.content.requirement;
 
 import com.larsvansoest.runelite.clueitems.EmoteClueItemsPlugin;
-import com.larsvansoest.runelite.clueitems.clues.ClueItem;
-import com.larsvansoest.runelite.clueitems.clues.Associations;
+import com.larsvansoest.runelite.clueitems.clues.EmoteClue;
+import com.larsvansoest.runelite.clueitems.clues.EmoteClueAssociations;
+import com.larsvansoest.runelite.clueitems.clues.EmoteClueItem;
 import com.larsvansoest.runelite.clueitems.ui.Palette;
 import com.larsvansoest.runelite.clueitems.ui.content.clue.EmoteCluePanel;
 import com.larsvansoest.runelite.clueitems.ui.content.item.ItemPanel;
 import com.larsvansoest.runelite.clueitems.ui.content.item.ItemSlotPanel;
 import com.larsvansoest.runelite.clueitems.ui.content.item.ItemSubPanel;
-import com.larsvansoest.runelite.clueitems.clues.EmoteClue;
+import net.runelite.client.game.ItemManager;
+import net.runelite.client.plugins.cluescrolls.clues.item.SingleItemRequirement;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import net.runelite.client.game.ItemManager;
-import net.runelite.client.plugins.cluescrolls.clues.item.SingleItemRequirement;
 
 /**
  * Creates front-end ui requirement visualisation panels, and caches requirement-panel mappings to display requirement status, provided by {@link EmoteClueItemsPlugin}.
@@ -58,61 +59,56 @@ import net.runelite.client.plugins.cluescrolls.clues.item.SingleItemRequirement;
 public class RequirementPanelProvider
 {
 	private final RequirementContainer requirementContainer;
-	private final Map<ClueItem, ItemPanel> emoteClueItemPanelMap;
-	private final Map<ClueItem, ItemSlotPanel> slotPanelMap;
+	private final Map<com.larsvansoest.runelite.clueitems.clues.EmoteClueItem, ItemPanel> emoteClueItemPanelMap;
+	private final Map<com.larsvansoest.runelite.clueitems.clues.EmoteClueItem, ItemSlotPanel> slotPanelMap;
 
-	public RequirementPanelProvider(Palette palette, ItemManager itemManager)
+	public RequirementPanelProvider(final Palette palette, final ItemManager itemManager)
 	{
 		/* Create EmoteClueItem requirement panel network. */
 		this.requirementContainer = new RequirementContainer();
 
 		// Create parent EmoteClueItem panels.
-		this.emoteClueItemPanelMap = Associations.EmoteClueItemToEmoteClues.keySet().stream()
-			.collect(Collectors.toMap(
-				Function.identity(),
-				emoteClueItem -> new ItemPanel(this.requirementContainer, palette, emoteClueItem)
-			));
+		this.emoteClueItemPanelMap = EmoteClueAssociations.EmoteClueItemToEmoteClues
+				.keySet()
+				.stream()
+				.collect(Collectors.toMap(Function.identity(), emoteClueItem -> new ItemPanel(this.requirementContainer, palette, emoteClueItem)));
 
 		// Create an item panel for all required items.
-		this.slotPanelMap = Associations.ItemIdToEmoteClueItemSlot.entrySet().stream()
-			.collect(Collectors.toMap(
-				Map.Entry::getValue,
-				entry -> new ItemSlotPanel(itemManager, entry.getKey(), entry.getValue().getCollectiveName())
-			));
+		this.slotPanelMap = EmoteClueAssociations.ItemIdToEmoteClueItemSlot
+				.entrySet()
+				.stream()
+				.collect(Collectors.toMap(Map.Entry::getValue, entry -> new ItemSlotPanel(itemManager, entry.getKey(), entry.getValue().getCollectiveName())));
 
 		// Create EmoteClueItem-EmoteClue (*-1) sub-panels.
-		Map<EmoteClue, EmoteCluePanel> emoteCluePanelMap = EmoteClue.CLUES.stream()
-			.collect(Collectors.toMap(
-				Function.identity(),
-				emoteClue -> new EmoteCluePanel(palette, emoteClue)
-			));
+		final Map<EmoteClue, EmoteCluePanel> emoteCluePanelMap = EmoteClue.CLUES.stream().collect(Collectors.toMap(Function.identity(), emoteClue -> new EmoteCluePanel(palette, emoteClue)));
 
-		this.emoteClueItemPanelMap.forEach((emoteClueItem, itemPanel) -> {
+		this.emoteClueItemPanelMap.forEach((emoteClueItem, itemPanel) ->
+		{
 			// Add item collection log
-			ItemSubPanel subPanel = new ItemSubPanel(palette);
+			final ItemSubPanel subPanel = new ItemSubPanel(palette);
 			this.addSubItems(subPanel, emoteClueItem);
 			itemPanel.addChild(subPanel);
 
 			// Add emote clue panels & info
-			Arrays.stream(Associations.EmoteClueItemToEmoteClues.get(emoteClueItem)).map(emoteCluePanelMap::get).forEach(itemPanel::addChild);
+			Arrays.stream(EmoteClueAssociations.EmoteClueItemToEmoteClues.get(emoteClueItem)).map(emoteCluePanelMap::get).forEach(itemPanel::addChild);
 		});
 
 		this.requirementContainer.load(this.emoteClueItemPanelMap.values());
 	}
 
-	private void addSubItems(ItemSubPanel subPanel, ClueItem child)
+	private void addSubItems(final ItemSubPanel subPanel, final com.larsvansoest.runelite.clueitems.clues.EmoteClueItem child)
 	{
-		ItemSlotPanel childSlotPanel = this.slotPanelMap.get(child);
+		final ItemSlotPanel childSlotPanel = this.slotPanelMap.get(child);
 		if (childSlotPanel != null)
 		{
 			subPanel.addChild(childSlotPanel);
 			return;
 		}
 
-		List<ClueItem> successors = child.getChildren();
+		final List<com.larsvansoest.runelite.clueitems.clues.EmoteClueItem> successors = child.getChildren();
 		if (successors != null)
 		{
-			for (ClueItem successor : successors)
+			for (final com.larsvansoest.runelite.clueitems.clues.EmoteClueItem successor : successors)
 			{
 				this.addSubItems(subPanel, successor);
 			}
@@ -122,12 +118,12 @@ public class RequirementPanelProvider
 	/**
 	 * Changes an item sprite to represent given quantity, if a mapping to {@link ItemSlotPanel} exists.
 	 *
-	 * @param clueItem the {@link SingleItemRequirement} {@link ClueItem} requirement containing the item sprite.
+	 * @param emoteClueItem the {@link SingleItemRequirement} {@link EmoteClueItem} requirement containing the item sprite.
 	 * @param quantity      the item quantity the item sprite should show.
 	 */
-	public void setItemSlotStatus(ClueItem clueItem, int quantity)
+	public void setItemSlotStatus(final com.larsvansoest.runelite.clueitems.clues.EmoteClueItem emoteClueItem, final int quantity)
 	{
-		ItemSlotPanel slotPanel = this.slotPanelMap.get(clueItem);
+		final ItemSlotPanel slotPanel = this.slotPanelMap.get(emoteClueItem);
 		if (slotPanel != null)
 		{
 			slotPanel.setStatus(quantity);
@@ -135,14 +131,14 @@ public class RequirementPanelProvider
 	}
 
 	/**
-	 * Changes an {@link EmoteClue} {@link ClueItem} status panel to represent given {@link Status} status, if a mapping to {@link ItemPanel} exists.
+	 * Changes an {@link EmoteClue} {@link EmoteClueItem} status panel to represent given {@link Status} status, if a mapping to {@link ItemPanel} exists.
 	 *
-	 * @param clueItem the {@link EmoteClue} {@link ClueItem} requirement to display.
+	 * @param emoteClueItem the {@link EmoteClue} {@link EmoteClueItem} requirement to display.
 	 * @param status        the desired {@link Status} status to display.
 	 */
-	public void setEmoteClueItemStatus(ClueItem clueItem, Status status)
+	public void setEmoteClueItemStatus(final com.larsvansoest.runelite.clueitems.clues.EmoteClueItem emoteClueItem, final Status status)
 	{
-		ItemPanel itemPanel = this.emoteClueItemPanelMap.get(clueItem);
+		final ItemPanel itemPanel = this.emoteClueItemPanelMap.get(emoteClueItem);
 		if (itemPanel != null)
 		{
 			itemPanel.setStatus(status);

@@ -28,10 +28,10 @@
 
 package com.larsvansoest.runelite.clueitems;
 
-import java.awt.image.BufferedImage;
-
 import com.larsvansoest.runelite.clueitems.clues.Difficulty;
 import net.runelite.client.util.ImageUtil;
+
+import java.awt.image.BufferedImage;
 
 /**
  * Static facade which provides utilities to get images from the {@link Image} class.
@@ -41,7 +41,7 @@ import net.runelite.client.util.ImageUtil;
  */
 public abstract class Images
 {
-	public static BufferedImage getRibbon(Difficulty difficulty)
+	public static BufferedImage getRibbon(final Difficulty difficulty)
 	{
 		switch (difficulty)
 		{
@@ -62,7 +62,7 @@ public abstract class Images
 		}
 	}
 
-	public static BufferedImage getScroll(Difficulty difficulty)
+	public static BufferedImage getScroll(final Difficulty difficulty)
 	{
 		switch (difficulty)
 		{
@@ -83,12 +83,12 @@ public abstract class Images
 		}
 	}
 
-	public static BufferedImage illuminate(BufferedImage bufferedImage, float scale)
+	public static BufferedImage illuminate(final BufferedImage bufferedImage, final float scale)
 	{
 		return ImageUtil.luminanceScale(bufferedImage, scale);
 	}
 
-	public static BufferedImage resizeCanvas(BufferedImage bufferedImage, int width, int height)
+	public static BufferedImage resizeCanvas(final BufferedImage bufferedImage, final int width, final int height)
 	{
 		return ImageUtil.resizeCanvas(bufferedImage, width, height);
 	}

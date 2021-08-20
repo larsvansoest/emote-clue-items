@@ -28,7 +28,7 @@
 
 package com.larsvansoest.runelite.clueitems.overlay;
 
-protected enum Widget
+enum Widget
 {
 	BANK(12, 12),
 
@@ -70,7 +70,7 @@ protected enum Widget
 	 */
 	public final int childId;
 
-	Widget(int groupId, int childId)
+	Widget(final int groupId, final int childId)
 	{
 		this.id = groupId << 16 | childId;
 		this.groupId = groupId;

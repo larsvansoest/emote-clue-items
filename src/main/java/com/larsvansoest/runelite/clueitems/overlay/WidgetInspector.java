@@ -50,7 +50,7 @@ public abstract class WidgetInspector
 		int i = 0;
 		while (i < maxDepth && widget != null)
 		{
-			int id = widget.getId();
+			final int id = widget.getId();
 
 			if (id == Widget.BANK.id)
 			{
