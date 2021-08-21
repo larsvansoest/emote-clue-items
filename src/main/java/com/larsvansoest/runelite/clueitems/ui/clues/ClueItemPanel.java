@@ -44,12 +44,12 @@ import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
 
-public class EmoteCluePanel extends FoldablePanel
+public class ClueItemPanel extends FoldablePanel
 {
 	private static final Color propertyNameColor = ColorScheme.LIGHT_GRAY_COLOR;
 	private static final Color propertyValueColor = new Color(propertyNameColor.getRed(), propertyNameColor.getGreen(), propertyNameColor.getBlue(), 150);
 
-	public EmoteCluePanel(final EmoteClueItemsPalette emoteClueItemsPalette, final EmoteClue emoteClue)
+	public ClueItemPanel(final EmoteClueItemsPalette emoteClueItemsPalette, final EmoteClue emoteClue)
 	{
 		super(emoteClueItemsPalette, emoteClue.getLocationName());
 

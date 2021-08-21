@@ -1,7 +1,7 @@
 package com.larsvansoest.runelite.clueitems.ui;
 
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
-import com.larsvansoest.runelite.clueitems.ui.clues.ClueItemsPanel;
+import com.larsvansoest.runelite.clueitems.ui.clues.ClueItemsPanelOld;
 import com.larsvansoest.runelite.clueitems.ui.clues.RequirementPanelProvider;
 import com.larsvansoest.runelite.clueitems.ui.components.EmoteClueItemsPalette;
 import com.larsvansoest.runelite.clueitems.ui.stashes.StashUnitPanel;
@@ -15,7 +15,7 @@ import java.awt.*;
 public class EmoteClueItemsPanel extends PluginPanel
 {
 	private final EmoteClueItemsPalette emoteClueItemsPalette;
-	private final ClueItemsPanel clueItemsPanel;
+	private final ClueItemsPanelOld clueItemsPanel;
 	private final StashUnitPanel stashUnitPanel;
 	private final MaterialTabGroup tabGroup;
 
@@ -26,7 +26,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 		super.getScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		this.emoteClueItemsPalette = emoteClueItemsPalette;
 
-		this.clueItemsPanel = new ClueItemsPanel(emoteClueItemsPalette, requirementPanelProvider);
+		this.clueItemsPanel = new ClueItemsPanelOld(emoteClueItemsPalette, requirementPanelProvider);
 		this.stashUnitPanel = new StashUnitPanel(emoteClueItemsPalette);
 
 		this.tabGroup = new MaterialTabGroup();

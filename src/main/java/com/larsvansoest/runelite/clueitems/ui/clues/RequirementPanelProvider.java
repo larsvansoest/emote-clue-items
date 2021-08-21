@@ -76,9 +76,9 @@ public class RequirementPanelProvider
 				.collect(Collectors.toMap(Map.Entry::getValue, entry -> new ItemSlotPanel(itemManager, entry.getKey(), entry.getValue().getCollectiveName())));
 
 		// Create EmoteClueItem-EmoteClue (*-1) sub-panels.
-		final Map<EmoteClue, EmoteCluePanel> emoteCluePanelMap = EmoteClue.CLUES
+		final Map<EmoteClue, ClueItemPanel> emoteCluePanelMap = EmoteClue.CLUES
 				.stream()
-				.collect(Collectors.toMap(Function.identity(), emoteClue -> new EmoteCluePanel(emoteClueItemsPalette, emoteClue)));
+				.collect(Collectors.toMap(Function.identity(), emoteClue -> new ClueItemPanel(emoteClueItemsPalette, emoteClue)));
 
 		this.emoteClueItemPanelMap.forEach((emoteClueItem, itemPanel) ->
 		{

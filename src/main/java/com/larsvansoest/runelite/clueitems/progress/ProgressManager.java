@@ -46,7 +46,7 @@ import java.util.*;
 /**
  * Monitors player owned items and subsequent changes to {@link ItemContainer} objects for Inventory, Bank and Equipment.
  * <p>
- * Uses {@link RequirementPanelProvider} to represent requirement statuses on {@link com.larsvansoest.runelite.clueitems.ui.clues.ClueItemsPanel} accordingly.
+ * Uses {@link RequirementPanelProvider} to represent requirement statuses on {@link com.larsvansoest.runelite.clueitems.ui.clues.ClueItemsPanelOld} accordingly.
  *
  * @author Lars van Soest
  * @see EmoteClueItem

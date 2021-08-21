@@ -36,7 +36,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Contains all {@link Color} instances used for any ui-related requirement progress display {@link JComponent} objects for the {@link com.larsvansoest.runelite.clueitems.ui.clues.ClueItemsPanel}.
+ * Contains all {@link Color} instances used for any ui-related requirement progress display {@link JComponent} objects for the {@link com.larsvansoest.runelite.clueitems.ui.clues.ClueItemsPanelOld}.
  *
  * @author Lars van Soest
  * @since 2.0.0

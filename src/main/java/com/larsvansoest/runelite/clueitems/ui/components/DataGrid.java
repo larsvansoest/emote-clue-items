@@ -33,6 +33,7 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.IconTextField;
 
 import javax.swing.*;
+import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.List;
@@ -52,6 +53,8 @@ public class DataGrid<T extends JPanel> extends JPanel
 	private final Map<String, CycleButton> filterButtons;
 	private final Map<String, Predicate<T>> filters;
 	private final EmoteClueItemsPalette palette;
+	private final DisclaimerPanel disclaimerPanel;
+	private final JSeparator separator;
 	private Comparator<T> sort;
 	private CycleButton sortButton;
 
@@ -64,9 +67,16 @@ public class DataGrid<T extends JPanel> extends JPanel
 		this.searchBar = this.getSearchBar();
 		this.filterButtons = new HashMap<>();
 		this.filters = new HashMap<>();
-		this.sort = null;
+		this.sort = Comparator.comparing(T::hashCode);
 		this.sortButton = null;
 		this.filters.put("_searchBar", panel -> panel.getName().toLowerCase().contains(this.searchBar.getText().toLowerCase()));
+
+		this.separator = new JSeparator();
+		this.setSeparatorColor(palette.getSeparatorColor());
+
+		this.disclaimerPanel = new DisclaimerPanel(palette, this::removeDisclaimer);
+		this.disclaimerPanel.setVisible(false);
+
 		this.paint();
 	}
 
@@ -84,6 +94,8 @@ public class DataGrid<T extends JPanel> extends JPanel
 			c.gridx++;
 			super.add(filterButton, c);
 		}
+		c.gridy++;
+		super.add(this.disclaimerPanel, c);
 		this.entries.stream().sorted(this.sort).filter(e -> this.filters.values().stream().allMatch(p -> p.test(e))).forEach(entry ->
 		{
 			c.gridy++;
@@ -155,5 +167,21 @@ public class DataGrid<T extends JPanel> extends JPanel
 		this.entries.clear();
 		this.entries.addAll(entries);
 		this.paint();
+	}
+
+	public void setDisclaimer(final String text)
+	{
+		this.disclaimerPanel.setText(text);
+		this.disclaimerPanel.setVisible(true);
+	}
+
+	private void setSeparatorColor(final Color color)
+	{
+		this.separator.setBorder(new MatteBorder(1, 0, 0, 0, color));
+	}
+
+	public void removeDisclaimer()
+	{
+		this.disclaimerPanel.setVisible(false);
 	}
 }

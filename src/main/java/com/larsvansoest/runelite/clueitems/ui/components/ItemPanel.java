@@ -35,15 +35,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ItemPanel extends RequirementPanel
+public class ItemPanel extends FoldablePanel
 {
-	public ItemPanel(final DataGrid parent, final EmoteClueItemsPalette emoteClueItemsPalette, final EmoteClueItem emoteClueItem)
+	public ItemPanel(final EmoteClueItemsPalette emoteClueItemsPalette, final EmoteClueItem emoteClueItem)
 	{
-		super(parent, emoteClueItemsPalette, emoteClueItem.getCollectiveName());
+		super(this.parent, emoteClueItemsPalette, emoteClueItem.getCollectiveName());
 		final EmoteClue[] emoteClues = EmoteClueAssociations.EmoteClueItemToEmoteClues.get(emoteClueItem);
 		final List<EmoteClueDifficulty> difficulties = Arrays.stream(emoteClues).map(EmoteClue::getEmoteClueDifficulty).distinct().collect(Collectors.toList());
-		super.setFilterable("difficulty", difficulties);
-		super.setFilterable("quantity", emoteClues.length);
 		super.setQuantity(String.valueOf(emoteClues.length));
 		difficulties.stream().map(EmoteClueImages::getRibbon).map(ImageIcon::new).map(JLabel::new).forEach(super::addRightIcon);
 		super.getFoldablePanelHeader().getNameLabel().setHorizontalAlignment(JLabel.CENTER);
