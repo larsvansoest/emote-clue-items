@@ -26,45 +26,33 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.ui.content.foldable;
+package com.larsvansoest.runelite.clueitems.ui.components;
 
-import javax.swing.*;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
+import net.runelite.client.ui.ColorScheme;
+
 import java.awt.*;
 
-public class HeaderIconsPanel extends JPanel
+/**
+ * Represents values for {@link EmoteClueItem} completion status.
+ *
+ * @author Lars van Soest
+ * @since 2.0.0
+ */
+public enum Status
 {
-	private final GridBagConstraints c;
+	Complete(ColorScheme.PROGRESS_COMPLETE_COLOR),
 
-	public HeaderIconsPanel(final boolean alignRight, final JLabel... iconLabels)
+	InProgress(ColorScheme.PROGRESS_INPROGRESS_COLOR),
+
+	InComplete(ColorScheme.LIGHT_GRAY_COLOR),
+
+	Unknown(new Color(254, 254, 254, 69));
+
+	public final Color colour;
+
+	Status(final Color colour)
 	{
-		super(new GridBagLayout());
-		super.setBackground(new Color(0, 0, 0, 0));
-		this.c = new GridBagConstraints();
-		this.c.gridx = 0;
-		this.c.gridy = 0;
-		this.c.fill = GridBagConstraints.BOTH;
-		this.c.weightx = 0;
-
-		if (alignRight)
-		{
-			this.c.anchor = GridBagConstraints.EAST;
-			this.c.insets.left = 5;
-		}
-		else
-		{
-			this.c.anchor = GridBagConstraints.WEST;
-			this.c.insets.right = 5;
-		}
-
-		for (final JLabel iconLabel : iconLabels)
-		{
-			this.addIcon(iconLabel);
-		}
-	}
-
-	public void addIcon(final JComponent iconLabel)
-	{
-		super.add(iconLabel, this.c);
-		this.c.gridx++;
+		this.colour = colour;
 	}
 }

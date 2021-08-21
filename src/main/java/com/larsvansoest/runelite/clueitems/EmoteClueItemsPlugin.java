@@ -34,8 +34,8 @@ import com.larsvansoest.runelite.clueitems.overlay.EmoteClueItemsOverlay;
 import com.larsvansoest.runelite.clueitems.progress.ProgressManager;
 import com.larsvansoest.runelite.clueitems.progress.StashMonitor;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPanel;
-import com.larsvansoest.runelite.clueitems.ui.Palette;
-import com.larsvansoest.runelite.clueitems.ui.content.requirement.RequirementPanelProvider;
+import com.larsvansoest.runelite.clueitems.ui.clues.RequirementPanelProvider;
+import com.larsvansoest.runelite.clueitems.ui.components.EmoteClueItemsPalette;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -88,7 +88,7 @@ public class EmoteClueItemsPlugin extends Plugin
 		this.overlay = new EmoteClueItemsOverlay(this.itemManager, this.config);
 		this.overlayManager.add(this.overlay);
 
-		final Palette emoteClueItemsPalette = Palette.RUNELITE;
+		final EmoteClueItemsPalette emoteClueItemsPalette = EmoteClueItemsPalette.RUNELITE;
 		final RequirementPanelProvider requirementPanelProvider = new RequirementPanelProvider(emoteClueItemsPalette, this.itemManager);
 		this.emoteClueItemsPanel = new EmoteClueItemsPanel(emoteClueItemsPalette, requirementPanelProvider);
 
@@ -156,19 +156,19 @@ public class EmoteClueItemsPlugin extends Plugin
 				}
 				break;
 			case "callscript":
-				clientThread.invokeLater(() ->
+				this.clientThread.invokeLater(() ->
 				{
-					final int[] intStackPrior = client.getIntStack().clone();
-					final String[] stringStackPrior = client.getStringStack().clone();
-					client.runScript(
+					final int[] intStackPrior = this.client.getIntStack().clone();
+					final String[] stringStackPrior = this.client.getStringStack().clone();
+					this.client.runScript(
 							Integer.valueOf(event.getArguments()[0]),
 							STASHUnit.GYPSY_TENT_ENTRANCE.getObjectId(),
 							Integer.valueOf(event.getArguments()[1]),
 							Integer.valueOf(event.getArguments()[2]),
 							Integer.valueOf(event.getArguments()[3])
 					);
-					final int[] intStackAfter = client.getIntStack().clone();
-					final String[] stringStackAfter = client.getStringStack().clone();
+					final int[] intStackAfter = this.client.getIntStack().clone();
+					final String[] stringStackAfter = this.client.getStringStack().clone();
 					if (intStackPrior.length != intStackAfter.length || stringStackPrior.length != stringStackAfter.length)
 					{
 						this.client.addChatMessage(ChatMessageType.CONSOLE, "", "Unequal size", "sender-debug");

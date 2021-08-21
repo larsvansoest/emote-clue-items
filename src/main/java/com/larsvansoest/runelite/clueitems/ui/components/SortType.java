@@ -26,44 +26,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.ui;
+package com.larsvansoest.runelite.clueitems.ui.components;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import net.runelite.client.ui.ColorScheme;
-
-import javax.swing.*;
-import java.awt.*;
-
-/**
- * Contains all {@link Color} instances used for any ui-related requirement progress display {@link JComponent} objects for the {@link ClueItemsPanel}.
- *
- * @author Lars van Soest
- * @since 2.0.0
- */
-@Getter
-@RequiredArgsConstructor
-public enum Palette
+public enum SortType
 {
-	RUNELITE(
-			ColorScheme.DARKER_GRAY_COLOR,
-			ColorScheme.DARKER_GRAY_HOVER_COLOR,
-			ColorScheme.DARKER_GRAY_HOVER_COLOR,
-			ColorScheme.DARK_GRAY_HOVER_COLOR,
-			ColorScheme.DARK_GRAY_HOVER_COLOR,
-			ColorScheme.BRAND_ORANGE,
-			ColorScheme.MEDIUM_GRAY_COLOR,
-			ColorScheme.DARKER_GRAY_HOVER_COLOR,
-			ColorScheme.DARK_GRAY_COLOR
-	);
-
-	private final Color defaultColor;
-	private final Color hoverColor;
-	private final Color selectColor;
-	private final Color foldContentColor;
-	private final Color foldContentElementColor;
-	private final Color separatorColor;
-	private final Color footerColor;
-	private final Color disclaimerColor;
-	private final Color subPanelBackgroundColor;
+	Name(),
+	Quantity()
 }

@@ -26,33 +26,44 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.ui.content.requirement;
+package com.larsvansoest.runelite.clueitems.ui.components;
 
-import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import net.runelite.client.ui.ColorScheme;
 
+import javax.swing.*;
 import java.awt.*;
 
 /**
- * Represents values for {@link EmoteClueItem} completion status.
+ * Contains all {@link Color} instances used for any ui-related requirement progress display {@link JComponent} objects for the {@link com.larsvansoest.runelite.clueitems.ui.clues.ClueItemsPanel}.
  *
  * @author Lars van Soest
  * @since 2.0.0
  */
-public enum Status
+@Getter
+@RequiredArgsConstructor
+public enum EmoteClueItemsPalette
 {
-	Complete(ColorScheme.PROGRESS_COMPLETE_COLOR),
+	RUNELITE(
+			ColorScheme.DARKER_GRAY_COLOR,
+			ColorScheme.DARKER_GRAY_HOVER_COLOR,
+			ColorScheme.DARKER_GRAY_HOVER_COLOR,
+			ColorScheme.DARK_GRAY_HOVER_COLOR,
+			ColorScheme.DARK_GRAY_HOVER_COLOR,
+			ColorScheme.BRAND_ORANGE,
+			ColorScheme.MEDIUM_GRAY_COLOR,
+			ColorScheme.DARKER_GRAY_HOVER_COLOR,
+			ColorScheme.DARK_GRAY_COLOR
+	);
 
-	InProgress(ColorScheme.PROGRESS_INPROGRESS_COLOR),
-
-	InComplete(ColorScheme.LIGHT_GRAY_COLOR),
-
-	Unknown(new Color(254, 254, 254, 69));
-
-	public final Color colour;
-
-	Status(final Color colour)
-	{
-		this.colour = colour;
-	}
+	private final Color defaultColor;
+	private final Color hoverColor;
+	private final Color selectColor;
+	private final Color foldContentColor;
+	private final Color foldContentElementColor;
+	private final Color separatorColor;
+	private final Color footerColor;
+	private final Color disclaimerColor;
+	private final Color subPanelBackgroundColor;
 }

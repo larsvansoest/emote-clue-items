@@ -26,13 +26,9 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.ui.content.item;
+package com.larsvansoest.runelite.clueitems.ui.components;
 
 import com.larsvansoest.runelite.clueitems.data.*;
-import com.larsvansoest.runelite.clueitems.ui.Palette;
-import com.larsvansoest.runelite.clueitems.ui.content.foldable.FoldablePanel;
-import com.larsvansoest.runelite.clueitems.ui.content.requirement.RequirementContainer;
-import com.larsvansoest.runelite.clueitems.ui.content.requirement.RequirementPanel;
 
 import javax.swing.*;
 import java.util.Arrays;
@@ -41,16 +37,16 @@ import java.util.stream.Collectors;
 
 public class ItemPanel extends RequirementPanel
 {
-	public ItemPanel(final RequirementContainer parent, final Palette palette, final EmoteClueItem emoteClueItem)
+	public ItemPanel(final DataGrid parent, final EmoteClueItemsPalette emoteClueItemsPalette, final EmoteClueItem emoteClueItem)
 	{
-		super(parent, palette, emoteClueItem.getCollectiveName());
+		super(parent, emoteClueItemsPalette, emoteClueItem.getCollectiveName());
 		final EmoteClue[] emoteClues = EmoteClueAssociations.EmoteClueItemToEmoteClues.get(emoteClueItem);
 		final List<EmoteClueDifficulty> difficulties = Arrays.stream(emoteClues).map(EmoteClue::getEmoteClueDifficulty).distinct().collect(Collectors.toList());
 		super.setFilterable("difficulty", difficulties);
 		super.setFilterable("quantity", emoteClues.length);
 		super.setQuantity(String.valueOf(emoteClues.length));
 		difficulties.stream().map(EmoteClueImages::getRibbon).map(ImageIcon::new).map(JLabel::new).forEach(super::addRightIcon);
-		super.getHeader().getNameLabel().setHorizontalAlignment(JLabel.CENTER);
+		super.getFoldablePanelHeader().getNameLabel().setHorizontalAlignment(JLabel.CENTER);
 	}
 
 	@Override

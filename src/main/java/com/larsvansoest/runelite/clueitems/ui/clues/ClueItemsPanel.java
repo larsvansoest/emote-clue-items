@@ -26,20 +26,13 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.ui;
+package com.larsvansoest.runelite.clueitems.ui.clues;
 
 import com.larsvansoest.runelite.clueitems.EmoteClueItemsPlugin;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
-import com.larsvansoest.runelite.clueitems.ui.content.requirement.RequirementContainer;
-import com.larsvansoest.runelite.clueitems.ui.content.requirement.RequirementPanelProvider;
-import com.larsvansoest.runelite.clueitems.ui.content.requirement.SortType;
-import com.larsvansoest.runelite.clueitems.ui.content.requirement.Status;
-import com.larsvansoest.runelite.clueitems.ui.disclaimer.DisclaimerPanel;
-import com.larsvansoest.runelite.clueitems.ui.footer.FooterPanel;
-import com.larsvansoest.runelite.clueitems.ui.search.FilterButton;
-import com.larsvansoest.runelite.clueitems.ui.search.SearchBarFactory;
+import com.larsvansoest.runelite.clueitems.ui.components.*;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.IconTextField;
 
@@ -52,45 +45,45 @@ import java.util.Map;
 /**
  * Main {@link PluginPanel} of the {@link EmoteClueItemsPlugin}, which displays {@link EmoteClueItem} requirement status progression.
  * <p>
- * Includes search bar, {@link FilterButton} buttons to filter and sort by properties, such as {@link Status}, requirement name, and more.
+ * Includes search bar, {@link com.larsvansoest.runelite.clueitems.ui.components.CycleButton} buttons to filter and sort by properties, such as {@link Status}, requirement name, and more.
  *
  * @author Lars van Soest
  * @since 2.0.0
  */
 public class ClueItemsPanel extends JPanel
 {
-	private final Palette palette;
+	private final EmoteClueItemsPalette emoteClueItemsPalette;
 
 	private final IconTextField searchBar;
 	private final JSeparator separator;
 	private final DisclaimerPanel disclaimerPanel;
-	private final RequirementContainer requirementContainer;
+	private final DataGrid dataGrid;
 
-	private final FilterButton<Status> requirementStatusFilterButton;
-	private final FilterButton<EmoteClueDifficulty> difficultyFilterButton;
-	private final FilterButton<Map.Entry<SortType, Boolean>> sortFilterButton;
+	private final CycleButton<Status> requirementStatusCycleButton;
+	private final CycleButton<EmoteClueDifficulty> difficultyCycleButton;
+	private final CycleButton<Map.Entry<SortType, Boolean>> sortCycleButton;
 
-	public ClueItemsPanel(final Palette palette, final RequirementPanelProvider requirementPanelProvider)
+	public ClueItemsPanel(final EmoteClueItemsPalette emoteClueItemsPalette, final RequirementPanelProvider requirementPanelProvider)
 	{
 		super();
 		super.setLayout(new GridBagLayout());
 
-		this.palette = palette;
-		this.searchBar = new SearchBarFactory(this::onSearchBarTextChanged).defaultColor(palette.getDefaultColor()).hoverColor(palette.getHoverColor()).build();
-		this.requirementContainer = requirementPanelProvider.getRequirementContainer();
-		this.requirementContainer.sort(SortType.Quantity, true);
+		this.emoteClueItemsPalette = emoteClueItemsPalette;
+		this.searchBar = new SearchBarFactory(this::onSearchBarTextChanged).defaultColor(emoteClueItemsPalette.getDefaultColor()).hoverColor(emoteClueItemsPalette.getHoverColor()).build();
+		this.dataGrid = requirementPanelProvider.getRequirementContainer();
+		this.dataGrid.sort(SortType.Quantity, true);
 
 		this.separator = new JSeparator();
 		this.setSeparatorColor(null);
 
-		this.disclaimerPanel = new DisclaimerPanel(palette, this::removeDisclaimer);
+		this.disclaimerPanel = new DisclaimerPanel(emoteClueItemsPalette, this::removeDisclaimer);
 		this.disclaimerPanel.setVisible(false);
 
-		this.requirementStatusFilterButton = this.createRequirementStatusFilterButton(palette);
-		this.difficultyFilterButton = this.createDifficultyFilterButton(palette);
-		this.sortFilterButton = this.createSortFilterButton(palette);
+		this.requirementStatusCycleButton = this.createRequirementStatusFilterButton(emoteClueItemsPalette);
+		this.difficultyCycleButton = this.createDifficultyFilterButton(emoteClueItemsPalette);
+		this.sortCycleButton = this.createSortFilterButton(emoteClueItemsPalette);
 
-		final FooterPanel footerPanel = new FooterPanel(palette, "Emote Clue Items", "v2.0.2", "https://github.com/larsvansoest/emote-clue-items");
+		final FooterPanel footerPanel = new FooterPanel(emoteClueItemsPalette, "Emote Clue Items", "v2.0.2", "https://github.com/larsvansoest/emote-clue-items");
 
 		final GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
@@ -101,11 +94,11 @@ public class ClueItemsPanel extends JPanel
 
 		c.weightx = 0;
 		c.gridx++;
-		super.add(this.sortFilterButton, c);
+		super.add(this.sortCycleButton, c);
 		c.gridx++;
-		super.add(this.difficultyFilterButton, c);
+		super.add(this.difficultyCycleButton, c);
 		c.gridx++;
-		super.add(this.requirementStatusFilterButton, c);
+		super.add(this.requirementStatusCycleButton, c);
 
 		c.weightx = 1;
 		c.gridwidth = 4;
@@ -117,7 +110,7 @@ public class ClueItemsPanel extends JPanel
 		super.add(this.disclaimerPanel, c);
 
 		c.gridy++;
-		super.add(this.requirementContainer, c);
+		super.add(this.dataGrid, c);
 
 		c.gridy++;
 		c.insets.top = 10;
@@ -139,98 +132,98 @@ public class ClueItemsPanel extends JPanel
 
 	private void onSearchBarTextChanged()
 	{
-		this.requirementContainer.setFilter("name", this.searchBar.getText());
+		this.dataGrid.setFilter("name", this.searchBar.getText());
 		this.search();
 	}
 
 	private void onRequirementStatusFilterChanged()
 	{
-		this.requirementContainer.setFilter("status", this.requirementStatusFilterButton.getSelectedValue());
+		this.dataGrid.setFilter("status", this.requirementStatusCycleButton.getSelectedValue());
 		this.search();
 	}
 
 	private void onDifficultyFilterChanged()
 	{
-		final EmoteClueDifficulty emoteClueDifficulty = this.difficultyFilterButton.getSelectedValue();
-		this.requirementContainer.setFilter("difficulty", emoteClueDifficulty);
+		final EmoteClueDifficulty emoteClueDifficulty = this.difficultyCycleButton.getSelectedValue();
+		this.dataGrid.setFilter("difficulty", emoteClueDifficulty);
 		this.setSeparatorColor(emoteClueDifficulty);
 		this.search();
 	}
 
 	private void onSortFilterChanged()
 	{
-		final Map.Entry<SortType, Boolean> selected = this.sortFilterButton.getSelectedValue();
-		this.requirementContainer.sort(selected.getKey(), selected.getValue());
+		final Map.Entry<SortType, Boolean> selected = this.sortCycleButton.getSelectedValue();
+		this.dataGrid.sort(selected.getKey(), selected.getValue());
 	}
 
-	private FilterButton<Status> createRequirementStatusFilterButton(final Palette palette)
+	private CycleButton<Status> createRequirementStatusFilterButton(final EmoteClueItemsPalette emoteClueItemsPalette)
 	{
-		final FilterButton<Status> requirementStatusFilterButton = new FilterButton<>(
+		final CycleButton<Status> requirementStatusCycleButton = new CycleButton<>(
 				null,
 				new ImageIcon(EmoteClueImages.Toolbar.CheckSquare.ALL),
 				this.getToolTipText("Toggle show %s statuses.", "all"),
 				new Dimension(25, 30),
-				palette.getDefaultColor(),
-				palette.getHoverColor(),
+				emoteClueItemsPalette.getDefaultColor(),
+				emoteClueItemsPalette.getHoverColor(),
 				4,
 				this::onRequirementStatusFilterChanged
 		);
 		final String toolTipTextFormat = "Toggle show %s status.";
-		requirementStatusFilterButton.addOption(Status.InComplete, new ImageIcon(EmoteClueImages.Toolbar.CheckSquare.INCOMPLETE), this.getToolTipText(toolTipTextFormat, "incomplete"));
-		requirementStatusFilterButton.addOption(Status.Complete, new ImageIcon(EmoteClueImages.Toolbar.CheckSquare.COMPLETE), this.getToolTipText(toolTipTextFormat, "complete"));
-		return requirementStatusFilterButton;
+		requirementStatusCycleButton.addOption(Status.InComplete, new ImageIcon(EmoteClueImages.Toolbar.CheckSquare.INCOMPLETE), this.getToolTipText(toolTipTextFormat, "incomplete"));
+		requirementStatusCycleButton.addOption(Status.Complete, new ImageIcon(EmoteClueImages.Toolbar.CheckSquare.COMPLETE), this.getToolTipText(toolTipTextFormat, "complete"));
+		return requirementStatusCycleButton;
 	}
 
-	private FilterButton<EmoteClueDifficulty> createDifficultyFilterButton(final Palette palette)
+	private CycleButton<EmoteClueDifficulty> createDifficultyFilterButton(final EmoteClueItemsPalette emoteClueItemsPalette)
 	{
-		final FilterButton<EmoteClueDifficulty> difficultyFilterButton = new FilterButton<>(
+		final CycleButton<EmoteClueDifficulty> difficultyCycleButton = new CycleButton<>(
 				null,
 				new ImageIcon(EmoteClueImages.Ribbon.ALL),
 				this.getToolTipText("Toggle show %s difficulties.", "all"),
 				new Dimension(25, 30),
-				palette.getDefaultColor(),
-				palette.getHoverColor(),
+				emoteClueItemsPalette.getDefaultColor(),
+				emoteClueItemsPalette.getHoverColor(),
 				7,
 				this::onDifficultyFilterChanged
 		);
 		final String toolTipTextFormat = "Toggle show %s difficulty.";
-		difficultyFilterButton.addOption(EmoteClueDifficulty.Beginner, new ImageIcon(EmoteClueImages.Ribbon.BEGINNER), this.getToolTipText(toolTipTextFormat, "beginner"));
-		difficultyFilterButton.addOption(EmoteClueDifficulty.Easy, new ImageIcon(EmoteClueImages.Ribbon.EASY), this.getToolTipText(toolTipTextFormat, "easy"));
-		difficultyFilterButton.addOption(EmoteClueDifficulty.Medium, new ImageIcon(EmoteClueImages.Ribbon.MEDIUM), this.getToolTipText(toolTipTextFormat, "medium"));
-		difficultyFilterButton.addOption(EmoteClueDifficulty.Hard, new ImageIcon(EmoteClueImages.Ribbon.HARD), this.getToolTipText(toolTipTextFormat, "hard"));
-		difficultyFilterButton.addOption(EmoteClueDifficulty.Elite, new ImageIcon(EmoteClueImages.Ribbon.ELITE), this.getToolTipText(toolTipTextFormat, "elite"));
-		difficultyFilterButton.addOption(EmoteClueDifficulty.Master, new ImageIcon(EmoteClueImages.Ribbon.MASTER), this.getToolTipText(toolTipTextFormat, "master"));
-		return difficultyFilterButton;
+		difficultyCycleButton.addOption(EmoteClueDifficulty.Beginner, new ImageIcon(EmoteClueImages.Ribbon.BEGINNER), this.getToolTipText(toolTipTextFormat, "beginner"));
+		difficultyCycleButton.addOption(EmoteClueDifficulty.Easy, new ImageIcon(EmoteClueImages.Ribbon.EASY), this.getToolTipText(toolTipTextFormat, "easy"));
+		difficultyCycleButton.addOption(EmoteClueDifficulty.Medium, new ImageIcon(EmoteClueImages.Ribbon.MEDIUM), this.getToolTipText(toolTipTextFormat, "medium"));
+		difficultyCycleButton.addOption(EmoteClueDifficulty.Hard, new ImageIcon(EmoteClueImages.Ribbon.HARD), this.getToolTipText(toolTipTextFormat, "hard"));
+		difficultyCycleButton.addOption(EmoteClueDifficulty.Elite, new ImageIcon(EmoteClueImages.Ribbon.ELITE), this.getToolTipText(toolTipTextFormat, "elite"));
+		difficultyCycleButton.addOption(EmoteClueDifficulty.Master, new ImageIcon(EmoteClueImages.Ribbon.MASTER), this.getToolTipText(toolTipTextFormat, "master"));
+		return difficultyCycleButton;
 	}
 
-	private FilterButton<Map.Entry<SortType, Boolean>> createSortFilterButton(final Palette palette)
+	private CycleButton<Map.Entry<SortType, Boolean>> createSortFilterButton(final EmoteClueItemsPalette emoteClueItemsPalette)
 	{
-		final FilterButton<Map.Entry<SortType, Boolean>> sortFilterButton = new FilterButton<>(
+		final CycleButton<Map.Entry<SortType, Boolean>> sortCycleButton = new CycleButton<>(
 				new AbstractMap.SimpleImmutableEntry<>(SortType.Quantity, true),
 				new ImageIcon(EmoteClueImages.Toolbar.SortType.QUANTITY_DESCENDING),
 				this.getToolTipText("Toggle order by %s (descending).", "quantity"),
 				new Dimension(25, 30),
-				palette.getDefaultColor(),
-				palette.getHoverColor(),
+				emoteClueItemsPalette.getDefaultColor(),
+				emoteClueItemsPalette.getHoverColor(),
 				7,
 				this::onSortFilterChanged
 		);
-		sortFilterButton.addOption(
+		sortCycleButton.addOption(
 				new AbstractMap.SimpleImmutableEntry<>(SortType.Quantity, false),
 				new ImageIcon(EmoteClueImages.Toolbar.SortType.QUANTITY_ASCENDING),
 				this.getToolTipText("Toggle order by %s (ascending).", "quantity")
 		);
-		sortFilterButton.addOption(
+		sortCycleButton.addOption(
 				new AbstractMap.SimpleImmutableEntry<>(SortType.Name, true),
 				new ImageIcon(EmoteClueImages.Toolbar.SortType.NAME_DESCENDING),
 				this.getToolTipText("Toggle order by %s (descending).", "name")
 		);
-		sortFilterButton.addOption(
+		sortCycleButton.addOption(
 				new AbstractMap.SimpleImmutableEntry<>(SortType.Name, false),
 				new ImageIcon(EmoteClueImages.Toolbar.SortType.NAME_ASCENDING),
 				this.getToolTipText("Toggle order by %s (ascending).", "name")
 		);
-		return sortFilterButton;
+		return sortCycleButton;
 	}
 
 	private String getToolTipText(final String format, final String keyword)
@@ -240,11 +233,11 @@ public class ClueItemsPanel extends JPanel
 
 	private void setSeparatorColor(final EmoteClueDifficulty emoteClueDifficulty)
 	{
-		this.separator.setBorder(new MatteBorder(1, 0, 0, 0, emoteClueDifficulty == null ? this.palette.getSeparatorColor() : emoteClueDifficulty.getColor()));
+		this.separator.setBorder(new MatteBorder(1, 0, 0, 0, emoteClueDifficulty == null ? this.emoteClueItemsPalette.getSeparatorColor() : emoteClueDifficulty.getColor()));
 	}
 
 	public void search()
 	{
-		this.requirementContainer.runFilters();
+		this.dataGrid.runFilters();
 	}
 }

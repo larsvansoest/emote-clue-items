@@ -1,7 +1,10 @@
 package com.larsvansoest.runelite.clueitems.ui;
 
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
-import com.larsvansoest.runelite.clueitems.ui.content.requirement.RequirementPanelProvider;
+import com.larsvansoest.runelite.clueitems.ui.clues.ClueItemsPanel;
+import com.larsvansoest.runelite.clueitems.ui.clues.RequirementPanelProvider;
+import com.larsvansoest.runelite.clueitems.ui.components.EmoteClueItemsPalette;
+import com.larsvansoest.runelite.clueitems.ui.stashes.StashUnitPanel;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.materialtabs.MaterialTab;
 import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
@@ -11,20 +14,20 @@ import java.awt.*;
 
 public class EmoteClueItemsPanel extends PluginPanel
 {
-	private final Palette palette;
+	private final EmoteClueItemsPalette emoteClueItemsPalette;
 	private final ClueItemsPanel clueItemsPanel;
 	private final StashUnitPanel stashUnitPanel;
 	private final MaterialTabGroup tabGroup;
 
-	public EmoteClueItemsPanel(final Palette palette, final RequirementPanelProvider requirementPanelProvider)
+	public EmoteClueItemsPanel(final EmoteClueItemsPalette emoteClueItemsPalette, final RequirementPanelProvider requirementPanelProvider)
 	{
 		super();
 		super.setLayout(new GridBagLayout());
 		super.getScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		this.palette = palette;
+		this.emoteClueItemsPalette = emoteClueItemsPalette;
 
-		this.clueItemsPanel = new ClueItemsPanel(palette, requirementPanelProvider);
-		this.stashUnitPanel = new StashUnitPanel(palette);
+		this.clueItemsPanel = new ClueItemsPanel(emoteClueItemsPalette, requirementPanelProvider);
+		this.stashUnitPanel = new StashUnitPanel(emoteClueItemsPalette);
 
 		this.tabGroup = new MaterialTabGroup();
 		this.tabGroup.setLayout(new GridLayout(0, 6, 7, 7));

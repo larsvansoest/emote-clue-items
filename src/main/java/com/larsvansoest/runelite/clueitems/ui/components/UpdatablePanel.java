@@ -26,10 +26,21 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.ui.content.requirement;
+package com.larsvansoest.runelite.clueitems.ui.components;
 
-public enum SortType
+import javax.swing.*;
+
+/**
+ * A requirement progression visualisation {@link JPanel} extension with changeable {@link Status} representation.
+ *
+ * @author Lars van Soest
+ * @see FoldablePanel
+ * @since 2.0.0
+ */
+public abstract class UpdatablePanel extends JPanel
 {
-	Name(),
-	Quantity()
+	/**
+	 * Change item requirement panel to display desired {@link Status}.
+	 */
+	public abstract void setStatus(Status status);
 }

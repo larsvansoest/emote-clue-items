@@ -26,14 +26,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.ui.content.clue;
+package com.larsvansoest.runelite.clueitems.ui.clues;
 
 import com.larsvansoest.runelite.clueitems.data.EmoteClue;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
-import com.larsvansoest.runelite.clueitems.ui.Palette;
-import com.larsvansoest.runelite.clueitems.ui.content.foldable.FoldablePanel;
-import com.larsvansoest.runelite.clueitems.ui.content.requirement.Status;
+import com.larsvansoest.runelite.clueitems.ui.components.EmoteClueItemsPalette;
+import com.larsvansoest.runelite.clueitems.ui.components.FoldablePanel;
+import com.larsvansoest.runelite.clueitems.ui.components.Status;
 import net.runelite.client.plugins.cluescrolls.clues.Enemy;
 import net.runelite.client.plugins.cluescrolls.clues.emote.Emote;
 import net.runelite.client.ui.ColorScheme;
@@ -49,9 +49,9 @@ public class EmoteCluePanel extends FoldablePanel
 	private static final Color propertyNameColor = ColorScheme.LIGHT_GRAY_COLOR;
 	private static final Color propertyValueColor = new Color(propertyNameColor.getRed(), propertyNameColor.getGreen(), propertyNameColor.getBlue(), 150);
 
-	public EmoteCluePanel(final Palette palette, final EmoteClue emoteClue)
+	public EmoteCluePanel(final EmoteClueItemsPalette emoteClueItemsPalette, final EmoteClue emoteClue)
 	{
-		super(palette, emoteClue.getLocationName());
+		super(emoteClueItemsPalette, emoteClue.getLocationName());
 
 		final EmoteClueDifficulty emoteClueDifficulty = emoteClue.getEmoteClueDifficulty();
 		super.addLeftIcon(new JLabel(new ImageIcon(EmoteClueImages.getScroll(emoteClueDifficulty))));
@@ -62,7 +62,7 @@ public class EmoteCluePanel extends FoldablePanel
 		final String description = emoteClue.getText();
 
 		final JPanel foldContent = super.getFoldContent();
-		foldContent.setBackground(palette.getSubPanelBackgroundColor());
+		foldContent.setBackground(emoteClueItemsPalette.getSubPanelBackgroundColor());
 		foldContent.setVisible(false);
 
 		final JPanel difficultyPanel = this.getPropertyPanel("Difficulty", emoteClueDifficulty.name());

@@ -26,13 +26,9 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.ui.content.item;
+package com.larsvansoest.runelite.clueitems.ui.components;
 
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
-import com.larsvansoest.runelite.clueitems.ui.Palette;
-import com.larsvansoest.runelite.clueitems.ui.content.UpdatablePanel;
-import com.larsvansoest.runelite.clueitems.ui.content.foldable.FoldablePanel;
-import com.larsvansoest.runelite.clueitems.ui.content.requirement.Status;
 import net.runelite.client.ui.ColorScheme;
 
 import javax.swing.*;
@@ -46,13 +42,13 @@ public class ItemSubPanel extends FoldablePanel
 	private final GridBagConstraints foldContentConstraints;
 	private Boolean expanded;
 
-	public ItemSubPanel(final Palette palette)
+	public ItemSubPanel(final EmoteClueItemsPalette emoteClueItemsPalette)
 	{
-		super(palette, "Collection log");
-		super.getFoldContent().setBackground(palette.getSubPanelBackgroundColor());
+		super(emoteClueItemsPalette, "Collection log");
+		super.getFoldContent().setBackground(emoteClueItemsPalette.getSubPanelBackgroundColor());
 		super.setStatus(Status.Unknown);
 
-		final JLabel nameLabel = super.getHeader().getNameLabel();
+		final JLabel nameLabel = super.getFoldablePanelHeader().getNameLabel();
 		nameLabel.setHorizontalAlignment(JLabel.LEFT);
 		nameLabel.setPreferredSize(null);
 		nameLabel.setMinimumSize(null);
@@ -79,7 +75,7 @@ public class ItemSubPanel extends FoldablePanel
 	{
 		final JPanel foldContent = super.getFoldContent();
 		final LinkedList<UpdatablePanel> itemSlots = super.getFoldContentElements();
-		super.getHeader().unfold();
+		super.getFoldablePanelHeader().unfold();
 		this.foldContentConstraints.gridx = 0;
 		this.foldContentConstraints.gridy = 0;
 

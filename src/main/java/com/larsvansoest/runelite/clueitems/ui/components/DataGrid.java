@@ -26,42 +26,78 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.ui.content.requirement;
+package com.larsvansoest.runelite.clueitems.ui.components;
+
+import net.runelite.client.input.KeyListener;
+import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.components.IconTextField;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 /**
- * Lists {@link RequirementPanel} entries, provides functionality to display filtered sub-sets.
+ * Lists {@link FoldablePanel} entries, provides functionality to display filtered sub-sets.
  *
  * @author Lars van Soest
  * @since 2.0.0
  */
-public class RequirementContainer extends JPanel
+public class DataGrid<T extends JPanel> extends JPanel
 {
 	private final GridBagConstraints c;
-	private final Map<String, Object> filterables;
-	private RequirementPanel expandedPanel;
-	private List<? extends RequirementPanel> requirementPanels;
+	private final List<T> entries;
+	private FoldablePanel expandedPanel;
 
-	public RequirementContainer()
+	public DataGrid(final EmoteClueItemsPalette palette)
 	{
 		super(new GridBagLayout());
-		this.filterables = new HashMap<>();
+		this.entries = new ArrayList<>();
 		this.expandedPanel = null;
 		this.c = new GridBagConstraints();
 		this.c.fill = GridBagConstraints.HORIZONTAL;
 		this.c.gridx = 0;
 		this.c.weightx = 1;
+		super.add(this.getSearchBar(palette));
 	}
 
-	public void load(final Collection<? extends RequirementPanel> requirementPanelCollection)
+	private IconTextField getSearchBar(final EmoteClueItemsPalette palette)
 	{
-		this.requirementPanels = new ArrayList<>(requirementPanelCollection);
-		this.display(this.requirementPanels.stream());
+		final IconTextField searchBar = new IconTextField();
+		searchBar.setIcon(IconTextField.Icon.SEARCH);
+		searchBar.setBackground(palette.getDefaultColor());
+		searchBar.setHoverBackgroundColor(palette.getHoverColor());
+		searchBar.setFont(FontManager.getRunescapeSmallFont());
+		searchBar.addKeyListener(new KeyListener()
+		{
+			@Override
+			public void keyTyped(final KeyEvent e)
+			{
+			}
+
+			@Override
+			public void keyPressed(final KeyEvent e)
+			{
+			}
+
+			@Override
+			public void keyReleased(final KeyEvent e)
+			{
+				SearchBarFactory.this.onChange.run();
+			}
+		});
+		searchBar.addClearListener(this.onChange);
+		return searchBar;
+	}
+
+	public void load(final Collection<T> entries)
+	{
+		this.entries.clear();
+		this.entries.addAll(entries);
+		this.display(this.entries.stream());
 	}
 
 	public void toggleFold(final RequirementPanel requirementPanel)
@@ -81,9 +117,14 @@ public class RequirementContainer extends JPanel
 		super.repaint();
 	}
 
-	public void setFilter(final String key, final Object value)
+	public void setPredicate(final String key, final Predicate<T> predicate)
 	{
-		this.filterables.put(key, value);
+		this.predicates.put(key, predicate);
+	}
+
+	public void removePredicate(final String key)
+	{
+		this.predicates.remove(key);
 	}
 
 	public void runFilters()
@@ -126,11 +167,10 @@ public class RequirementContainer extends JPanel
 		this.runFilters();
 	}
 
-	private void display(final Stream<? extends RequirementPanel> requirementPanels)
+	private void display(final Stream<T> requirementPanels)
 	{
 		super.removeAll();
 		this.c.gridy = 0;
-
 		requirementPanels.forEachOrdered(requirementPanel ->
 		{
 			super.add(requirementPanel, this.c);

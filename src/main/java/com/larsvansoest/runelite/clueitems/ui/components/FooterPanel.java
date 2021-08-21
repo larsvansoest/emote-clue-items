@@ -26,10 +26,9 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.ui.footer;
+package com.larsvansoest.runelite.clueitems.ui.components;
 
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
-import com.larsvansoest.runelite.clueitems.ui.Palette;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.LinkBrowser;
 
@@ -41,11 +40,11 @@ import java.awt.event.MouseEvent;
 
 public class FooterPanel extends JPanel
 {
-	public FooterPanel(final Palette palette, final String pluginName, final String pluginVersion, final String gitHubUrl)
+	public FooterPanel(final EmoteClueItemsPalette emoteClueItemsPalette, final String pluginName, final String pluginVersion, final String gitHubUrl)
 	{
 		super(new GridBagLayout());
 
-		final Color color = palette.getFooterColor();
+		final Color color = emoteClueItemsPalette.getFooterColor();
 		final Font font = FontManager.getRunescapeSmallFont();
 
 		final JSeparator separator = new JSeparator();
