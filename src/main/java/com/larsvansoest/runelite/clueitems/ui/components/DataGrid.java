@@ -38,7 +38,6 @@ import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.*;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 /**
  * Lists {@link FoldablePanel} entries, provides functionality to display filtered sub-sets.
@@ -48,28 +47,86 @@ import java.util.stream.Stream;
  */
 public class DataGrid<T extends JPanel> extends JPanel
 {
-	private final GridBagConstraints c;
 	private final List<T> entries;
-	private FoldablePanel expandedPanel;
+	private final IconTextField searchBar;
+	private final Map<String, CycleButton> filterButtons;
+	private final Map<String, Predicate<T>> filters;
+	private final EmoteClueItemsPalette palette;
+	private Comparator<T> sort;
+	private CycleButton sortButton;
 
 	public DataGrid(final EmoteClueItemsPalette palette)
 	{
 		super(new GridBagLayout());
 		this.entries = new ArrayList<>();
-		this.expandedPanel = null;
-		this.c = new GridBagConstraints();
-		this.c.fill = GridBagConstraints.HORIZONTAL;
-		this.c.gridx = 0;
-		this.c.weightx = 1;
-		super.add(this.getSearchBar(palette));
+
+		this.palette = palette;
+		this.searchBar = this.getSearchBar();
+		this.filterButtons = new HashMap<>();
+		this.filters = new HashMap<>();
+		this.sort = null;
+		this.sortButton = null;
+		this.filters.put("_searchBar", panel -> panel.getName().toLowerCase().contains(this.searchBar.getText().toLowerCase()));
+		this.paint();
 	}
 
-	private IconTextField getSearchBar(final EmoteClueItemsPalette palette)
+	private final void paint()
+	{
+		super.removeAll();
+		final GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridx = 0;
+		c.weightx = 1;
+		super.add(this.searchBar, c);
+		c.weightx = 0;
+		for (final CycleButton filterButton : this.filterButtons.values())
+		{
+			c.gridx++;
+			super.add(filterButton, c);
+		}
+		this.entries.stream().sorted(this.sort).filter(e -> this.filters.values().stream().allMatch(p -> p.test(e))).forEach(entry ->
+		{
+			c.gridy++;
+			super.add(entry, c);
+		});
+		super.revalidate();
+		super.repaint();
+	}
+
+	public final void addSort(final Icon icon, final String toolTip, final Comparator<T> sort)
+	{
+		if (Objects.isNull(this.sortButton))
+		{
+			this.sortButton = new CycleButton(this.palette, icon, () -> this.sort = sort, toolTip);
+		}
+		else
+		{
+			this.sortButton.addOption(icon, () -> this.sort = sort, toolTip);
+		}
+		this.paint();
+	}
+
+	public final void addFilter(final String key, final Icon icon, final String toolTip, final Predicate<T> predicate)
+	{
+		if (this.filters.containsKey(key))
+		{
+			final CycleButton filterButton = this.filterButtons.get(key);
+			filterButton.addOption(icon, () -> this.filters.put(key, predicate), toolTip);
+		}
+		else
+		{
+			final CycleButton filterButton = new CycleButton(this.palette, icon, () -> this.filters.put(key, predicate), toolTip);
+			this.filterButtons.put(key, filterButton);
+		}
+		this.paint();
+	}
+
+	private IconTextField getSearchBar()
 	{
 		final IconTextField searchBar = new IconTextField();
 		searchBar.setIcon(IconTextField.Icon.SEARCH);
-		searchBar.setBackground(palette.getDefaultColor());
-		searchBar.setHoverBackgroundColor(palette.getHoverColor());
+		searchBar.setBackground(this.palette.getDefaultColor());
+		searchBar.setHoverBackgroundColor(this.palette.getHoverColor());
 		searchBar.setFont(FontManager.getRunescapeSmallFont());
 		searchBar.addKeyListener(new KeyListener()
 		{
@@ -86,10 +143,10 @@ public class DataGrid<T extends JPanel> extends JPanel
 			@Override
 			public void keyReleased(final KeyEvent e)
 			{
-				SearchBarFactory.this.onChange.run();
+				DataGrid.this.paint();
 			}
 		});
-		searchBar.addClearListener(this.onChange);
+		searchBar.addClearListener(this::paint);
 		return searchBar;
 	}
 
@@ -97,86 +154,6 @@ public class DataGrid<T extends JPanel> extends JPanel
 	{
 		this.entries.clear();
 		this.entries.addAll(entries);
-		this.display(this.entries.stream());
-	}
-
-	public void toggleFold(final RequirementPanel requirementPanel)
-	{
-		final RequirementPanel previous = this.expandedPanel;
-		if (this.expandedPanel != null)
-		{
-			this.expandedPanel.fold();
-			this.expandedPanel = null;
-		}
-		if (previous != requirementPanel)
-		{
-			requirementPanel.unfold();
-			this.expandedPanel = requirementPanel;
-		}
-		super.revalidate();
-		super.repaint();
-	}
-
-	public void setPredicate(final String key, final Predicate<T> predicate)
-	{
-		this.predicates.put(key, predicate);
-	}
-
-	public void removePredicate(final String key)
-	{
-		this.predicates.remove(key);
-	}
-
-	public void runFilters()
-	{
-		this.display(this.requirementPanels.stream().filter(requirementPanel -> this.filterables.entrySet().stream().allMatch(filter ->
-		{
-			final Object requirementValue = requirementPanel.getFilterable(filter.getKey());
-			if (requirementValue instanceof Collection<?>)
-			{
-				return ((Collection<?>) requirementValue).stream().anyMatch(filterValueElement -> this.filterValueMatches(filterValueElement, filter.getValue()));
-			}
-			return this.filterValueMatches(requirementValue, filter.getValue());
-		})));
-	}
-
-	private Boolean filterValueMatches(final Object filterValue, final Object value)
-	{
-		return filterValue == null || value == null || (value instanceof String) && (filterValue instanceof String) && ((String) filterValue)
-				.toLowerCase()
-				.contains(((String) value).toLowerCase()) || value.equals(filterValue);
-	}
-
-	public void sort(final SortType sortType, final Boolean reversed)
-	{
-		switch (sortType)
-		{
-			case Name:
-				this.requirementPanels.sort(Comparator.comparing(RequirementPanel::getName));
-				break;
-			case Quantity:
-				this.requirementPanels.sort(Comparator.comparing(RequirementPanel::getQuantity));
-				break;
-			default:
-				throw new IllegalArgumentException();
-		}
-		if (reversed)
-		{
-			Collections.reverse(this.requirementPanels);
-		}
-		this.runFilters();
-	}
-
-	private void display(final Stream<T> requirementPanels)
-	{
-		super.removeAll();
-		this.c.gridy = 0;
-		requirementPanels.forEachOrdered(requirementPanel ->
-		{
-			super.add(requirementPanel, this.c);
-			this.c.gridy++;
-		});
-		super.revalidate();
-		super.repaint();
+		this.paint();
 	}
 }

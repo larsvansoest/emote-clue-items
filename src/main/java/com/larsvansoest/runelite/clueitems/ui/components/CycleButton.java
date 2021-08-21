@@ -35,40 +35,26 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayDeque;
+import java.util.Objects;
 import java.util.Queue;
-import java.util.*;
-import java.util.function.Consumer;
 
-public class CycleButton<T> extends JPanel
+public class CycleButton extends JPanel
 {
 	private final JLabel optionLabel;
 	private final Queue<Stage> stageQueue;
 	private final String defaultToolTip;
 	private Stage currentStage;
-	private Map.Entry<T, Icon> currentValue;
+	private Icon currentValue;
 
 	CycleButton(
-			final EmoteClueItemsPalette emoteClueItemsPalette, final T primaryKey, final Icon primaryIcon, final Consumer<T> onSelectPrimary, final String defaultToolTip)
+			final EmoteClueItemsPalette emoteClueItemsPalette, final Icon primary, final Runnable onSelectPrimary, final String defaultToolTip)
 	{
-		this(emoteClueItemsPalette, new AbstractMap.SimpleImmutableEntry<T, Icon>(primaryKey, primaryIcon), onSelectPrimary, null, null, defaultToolTip);
+		this(emoteClueItemsPalette, primary, onSelectPrimary, null, null, defaultToolTip);
 	}
 
 	CycleButton(
-			final EmoteClueItemsPalette emoteClueItemsPalette, final T primaryKey, final Icon primaryIcon, final Consumer<T> onSelectPrimary, final T secondaryKey, final Icon secondaryIcon,
-			final Consumer<T> onSelectSecondary, final String defaultToolTip)
-	{
-		this(emoteClueItemsPalette,
-				new AbstractMap.SimpleImmutableEntry<T, Icon>(primaryKey, primaryIcon),
-				onSelectPrimary,
-				new AbstractMap.SimpleImmutableEntry<T, Icon>(secondaryKey, secondaryIcon),
-				onSelectSecondary,
-				defaultToolTip
-		);
-	}
-
-	CycleButton(
-			final EmoteClueItemsPalette emoteClueItemsPalette, final Map.Entry<T, Icon> primary, final Consumer<T> onSelectPrimary, final Map.Entry<T, Icon> secondary,
-			final Consumer<T> onSelectSecondary, final String defaultToolTip)
+			final EmoteClueItemsPalette emoteClueItemsPalette, final Icon primary, final Runnable onSelectPrimary, final Icon secondary, final Runnable onSelectSecondary, final String defaultToolTip)
 	{
 		super(new GridBagLayout());
 		super.setBackground(emoteClueItemsPalette.getDefaultColor());
@@ -97,13 +83,13 @@ public class CycleButton<T> extends JPanel
 		this.optionLabel = new JLabel();
 		this.optionLabel.setHorizontalAlignment(JLabel.CENTER);
 		this.optionLabel.setVerticalAlignment(JLabel.CENTER);
-		this.optionLabel.setIcon(primary.getValue());
+		this.optionLabel.setIcon(primary);
 
 		this.stageQueue = new ArrayDeque<>();
 		this.defaultToolTip = defaultToolTip;
 		this.currentStage = new Stage(primary, onSelectPrimary, secondary, onSelectSecondary, defaultToolTip);
 		this.currentValue = primary;
-		onSelectPrimary.accept(primary.getKey());
+		onSelectPrimary.run();
 
 		final GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
@@ -113,7 +99,7 @@ public class CycleButton<T> extends JPanel
 	private void next(final Boolean isPrimaryMouseKey)
 	{
 		final Stage stage;
-		final Consumer<T> runnable;
+		final Runnable runnable;
 		if (isPrimaryMouseKey || Objects.isNull(this.currentStage.getSecondary()))
 		{
 			stage = Objects.requireNonNull(this.stageQueue.poll());
@@ -124,7 +110,7 @@ public class CycleButton<T> extends JPanel
 			this.stageQueue.add(this.currentStage);
 			this.currentStage = stage;
 			this.currentValue = stage.getPrimary();
-			this.optionLabel.setIcon(stage.getPrimary().getValue());
+			this.optionLabel.setIcon(stage.getPrimary());
 			runnable = stage.getOnSelectPrimary();
 		}
 		else
@@ -132,39 +118,33 @@ public class CycleButton<T> extends JPanel
 			stage = this.currentStage;
 			final boolean isPrimaryValue = stage.primary == this.currentValue;
 			this.currentValue = isPrimaryValue ? this.currentStage.getSecondary() : this.currentStage.getPrimary();
-			this.optionLabel.setIcon(isPrimaryValue ? this.currentStage.getSecondary().getValue() : this.currentStage.getPrimary().getValue());
+			this.optionLabel.setIcon(isPrimaryValue ? this.currentStage.getSecondary() : this.currentStage.getPrimary());
 			runnable = isPrimaryValue ? stage.getOnSelectSecondary() : stage.getOnSelectPrimary();
 		}
 		final String toolTip = stage.getToolTip();
 		super.setToolTipText(toolTip == null ? this.defaultToolTip : toolTip);
-		runnable.accept(this.currentValue.getKey());
+		runnable.run();
 	}
 
-	public void addOption(final T value, final Icon icon, final Consumer<T> onSelect, final String toolTip)
+	public void addOption(final Icon icon, final Runnable onSelect, final String toolTip)
 	{
-		this.stageQueue.add(new Stage(new AbstractMap.SimpleImmutableEntry<>(value, icon), onSelect, null, null, toolTip));
+		this.stageQueue.add(new Stage(icon, onSelect, null, null, toolTip));
 	}
 
 	public void addOption(
-			final T primaryValue, final Icon primaryIcon, final Consumer<T> onSelectPrimary, final T secondaryValue, final Icon secondaryIcon, final Consumer<T> onSelectSecondary,
-			final String toolTip)
+			final Icon primary, final Runnable onSelectPrimary, final Icon secondary, final Runnable onSelectSecondary, final String toolTip)
 	{
-		this.stageQueue.add(new Stage(new AbstractMap.SimpleImmutableEntry<>(primaryValue, primaryIcon),
-				onSelectPrimary,
-				new AbstractMap.SimpleImmutableEntry<>(secondaryValue, secondaryIcon),
-				onSelectSecondary,
-				toolTip
-		));
+		this.stageQueue.add(new Stage(primary, onSelectPrimary, secondary, onSelectSecondary, toolTip));
 	}
 
 	@RequiredArgsConstructor
 	@Getter
 	private final class Stage
 	{
-		private final Map.Entry<T, Icon> primary;
-		private final Consumer<T> onSelectPrimary;
-		private final Map.Entry<T, Icon> secondary;
-		private final Consumer<T> onSelectSecondary;
+		private final Icon primary;
+		private final Runnable onSelectPrimary;
+		private final Icon secondary;
+		private final Runnable onSelectSecondary;
 		private final String toolTip;
 	}
 }
