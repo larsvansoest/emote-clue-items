@@ -103,11 +103,11 @@ public class CycleButton extends JPanel
 		if (isPrimaryMouseKey || Objects.isNull(this.currentStage.getSecondary()))
 		{
 			stage = Objects.requireNonNull(this.stageQueue.poll());
-			if (stage != this.currentStage)
+			this.stageQueue.add(this.currentStage);
+			if (stage == this.currentStage)
 			{
 				return;
 			}
-			this.stageQueue.add(this.currentStage);
 			this.currentStage = stage;
 			this.currentValue = stage.getPrimary();
 			this.optionLabel.setIcon(stage.getPrimary());
@@ -139,7 +139,7 @@ public class CycleButton extends JPanel
 
 	@RequiredArgsConstructor
 	@Getter
-	private static final class Stage
+	private final class Stage
 	{
 		private final Icon primary;
 		private final Runnable onSelectPrimary;

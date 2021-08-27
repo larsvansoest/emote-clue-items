@@ -35,17 +35,18 @@ import com.larsvansoest.runelite.clueitems.ui.components.FoldablePanelGrid;
 import com.larsvansoest.runelite.clueitems.ui.components.UpdatablePanel;
 
 import javax.swing.*;
+import java.util.Arrays;
 import java.util.Comparator;
 
 /**
  * Main {@link net.runelite.client.ui.PluginPanel} of the {@link com.larsvansoest.runelite.clueitems.EmoteClueItemsPlugin}, which displays {@link com.larsvansoest.runelite.clueitems.data.EmoteClueItem} requirement status progression.
  * <p>
- * Includes search bar, {@link com.larsvansoest.runelite.clueitems.ui.components.CycleButton} buttons to filter and sort by properties, such as {@link com.larsvansoest.runelite.clueitems.ui.components.UpdatablePanel}, requirement name, and more.
+ * Includes search bar, buttons to filter and sort by properties, such as {@link com.larsvansoest.runelite.clueitems.ui.components.UpdatablePanel}, requirement name, and more.
  *
  * @author Lars van Soest
  * @since 2.0.0
  */
-public class EmoteClueItemsGrid extends FoldablePanelGrid<ClueItemPanel>
+public class EmoteClueItemsGrid extends FoldablePanelGrid<EmoteClueItemPanel>
 {
 	public EmoteClueItemsGrid(final EmoteClueItemsPalette emoteClueItemsPalette)
 	{
@@ -88,20 +89,32 @@ public class EmoteClueItemsGrid extends FoldablePanelGrid<ClueItemPanel>
 		super.addFilter(filterKey,
 				new ImageIcon(EmoteClueImages.Ribbon.BEGINNER),
 				this.getToolTipText(toolTipTextFormat, "beginner"),
-				itemPanel -> itemPanel.getDifficulty() == EmoteClueDifficulty.Beginner
+				itemPanel -> Arrays.stream(itemPanel.getDifficulties()).anyMatch(difficulty -> difficulty == EmoteClueDifficulty.Beginner)
 		);
-		super.addFilter(filterKey, new ImageIcon(EmoteClueImages.Ribbon.EASY), this.getToolTipText(toolTipTextFormat, "easy"), itemPanel -> itemPanel.getDifficulty() == EmoteClueDifficulty.Easy);
+		super.addFilter(filterKey,
+				new ImageIcon(EmoteClueImages.Ribbon.EASY),
+				this.getToolTipText(toolTipTextFormat, "easy"),
+				itemPanel -> Arrays.stream(itemPanel.getDifficulties()).anyMatch(difficulty -> difficulty == EmoteClueDifficulty.Easy)
+		);
 		super.addFilter(filterKey,
 				new ImageIcon(EmoteClueImages.Ribbon.MEDIUM),
 				this.getToolTipText(toolTipTextFormat, "medium"),
-				itemPanel -> itemPanel.getDifficulty() == EmoteClueDifficulty.Medium
+				itemPanel -> Arrays.stream(itemPanel.getDifficulties()).anyMatch(difficulty -> difficulty == EmoteClueDifficulty.Medium)
 		);
-		super.addFilter(filterKey, new ImageIcon(EmoteClueImages.Ribbon.HARD), this.getToolTipText(toolTipTextFormat, "hard"), itemPanel -> itemPanel.getDifficulty() == EmoteClueDifficulty.Hard);
-		super.addFilter(filterKey, new ImageIcon(EmoteClueImages.Ribbon.ELITE), this.getToolTipText(toolTipTextFormat, "elite"), itemPanel -> itemPanel.getDifficulty() == EmoteClueDifficulty.Elite);
+		super.addFilter(filterKey,
+				new ImageIcon(EmoteClueImages.Ribbon.HARD),
+				this.getToolTipText(toolTipTextFormat, "hard"),
+				itemPanel -> Arrays.stream(itemPanel.getDifficulties()).anyMatch(difficulty -> difficulty == EmoteClueDifficulty.Hard)
+		);
+		super.addFilter(filterKey,
+				new ImageIcon(EmoteClueImages.Ribbon.ELITE),
+				this.getToolTipText(toolTipTextFormat, "elite"),
+				itemPanel -> Arrays.stream(itemPanel.getDifficulties()).anyMatch(difficulty -> difficulty == EmoteClueDifficulty.Elite)
+		);
 		super.addFilter(filterKey,
 				new ImageIcon(EmoteClueImages.Ribbon.MASTER),
 				this.getToolTipText(toolTipTextFormat, "master"),
-				itemPanel -> itemPanel.getDifficulty() == EmoteClueDifficulty.Master
+				itemPanel -> Arrays.stream(itemPanel.getDifficulties()).anyMatch(difficulty -> difficulty == EmoteClueDifficulty.Master)
 		);
 	}
 
@@ -109,16 +122,19 @@ public class EmoteClueItemsGrid extends FoldablePanelGrid<ClueItemPanel>
 	{
 		super.addSort(new ImageIcon(EmoteClueImages.Toolbar.SortType.QUANTITY_DESCENDING),
 				this.getToolTipText("Toggle order by %s (descending).", "quantity"),
-				Comparator.comparingInt(ClueItemPanel::getQuantity)
+				Comparator.comparingInt(EmoteClueItemPanel::getQuantity)
 		);
 		super.addSort(new ImageIcon(EmoteClueImages.Toolbar.SortType.QUANTITY_ASCENDING),
 				this.getToolTipText("Toggle order by %s (ascending).", "quantity"),
-				Comparator.comparingInt(ClueItemPanel::getQuantity).reversed()
+				Comparator.comparingInt(EmoteClueItemPanel::getQuantity).reversed()
 		);
-		super.addSort(new ImageIcon(EmoteClueImages.Toolbar.SortType.NAME_DESCENDING), this.getToolTipText("Toggle order by %s (ascending).", "name"), Comparator.comparing(ClueItemPanel::getName));
 		super.addSort(new ImageIcon(EmoteClueImages.Toolbar.SortType.NAME_DESCENDING),
 				this.getToolTipText("Toggle order by %s (ascending).", "name"),
-				Comparator.comparing(ClueItemPanel::getName).reversed()
+				Comparator.comparing(EmoteClueItemPanel::getName)
+		);
+		super.addSort(new ImageIcon(EmoteClueImages.Toolbar.SortType.NAME_DESCENDING),
+				this.getToolTipText("Toggle order by %s (ascending).", "name"),
+				Comparator.comparing(EmoteClueItemPanel::getName).reversed()
 		);
 	}
 

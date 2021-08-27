@@ -34,7 +34,6 @@ import com.larsvansoest.runelite.clueitems.overlay.EmoteClueItemsOverlay;
 import com.larsvansoest.runelite.clueitems.progress.ProgressManager;
 import com.larsvansoest.runelite.clueitems.progress.StashMonitor;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPanel;
-import com.larsvansoest.runelite.clueitems.ui.RequirementPanelProvider;
 import com.larsvansoest.runelite.clueitems.ui.components.EmoteClueItemsPalette;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
@@ -89,8 +88,7 @@ public class EmoteClueItemsPlugin extends Plugin
 		this.overlayManager.add(this.overlay);
 
 		final EmoteClueItemsPalette emoteClueItemsPalette = EmoteClueItemsPalette.RUNELITE;
-		final RequirementPanelProvider requirementPanelProvider = new RequirementPanelProvider(emoteClueItemsPalette, this.itemManager);
-		this.emoteClueItemsPanel = new EmoteClueItemsPanel(emoteClueItemsPalette, requirementPanelProvider);
+		this.emoteClueItemsPanel = new EmoteClueItemsPanel(emoteClueItemsPalette, this.itemManager, "Emote Clue Items", "v2.0.2", "https://github.com/larsvansoest/emote-clue-items");
 
 		this.navigationButton = NavigationButton
 				.builder()
@@ -102,7 +100,7 @@ public class EmoteClueItemsPlugin extends Plugin
 
 		this.clientToolbar.addNavigation(this.navigationButton);
 
-		this.progressManager = new ProgressManager(requirementPanelProvider, this.client, this.clientThread, new StashMonitor(this.configManager));
+		this.progressManager = new ProgressManager(this.emoteClueItemsPanel, this.client, this.clientThread, new StashMonitor(this.configManager));
 	}
 
 	@Subscribe

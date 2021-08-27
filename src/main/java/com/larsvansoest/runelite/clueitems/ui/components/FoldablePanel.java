@@ -67,6 +67,8 @@ public class FoldablePanel extends UpdatablePanel
 		super.setBackground(emoteClueItemsPalette.getDefaultColor());
 		super.setName(name);
 
+		this.expanded = false;
+
 		this.emoteClueItemsPalette = emoteClueItemsPalette;
 		this.foldContent = new JPanel(new GridBagLayout());
 

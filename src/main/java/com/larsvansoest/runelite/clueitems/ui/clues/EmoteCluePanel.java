@@ -44,7 +44,7 @@ import javax.swing.border.MatteBorder;
 import java.awt.*;
 
 
-public class ClueItemPanel extends FoldablePanel
+public class EmoteCluePanel extends FoldablePanel
 {
 	@Getter
 	private final Emote firstEmote;
@@ -56,16 +56,10 @@ public class ClueItemPanel extends FoldablePanel
 	private final String description;
 	@Getter
 	private final EmoteClueDifficulty difficulty;
-	private final JLabel quantityIcon;
-	@Getter
-	private int quantity;
 
-	public ClueItemPanel(final EmoteClueItemsPalette palette, final EmoteClue emoteClue)
+	public EmoteCluePanel(final EmoteClueItemsPalette palette, final EmoteClue emoteClue)
 	{
 		super(palette, emoteClue.getLocationName());
-
-		this.quantityIcon = new JLabel();
-		this.setQuantity(-1);
 
 		this.difficulty = emoteClue.getEmoteClueDifficulty();
 		super.addIcon(new JLabel(new ImageIcon(EmoteClueImages.getScroll(this.difficulty))));
@@ -80,12 +74,6 @@ public class ClueItemPanel extends FoldablePanel
 		super.addChild(this.getPropertyPanel(palette, "Second emote", this.secondEmote == null ? "none" : this.secondEmote.getName()));
 		super.addChild(this.getPropertyPanel(palette, "Enemy", this.enemy == null ? "none" : this.enemy.getText()));
 		super.addChild(this.getDescriptionPanel(palette, this.description));
-	}
-
-	public void setQuantity(final int quantity)
-	{
-		this.quantityIcon.setText(String.valueOf(quantity));
-		this.quantity = quantity;
 	}
 
 	private JPanel getPropertyPanel(final EmoteClueItemsPalette palette, final String name, final String value)
