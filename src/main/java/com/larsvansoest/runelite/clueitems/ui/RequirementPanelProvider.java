@@ -26,13 +26,17 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.ui.clues;
+package com.larsvansoest.runelite.clueitems.ui;
 
 import com.larsvansoest.runelite.clueitems.EmoteClueItemsPlugin;
 import com.larsvansoest.runelite.clueitems.data.EmoteClue;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueAssociations;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
-import com.larsvansoest.runelite.clueitems.ui.components.*;
+import com.larsvansoest.runelite.clueitems.ui.clues.ClueItemPanel;
+import com.larsvansoest.runelite.clueitems.ui.components.DataGrid;
+import com.larsvansoest.runelite.clueitems.ui.components.EmoteClueItemsPalette;
+import com.larsvansoest.runelite.clueitems.ui.components.ItemCollectionPanel;
+import com.larsvansoest.runelite.clueitems.ui.components.ItemSlotPanel;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.cluescrolls.clues.item.SingleItemRequirement;
 
@@ -48,7 +52,7 @@ import java.util.stream.Collectors;
  * @author Lars van Soest
  * @see javax.swing.JPanel
  * @see ItemPanel
- * @see ItemSubPanel
+ * @see com.larsvansoest.runelite.clueitems.ui.components.ItemCollectionPanel
  * @see ItemSlotPanel
  * @since 2.0.0
  */
@@ -82,7 +86,7 @@ public class RequirementPanelProvider
 		this.emoteClueItemPanelMap.forEach((emoteClueItem, itemPanel) ->
 		{
 			// Add item collection log
-			final ItemSubPanel subPanel = new ItemSubPanel(emoteClueItemsPalette);
+			final ItemCollectionPanel subPanel = new ItemCollectionPanel(emoteClueItemsPalette);
 			this.addSubItems(subPanel, emoteClueItem);
 			itemPanel.addChild(subPanel);
 
@@ -93,7 +97,7 @@ public class RequirementPanelProvider
 		this.dataGrid.load(this.emoteClueItemPanelMap.values());
 	}
 
-	private void addSubItems(final ItemSubPanel subPanel, final EmoteClueItem child)
+	private void addSubItems(final ItemCollectionPanel subPanel, final EmoteClueItem child)
 	{
 		final ItemSlotPanel childSlotPanel = this.slotPanelMap.get(child);
 		if (childSlotPanel != null)

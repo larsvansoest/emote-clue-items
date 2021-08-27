@@ -30,7 +30,8 @@ package com.larsvansoest.runelite.clueitems.progress;
 
 import com.larsvansoest.runelite.clueitems.data.EmoteClueAssociations;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
-import com.larsvansoest.runelite.clueitems.ui.clues.RequirementPanelProvider;
+import com.larsvansoest.runelite.clueitems.ui.RequirementPanelProvider;
+import com.larsvansoest.runelite.clueitems.ui.components.UpdatablePanel;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
@@ -45,7 +46,7 @@ import java.util.*;
 /**
  * Monitors player owned items and subsequent changes to {@link ItemContainer} objects for Inventory, Bank and Equipment.
  * <p>
- * Uses {@link RequirementPanelProvider} to represent requirement statuses on {@link com.larsvansoest.runelite.clueitems.ui.clues.ClueItemsPanelOld} accordingly.
+ * Uses {@link RequirementPanelProvider} to represent requirement statuses on {@link UpdatablePanel.Status} accordingly.
  *
  * @author Lars van Soest
  * @see EmoteClueItem
@@ -54,7 +55,7 @@ import java.util.*;
 public class ProgressManager
 {
 	public final StashMonitor stashMonitor;
-	private final Map<EmoteClueItem, Status> statusMap;
+	private final Map<EmoteClueItem, UpdatablePanel.Status> statusMap;
 	private final ItemMonitor itemsMonitor;
 	private final RequirementPanelProvider panelProvider;
 	private final Client client;
@@ -76,8 +77,8 @@ public class ProgressManager
 	{
 		for (final EmoteClueItem emoteClueItem : EmoteClueItem.values())
 		{
-			this.statusMap.put(emoteClueItem, Status.InComplete);
-			this.panelProvider.setEmoteClueItemStatus(emoteClueItem, Status.InComplete);
+			this.statusMap.put(emoteClueItem, UpdatablePanel.Status.InComplete);
+			this.panelProvider.setEmoteClueItemStatus(emoteClueItem, UpdatablePanel.Status.InComplete);
 			this.panelProvider.setItemSlotStatus(emoteClueItem, 0);
 			this.itemsMonitor.reset();
 			this.initialState = true;
@@ -110,7 +111,7 @@ public class ProgressManager
 	{
 		if (emoteClueItemChanges != null)
 		{
-			final LinkedList<Map.Entry<EmoteClueItem, Status>> parents = new LinkedList<>();
+			final LinkedList<Map.Entry<EmoteClueItem, UpdatablePanel.Status>> parents = new LinkedList<>();
 
 			// Set single item (sub-)requirement status
 			for (final Item item : emoteClueItemChanges)
@@ -118,14 +119,14 @@ public class ProgressManager
 				final int quantity = item.getQuantity();
 				final EmoteClueItem emoteClueItem = EmoteClueAssociations.ItemIdToEmoteClueItemSlot.get(item.getId());
 
-				final Status status = quantity > 0 ? Status.Complete : Status.InComplete;
+				final UpdatablePanel.Status status = quantity > 0 ? UpdatablePanel.Status.Complete : UpdatablePanel.Status.InComplete;
 				this.statusMap.put(emoteClueItem, status);
 				parents.add(new AbstractMap.SimpleEntry<>(emoteClueItem, status));
 
 				this.panelProvider.setItemSlotStatus(emoteClueItem, quantity);
 			}
 
-			final LinkedList<Map.Entry<EmoteClueItem, Status>> parentCache = new LinkedList<>();
+			final LinkedList<Map.Entry<EmoteClueItem, UpdatablePanel.Status>> parentCache = new LinkedList<>();
 			// Update requirement ancestors accordingly
 			while (parents.size() > 0)
 			{
@@ -135,13 +136,13 @@ public class ProgressManager
 				}
 				while (parentCache.size() > 0)
 				{
-					final Map.Entry<EmoteClueItem, Status> childEntry = parentCache.poll();
+					final Map.Entry<EmoteClueItem, UpdatablePanel.Status> childEntry = parentCache.poll();
 					final EmoteClueItem child = childEntry.getKey();
-					final Status status = childEntry.getValue();
+					final UpdatablePanel.Status status = childEntry.getValue();
 					this.panelProvider.setEmoteClueItemStatus(child, status);
 					for (final EmoteClueItem parent : child.getParents())
 					{
-						final Status parentStatus = this.getParentStatus(parent);
+						final UpdatablePanel.Status parentStatus = this.getParentStatus(parent);
 						parents.add(new AbstractMap.SimpleEntry<>(parent, parentStatus));
 						this.statusMap.put(parent, parentStatus);
 					}
@@ -150,32 +151,32 @@ public class ProgressManager
 		}
 	}
 
-	private Status getParentStatus(final EmoteClueItem parent)
+	private UpdatablePanel.Status getParentStatus(final EmoteClueItem parent)
 	{
 		final ItemRequirement parentRequirement = parent.getItemRequirement();
 		final List<EmoteClueItem> children = parent.getChildren();
 		return (parentRequirement instanceof AllRequirementsCollection) ? this.getParentAllStatus(children) : this.getParentAnyStatus(children);
 	}
 
-	private Status getParentAnyStatus(final List<EmoteClueItem> children)
+	private UpdatablePanel.Status getParentAnyStatus(final List<EmoteClueItem> children)
 	{
 		for (final EmoteClueItem child : children)
 		{
-			if (this.statusMap.get(child) == Status.Complete)
+			if (this.statusMap.get(child) == UpdatablePanel.Status.Complete)
 			{
-				return Status.Complete;
+				return UpdatablePanel.Status.Complete;
 			}
 		}
-		return Status.InComplete;
+		return UpdatablePanel.Status.InComplete;
 	}
 
-	private Status getParentAllStatus(final List<EmoteClueItem> children)
+	private UpdatablePanel.Status getParentAllStatus(final List<EmoteClueItem> children)
 	{
 		boolean anyMatch = false;
 		boolean allMatch = true;
 		for (final EmoteClueItem child : children)
 		{
-			if (this.statusMap.get(child) == Status.Complete)
+			if (this.statusMap.get(child) == UpdatablePanel.Status.Complete)
 			{
 				anyMatch = true;
 			}
@@ -184,6 +185,6 @@ public class ProgressManager
 				allMatch = false;
 			}
 		}
-		return allMatch ? Status.Complete : anyMatch ? Status.InProgress : Status.InComplete;
+		return allMatch ? UpdatablePanel.Status.Complete : anyMatch ? UpdatablePanel.Status.InProgress : UpdatablePanel.Status.InComplete;
 	}
 }

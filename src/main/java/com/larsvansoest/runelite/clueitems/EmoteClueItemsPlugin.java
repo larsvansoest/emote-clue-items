@@ -34,7 +34,7 @@ import com.larsvansoest.runelite.clueitems.overlay.EmoteClueItemsOverlay;
 import com.larsvansoest.runelite.clueitems.progress.ProgressManager;
 import com.larsvansoest.runelite.clueitems.progress.StashMonitor;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPanel;
-import com.larsvansoest.runelite.clueitems.ui.clues.RequirementPanelProvider;
+import com.larsvansoest.runelite.clueitems.ui.RequirementPanelProvider;
 import com.larsvansoest.runelite.clueitems.ui.components.EmoteClueItemsPalette;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;

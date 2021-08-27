@@ -3,6 +3,7 @@ package com.larsvansoest.runelite.clueitems.ui;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
 import com.larsvansoest.runelite.clueitems.ui.clues.EmoteClueItemsGrid;
 import com.larsvansoest.runelite.clueitems.ui.components.EmoteClueItemsPalette;
+import com.larsvansoest.runelite.clueitems.ui.components.FooterPanel;
 import com.larsvansoest.runelite.clueitems.ui.stashes.StashUnitPanel;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.materialtabs.MaterialTab;
@@ -10,26 +11,28 @@ import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class EmoteClueItemsPanel extends PluginPanel
 {
-	private final EmoteClueItemsPalette emoteClueItemsPalette;
-	private final EmoteClueItemsGrid clueItemsGrid;
-	private final StashUnitPanel stashUnitPanel;
 	private final MaterialTabGroup tabGroup;
+	private final ArrayList<JPanel> tabPanels;
 
-	public EmoteClueItemsPanel(final EmoteClueItemsPalette emoteClueItemsPalette, final EmoteClueItemsGrid requirementPanelProvider)
+	public EmoteClueItemsPanel(final EmoteClueItemsPalette palette, final EmoteClueItemsGrid requirementPanelProvider)
 	{
 		super();
 		super.setLayout(new GridBagLayout());
 		super.getScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		this.emoteClueItemsPalette = emoteClueItemsPalette;
-
-		this.clueItemsGrid = new EmoteClueItemsGrid(emoteClueItemsPalette);
-		this.stashUnitPanel = new StashUnitPanel(emoteClueItemsPalette);
 
 		this.tabGroup = new MaterialTabGroup();
 		this.tabGroup.setLayout(new GridLayout(0, 6, 7, 7));
+		this.tabPanels = new ArrayList<>();
+
+		final EmoteClueItemsGrid clueItemsGrid = new EmoteClueItemsGrid(palette);
+		final StashUnitPanel stashUnitPanel = new StashUnitPanel(palette);
+
+		this.addTab(new ImageIcon(EmoteClueImages.Toolbar.Footer.GITHUB), clueItemsGrid);
+		this.addTab(new ImageIcon(EmoteClueImages.Toolbar.Footer.GITHUB), stashUnitPanel);
 
 		final GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -39,31 +42,25 @@ public class EmoteClueItemsPanel extends PluginPanel
 
 		super.add(this.tabGroup, c);
 		c.gridy++;
-		super.add(this.clueItemsGrid, c);
-		super.add(this.stashUnitPanel, c);
+		super.add(clueItemsGrid, c);
+		super.add(stashUnitPanel, c);
 
-		c.gridy = 1;
-		final MaterialTab itemsTab = new MaterialTab(new ImageIcon(EmoteClueImages.Toolbar.Footer.GITHUB), this.tabGroup, null);
-		itemsTab.setOnSelectEvent(() ->
+		c.gridy++;
+		super.add(new FooterPanel(palette, ))
+	}
+
+	private void addTab(final ImageIcon icon, final JPanel visiblePanel)
+	{
+		final MaterialTab tab = new MaterialTab(icon, this.tabGroup, null);
+		tab.setOnSelectEvent(() ->
 		{
-			this.stashUnitPanel.setVisible(false);
-			this.clueItemsPanel.setVisible(true);
-
-			super.repaint();
-			super.revalidate();
+			for (final JPanel tabPanel : this.tabPanels)
+			{
+				tabPanel.setVisible(tabPanel == visiblePanel);
+			}
 			return true;
 		});
-		this.tabGroup.addTab(itemsTab);
-		final MaterialTab stashTab = new MaterialTab(new ImageIcon(EmoteClueImages.Toolbar.Footer.GITHUB), this.tabGroup, null);
-		stashTab.setOnSelectEvent(() ->
-		{
-			this.clueItemsPanel.setVisible(false);
-			this.stashUnitPanel.setVisible(true);
-
-			super.repaint();
-			super.revalidate();
-			return true;
-		});
-		this.tabGroup.addTab(stashTab);
+		this.tabPanels.add(visiblePanel);
+		this.tabGroup.addTab(tab);
 	}
 }

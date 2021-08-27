@@ -139,7 +139,7 @@ public class CycleButton extends JPanel
 
 	@RequiredArgsConstructor
 	@Getter
-	private final class Stage
+	private static final class Stage
 	{
 		private final Icon primary;
 		private final Runnable onSelectPrimary;

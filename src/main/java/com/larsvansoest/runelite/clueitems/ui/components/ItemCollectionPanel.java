@@ -29,91 +29,61 @@
 package com.larsvansoest.runelite.clueitems.ui.components;
 
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
-import net.runelite.client.ui.ColorScheme;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
-public class ItemSubPanel extends FoldablePanel
+public class ItemCollectionPanel extends FoldablePanel
 {
-	private final static int ROW_SIZE = 6;
+	private final int slotRowSize;
+	private final ArrayList<ItemSlotPanel> itemSlots;
+	private final JPanel itemsPanel;
+	private final GridBagConstraints c;
 
-	private final GridBagConstraints foldContentConstraints;
-	private Boolean expanded;
-
-	public ItemSubPanel(final EmoteClueItemsPalette emoteClueItemsPalette)
+	public ItemCollectionPanel(final EmoteClueItemsPalette emoteClueItemsPalette, final int slotRowSize)
 	{
 		super(emoteClueItemsPalette, "Collection log");
-		super.getFoldContent().setBackground(emoteClueItemsPalette.getSubPanelBackgroundColor());
 		super.setStatus(Status.Unknown);
+		super.addIcon(new JLabel(new ImageIcon(EmoteClueImages.Toolbar.Requirement.INVENTORY)));
 
-		final JLabel nameLabel = super.getFoldablePanelHeader().getNameLabel();
-		nameLabel.setHorizontalAlignment(JLabel.LEFT);
-		nameLabel.setPreferredSize(null);
-		nameLabel.setMinimumSize(null);
-		nameLabel.setMaximumSize(null);
-		nameLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+		this.itemsPanel = new JPanel(new GridBagLayout());
+		super.addChild(this.itemsPanel);
 
-		super.addLeftIcon(new JLabel(new ImageIcon(EmoteClueImages.Toolbar.Requirement.INVENTORY)));
-
-		this.foldContentConstraints = new GridBagConstraints();
-		this.foldContentConstraints.weightx = 0;
-		this.foldContentConstraints.fill = GridBagConstraints.BOTH;
-		this.expanded = false;
+		this.slotRowSize = slotRowSize;
+		this.c = new GridBagConstraints();
+		this.itemSlots = new ArrayList<>();
 	}
 
 	@Override
 	public void fold()
 	{
-		this.expanded = false;
+		this.itemsPanel.removeAll();
 		super.fold();
 	}
 
 	@Override
 	public void unfold()
 	{
-		final JPanel foldContent = super.getFoldContent();
-		final LinkedList<UpdatablePanel> itemSlots = super.getFoldContentElements();
-		super.getFoldablePanelHeader().unfold();
-		this.foldContentConstraints.gridx = 0;
-		this.foldContentConstraints.gridy = 0;
-
+		this.c.gridx = 0;
+		this.c.gridy = 0;
 		int i = 0;
-		while (i < itemSlots.size())
+		while (i < this.itemSlots.size())
 		{
-			foldContent.add(itemSlots.get(i), this.foldContentConstraints);
+			this.itemsPanel.add(this.itemSlots.get(i), this.c);
 			i++;
-			final int x = i % ROW_SIZE;
+			final int x = i % this.slotRowSize;
 			if (x == 0)
 			{
-				this.foldContentConstraints.gridy++;
+				this.c.gridy++;
 			}
-			this.foldContentConstraints.gridx = x;
+			this.c.gridx = x;
 		}
-
-		this.expanded = true;
-		foldContent.setVisible(true);
-		super.revalidate();
-		super.repaint();
+		super.unfold();
 	}
 
-	@Override
-	public void addChild(final UpdatablePanel child)
+	public void addItem(final ItemSlotPanel itemSlotPanel)
 	{
-		super.addChild(child);
-	}
-
-	@Override
-	public void onHeaderMousePressed()
-	{
-		if (this.expanded)
-		{
-			this.fold();
-		}
-		else
-		{
-			this.unfold();
-		}
+		this.itemSlots.add(itemSlotPanel);
 	}
 }
