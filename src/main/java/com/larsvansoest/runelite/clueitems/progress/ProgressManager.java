@@ -31,7 +31,6 @@ package com.larsvansoest.runelite.clueitems.progress;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueAssociations;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
 import com.larsvansoest.runelite.clueitems.ui.clues.RequirementPanelProvider;
-import com.larsvansoest.runelite.clueitems.ui.components.Status;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;

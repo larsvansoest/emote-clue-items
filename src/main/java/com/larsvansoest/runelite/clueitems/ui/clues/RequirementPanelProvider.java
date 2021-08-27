@@ -54,7 +54,6 @@ import java.util.stream.Collectors;
  */
 public class RequirementPanelProvider
 {
-	private final DataGrid dataGrid;
 	private final Map<EmoteClueItem, ItemPanel> emoteClueItemPanelMap;
 	private final Map<EmoteClueItem, ItemSlotPanel> slotPanelMap;
 

@@ -29,6 +29,8 @@
 package com.larsvansoest.runelite.clueitems.ui.components;
 
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
+import lombok.Getter;
+import lombok.Setter;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
@@ -45,22 +47,27 @@ public class FoldablePanel extends UpdatablePanel
 	private final JLabel foldIcon;
 	private final JShadowedLabel statusHeaderName;
 	private final JPanel foldContent;
-	private final ArrayList<UpdatablePanel> foldContentElements;
+	private final ArrayList<JComponent> foldContentElements;
 	private final ArrayList<FoldablePanel> foldContentFoldablePanels;
 	private final ArrayList<JLabel> headerLabels;
 	private final GridBagConstraints foldConstraints;
 	private final JPanel header;
-	private final Runnable onHeaderMousePressed;
-	private Boolean expanded;
 
-	public FoldablePanel(final EmoteClueItemsPalette emoteClueItemsPalette, final String name, final Runnable onHeaderMousePressed)
+	@Setter
+	@Getter
+	private Runnable onHeaderMousePressed;
+	@Getter
+	private Boolean expanded;
+	@Getter
+	private Status status;
+
+	public FoldablePanel(final EmoteClueItemsPalette emoteClueItemsPalette, final String name)
 	{
 		super.setLayout(new GridBagLayout());
 		super.setBackground(emoteClueItemsPalette.getDefaultColor());
 		super.setName(name);
 
 		this.emoteClueItemsPalette = emoteClueItemsPalette;
-		this.onHeaderMousePressed = onHeaderMousePressed;
 		this.foldContent = new JPanel(new GridBagLayout());
 
 		this.foldContent.setBackground(emoteClueItemsPalette.getFoldContentColor());
@@ -76,6 +83,10 @@ public class FoldablePanel extends UpdatablePanel
 		this.headerLabels = new ArrayList<>();
 		this.header = this.getHeader();
 		this.paintHeaderLabels();
+
+		this.onHeaderMousePressed = () ->
+		{
+		};
 
 		final GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
@@ -122,7 +133,7 @@ public class FoldablePanel extends UpdatablePanel
 		this.foldContentFoldablePanels.add((child));
 	}
 
-	public void addChild(final UpdatablePanel child)
+	public void addChild(final JComponent child)
 	{
 		this.foldContentElements.add(child);
 	}

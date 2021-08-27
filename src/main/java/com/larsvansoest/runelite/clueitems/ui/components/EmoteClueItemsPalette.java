@@ -66,4 +66,6 @@ public enum EmoteClueItemsPalette
 	private final Color footerColor;
 	private final Color disclaimerColor;
 	private final Color subPanelBackgroundColor;
+	private final Color propertyNameColor = ColorScheme.LIGHT_GRAY_COLOR;
+	private final Color propertyValueColor = new Color(ColorScheme.LIGHT_GRAY_COLOR.getRed(), ColorScheme.LIGHT_GRAY_COLOR.getGreen(), ColorScheme.LIGHT_GRAY_COLOR.getBlue(), 150);
 }

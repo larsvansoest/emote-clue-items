@@ -28,7 +28,10 @@
 
 package com.larsvansoest.runelite.clueitems.ui.components;
 
+import net.runelite.client.ui.ColorScheme;
+
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * A requirement progression visualisation {@link JPanel} extension with changeable {@link Status} representation.
@@ -39,8 +42,23 @@ import javax.swing.*;
  */
 public abstract class UpdatablePanel extends JPanel
 {
-	/**
-	 * Change item requirement panel to display desired {@link Status}.
-	 */
-	public abstract void setStatus(Status status);
+	public abstract void setStatus(UpdatablePanel.Status status);
+	
+	public enum Status
+	{
+		Complete(ColorScheme.PROGRESS_COMPLETE_COLOR),
+
+		InProgress(ColorScheme.PROGRESS_INPROGRESS_COLOR),
+
+		InComplete(ColorScheme.LIGHT_GRAY_COLOR),
+
+		Unknown(new Color(254, 254, 254, 69));
+
+		public final Color colour;
+
+		Status(final Color colour)
+		{
+			this.colour = colour;
+		}
+	}
 }
