@@ -89,11 +89,21 @@ public class DataGrid<T extends JPanel> extends JPanel
 		c.weightx = 1;
 		super.add(this.searchBar, c);
 		c.weightx = 0;
+		if (Objects.nonNull(this.sortButton))
+		{
+			c.gridx++;
+			super.add(this.sortButton, c);
+		}
 		for (final CycleButton filterButton : this.filterButtons.values())
 		{
 			c.gridx++;
 			super.add(filterButton, c);
 		}
+		c.gridwidth = this.filterButtons.size() + 1 + (Objects.nonNull(this.sortButton) ? 1 : 0); // searchbar consists of text input (1), filter (x) and sort (0|1) buttons.
+		c.weightx = 1;
+		c.gridx = 0;
+		c.gridy++;
+		super.add(this.separator, c);
 		c.gridy++;
 		super.add(this.disclaimerPanel, c);
 		this.entries.stream().sorted(this.sort).filter(e -> this.filters.values().stream().allMatch(p -> p.test(e))).forEach(entry ->
@@ -107,27 +117,37 @@ public class DataGrid<T extends JPanel> extends JPanel
 
 	public final void addSort(final Icon icon, final String toolTip, final Comparator<T> sort)
 	{
+		final Runnable onSelect = () ->
+		{
+			this.sort = sort;
+			this.paint();
+		};
 		if (Objects.isNull(this.sortButton))
 		{
-			this.sortButton = new CycleButton(this.palette, icon, () -> this.sort = sort, toolTip);
+			this.sortButton = new CycleButton(this.palette, icon, onSelect, toolTip);
 		}
 		else
 		{
-			this.sortButton.addOption(icon, () -> this.sort = sort, toolTip);
+			this.sortButton.addOption(icon, onSelect, toolTip);
 		}
 		this.paint();
 	}
 
 	public final void addFilter(final String key, final Icon icon, final String toolTip, final Predicate<T> predicate)
 	{
+		final Runnable onSelect = () ->
+		{
+			this.filters.put(key, predicate);
+			this.paint();
+		};
 		if (this.filters.containsKey(key))
 		{
 			final CycleButton filterButton = this.filterButtons.get(key);
-			filterButton.addOption(icon, () -> this.filters.put(key, predicate), toolTip);
+			filterButton.addOption(icon, onSelect, toolTip);
 		}
 		else
 		{
-			final CycleButton filterButton = new CycleButton(this.palette, icon, () -> this.filters.put(key, predicate), toolTip);
+			final CycleButton filterButton = new CycleButton(this.palette, icon, onSelect, toolTip);
 			this.filterButtons.put(key, filterButton);
 		}
 		this.paint();

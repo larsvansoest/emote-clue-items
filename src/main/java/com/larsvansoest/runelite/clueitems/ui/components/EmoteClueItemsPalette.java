@@ -36,7 +36,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Contains all {@link Color} instances used for any ui-related requirement progress display {@link JComponent} objects for the {@link com.larsvansoest.runelite.clueitems.ui.clues.ClueItemsPanelOld}.
+ * Contains all {@link Color} instances used for any ui-related requirement progress display {@link JComponent} objects for the {@link com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPanel}.
  *
  * @author Lars van Soest
  * @since 2.0.0
@@ -53,8 +53,10 @@ public enum EmoteClueItemsPalette
 			ColorScheme.DARK_GRAY_HOVER_COLOR,
 			ColorScheme.BRAND_ORANGE,
 			ColorScheme.MEDIUM_GRAY_COLOR,
-			ColorScheme.DARKER_GRAY_HOVER_COLOR,
-			ColorScheme.DARK_GRAY_COLOR
+			ColorScheme.BRAND_ORANGE,
+			ColorScheme.DARK_GRAY_COLOR,
+			ColorScheme.LIGHT_GRAY_COLOR,
+			new Color(ColorScheme.LIGHT_GRAY_COLOR.getRed(), ColorScheme.LIGHT_GRAY_COLOR.getGreen(), ColorScheme.LIGHT_GRAY_COLOR.getBlue(), 150)
 	);
 
 	private final Color defaultColor;
@@ -66,6 +68,6 @@ public enum EmoteClueItemsPalette
 	private final Color footerColor;
 	private final Color disclaimerColor;
 	private final Color subPanelBackgroundColor;
-	private final Color propertyNameColor = ColorScheme.LIGHT_GRAY_COLOR;
-	private final Color propertyValueColor = new Color(ColorScheme.LIGHT_GRAY_COLOR.getRed(), ColorScheme.LIGHT_GRAY_COLOR.getGreen(), ColorScheme.LIGHT_GRAY_COLOR.getBlue(), 150);
+	private final Color propertyNameColor;
+	private final Color propertyValueColor;
 }
