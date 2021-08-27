@@ -33,7 +33,6 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.IconTextField;
 
 import javax.swing.*;
-import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.List;
@@ -197,7 +196,8 @@ public class DataGrid<T extends JPanel> extends JPanel
 
 	private void setSeparatorColor(final Color color)
 	{
-		this.separator.setBorder(new MatteBorder(1, 0, 0, 0, color));
+		this.separator.setForeground(color);
+		this.separator.setBackground(color);
 	}
 
 	public void removeDisclaimer()
