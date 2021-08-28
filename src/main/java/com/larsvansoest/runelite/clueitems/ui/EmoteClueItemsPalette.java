@@ -26,7 +26,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.larsvansoest.runelite.clueitems.ui.components;
+package com.larsvansoest.runelite.clueitems.ui;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -50,11 +50,9 @@ public enum EmoteClueItemsPalette
 			ColorScheme.DARKER_GRAY_HOVER_COLOR,
 			ColorScheme.DARKER_GRAY_HOVER_COLOR,
 			ColorScheme.DARK_GRAY_HOVER_COLOR,
-			ColorScheme.DARK_GRAY_HOVER_COLOR,
-			ColorScheme.BRAND_ORANGE,
+			ColorScheme.LIGHT_GRAY_COLOR,
 			ColorScheme.MEDIUM_GRAY_COLOR,
-			ColorScheme.BRAND_ORANGE,
-			ColorScheme.DARK_GRAY_COLOR,
+			ColorScheme.DARKER_GRAY_HOVER_COLOR,
 			ColorScheme.LIGHT_GRAY_COLOR,
 			new Color(ColorScheme.LIGHT_GRAY_COLOR.getRed(), ColorScheme.LIGHT_GRAY_COLOR.getGreen(), ColorScheme.LIGHT_GRAY_COLOR.getBlue(), 150)
 	);
@@ -63,11 +61,9 @@ public enum EmoteClueItemsPalette
 	private final Color hoverColor;
 	private final Color selectColor;
 	private final Color foldContentColor;
-	private final Color foldContentElementColor;
-	private final Color separatorColor;
+	private final Color foldHeaderTextColor;
 	private final Color footerColor;
 	private final Color disclaimerColor;
-	private final Color subPanelBackgroundColor;
 	private final Color propertyNameColor;
 	private final Color propertyValueColor;
 }

@@ -28,6 +28,7 @@
 
 package com.larsvansoest.runelite.clueitems.ui.components;
 
+import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.IconTextField;
@@ -72,7 +73,6 @@ public class DataGrid<T extends JPanel> extends JPanel
 		this.filters.put("_searchBar", panel -> panel.getName().toLowerCase().contains(this.searchBar.getText().toLowerCase()));
 
 		this.separator = new JSeparator(SwingConstants.HORIZONTAL);
-		this.setSeparatorColor(palette.getSeparatorColor());
 		final Dimension separatorSize = new Dimension(this.separator.getWidth(), 1);
 		this.separator.setMinimumSize(separatorSize);
 		this.separator.setPreferredSize(separatorSize);

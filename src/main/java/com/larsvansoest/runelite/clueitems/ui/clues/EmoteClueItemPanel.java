@@ -29,7 +29,7 @@
 package com.larsvansoest.runelite.clueitems.ui.clues;
 
 import com.larsvansoest.runelite.clueitems.data.*;
-import com.larsvansoest.runelite.clueitems.ui.components.EmoteClueItemsPalette;
+import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
 import com.larsvansoest.runelite.clueitems.ui.components.FoldablePanel;
 import lombok.Getter;
 

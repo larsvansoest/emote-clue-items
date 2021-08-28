@@ -28,6 +28,7 @@
 
 package com.larsvansoest.runelite.clueitems.ui.components;
 
+import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

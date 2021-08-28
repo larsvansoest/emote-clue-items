@@ -33,8 +33,8 @@ import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
 import com.larsvansoest.runelite.clueitems.overlay.EmoteClueItemsOverlay;
 import com.larsvansoest.runelite.clueitems.progress.ProgressManager;
 import com.larsvansoest.runelite.clueitems.progress.StashMonitor;
+import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPanel;
-import com.larsvansoest.runelite.clueitems.ui.components.EmoteClueItemsPalette;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -109,7 +109,7 @@ public class EmoteClueItemsPlugin extends Plugin
 		this.progressManager.handleEmoteClueItemChanges(event);
 		if (event.getContainerId() == 95)
 		{
-			//this.emoteClueItemsPanel.removeDisclaimer();
+			this.emoteClueItemsPanel.removeEmoteClueItemGridDisclaimer();
 		}
 	}
 
@@ -119,7 +119,7 @@ public class EmoteClueItemsPlugin extends Plugin
 		if (event.getGameState() == GameState.LOGIN_SCREEN)
 		{
 			this.progressManager.reset();
-			//this.emoteClueItemsPanel.setDisclaimer("To start display of progression, please open your bank once.");
+			this.emoteClueItemsPanel.setEmoteClueItemGridDisclaimer("To start display of progression, please open your bank once.");
 		}
 	}
 

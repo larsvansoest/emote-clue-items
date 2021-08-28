@@ -1,5 +1,7 @@
 package com.larsvansoest.runelite.clueitems.ui.components;
 
+import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
+
 import java.util.Collection;
 import java.util.Objects;
 

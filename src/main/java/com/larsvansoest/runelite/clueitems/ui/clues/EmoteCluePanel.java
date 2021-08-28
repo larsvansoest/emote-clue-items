@@ -31,7 +31,7 @@ package com.larsvansoest.runelite.clueitems.ui.clues;
 import com.larsvansoest.runelite.clueitems.data.EmoteClue;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
-import com.larsvansoest.runelite.clueitems.ui.components.EmoteClueItemsPalette;
+import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
 import com.larsvansoest.runelite.clueitems.ui.components.FoldablePanel;
 import lombok.Getter;
 import net.runelite.client.plugins.cluescrolls.clues.Enemy;
@@ -79,17 +79,16 @@ public class EmoteCluePanel extends FoldablePanel
 	private JPanel getPropertyPanel(final EmoteClueItemsPalette palette, final String name, final String value)
 	{
 		final JPanel propertyPanel = new JPanel(new GridBagLayout());
+		propertyPanel.setBackground(palette.getFoldContentColor());
 
 		final JLabel nameLabel = new JShadowedLabel(String.format("%s:", name));
 		nameLabel.setFont(FontManager.getRunescapeSmallFont());
 		nameLabel.setForeground(palette.getPropertyNameColor());
-		nameLabel.setOpaque(false);
 		nameLabel.setHorizontalAlignment(JLabel.CENTER);
 
 		final JLabel valueLabel = new JLabel(value.toLowerCase());
 		valueLabel.setFont(FontManager.getRunescapeSmallFont());
 		valueLabel.setForeground(palette.getPropertyValueColor());
-		valueLabel.setOpaque(false);
 		valueLabel.setHorizontalAlignment(JLabel.CENTER);
 
 		final GridBagConstraints c = new GridBagConstraints();

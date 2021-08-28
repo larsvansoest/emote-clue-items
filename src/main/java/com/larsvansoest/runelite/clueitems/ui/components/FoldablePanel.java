@@ -29,6 +29,7 @@
 package com.larsvansoest.runelite.clueitems.ui.components;
 
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
+import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.client.ui.ColorScheme;
@@ -40,6 +41,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class FoldablePanel extends UpdatablePanel
 {
@@ -53,6 +55,18 @@ public class FoldablePanel extends UpdatablePanel
 	private final ArrayList<JLabel> rightHeaderLabels;
 	private final JPanel header;
 
+	@Setter
+	@Getter
+	private int foldContentLeftInset;
+	@Setter
+	@Getter
+	private int foldContentRightInset;
+	@Setter
+	@Getter
+	private int foldContentBottomInset;
+	@Setter
+	@Getter
+	private Integer fixedFoldContentTopInset;
 	@Setter
 	@Getter
 	private Runnable onHeaderMousePressed;
@@ -94,6 +108,10 @@ public class FoldablePanel extends UpdatablePanel
 				this.unfold();
 			}
 		};
+		this.foldContentLeftInset = 5;
+		this.foldContentRightInset = 5;
+		this.foldContentBottomInset = 5;
+		this.fixedFoldContentTopInset = null;
 
 		final GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
@@ -163,11 +181,11 @@ public class FoldablePanel extends UpdatablePanel
 		final GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
 		c.weightx = 1;
-		c.insets = new Insets(0, 5, 5, 5);
+		c.insets = new Insets(0, this.foldContentLeftInset, this.foldContentBottomInset, this.foldContentRightInset);
 		c.gridy = 0;
 		for (int i = 0; i < this.foldContentElements.size(); i++)
 		{
-			c.insets.top = i == 0 ? 5 : 0;
+			c.insets.top = Objects.nonNull(this.fixedFoldContentTopInset) ? this.fixedFoldContentTopInset : i == 0 ? 5 : 0;
 			this.foldContent.add(this.foldContentElements.get(i), c);
 			c.gridy++;
 		}
@@ -181,8 +199,13 @@ public class FoldablePanel extends UpdatablePanel
 
 	public void setStatus(final Status status)
 	{
-		this.statusHeaderName.setForeground(status.colour);
+		this.setHeaderColor(status.colour);
 		this.status = status;
+	}
+
+	public void setHeaderColor(final Color colour)
+	{
+		this.statusHeaderName.setForeground(colour);
 	}
 
 	public final void addRightIcon(final JLabel iconLabel)

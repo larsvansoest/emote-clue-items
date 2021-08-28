@@ -29,6 +29,7 @@
 package com.larsvansoest.runelite.clueitems.ui.components;
 
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
+import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.LinkBrowser;
 
@@ -46,8 +47,8 @@ public class FooterPanel extends JPanel
 		final Color color = emoteClueItemsPalette.getFooterColor();
 		final Font font = FontManager.getRunescapeSmallFont();
 
-		final JSeparator separator = new JSeparator();
-		separator.setForeground(color);
+		final JSeparator separator = new JSeparator(SwingConstants.HORIZONTAL);
+		separator.setBackground(color);
 
 		final JLabel pluginNameLabel = this.getTextLabel(String.format("%s %s", pluginName, pluginVersion), font, color);
 		final JLabel gitHubLabel = this.getGitHubLabel(gitHubUrl);

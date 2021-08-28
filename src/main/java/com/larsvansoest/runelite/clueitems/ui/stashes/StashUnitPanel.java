@@ -1,6 +1,6 @@
 package com.larsvansoest.runelite.clueitems.ui.stashes;
 
-import com.larsvansoest.runelite.clueitems.ui.components.EmoteClueItemsPalette;
+import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
 
 import javax.swing.*;
 

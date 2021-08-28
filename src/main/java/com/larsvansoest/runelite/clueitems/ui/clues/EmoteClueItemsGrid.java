@@ -30,9 +30,10 @@ package com.larsvansoest.runelite.clueitems.ui.clues;
 
 import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
-import com.larsvansoest.runelite.clueitems.ui.components.EmoteClueItemsPalette;
+import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
 import com.larsvansoest.runelite.clueitems.ui.components.FoldablePanelGrid;
 import com.larsvansoest.runelite.clueitems.ui.components.UpdatablePanel;
+import net.runelite.client.ui.ColorScheme;
 
 import javax.swing.*;
 import java.util.Arrays;
@@ -85,7 +86,7 @@ public class EmoteClueItemsGrid extends FoldablePanelGrid<EmoteClueItemPanel>
 		final String filterKey = "difficulty";
 		final String toolTipTextFormat = "Toggle show %s difficulties.";
 
-		super.addFilter(filterKey, new ImageIcon(EmoteClueImages.Ribbon.ALL), this.getToolTipText(toolTipTextFormat, "all"), $ -> true);
+		super.addFilter(filterKey, new ImageIcon(EmoteClueImages.Ribbon.ALL), this.getToolTipText(toolTipTextFormat, "all"), $ -> true, ColorScheme.BRAND_ORANGE);
 		super.addFilter(filterKey,
 				new ImageIcon(EmoteClueImages.Ribbon.BEGINNER),
 				this.getToolTipText(toolTipTextFormat, "beginner"),

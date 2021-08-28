@@ -7,7 +7,10 @@ import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
 import com.larsvansoest.runelite.clueitems.ui.clues.EmoteClueItemPanel;
 import com.larsvansoest.runelite.clueitems.ui.clues.EmoteClueItemsGrid;
 import com.larsvansoest.runelite.clueitems.ui.clues.EmoteCluePanel;
-import com.larsvansoest.runelite.clueitems.ui.components.*;
+import com.larsvansoest.runelite.clueitems.ui.components.FooterPanel;
+import com.larsvansoest.runelite.clueitems.ui.components.ItemCollectionPanel;
+import com.larsvansoest.runelite.clueitems.ui.components.ItemSlotPanel;
+import com.larsvansoest.runelite.clueitems.ui.components.UpdatablePanel;
 import com.larsvansoest.runelite.clueitems.ui.stashes.StashUnitPanel;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.PluginPanel;
@@ -30,6 +33,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 
 	private final Map<EmoteClueItem, EmoteClueItemPanel> emoteClueItemPanelMap;
 	private final Map<EmoteClueItem, ItemSlotPanel> slotPanelMap;
+	private final EmoteClueItemsGrid clueItemsGrid;
 
 	public EmoteClueItemsPanel(final EmoteClueItemsPalette palette, final ItemManager itemManager, final String pluginName, final String pluginVersion, final String gitHubUrl)
 	{
@@ -57,21 +61,22 @@ public class EmoteClueItemsPanel extends PluginPanel
 			// Add item collection log
 			final ItemCollectionPanel collectionPanel = new ItemCollectionPanel(palette, 6);
 			this.addSubItems(collectionPanel, emoteClueItem);
+			collectionPanel.setHeaderColor(palette.getFoldHeaderTextColor()); // Header will not display collection progress. 
 			itemPanel.addChild(collectionPanel);
 
 			// Add emote clue panels & info
 			Arrays.stream(EmoteClueAssociations.EmoteClueItemToEmoteClues.get(emoteClueItem)).map(emoteCluePanelMap::get).forEach(itemPanel::addChild);
 		});
 
-		final EmoteClueItemsGrid clueItemsGrid = new EmoteClueItemsGrid(palette);
-		clueItemsGrid.load(this.emoteClueItemPanelMap.values());
+		this.clueItemsGrid = new EmoteClueItemsGrid(palette);
+		this.clueItemsGrid.load(this.emoteClueItemPanelMap.values());
 
 		final StashUnitPanel stashUnitPanel = new StashUnitPanel(palette);
 
 		this.tabGroup = new MaterialTabGroup();
 		this.tabGroup.setLayout(new GridLayout(0, 6, 7, 7));
 		this.tabPanels = new ArrayList<>();
-		this.addTab(new ImageIcon(EmoteClueImages.Toolbar.Footer.GITHUB), clueItemsGrid);
+		this.addTab(new ImageIcon(EmoteClueImages.Toolbar.Footer.GITHUB), this.clueItemsGrid);
 		this.addTab(new ImageIcon(EmoteClueImages.Toolbar.Footer.GITHUB), stashUnitPanel);
 
 		final GridBagConstraints c = new GridBagConstraints();
@@ -82,7 +87,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 
 		super.add(this.tabGroup, c);
 		c.gridy++;
-		super.add(clueItemsGrid, c);
+		super.add(this.clueItemsGrid, c);
 		super.add(stashUnitPanel, c);
 
 		c.gridy++;
@@ -152,5 +157,15 @@ public class EmoteClueItemsPanel extends PluginPanel
 		{
 			itemPanel.setStatus(status);
 		}
+	}
+
+	public void setEmoteClueItemGridDisclaimer(final String text)
+	{
+		this.clueItemsGrid.setDisclaimer(text);
+	}
+
+	public void removeEmoteClueItemGridDisclaimer()
+	{
+		this.clueItemsGrid.removeDisclaimer();
 	}
 }

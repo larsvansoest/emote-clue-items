@@ -29,6 +29,7 @@
 package com.larsvansoest.runelite.clueitems.ui.components;
 
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
+import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,14 +41,21 @@ public class ItemCollectionPanel extends FoldablePanel
 	private final ArrayList<ItemSlotPanel> itemSlots;
 	private final JPanel itemsPanel;
 	private final GridBagConstraints c;
+	private final Color itemSlotBackGround;
 
-	public ItemCollectionPanel(final EmoteClueItemsPalette emoteClueItemsPalette, final int slotRowSize)
+	public ItemCollectionPanel(final EmoteClueItemsPalette palette, final int slotRowSize)
 	{
-		super(emoteClueItemsPalette, "Collection log");
+		super(palette, "Collection log");
 		super.setStatus(Status.Unknown);
 		super.addLeftIcon(new JLabel(new ImageIcon(EmoteClueImages.Toolbar.Requirement.INVENTORY)));
 
+		this.itemSlotBackGround = palette.getFoldContentColor();
+
 		this.itemsPanel = new JPanel(new GridBagLayout());
+		this.itemsPanel.setBackground(this.itemSlotBackGround);
+		super.setFoldContentLeftInset(0);
+		super.setFoldContentRightInset(0);
+		super.setFixedFoldContentTopInset(1);
 		super.addChild(this.itemsPanel);
 
 		this.slotRowSize = slotRowSize;
@@ -84,6 +92,7 @@ public class ItemCollectionPanel extends FoldablePanel
 
 	public void addItem(final ItemSlotPanel itemSlotPanel)
 	{
+		itemSlotPanel.setBackground(this.itemSlotBackGround);
 		this.itemSlots.add(itemSlotPanel);
 	}
 }
