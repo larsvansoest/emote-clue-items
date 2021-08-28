@@ -45,7 +45,7 @@ public class ItemCollectionPanel extends FoldablePanel
 	{
 		super(emoteClueItemsPalette, "Collection log");
 		super.setStatus(Status.Unknown);
-		super.addIcon(new JLabel(new ImageIcon(EmoteClueImages.Toolbar.Requirement.INVENTORY)));
+		super.addLeftIcon(new JLabel(new ImageIcon(EmoteClueImages.Toolbar.Requirement.INVENTORY)));
 
 		this.itemsPanel = new JPanel(new GridBagLayout());
 		super.addChild(this.itemsPanel);

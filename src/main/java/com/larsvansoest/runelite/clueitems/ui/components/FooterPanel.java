@@ -33,7 +33,6 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.LinkBrowser;
 
 import javax.swing.*;
-import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -48,7 +47,7 @@ public class FooterPanel extends JPanel
 		final Font font = FontManager.getRunescapeSmallFont();
 
 		final JSeparator separator = new JSeparator();
-		separator.setBorder(new MatteBorder(1, 0, 0, 0, color));
+		separator.setForeground(color);
 
 		final JLabel pluginNameLabel = this.getTextLabel(String.format("%s %s", pluginName, pluginVersion), font, color);
 		final JLabel gitHubLabel = this.getGitHubLabel(gitHubUrl);
@@ -62,11 +61,9 @@ public class FooterPanel extends JPanel
 		super.add(separator, c);
 		c.insets.top = 5;
 		c.gridy++;
-		c.weightx = 0;
 		c.gridwidth = 1;
 		c.insets.left = 1;
 		c.insets.right = 1;
-		c.weightx = 1;
 		c.anchor = GridBagConstraints.EAST;
 		super.add(pluginNameLabel, c);
 		c.gridx++;

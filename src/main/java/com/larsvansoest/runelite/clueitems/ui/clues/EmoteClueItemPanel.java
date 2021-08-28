@@ -51,9 +51,9 @@ public class EmoteClueItemPanel extends FoldablePanel
 		final EmoteClue[] emoteClues = EmoteClueAssociations.EmoteClueItemToEmoteClues.get(emoteClueItem);
 
 		this.difficulties = Arrays.stream(emoteClues).map(EmoteClue::getEmoteClueDifficulty).distinct().toArray(EmoteClueDifficulty[]::new);
-		Arrays.stream(this.difficulties).map(EmoteClueImages::getRibbon).map(ImageIcon::new).map(JLabel::new).forEach(super::addIcon);
+		Arrays.stream(this.difficulties).map(EmoteClueImages::getRibbon).map(ImageIcon::new).map(JLabel::new).forEach(super::addRightIcon);
 
 		this.quantity = emoteClues.length;
-		super.addIcon(new JLabel(String.valueOf(this.quantity)));
+		super.addRightIcon(new JLabel(String.valueOf(this.quantity)));
 	}
 }

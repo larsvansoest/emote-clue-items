@@ -7,10 +7,7 @@ import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
 import com.larsvansoest.runelite.clueitems.ui.clues.EmoteClueItemPanel;
 import com.larsvansoest.runelite.clueitems.ui.clues.EmoteClueItemsGrid;
 import com.larsvansoest.runelite.clueitems.ui.clues.EmoteCluePanel;
-import com.larsvansoest.runelite.clueitems.ui.components.EmoteClueItemsPalette;
-import com.larsvansoest.runelite.clueitems.ui.components.ItemCollectionPanel;
-import com.larsvansoest.runelite.clueitems.ui.components.ItemSlotPanel;
-import com.larsvansoest.runelite.clueitems.ui.components.UpdatablePanel;
+import com.larsvansoest.runelite.clueitems.ui.components.*;
 import com.larsvansoest.runelite.clueitems.ui.stashes.StashUnitPanel;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.PluginPanel;
@@ -89,7 +86,8 @@ public class EmoteClueItemsPanel extends PluginPanel
 		super.add(stashUnitPanel, c);
 
 		c.gridy++;
-		//super.add(new FooterPanel(palette, pluginName, pluginVersion, gitHubUrl));
+		c.insets = new Insets(10, 20, 0, 20);
+		super.add(new FooterPanel(palette, pluginName, pluginVersion, gitHubUrl), c);
 	}
 
 	private void addTab(final ImageIcon icon, final JPanel visiblePanel)
@@ -112,7 +110,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 		final ItemSlotPanel childSlotPanel = this.slotPanelMap.get(child);
 		if (childSlotPanel != null)
 		{
-			subPanel.addChild(childSlotPanel);
+			subPanel.addItem(childSlotPanel);
 			return;
 		}
 

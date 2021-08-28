@@ -46,6 +46,8 @@ public class CycleButton extends JPanel
 	private final String defaultToolTip;
 	private Stage currentStage;
 	private Icon currentValue;
+	private int minWidth;
+	private int minHeight;
 
 	CycleButton(
 			final EmoteClueItemsPalette emoteClueItemsPalette, final Icon primary, final Runnable onSelectPrimary, final String defaultToolTip)
@@ -84,6 +86,11 @@ public class CycleButton extends JPanel
 		this.optionLabel.setHorizontalAlignment(JLabel.CENTER);
 		this.optionLabel.setVerticalAlignment(JLabel.CENTER);
 		this.optionLabel.setIcon(primary);
+		this.minWidth = primary.getIconWidth();
+		this.minHeight = primary.getIconHeight();
+		final Dimension size = new Dimension(this.minWidth, this.minHeight);
+		super.setMinimumSize(size);
+		super.setPreferredSize(size);
 
 		this.stageQueue = new ArrayDeque<>();
 		this.defaultToolTip = defaultToolTip;
@@ -128,13 +135,18 @@ public class CycleButton extends JPanel
 
 	public void addOption(final Icon icon, final Runnable onSelect, final String toolTip)
 	{
-		this.stageQueue.add(new Stage(icon, onSelect, null, null, toolTip));
+		this.addOption(icon, onSelect, null, null, toolTip);
 	}
 
 	public void addOption(
 			final Icon primary, final Runnable onSelectPrimary, final Icon secondary, final Runnable onSelectSecondary, final String toolTip)
 	{
 		this.stageQueue.add(new Stage(primary, onSelectPrimary, secondary, onSelectSecondary, toolTip));
+		this.minWidth = Math.max(this.minWidth, primary.getIconWidth());
+		this.minHeight = Math.max(this.minHeight, primary.getIconHeight());
+		final Dimension size = new Dimension(this.minWidth, this.minHeight);
+		super.setMinimumSize(size);
+		super.setPreferredSize(size);
 	}
 
 	@RequiredArgsConstructor

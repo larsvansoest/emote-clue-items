@@ -54,6 +54,7 @@ public class DataGrid<T extends JPanel> extends JPanel
 	private final EmoteClueItemsPalette palette;
 	private final DisclaimerPanel disclaimerPanel;
 	private final JSeparator separator;
+	private final JPanel entryList;
 	private Comparator<T> sort;
 	private CycleButton sortButton;
 
@@ -70,24 +71,33 @@ public class DataGrid<T extends JPanel> extends JPanel
 		this.sortButton = null;
 		this.filters.put("_searchBar", panel -> panel.getName().toLowerCase().contains(this.searchBar.getText().toLowerCase()));
 
-		this.separator = new JSeparator();
+		this.separator = new JSeparator(SwingConstants.HORIZONTAL);
 		this.setSeparatorColor(palette.getSeparatorColor());
+		final Dimension separatorSize = new Dimension(this.separator.getWidth(), 1);
+		this.separator.setMinimumSize(separatorSize);
+		this.separator.setPreferredSize(separatorSize);
+		this.separator.setMaximumSize(separatorSize);
 
 		this.disclaimerPanel = new DisclaimerPanel(palette, this::removeDisclaimer);
 		this.disclaimerPanel.setVisible(false);
 
+		this.entryList = new JPanel(new GridBagLayout());
+
 		this.paint();
 	}
 
-	private final void paint()
+	private void paint()
 	{
 		super.removeAll();
 		final GridBagConstraints c = new GridBagConstraints();
-		c.fill = GridBagConstraints.HORIZONTAL;
+		c.fill = GridBagConstraints.BOTH;
 		c.gridx = 0;
+		c.gridy = 0;
 		c.weightx = 1;
 		super.add(this.searchBar, c);
 		c.weightx = 0;
+		c.ipadx = 10;
+		c.ipady = 10;
 		if (Objects.nonNull(this.sortButton))
 		{
 			c.gridx++;
@@ -98,28 +108,43 @@ public class DataGrid<T extends JPanel> extends JPanel
 			c.gridx++;
 			super.add(filterButton, c);
 		}
+		c.ipadx = 0;
+		c.ipady = 0;
 		c.gridwidth = this.filterButtons.size() + 1 + (Objects.nonNull(this.sortButton) ? 1 : 0); // searchbar consists of text input (1), filter (x) and sort (0|1) buttons.
-		c.weightx = 1;
 		c.gridx = 0;
+		c.weightx = 1;
 		c.gridy++;
 		super.add(this.separator, c);
 		c.gridy++;
 		super.add(this.disclaimerPanel, c);
+		c.gridy++;
+		super.add(this.entryList, c);
+		this.query();
+	}
+
+	private void query()
+	{
+		this.entryList.removeAll();
+		final GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.BOTH;
+		c.weightx = 1;
+		c.gridy = 0;
+		c.gridx = 0;
 		this.entries.stream().sorted(this.sort).filter(e -> this.filters.values().stream().allMatch(p -> p.test(e))).forEach(entry ->
 		{
+			this.entryList.add(entry, c);
 			c.gridy++;
-			super.add(entry, c);
 		});
 		super.revalidate();
 		super.repaint();
 	}
 
-	public final void addSort(final Icon icon, final String toolTip, final Comparator<T> sort)
+	public void addSort(final Icon icon, final String toolTip, final Comparator<T> sort)
 	{
 		final Runnable onSelect = () ->
 		{
 			this.sort = sort;
-			this.paint();
+			this.query();
 		};
 		if (Objects.isNull(this.sortButton))
 		{
@@ -132,12 +157,16 @@ public class DataGrid<T extends JPanel> extends JPanel
 		this.paint();
 	}
 
-	public final void addFilter(final String key, final Icon icon, final String toolTip, final Predicate<T> predicate)
+	public void addFilter(final String key, final Icon icon, final String toolTip, final Predicate<T> predicate, final Color separatorColor)
 	{
 		final Runnable onSelect = () ->
 		{
 			this.filters.put(key, predicate);
-			this.paint();
+			if (Objects.nonNull(separatorColor))
+			{
+				this.setSeparatorColor(separatorColor);
+			}
+			this.query();
 		};
 		if (this.filters.containsKey(key))
 		{
@@ -150,6 +179,11 @@ public class DataGrid<T extends JPanel> extends JPanel
 			this.filterButtons.put(key, filterButton);
 		}
 		this.paint();
+	}
+
+	public void addFilter(final String key, final Icon icon, final String toolTip, final Predicate<T> predicate)
+	{
+		this.addFilter(key, icon, toolTip, predicate, null);
 	}
 
 	private IconTextField getSearchBar()
@@ -174,10 +208,10 @@ public class DataGrid<T extends JPanel> extends JPanel
 			@Override
 			public void keyReleased(final KeyEvent e)
 			{
-				DataGrid.this.paint();
+				DataGrid.this.query();
 			}
 		});
-		searchBar.addClearListener(this::paint);
+		searchBar.addClearListener(this::query);
 		return searchBar;
 	}
 
@@ -185,7 +219,7 @@ public class DataGrid<T extends JPanel> extends JPanel
 	{
 		this.entries.clear();
 		this.entries.addAll(entries);
-		this.paint();
+		this.query();
 	}
 
 	public void setDisclaimer(final String text)
@@ -194,9 +228,8 @@ public class DataGrid<T extends JPanel> extends JPanel
 		this.disclaimerPanel.setVisible(true);
 	}
 
-	private void setSeparatorColor(final Color color)
+	public void setSeparatorColor(final Color color)
 	{
-		this.separator.setForeground(color);
 		this.separator.setBackground(color);
 	}
 

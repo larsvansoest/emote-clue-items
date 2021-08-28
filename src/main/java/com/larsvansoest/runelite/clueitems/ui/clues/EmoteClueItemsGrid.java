@@ -89,32 +89,39 @@ public class EmoteClueItemsGrid extends FoldablePanelGrid<EmoteClueItemPanel>
 		super.addFilter(filterKey,
 				new ImageIcon(EmoteClueImages.Ribbon.BEGINNER),
 				this.getToolTipText(toolTipTextFormat, "beginner"),
-				itemPanel -> Arrays.stream(itemPanel.getDifficulties()).anyMatch(difficulty -> difficulty == EmoteClueDifficulty.Beginner)
+				itemPanel -> Arrays.stream(itemPanel.getDifficulties()).anyMatch(difficulty -> difficulty == EmoteClueDifficulty.Beginner),
+				EmoteClueDifficulty.Beginner.getColor()
 		);
 		super.addFilter(filterKey,
 				new ImageIcon(EmoteClueImages.Ribbon.EASY),
 				this.getToolTipText(toolTipTextFormat, "easy"),
-				itemPanel -> Arrays.stream(itemPanel.getDifficulties()).anyMatch(difficulty -> difficulty == EmoteClueDifficulty.Easy)
+				itemPanel -> Arrays.stream(itemPanel.getDifficulties()).anyMatch(difficulty -> difficulty == EmoteClueDifficulty.Easy),
+				EmoteClueDifficulty.Easy.getColor()
 		);
 		super.addFilter(filterKey,
 				new ImageIcon(EmoteClueImages.Ribbon.MEDIUM),
 				this.getToolTipText(toolTipTextFormat, "medium"),
-				itemPanel -> Arrays.stream(itemPanel.getDifficulties()).anyMatch(difficulty -> difficulty == EmoteClueDifficulty.Medium)
+				itemPanel -> Arrays.stream(itemPanel.getDifficulties()).anyMatch(difficulty -> difficulty == EmoteClueDifficulty.Medium),
+				EmoteClueDifficulty.Medium.getColor()
+
 		);
 		super.addFilter(filterKey,
 				new ImageIcon(EmoteClueImages.Ribbon.HARD),
 				this.getToolTipText(toolTipTextFormat, "hard"),
-				itemPanel -> Arrays.stream(itemPanel.getDifficulties()).anyMatch(difficulty -> difficulty == EmoteClueDifficulty.Hard)
+				itemPanel -> Arrays.stream(itemPanel.getDifficulties()).anyMatch(difficulty -> difficulty == EmoteClueDifficulty.Hard),
+				EmoteClueDifficulty.Hard.getColor()
 		);
 		super.addFilter(filterKey,
 				new ImageIcon(EmoteClueImages.Ribbon.ELITE),
 				this.getToolTipText(toolTipTextFormat, "elite"),
-				itemPanel -> Arrays.stream(itemPanel.getDifficulties()).anyMatch(difficulty -> difficulty == EmoteClueDifficulty.Elite)
+				itemPanel -> Arrays.stream(itemPanel.getDifficulties()).anyMatch(difficulty -> difficulty == EmoteClueDifficulty.Elite),
+				EmoteClueDifficulty.Elite.getColor()
 		);
 		super.addFilter(filterKey,
 				new ImageIcon(EmoteClueImages.Ribbon.MASTER),
 				this.getToolTipText(toolTipTextFormat, "master"),
-				itemPanel -> Arrays.stream(itemPanel.getDifficulties()).anyMatch(difficulty -> difficulty == EmoteClueDifficulty.Master)
+				itemPanel -> Arrays.stream(itemPanel.getDifficulties()).anyMatch(difficulty -> difficulty == EmoteClueDifficulty.Master),
+				EmoteClueDifficulty.Master.getColor()
 		);
 	}
 
