@@ -30,6 +30,7 @@ package com.larsvansoest.runelite.clueitems.ui.components;
 
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import javax.swing.*;
@@ -50,13 +51,18 @@ public class CycleButton extends JPanel
 	private int minWidth;
 	private int minHeight;
 
-	CycleButton(
+	@Getter
+	private boolean turnedOn;
+	private String toolTipBeforeDisabled;
+	private Icon iconBeforeDisabled;
+
+	public CycleButton(
 			final EmoteClueItemsPalette emoteClueItemsPalette, final Icon primary, final Runnable onSelectPrimary, final String defaultToolTip)
 	{
 		this(emoteClueItemsPalette, primary, onSelectPrimary, null, null, defaultToolTip);
 	}
 
-	CycleButton(
+	public CycleButton(
 			final EmoteClueItemsPalette emoteClueItemsPalette, final Icon primary, final Runnable onSelectPrimary, final Icon secondary, final Runnable onSelectSecondary, final String defaultToolTip)
 	{
 		super(new GridBagLayout());
@@ -67,13 +73,19 @@ public class CycleButton extends JPanel
 			@Override
 			public void mousePressed(final MouseEvent e)
 			{
-				CycleButton.this.next(e.getButton() == MouseEvent.BUTTON1);
+				if (CycleButton.this.turnedOn)
+				{
+					CycleButton.this.next(e.getButton() == MouseEvent.BUTTON1);
+				}
 			}
 
 			@Override
 			public void mouseEntered(final MouseEvent e)
 			{
-				CycleButton.super.setBackground(emoteClueItemsPalette.getHoverColor());
+				if (CycleButton.this.turnedOn)
+				{
+					CycleButton.super.setBackground(emoteClueItemsPalette.getHoverColor());
+				}
 			}
 
 			@Override
@@ -98,6 +110,8 @@ public class CycleButton extends JPanel
 		this.currentStage = new Stage(primary, onSelectPrimary, secondary, onSelectSecondary, defaultToolTip);
 		this.currentValue = primary;
 		onSelectPrimary.run();
+
+		this.turnedOn = true;
 
 		final GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
@@ -148,6 +162,35 @@ public class CycleButton extends JPanel
 		final Dimension size = new Dimension(this.minWidth, this.minHeight);
 		super.setMinimumSize(size);
 		super.setPreferredSize(size);
+	}
+
+	public void turnOn()
+	{
+		if (!this.turnedOn)
+		{
+			super.setToolTipText(this.toolTipBeforeDisabled);
+			this.toolTipBeforeDisabled = null;
+			this.optionLabel.setIcon(this.iconBeforeDisabled);
+			this.iconBeforeDisabled = null;
+			this.turnedOn = true;
+		}
+	}
+
+	public void turnOff(
+			@NonNull
+			final Icon disabledIcon, final String disabledToolTip)
+	{
+		if (this.turnedOn)
+		{
+			this.toolTipBeforeDisabled = super.getToolTipText();
+			this.iconBeforeDisabled = this.optionLabel.getIcon();
+			this.optionLabel.setIcon(disabledIcon);
+			if (Objects.nonNull(disabledToolTip))
+			{
+				super.setToolTipText(disabledToolTip);
+			}
+			this.turnedOn = false;
+		}
 	}
 
 	@RequiredArgsConstructor

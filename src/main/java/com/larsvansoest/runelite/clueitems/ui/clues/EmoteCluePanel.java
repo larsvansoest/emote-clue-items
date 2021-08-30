@@ -59,10 +59,10 @@ public class EmoteCluePanel extends FoldablePanel
 
 	public EmoteCluePanel(final EmoteClueItemsPalette palette, final EmoteClue emoteClue)
 	{
-		super(palette, emoteClue.getLocationName());
+		super(palette, emoteClue.getLocationName(), 160);
 
 		this.difficulty = emoteClue.getEmoteClueDifficulty();
-		super.addLeftIcon(new JLabel(new ImageIcon(EmoteClueImages.getScroll(this.difficulty))));
+		super.addLeft(new JLabel(new ImageIcon(EmoteClueImages.getScroll(this.difficulty))), new Insets(2, 4, 2, 0), 0, 0);
 
 		this.firstEmote = emoteClue.getFirstEmote();
 		this.secondEmote = emoteClue.getSecondEmote();

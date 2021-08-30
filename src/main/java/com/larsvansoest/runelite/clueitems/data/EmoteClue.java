@@ -789,7 +789,7 @@ public final class EmoteClue implements TextClueScroll, LocationClueScroll
 			),
 			new EmoteClue(Medium,
 					"Panic by the mausoleum in Morytania. Wave before you speak to me. Equip a mithril plate skirt, a maple longbow and no boots.",
-					"Morytania mausoleum, access via the experiments cave",
+					"Morytania mausoleum",
 					MAUSOLEUM_OFF_THE_MORYTANIA_COAST,
 					new WorldPoint(3504, 3576, 0),
 					PANIC,

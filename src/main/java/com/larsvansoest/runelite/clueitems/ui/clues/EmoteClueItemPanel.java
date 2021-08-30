@@ -34,6 +34,7 @@ import com.larsvansoest.runelite.clueitems.ui.components.FoldablePanel;
 import lombok.Getter;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.Arrays;
 
 
@@ -46,14 +47,14 @@ public class EmoteClueItemPanel extends FoldablePanel
 
 	public EmoteClueItemPanel(final EmoteClueItemsPalette palette, final EmoteClueItem emoteClueItem)
 	{
-		super(palette, emoteClueItem.getCollectiveName());
+		super(palette, emoteClueItem.getCollectiveName(), 160);
 
 		final EmoteClue[] emoteClues = EmoteClueAssociations.EmoteClueItemToEmoteClues.get(emoteClueItem);
 
 		this.difficulties = Arrays.stream(emoteClues).map(EmoteClue::getEmoteClueDifficulty).distinct().toArray(EmoteClueDifficulty[]::new);
-		Arrays.stream(this.difficulties).map(EmoteClueImages::getRibbon).map(ImageIcon::new).map(JLabel::new).forEach(super::addRightIcon);
-
+		final Insets insets = new Insets(2, 0, 2, 5);
+		Arrays.stream(this.difficulties).map(EmoteClueImages::getRibbon).map(ImageIcon::new).map(JLabel::new).forEach(label -> super.addRight(label, insets, 0, 0));
 		this.quantity = emoteClues.length;
-		super.addRightIcon(new JLabel(String.valueOf(this.quantity)));
+		super.addRight(new JLabel(String.valueOf(this.quantity)), insets, 0, 0);
 	}
 }

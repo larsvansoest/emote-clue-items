@@ -88,7 +88,8 @@ public class EmoteClueItemsPlugin extends Plugin
 		this.overlayManager.add(this.overlay);
 
 		final EmoteClueItemsPalette emoteClueItemsPalette = EmoteClueItemsPalette.RUNELITE;
-		this.emoteClueItemsPanel = new EmoteClueItemsPanel(emoteClueItemsPalette, this.itemManager, "Emote Clue Items", "v2.1.0", "https://github.com/larsvansoest/emote-clue-items");
+		final StashMonitor stashMonitor = new StashMonitor(this.configManager);
+		this.emoteClueItemsPanel = new EmoteClueItemsPanel(emoteClueItemsPalette, this.itemManager, stashMonitor, "Emote Clue Items", "v2.1.0", "https://github.com/larsvansoest/emote-clue-items");
 
 		this.navigationButton = NavigationButton
 				.builder()
@@ -100,7 +101,7 @@ public class EmoteClueItemsPlugin extends Plugin
 
 		this.clientToolbar.addNavigation(this.navigationButton);
 
-		this.progressManager = new ProgressManager(this.emoteClueItemsPanel, this.client, this.clientThread, new StashMonitor(this.configManager));
+		this.progressManager = new ProgressManager(this.emoteClueItemsPanel, this.client, this.clientThread, stashMonitor);
 	}
 
 	@Subscribe

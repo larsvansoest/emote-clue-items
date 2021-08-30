@@ -77,6 +77,7 @@ public class DataGrid<T extends JPanel> extends JPanel
 		this.separator.setMinimumSize(separatorSize);
 		this.separator.setPreferredSize(separatorSize);
 		this.separator.setMaximumSize(separatorSize);
+		this.setSeparatorColor(palette.getBrandingColor());
 
 		this.disclaimerPanel = new DisclaimerPanel(palette, this::removeDisclaimer);
 		this.disclaimerPanel.setVisible(false);
@@ -84,6 +85,11 @@ public class DataGrid<T extends JPanel> extends JPanel
 		this.entryList = new JPanel(new GridBagLayout());
 
 		this.paint();
+	}
+
+	public static String getToolTipText(final String format, final String keyword)
+	{
+		return String.format("<html>%s</html>", String.format(format, String.format("<b>%s</b>", keyword)));
 	}
 
 	private void paint()

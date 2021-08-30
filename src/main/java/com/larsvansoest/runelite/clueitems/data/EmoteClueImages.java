@@ -124,10 +124,12 @@ public abstract class EmoteClueImages
 		public static class CheckSquare
 		{
 			private static final String folder = path(Toolbar.folder, "check-square");
-			public static final BufferedImage ALL = bufferedImage(CheckSquare.folder, "all.png");
+			public static final BufferedImage UNKNOWN = bufferedImage(CheckSquare.folder, "unknown.png");
 			public static final BufferedImage COMPLETE = bufferedImage(CheckSquare.folder, "complete.png");
 			public static final BufferedImage INCOMPLETE = bufferedImage(CheckSquare.folder, "incomplete.png");
+			public static final BufferedImage INCOMPLETE_EMPTY = bufferedImage(CheckSquare.folder, "incomplete-empty.png");
 			public static final BufferedImage IN_PROGRESS = bufferedImage(CheckSquare.folder, "in-progress.png");
+			public static final BufferedImage UNBUILT = bufferedImage(CheckSquare.folder, "unbuilt.png");
 		}
 
 		public static class Chevron

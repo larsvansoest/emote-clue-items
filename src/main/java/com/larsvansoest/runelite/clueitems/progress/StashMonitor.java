@@ -7,21 +7,25 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 public class StashMonitor
 {
-	private static final String GROUP = "[EmoteClueItems] Stash status";
+	private static final String GROUP = "[EmoteClueItems]";
+	private static final String KEY = "Stash status";
 	private static final int[] STASH_UNITS = Arrays.stream(STASHUnit.values()).mapToInt(STASHUnit::getObjectId).sorted().toArray();
 
 	private final ConfigManager config;
 
-	public void setStashFilled(final String key, final STASHUnit stashUnit, final boolean filled)
+	public void setStashFilled(final STASHUnit stashUnit, final boolean filled)
 	{
-		final String stashes = this.config.getRSProfileConfiguration(GROUP, key);
-		final StringBuilder stashesBuilder = stashes.length() == STASH_UNITS.length ? new StringBuilder(stashes) : new StringBuilder(StringUtils.repeat('0', STASH_UNITS.length));
+		final String stashes = this.config.getRSProfileConfiguration(GROUP, KEY);
+		final StringBuilder stashesBuilder = Objects.nonNull(stashes) && stashes.length() == STASH_UNITS.length ? new StringBuilder(stashes) : new StringBuilder(StringUtils.repeat('0',
+				STASH_UNITS.length
+		));
 		stashesBuilder.setCharAt(ArrayUtils.indexOf(STASH_UNITS, stashUnit.getObjectId()), filled ? '1' : '0');
-		this.config.setRSProfileConfiguration(GROUP, key, stashesBuilder.toString());
+		this.config.setRSProfileConfiguration(GROUP, KEY, stashesBuilder.toString());
 	}
 
 	public boolean getStashFilled(final String key, final STASHUnit stashUnit)

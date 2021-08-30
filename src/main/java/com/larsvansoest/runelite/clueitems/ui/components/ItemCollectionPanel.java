@@ -43,11 +43,11 @@ public class ItemCollectionPanel extends FoldablePanel
 	private final GridBagConstraints c;
 	private final Color itemSlotBackGround;
 
-	public ItemCollectionPanel(final EmoteClueItemsPalette palette, final int slotRowSize)
+	public ItemCollectionPanel(final EmoteClueItemsPalette palette, final String name, final int slotRowSize)
 	{
-		super(palette, "Collection log");
+		super(palette, name, 160);
 		super.setStatus(Status.Unknown);
-		super.addLeftIcon(new JLabel(new ImageIcon(EmoteClueImages.Toolbar.Requirement.INVENTORY)));
+		super.addLeft(new JLabel(new ImageIcon(EmoteClueImages.Toolbar.Requirement.INVENTORY)), new Insets(2, 4, 2, 0), 0, 0);
 
 		this.itemSlotBackGround = palette.getFoldContentColor();
 

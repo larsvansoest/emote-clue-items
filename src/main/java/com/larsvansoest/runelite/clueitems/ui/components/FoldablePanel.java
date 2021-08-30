@@ -31,6 +31,7 @@ package com.larsvansoest.runelite.clueitems.ui.components;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
@@ -51,10 +52,9 @@ public class FoldablePanel extends UpdatablePanel
 	private final JPanel foldContent;
 	private final ArrayList<JComponent> foldContentElements;
 	private final ArrayList<FoldablePanel> foldContentFoldablePanels;
-	private final ArrayList<JLabel> leftHeaderLabels;
-	private final ArrayList<JLabel> rightHeaderLabels;
+	private final ArrayList<HeaderElement> leftHeaderElements;
+	private final ArrayList<HeaderElement> rightHeaderElements;
 	private final JPanel header;
-
 	@Setter
 	@Getter
 	private int foldContentLeftInset;
@@ -75,7 +75,7 @@ public class FoldablePanel extends UpdatablePanel
 	@Getter
 	private Status status;
 
-	public FoldablePanel(final EmoteClueItemsPalette emoteClueItemsPalette, final String name)
+	public FoldablePanel(final EmoteClueItemsPalette emoteClueItemsPalette, final String name, final int headerNameWidth)
 	{
 		super.setLayout(new GridBagLayout());
 		super.setBackground(emoteClueItemsPalette.getDefaultColor());
@@ -91,9 +91,9 @@ public class FoldablePanel extends UpdatablePanel
 		this.foldContentElements = new ArrayList<>();
 		this.foldContentFoldablePanels = new ArrayList<>();
 		this.foldIcon = new JLabel(FOLD_ICONS.LEFT);
-		this.statusHeaderName = this.getHeaderText(name);
-		this.leftHeaderLabels = new ArrayList<>();
-		this.rightHeaderLabels = new ArrayList<>();
+		this.statusHeaderName = this.getHeaderText(name, headerNameWidth);
+		this.leftHeaderElements = new ArrayList<>();
+		this.rightHeaderElements = new ArrayList<>();
 		this.header = this.getHeader();
 		this.paintHeaderLabels();
 
@@ -208,15 +208,27 @@ public class FoldablePanel extends UpdatablePanel
 		this.statusHeaderName.setForeground(colour);
 	}
 
-	public final void addRightIcon(final JLabel iconLabel)
+	public final void addRight(final CycleButton cycleButton, final Insets insets, final int ipadX, final int ipadY)
 	{
-		this.rightHeaderLabels.add(iconLabel);
+		this.rightHeaderElements.add(new HeaderElement(cycleButton, insets, ipadX, ipadY));
 		this.paintHeaderLabels();
 	}
 
-	public final void addLeftIcon(final JLabel iconLabel)
+	public final void addRight(final JLabel iconLabel, final Insets insets, final int ipadX, final int ipadY)
 	{
-		this.leftHeaderLabels.add(iconLabel);
+		this.rightHeaderElements.add(new HeaderElement(iconLabel, insets, ipadX, ipadY));
+		this.paintHeaderLabels();
+	}
+
+	public final void addLeft(final CycleButton cycleButton, final Insets insets, final int ipadX, final int ipadY)
+	{
+		this.leftHeaderElements.add(new HeaderElement(cycleButton, insets, ipadX, ipadY));
+		this.paintHeaderLabels();
+	}
+
+	public final void addLeft(final JLabel iconLabel, final Insets insets, final int ipadX, final int ipadY)
+	{
+		this.leftHeaderElements.add(new HeaderElement(iconLabel, insets, ipadX, ipadY));
 		this.paintHeaderLabels();
 	}
 
@@ -224,38 +236,53 @@ public class FoldablePanel extends UpdatablePanel
 	{
 		this.header.removeAll();
 		final GridBagConstraints c = new GridBagConstraints();
-		c.insets = new Insets(2, 5, 2, 0);
 		c.fill = GridBagConstraints.BOTH;
 		c.gridx = 0;
 		c.gridy = 0;
 		c.weightx = 0;
-		for (final JLabel label : this.leftHeaderLabels)
-		{
-			this.header.add(label, c);
-			c.gridx++;
-		}
-		c.insets.left = 0;
+
+		// Add left icons & buttons
+		this.addHeaderElements(this.leftHeaderElements, c);
+
+		c.insets = new Insets(2, 0, 2, 0);
 		this.header.add(this.statusHeaderName, c);
 		c.weightx = 1;
+
 		c.gridx++;
 		this.header.add(new JLabel(), c);
 		c.weightx = 0;
+
 		c.gridx++;
-		c.insets.right = 5;
-		for (final JLabel label : this.rightHeaderLabels)
-		{
-			this.header.add(label, c);
-			c.gridx++;
-		}
+		this.addHeaderElements(this.rightHeaderElements, c);
+
+		c.insets = new Insets(2, 0, 2, 5);
 		this.header.add(this.foldIcon, c);
 		super.revalidate();
 		super.repaint();
 	}
 
-	private final JShadowedLabel getHeaderText(final String text)
+	private void addHeaderElements(final ArrayList<HeaderElement> headerElements, final GridBagConstraints c)
+	{
+		final Insets previousInsets = c.insets;
+		final int previousIpadX = c.ipadx;
+		final int previousIpadY = c.ipady;
+		for (final HeaderElement headerElement : headerElements)
+		{
+			c.insets = headerElement.getInsets();
+			c.ipadx = headerElement.getIpadX();
+			c.ipady = headerElement.getIpadY();
+			this.header.add(headerElement.getElement(), c);
+			c.gridx++;
+		}
+		c.insets = previousInsets;
+		c.ipadx = previousIpadX;
+		c.ipady = previousIpadY;
+	}
+
+	private JShadowedLabel getHeaderText(final String text, final int fixedWidth)
 	{
 		final JShadowedLabel label = new JShadowedLabel(text);
-		final Dimension size = new Dimension(160, label.getHeight());
+		final Dimension size = new Dimension(fixedWidth, label.getHeight());
 		label.setMinimumSize(size);
 		label.setPreferredSize(size);
 		label.setMaximumSize(size);
@@ -270,5 +297,15 @@ public class FoldablePanel extends UpdatablePanel
 	{
 		static ImageIcon DOWN = new ImageIcon(EmoteClueImages.Toolbar.Chevron.DOWN);
 		static ImageIcon LEFT = new ImageIcon(EmoteClueImages.Toolbar.Chevron.LEFT);
+	}
+
+	@Getter
+	@RequiredArgsConstructor
+	private static class HeaderElement
+	{
+		private final JComponent element;
+		private final Insets insets;
+		private final int ipadX;
+		private final int ipadY;
 	}
 }
