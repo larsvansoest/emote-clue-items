@@ -29,18 +29,18 @@
 package com.larsvansoest.runelite.clueitems.progress;
 
 import com.larsvansoest.runelite.clueitems.data.EmoteClueAssociations;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPanel;
 import com.larsvansoest.runelite.clueitems.ui.components.UpdatablePanel;
-import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
+import net.runelite.api.*;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit;
 import net.runelite.client.plugins.cluescrolls.clues.item.AllRequirementsCollection;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 
+import javax.swing.*;
 import java.util.*;
 
 /**
@@ -54,7 +54,7 @@ import java.util.*;
  */
 public class ProgressManager
 {
-	public final StashMonitor stashMonitor;
+	public final StashCacher stashCacher;
 	private final Map<EmoteClueItem, UpdatablePanel.Status> statusMap;
 	private final ItemMonitor itemsMonitor;
 	private final EmoteClueItemsPanel panel;
@@ -62,14 +62,14 @@ public class ProgressManager
 	private final ClientThread clientThread;
 	private boolean initialState;
 
-	public ProgressManager(final EmoteClueItemsPanel panel, final Client client, final ClientThread clientThread, final StashMonitor stashMonitor)
+	public ProgressManager(final EmoteClueItemsPanel panel, final Client client, final ClientThread clientThread, final StashCacher stashCacher)
 	{
 		this.statusMap = new HashMap<>(EmoteClueItem.values().length);
 		this.itemsMonitor = new ItemMonitor();
 		this.panel = panel;
 		this.client = client;
 		this.clientThread = clientThread;
-		this.stashMonitor = stashMonitor;
+		this.stashCacher = stashCacher;
 		this.reset();
 	}
 
@@ -82,6 +82,11 @@ public class ProgressManager
 			this.panel.setItemSlotStatus(emoteClueItem, 0);
 			this.itemsMonitor.reset();
 			this.initialState = true;
+		}
+		for (final STASHUnit stashUnit : STASHUnit.values())
+		{
+			this.panel.turnOnSTASHFilledButton(stashUnit);
+			this.panel.turnOffSTASHFilledButton(stashUnit, new ImageIcon(EmoteClueImages.Toolbar.CheckSquare.UNKNOWN), "Please open your bank to log STASH progress.");
 		}
 	}
 
@@ -107,6 +112,20 @@ public class ProgressManager
 		}
 	}
 
+	public void handleSTASHUnits()
+	{
+		for (final STASHUnit stashUnit : STASHUnit.values())
+		{
+			this.clientThread.invokeLater(() ->
+			{
+				this.client.runScript(ScriptID.WATSON_STASH_UNIT_CHECK, stashUnit.getObjectId(), 0, 0, 0);
+				final boolean built = this.client.getIntStack()[0] == 1;
+				this.panel.turnOnSTASHFilledButton(stashUnit);
+				this.panel.setSTASHUnitStatus(stashUnit, built, this.stashCacher.getStashFilled(stashUnit));
+			});
+		}
+	}
+
 	private void handleChanges(final List<Item> emoteClueItemChanges)
 	{
 		if (emoteClueItemChanges != null)
@@ -117,7 +136,7 @@ public class ProgressManager
 			for (final Item item : emoteClueItemChanges)
 			{
 				final int quantity = item.getQuantity();
-				final EmoteClueItem emoteClueItem = EmoteClueAssociations.ItemIdToEmoteClueItemSlot.get(item.getId());
+				final EmoteClueItem emoteClueItem = EmoteClueAssociations.ItemIdToEmoteClueItem.get(item.getId());
 
 				final UpdatablePanel.Status status = quantity > 0 ? UpdatablePanel.Status.Complete : UpdatablePanel.Status.InComplete;
 				this.statusMap.put(emoteClueItem, status);

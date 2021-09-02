@@ -1,7 +1,7 @@
 package com.larsvansoest.runelite.clueitems.ui.stashes;
 
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
-import com.larsvansoest.runelite.clueitems.progress.StashMonitor;
+import com.larsvansoest.runelite.clueitems.progress.StashCacher;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
 import com.larsvansoest.runelite.clueitems.ui.components.CycleButton;
 import com.larsvansoest.runelite.clueitems.ui.components.DataGrid;
@@ -14,33 +14,85 @@ import java.awt.*;
 
 public class StashUnitPanel extends FoldablePanel
 {
+	private final CycleButton filledButton;
+	private final int filledButtonComplete;
+	private final int filledButtonInComplete;
+	private final EmoteClueItemsPalette palette;
 	@Getter
-	private final boolean filled;
-
+	private boolean filled;
 	@Getter
-	private final boolean built;
+	private boolean built;
+	private Color headerColorBeforeTurnOff;
+	private boolean filledButtonTurnedOn;
 
-	public StashUnitPanel(final EmoteClueItemsPalette palette, final STASHUnit stash, final String name, final StashMonitor stashMonitor)
+	public StashUnitPanel(final EmoteClueItemsPalette palette, final STASHUnit stash, final String name, final StashCacher stashMonitor)
 	{
 		super(palette, name, 180);
+		this.palette = palette;
 		this.filled = true;
-		this.built = false;
 		final String toolTipTextFormat = "Set stash unit as %s.";
-		final CycleButton filled = new CycleButton(palette, new ImageIcon(EmoteClueImages.Toolbar.CheckSquare.UNKNOWN), () ->
+		this.filledButtonTurnedOn = false;
+		this.filledButton = new CycleButton(palette, new ImageIcon(EmoteClueImages.Toolbar.CheckSquare.INCOMPLETE_EMPTY), () ->
 		{
-		}, "Please login first.");
-		filled.addOption(new ImageIcon(EmoteClueImages.Toolbar.CheckSquare.INCOMPLETE_EMPTY), () ->
-		{
-			stashMonitor.setStashFilled(stash, false);
-			super.setStatus(Status.InComplete);
+			if (this.filledButtonTurnedOn)
+			{
+				stashMonitor.setStashFilled(stash, false);
+				super.setStatus(Status.InComplete);
+				this.filled = false;
+			}
 		}, DataGrid.getToolTipText(toolTipTextFormat, "filled"));
-		filled.addOption(new ImageIcon(EmoteClueImages.Toolbar.CheckSquare.COMPLETE), () ->
+		this.filledButtonInComplete = 0;
+		this.filledButtonComplete = this.filledButton.addOption(new ImageIcon(EmoteClueImages.Toolbar.CheckSquare.COMPLETE), () ->
 		{
-			stashMonitor.setStashFilled(stash, true);
-			super.setStatus(Status.Complete);
+			if (this.filledButtonTurnedOn)
+			{
+				stashMonitor.setStashFilled(stash, true);
+				super.setStatus(Status.Complete);
+				this.filled = true;
+			}
 		}, DataGrid.getToolTipText(toolTipTextFormat, "empty"));
-		filled.setOpaque(false);
-		//filled.turnOff(new ImageIcon(EmoteClueImages.Toolbar.CheckSquare.UNBUILT), "Please build the STASH unit in-game first.");
-		super.addLeft(filled, new Insets(0, 0, 0, 0), 10, 10);
+		this.filledButton.setOpaque(false);
+		super.addLeft(this.filledButton, new Insets(0, 0, 0, 0), 10, 10);
+	}
+
+	public void turnOffFilledButton(final Icon icon, final String toolTip)
+	{
+		if (this.filledButtonTurnedOn)
+		{
+			this.filledButton.turnOff(icon, toolTip);
+			this.filledButtonTurnedOn = this.filledButton.isTurnedOn();
+			this.headerColorBeforeTurnOff = super.getHeaderColor();
+			super.setHeaderColor(this.palette.getFoldHeaderTextColor());
+		}
+	}
+
+	public void turnOnFilledButton()
+	{
+		if (!this.filledButtonTurnedOn)
+		{
+			this.filledButton.turnOn();
+			this.filledButtonTurnedOn = this.filledButton.isTurnedOn();
+			super.setHeaderColor(this.headerColorBeforeTurnOff);
+			this.headerColorBeforeTurnOff = null;
+		}
+	}
+
+	public void setBuilt(final boolean built)
+	{
+		if (!built)
+		{
+			this.turnOffFilledButton(new ImageIcon(EmoteClueImages.Toolbar.CheckSquare.UNBUILT), "Please build the STASH unit in-game first.");
+		}
+		else
+		{
+			this.turnOnFilledButton();
+		}
+		this.built = built;
+	}
+
+	public void setFilled(final boolean filled)
+	{
+		this.filledButton.cycleToStage(filled ? this.filledButtonComplete : this.filledButtonInComplete);
+		this.filled = filled;
 	}
 }

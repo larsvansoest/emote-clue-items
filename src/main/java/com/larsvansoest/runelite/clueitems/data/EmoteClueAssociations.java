@@ -49,7 +49,7 @@ import java.util.stream.Collectors;
  */
 public abstract class EmoteClueAssociations
 {
-	public static final Map<Integer, EmoteClueItem> ItemIdToEmoteClueItemSlot = Arrays
+	public static final Map<Integer, EmoteClueItem> ItemIdToEmoteClueItem = Arrays
 			.stream(EmoteClueItem.values())
 			.filter(emoteClueItem -> emoteClueItem.getItemId() != null)
 			.collect(Collectors.toMap(EmoteClueItem::getItemId, Function.identity()));
@@ -67,8 +67,9 @@ public abstract class EmoteClueAssociations
 					.map(itemRequirement -> (EmoteClueItem) itemRequirement)
 					.map(emoteClueItem -> new AbstractMap.SimpleImmutableEntry<>(emoteClue, emoteClueItem)))
 			.collect(Collectors.toMap(AbstractMap.SimpleImmutableEntry::getValue, entry -> new EmoteClue[]{entry.getKey()}, ArrayUtils::addAll));
-
 	public static final Map<STASHUnit, EmoteClue[]> STASHUnitToEmoteClues = EmoteClue.CLUES
 			.stream()
 			.collect(Collectors.toMap(EmoteClue::getStashUnit, emoteClue -> new EmoteClue[]{emoteClue}, ArrayUtils::addAll));
+
+	public static final int[] STASHUnitIdsOrdered = Arrays.stream(STASHUnit.values()).mapToInt(STASHUnit::getObjectId).sorted().toArray();
 }

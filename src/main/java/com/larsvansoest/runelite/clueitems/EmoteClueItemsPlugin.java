@@ -32,7 +32,7 @@ import com.google.inject.Provides;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
 import com.larsvansoest.runelite.clueitems.overlay.EmoteClueItemsOverlay;
 import com.larsvansoest.runelite.clueitems.progress.ProgressManager;
-import com.larsvansoest.runelite.clueitems.progress.StashMonitor;
+import com.larsvansoest.runelite.clueitems.progress.StashCacher;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPanel;
 import lombok.extern.slf4j.Slf4j;
@@ -88,8 +88,8 @@ public class EmoteClueItemsPlugin extends Plugin
 		this.overlayManager.add(this.overlay);
 
 		final EmoteClueItemsPalette emoteClueItemsPalette = EmoteClueItemsPalette.RUNELITE;
-		final StashMonitor stashMonitor = new StashMonitor(this.configManager);
-		this.emoteClueItemsPanel = new EmoteClueItemsPanel(emoteClueItemsPalette, this.itemManager, stashMonitor, "Emote Clue Items", "v2.1.0", "https://github.com/larsvansoest/emote-clue-items");
+		final StashCacher stashMonitor = new StashCacher("[EmoteClueItems]", "STASHUnit fill statuses", this.configManager);
+		this.emoteClueItemsPanel = new EmoteClueItemsPanel(emoteClueItemsPalette, this.itemManager, stashMonitor, "Emote Clue Items", "v3.0.0", "https://github.com/larsvansoest/emote-clue-items");
 
 		this.navigationButton = NavigationButton
 				.builder()
@@ -111,7 +111,11 @@ public class EmoteClueItemsPlugin extends Plugin
 		if (event.getContainerId() == 95)
 		{
 			this.emoteClueItemsPanel.removeEmoteClueItemGridDisclaimer();
+			this.emoteClueItemsPanel.removeSTASHUnitGridDisclaimer();
+			this.emoteClueItemsPanel.setSTASHUnitGridDisclaimer("To track STASH fill status, use the checkboxes to the left.");
+			this.progressManager.handleSTASHUnits();
 		}
+		// TODO match on any pin-required container to unlock stash tracking.
 	}
 
 	@Subscribe
@@ -120,7 +124,9 @@ public class EmoteClueItemsPlugin extends Plugin
 		if (event.getGameState() == GameState.LOGIN_SCREEN)
 		{
 			this.progressManager.reset();
-			this.emoteClueItemsPanel.setEmoteClueItemGridDisclaimer("To start display of progression, please open your bank once.");
+			final String loginDisclaimer = "To start display of progression, please open your bank once.";
+			this.emoteClueItemsPanel.setEmoteClueItemGridDisclaimer(loginDisclaimer);
+			this.emoteClueItemsPanel.setSTASHUnitGridDisclaimer(loginDisclaimer);
 		}
 	}
 
@@ -146,7 +152,7 @@ public class EmoteClueItemsPlugin extends Plugin
 		switch (event.getCommand())
 		{
 			case "debug":
-				this.progressManager.stashMonitor.setStashFilled(this.client.getLocalPlayer().getName(), STASHUnit.GYPSY_TENT_ENTRANCE, true);
+				this.progressManager.stashCacher.setStashFilled(STASHUnit.GYPSY_TENT_ENTRANCE, true);
 				break;
 			case "clear":
 				for (int i = 0; i < 5; i++)

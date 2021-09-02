@@ -203,6 +203,11 @@ public class FoldablePanel extends UpdatablePanel
 		this.status = status;
 	}
 
+	public Color getHeaderColor()
+	{
+		return this.statusHeaderName.getForeground();
+	}
+
 	public void setHeaderColor(final Color colour)
 	{
 		this.statusHeaderName.setForeground(colour);

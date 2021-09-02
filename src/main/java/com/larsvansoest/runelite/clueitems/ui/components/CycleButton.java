@@ -56,6 +56,8 @@ public class CycleButton extends JPanel
 	private String toolTipBeforeDisabled;
 	private Icon iconBeforeDisabled;
 
+	private int stageCount;
+
 	public CycleButton(
 			final EmoteClueItemsPalette emoteClueItemsPalette, final Icon primary, final Runnable onSelectPrimary, final String defaultToolTip)
 	{
@@ -95,6 +97,8 @@ public class CycleButton extends JPanel
 			}
 		});
 
+		this.stageCount = 0;
+
 		this.optionLabel = new JLabel();
 		this.optionLabel.setHorizontalAlignment(JLabel.CENTER);
 		this.optionLabel.setVerticalAlignment(JLabel.CENTER);
@@ -107,7 +111,7 @@ public class CycleButton extends JPanel
 
 		this.stageQueue = new ArrayDeque<>();
 		this.defaultToolTip = defaultToolTip;
-		this.currentStage = new Stage(primary, onSelectPrimary, secondary, onSelectSecondary, defaultToolTip);
+		this.currentStage = new Stage(primary, onSelectPrimary, secondary, onSelectSecondary, defaultToolTip, this.stageCount++);
 		this.currentValue = primary;
 		onSelectPrimary.run();
 
@@ -116,6 +120,19 @@ public class CycleButton extends JPanel
 		final GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
 		super.add(this.optionLabel, c);
+	}
+
+	public void cycleToStage(final int id)
+	{
+		final int initialId = this.currentStage.id;
+		while (this.currentStage.id != id)
+		{
+			this.next(true);
+			if (this.currentStage.id == initialId)
+			{
+				break;
+			}
+		}
 	}
 
 	private void next(final Boolean isPrimaryMouseKey)
@@ -148,20 +165,22 @@ public class CycleButton extends JPanel
 		runnable.run();
 	}
 
-	public void addOption(final Icon icon, final Runnable onSelect, final String toolTip)
+	public int addOption(final Icon icon, final Runnable onSelect, final String toolTip)
 	{
-		this.addOption(icon, onSelect, null, null, toolTip);
+		return this.addOption(icon, onSelect, null, null, toolTip);
 	}
 
-	public void addOption(
+	public int addOption(
 			final Icon primary, final Runnable onSelectPrimary, final Icon secondary, final Runnable onSelectSecondary, final String toolTip)
 	{
-		this.stageQueue.add(new Stage(primary, onSelectPrimary, secondary, onSelectSecondary, toolTip));
+		final int stageId = this.stageCount++;
+		this.stageQueue.add(new Stage(primary, onSelectPrimary, secondary, onSelectSecondary, toolTip, stageId));
 		this.minWidth = Math.max(this.minWidth, primary.getIconWidth());
 		this.minHeight = Math.max(this.minHeight, primary.getIconHeight());
 		final Dimension size = new Dimension(this.minWidth, this.minHeight);
 		super.setMinimumSize(size);
 		super.setPreferredSize(size);
+		return stageId;
 	}
 
 	public void turnOn()
@@ -202,5 +221,6 @@ public class CycleButton extends JPanel
 		private final Icon secondary;
 		private final Runnable onSelectSecondary;
 		private final String toolTip;
+		private final int id;
 	}
 }
