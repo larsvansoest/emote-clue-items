@@ -12,6 +12,8 @@ import com.larsvansoest.runelite.clueitems.ui.stashes.StashUnitGrid;
 import com.larsvansoest.runelite.clueitems.ui.stashes.StashUnitPanel;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit;
+import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements;
+import net.runelite.client.plugins.cluescrolls.clues.item.SlotLimitationRequirement;
 import net.runelite.client.ui.PluginPanel;
 
 import javax.swing.*;
@@ -24,9 +26,12 @@ import java.util.stream.Collectors;
 
 public class EmoteClueItemsPanel extends PluginPanel
 {
-	private final Map<EmoteClueItem, EmoteClueItemPanel> emoteClueItemPanelMap;
+	private final Map<EmoteClueItem, EmoteClueItemPanel> itemPanelMap;
 	private final Map<STASHUnit, StashUnitPanel> stashUnitPanelMap;
-	private final Map<EmoteClueItem, ItemSlotPanel> slotPanelMap;
+	private final Map<EmoteClue, EmoteCluePanel> emoteCluePanelMap;
+
+	private final Map<EmoteClueItem, ItemSlotPanel> itemSlotPanelMap;
+
 	private final EmoteClueItemGrid clueItemsGrid;
 	private final StashUnitGrid STASHUnitGrid;
 
@@ -37,39 +42,49 @@ public class EmoteClueItemsPanel extends PluginPanel
 		super.setLayout(new GridBagLayout());
 		super.getScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-		// Create parent EmoteClueItem panels.
-		this.emoteClueItemPanelMap = EmoteClueAssociations.EmoteClueItemToEmoteClues
+		// Create item panels.
+		this.itemPanelMap = EmoteClueAssociations.EmoteClueItemToEmoteClues
 				.keySet()
 				.stream()
 				.collect(Collectors.toMap(Function.identity(), emoteClueItem -> new EmoteClueItemPanel(palette, emoteClueItem)));
 
-		// Create an item panel for all required items.
-		this.slotPanelMap = EmoteClueAssociations.ItemIdToEmoteClueItem
+		// Create an item slot panels for collection logs.
+		this.itemSlotPanelMap = EmoteClueAssociations.ItemIdToEmoteClueItem
 				.entrySet()
 				.stream()
 				.collect(Collectors.toMap(Map.Entry::getValue, entry -> new ItemSlotPanel(itemManager, entry.getKey(), entry.getValue().getCollectiveName())));
 
-		// Create EmoteClueItem-EmoteClue (*-1) sub-panels.
-		final Map<EmoteClue, EmoteCluePanel> emoteCluePanelMap = EmoteClue.CLUES.stream().collect(Collectors.toMap(Function.identity(), emoteClue -> new EmoteCluePanel(palette, emoteClue)));
+		// Create emote clue panels.
+		this.emoteCluePanelMap = EmoteClue.CLUES.stream().collect(Collectors.toMap(Function.identity(), emoteClue -> new EmoteCluePanel(palette, emoteClue)));
 
-		this.emoteClueItemPanelMap.forEach((emoteClueItem, itemPanel) ->
-		{
-			// Add item collection log
-			final ItemCollectionPanel collectionPanel = new ItemCollectionPanel(palette, "Collection Log", 6);
-			this.addSubItems(collectionPanel, emoteClueItem);
-			collectionPanel.setHeaderColor(palette.getFoldHeaderTextColor()); // Header will not display collection progress.
-			itemPanel.addChild(collectionPanel);
+		// Create STASHUnit panels.
+        this.stashUnitPanelMap = Arrays
+                .stream(STASHUnit.values())
+                .collect(Collectors.toMap(Function.identity(), stash -> new StashUnitPanel(palette, stash, EmoteClueAssociations.STASHUnitToEmoteClues.get(stash)[0].getLocationName(), stashMonitor)));
 
-			// Add emote clue panels & info
-			Arrays.stream(EmoteClueAssociations.EmoteClueItemToEmoteClues.get(emoteClueItem)).map(emoteCluePanelMap::get).forEach(itemPanel::addChild);
+        // Setup item panels.
+        this.itemPanelMap.forEach((emoteClueItem, itemPanel) -> {
+            final ItemCollectionPanel collectionPanel = new ItemCollectionPanel(palette, "Collection Log", 6);
+	        itemPanel.addChild(collectionPanel);
+	        this.addItemsToCollectionPanel(collectionPanel, emoteClueItem);
+            collectionPanel.setHeaderColor(palette.getFoldHeaderTextColor()); // Header will not display collection progress.
+	        Arrays.stream(EmoteClueAssociations.EmoteClueItemToEmoteClues.get(emoteClueItem)).map(emoteCluePanelMap::get).forEach(itemPanel::addChild);
+        });
+
+        // Setup STASHUnit panels.
+		this.stashUnitPanelMap.forEach((stashUnit, stashUnitPanel) -> {
+			final ItemCollectionPanel collectionPanel = new ItemCollectionPanel(palette,  "Required Items", 6);
+			stashUnitPanel.addChild(collectionPanel);
+			for(EmoteClue emoteClue : EmoteClueAssociations.STASHUnitToEmoteClues.get(stashUnit)) {
+				Arrays.stream(emoteClue.getItemRequirements()).filter(ir -> ir instanceof EmoteClueItem).forEach(emoteClueItem -> this.addItemsToCollectionPanel(collectionPanel, (EmoteClueItem)emoteClueItem));
+				stashUnitPanel.addChild(this.emoteCluePanelMap.get(emoteClue));
+			}
 		});
 
 		this.clueItemsGrid = new EmoteClueItemGrid(palette);
-		this.clueItemsGrid.load(this.emoteClueItemPanelMap.values());
+		this.clueItemsGrid.load(this.itemPanelMap.values());
 
-		this.stashUnitPanelMap = Arrays
-				.stream(STASHUnit.values())
-				.collect(Collectors.toMap(Function.identity(), stash -> new StashUnitPanel(palette, stash, EmoteClueAssociations.STASHUnitToEmoteClues.get(stash)[0].getLocationName(), stashMonitor)));
+
 
 		this.STASHUnitGrid = new StashUnitGrid(palette);
 		this.STASHUnitGrid.load(this.stashUnitPanelMap.values());
@@ -94,12 +109,12 @@ public class EmoteClueItemsPanel extends PluginPanel
 		super.add(new FooterPanel(palette, pluginName, pluginVersion, gitHubUrl), c);
 	}
 
-	private void addSubItems(final ItemCollectionPanel subPanel, final EmoteClueItem child)
+	private void addItemsToCollectionPanel(final ItemCollectionPanel collectionPanel, final EmoteClueItem child)
 	{
-		final ItemSlotPanel childSlotPanel = this.slotPanelMap.get(child);
+		final ItemSlotPanel childSlotPanel = this.itemSlotPanelMap.get(child);
 		if (childSlotPanel != null)
 		{
-			subPanel.addItem(childSlotPanel);
+            collectionPanel.addItem(childSlotPanel);
 			return;
 		}
 
@@ -108,7 +123,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 		{
 			for (final EmoteClueItem successor : successors)
 			{
-				this.addSubItems(subPanel, successor);
+				this.addItemsToCollectionPanel(collectionPanel, successor);
 			}
 		}
 	}
@@ -121,7 +136,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 	 */
 	public void setItemSlotStatus(final EmoteClueItem emoteClueItem, final int quantity)
 	{
-		final ItemSlotPanel slotPanel = this.slotPanelMap.get(emoteClueItem);
+		final ItemSlotPanel slotPanel = this.itemSlotPanelMap.get(emoteClueItem);
 		if (slotPanel != null)
 		{
 			slotPanel.setQuantity(quantity);
@@ -136,7 +151,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 	 */
 	public void setEmoteClueItemStatus(final EmoteClueItem emoteClueItem, final UpdatablePanel.Status status)
 	{
-		final EmoteClueItemPanel itemPanel = this.emoteClueItemPanelMap.get(emoteClueItem);
+		final EmoteClueItemPanel itemPanel = this.itemPanelMap.get(emoteClueItem);
 		if (itemPanel != null)
 		{
 			itemPanel.setStatus(status);
