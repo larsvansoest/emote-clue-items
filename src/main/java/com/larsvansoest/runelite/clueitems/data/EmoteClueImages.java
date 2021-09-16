@@ -129,6 +129,7 @@ public abstract class EmoteClueImages
 			public static final BufferedImage INCOMPLETE = bufferedImage(CheckSquare.folder, "incomplete.png");
 			public static final BufferedImage INCOMPLETE_EMPTY = bufferedImage(CheckSquare.folder, "incomplete-empty.png");
 			public static final BufferedImage IN_PROGRESS = bufferedImage(CheckSquare.folder, "in-progress.png");
+			public static final BufferedImage WAITING = bufferedImage(CheckSquare.folder, "waiting.png");
 			public static final BufferedImage UNBUILT = bufferedImage(CheckSquare.folder, "unbuilt.png");
 		}
 

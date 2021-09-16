@@ -75,6 +75,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 		this.stashUnitPanelMap.forEach((stashUnit, stashUnitPanel) -> {
 			final ItemCollectionPanel collectionPanel = new ItemCollectionPanel(palette,  "Required Items", 6);
 			stashUnitPanel.addChild(collectionPanel);
+			stashUnitPanel.setHeaderColor(palette.getFoldHeaderTextColor()); // Header will not display collection progress.
 			for(EmoteClue emoteClue : EmoteClueAssociations.STASHUnitToEmoteClues.get(stashUnit)) {
 				Arrays.stream(emoteClue.getItemRequirements()).filter(ir -> ir instanceof EmoteClueItem).forEach(emoteClueItem -> this.addItemsToCollectionPanel(collectionPanel, (EmoteClueItem)emoteClueItem));
 				stashUnitPanel.addChild(this.emoteCluePanelMap.get(emoteClue));
@@ -84,13 +85,11 @@ public class EmoteClueItemsPanel extends PluginPanel
 		this.clueItemsGrid = new EmoteClueItemGrid(palette);
 		this.clueItemsGrid.load(this.itemPanelMap.values());
 
-
-
 		this.STASHUnitGrid = new StashUnitGrid(palette);
 		this.STASHUnitGrid.load(this.stashUnitPanelMap.values());
 
 		final TabMenu tabMenu = new TabMenu(palette, this.clueItemsGrid, "Items", "Emote Clue Items");
-		tabMenu.addTab(this.STASHUnitGrid, "Stashes", "Stash Units", false);
+		tabMenu.addTab(this.STASHUnitGrid, "Stashes", "Stash Units", false, 1);
 
 		final GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;

@@ -80,6 +80,7 @@ public class EmoteClueItemsPlugin extends Plugin
 	private NavigationButton navigationButton;
 	private ProgressManager progressManager;
 	private EmoteClueItemsPanel emoteClueItemsPanel;
+	private StashCacher stashCacher;
 
 	@Override
 	protected void startUp()
@@ -88,8 +89,8 @@ public class EmoteClueItemsPlugin extends Plugin
 		this.overlayManager.add(this.overlay);
 
 		final EmoteClueItemsPalette emoteClueItemsPalette = EmoteClueItemsPalette.RUNELITE;
-		final StashCacher stashMonitor = new StashCacher("[EmoteClueItems]", "STASHUnit fill statuses", this.configManager);
-		this.emoteClueItemsPanel = new EmoteClueItemsPanel(emoteClueItemsPalette, this.itemManager, stashMonitor, "Emote Clue Items", "v3.0.0", "https://github.com/larsvansoest/emote-clue-items");
+		this.stashCacher = new StashCacher("[EmoteClueItems]", "STASHUnit fill statuses", this.configManager);
+		this.emoteClueItemsPanel = new EmoteClueItemsPanel(emoteClueItemsPalette, this.itemManager, this.stashCacher, "Emote Clue Items", "v3.0.0", "https://github.com/larsvansoest/emote-clue-items");
 
 		this.navigationButton = NavigationButton
 				.builder()
@@ -101,7 +102,7 @@ public class EmoteClueItemsPlugin extends Plugin
 
 		this.clientToolbar.addNavigation(this.navigationButton);
 
-		this.progressManager = new ProgressManager(this.emoteClueItemsPanel, this.client, this.clientThread, stashMonitor);
+		this.progressManager = new ProgressManager(this.emoteClueItemsPanel, this.client, this.clientThread, this.stashCacher);
 	}
 
 	@Subscribe
@@ -127,6 +128,10 @@ public class EmoteClueItemsPlugin extends Plugin
 			final String loginDisclaimer = "To start display of progression, please open your bank once.";
 			this.emoteClueItemsPanel.setEmoteClueItemGridDisclaimer(loginDisclaimer);
 			this.emoteClueItemsPanel.setSTASHUnitGridDisclaimer(loginDisclaimer);
+		}
+		if (event.getGameState() == GameState.LOGGED_IN)
+		{
+			this.stashCacher.validate();
 		}
 	}
 

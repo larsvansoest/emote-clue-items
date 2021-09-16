@@ -260,7 +260,7 @@ public class FoldablePanel extends UpdatablePanel
 		c.gridx++;
 		this.addHeaderElements(this.rightHeaderElements, c);
 
-		c.insets = new Insets(2, 0, 2, 5);
+		c.insets = new Insets(6, 0, 6, 5);
 		this.header.add(this.foldIcon, c);
 		super.revalidate();
 		super.repaint();

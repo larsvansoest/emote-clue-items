@@ -86,7 +86,7 @@ public class ProgressManager
 		for (final STASHUnit stashUnit : STASHUnit.values())
 		{
 			this.panel.turnOnSTASHFilledButton(stashUnit);
-			this.panel.turnOffSTASHFilledButton(stashUnit, new ImageIcon(EmoteClueImages.Toolbar.CheckSquare.UNKNOWN), "Please open your bank to log STASH progress.");
+			this.panel.turnOffSTASHFilledButton(stashUnit, new ImageIcon(EmoteClueImages.Toolbar.CheckSquare.WAITING), "Please open your bank to log STASH progress.");
 		}
 	}
 

@@ -35,22 +35,22 @@ public class TabMenu extends JPanel
 		this.c.gridy = 0;
 		this.c.weightx = 1;
 		this.c.fill = GridBagConstraints.BOTH;
-		this.addTab(label, defaultContent, defaultToolTipText, true);
+		this.addTab(label, defaultContent, defaultToolTipText, true, 0);
 	}
 
-	public void addTab(final JPanel content, final String text, final String toolTipText, final boolean setActive)
+	public void addTab(final JPanel content, final String text, final String toolTipText, final boolean setActive, final int ipadX)
 	{
 		final JLabel label = new JShadowedLabel(text);
-		this.addTab(label, content, toolTipText, setActive);
+		this.addTab(label, content, toolTipText, setActive, ipadX);
 	}
 
-	public void addTab(final JPanel content, final Icon icon, final String toolTipText, final boolean setActive)
+	public void addTab(final JPanel content, final Icon icon, final String toolTipText, final boolean setActive, final int ipadX)
 	{
 		final JLabel label = new JLabel(icon);
-		this.addTab(label, content, toolTipText, setActive);
+		this.addTab(label, content, toolTipText, setActive, ipadX);
 	}
 
-	private void addTab(final JLabel label, final JPanel content, final String toolTipText, final boolean setActive)
+	private void addTab(final JLabel label, final JPanel content, final String toolTipText, final boolean setActive, final int ipadX)
 	{
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		final JPanel tab = new JPanel(new GridBagLayout());
@@ -90,11 +90,15 @@ public class TabMenu extends JPanel
 				}
 			}
 		});
+		this.c.ipadx = ipadX;
 		super.add(tab, this.c);
 		this.c.gridx++;
 		if (setActive)
 		{
 			this.setActive(tab, content);
+		}
+		else {
+			content.setVisible(false);
 		}
 		super.revalidate();
 		super.repaint();
