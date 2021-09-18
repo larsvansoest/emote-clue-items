@@ -30,9 +30,10 @@ package com.larsvansoest.runelite.clueitems;
 
 import com.google.inject.Provides;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
+import com.larsvansoest.runelite.clueitems.data.StashUnit;
 import com.larsvansoest.runelite.clueitems.overlay.EmoteClueItemsOverlay;
 import com.larsvansoest.runelite.clueitems.progress.ProgressManager;
-import com.larsvansoest.runelite.clueitems.progress.StashCacher;
+import com.larsvansoest.runelite.clueitems.progress.StashManager;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPanel;
 import lombok.extern.slf4j.Slf4j;
@@ -80,7 +81,7 @@ public class EmoteClueItemsPlugin extends Plugin
 	private NavigationButton navigationButton;
 	private ProgressManager progressManager;
 	private EmoteClueItemsPanel emoteClueItemsPanel;
-	private StashCacher stashCacher;
+	private StashManager stashManager;
 
 	@Override
 	protected void startUp()
@@ -89,8 +90,8 @@ public class EmoteClueItemsPlugin extends Plugin
 		this.overlayManager.add(this.overlay);
 
 		final EmoteClueItemsPalette emoteClueItemsPalette = EmoteClueItemsPalette.RUNELITE;
-		this.stashCacher = new StashCacher("[EmoteClueItems]", "STASHUnit fill statuses", this.configManager);
-		this.emoteClueItemsPanel = new EmoteClueItemsPanel(emoteClueItemsPalette, this.itemManager, this.stashCacher, "Emote Clue Items", "v3.0.0", "https://github.com/larsvansoest/emote-clue-items");
+		this.stashManager = new StashManager("[EmoteClueItems]", "STASHUnit fill statuses", this.configManager);
+		this.emoteClueItemsPanel = new EmoteClueItemsPanel(emoteClueItemsPalette, this.itemManager, this.stashManager, "Emote Clue Items", "v3.0.0", "https://github.com/larsvansoest/emote-clue-items");
 
 		this.navigationButton = NavigationButton
 				.builder()
@@ -102,7 +103,7 @@ public class EmoteClueItemsPlugin extends Plugin
 
 		this.clientToolbar.addNavigation(this.navigationButton);
 
-		this.progressManager = new ProgressManager(this.emoteClueItemsPanel, this.client, this.clientThread, this.stashCacher);
+		this.progressManager = new ProgressManager(this.emoteClueItemsPanel, this.client, this.clientThread, this.stashManager);
 	}
 
 	@Subscribe
@@ -131,7 +132,7 @@ public class EmoteClueItemsPlugin extends Plugin
 		}
 		if (event.getGameState() == GameState.LOGGED_IN)
 		{
-			this.stashCacher.validate();
+			this.stashManager.validate();
 		}
 	}
 
@@ -157,7 +158,7 @@ public class EmoteClueItemsPlugin extends Plugin
 		switch (event.getCommand())
 		{
 			case "debug":
-				this.progressManager.stashCacher.setStashFilled(STASHUnit.GYPSY_TENT_ENTRANCE, true);
+				this.progressManager.stashManager.setStashFilled(StashUnit.GYPSY_TENT_ENTRANCE, true);
 				break;
 			case "clear":
 				for (int i = 0; i < 5; i++)
@@ -172,7 +173,7 @@ public class EmoteClueItemsPlugin extends Plugin
 					final String[] stringStackPrior = this.client.getStringStack().clone();
 					this.client.runScript(
 							Integer.valueOf(event.getArguments()[0]),
-							STASHUnit.GYPSY_TENT_ENTRANCE.getObjectId(),
+							StashUnit.GYPSY_TENT_ENTRANCE.getStashUnit().getObjectId(),
 							Integer.valueOf(event.getArguments()[1]),
 							Integer.valueOf(event.getArguments()[2]),
 							Integer.valueOf(event.getArguments()[3])

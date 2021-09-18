@@ -29,7 +29,6 @@
 package com.larsvansoest.runelite.clueitems.data;
 
 import com.larsvansoest.runelite.clueitems.progress.ProgressManager;
-import net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit;
 import net.runelite.client.plugins.cluescrolls.clues.item.SlotLimitationRequirement;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -68,7 +67,7 @@ public abstract class EmoteClueAssociations
 					.map(emoteClueItem -> new AbstractMap.SimpleImmutableEntry<>(emoteClue, emoteClueItem)))
 			.collect(Collectors.toMap(AbstractMap.SimpleImmutableEntry::getValue, entry -> new EmoteClue[]{entry.getKey()}, ArrayUtils::addAll));
 
-	public static final Map<STASHUnit, EmoteClue[]> STASHUnitToEmoteClues = EmoteClue.CLUES
+	public static final Map<StashUnit, EmoteClue[]> STASHUnitToEmoteClues = EmoteClue.CLUES
 			.stream()
 			.collect(Collectors.toMap(EmoteClue::getStashUnit, emoteClue -> new EmoteClue[]{emoteClue}, ArrayUtils::addAll));
 }

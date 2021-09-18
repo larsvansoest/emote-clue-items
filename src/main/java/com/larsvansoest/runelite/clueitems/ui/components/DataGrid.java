@@ -48,7 +48,7 @@ import java.util.function.Predicate;
  */
 public class DataGrid<T extends JPanel> extends JPanel
 {
-	private final List<T> entries;
+	protected final List<T> entries;
 	private final IconTextField searchBar;
 	private final Map<String, CycleButton> filterButtons;
 	private final Map<String, Predicate<T>> filters;

@@ -1,13 +1,13 @@
 package com.larsvansoest.runelite.clueitems.ui.stashes;
 
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
-import com.larsvansoest.runelite.clueitems.progress.StashCacher;
+import com.larsvansoest.runelite.clueitems.data.StashUnit;
+import com.larsvansoest.runelite.clueitems.progress.StashManager;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
 import com.larsvansoest.runelite.clueitems.ui.components.CycleButton;
 import com.larsvansoest.runelite.clueitems.ui.components.DataGrid;
 import com.larsvansoest.runelite.clueitems.ui.components.FoldablePanel;
 import lombok.Getter;
-import net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,9 +25,9 @@ public class StashUnitPanel extends FoldablePanel
 	private Color headerColorBeforeTurnOff;
 	private boolean filledButtonTurnedOn;
 
-	public StashUnitPanel(final EmoteClueItemsPalette palette, final STASHUnit stash, final String name, final StashCacher stashMonitor)
+	public StashUnitPanel(final EmoteClueItemsPalette palette, final StashUnit stash, final StashManager stashMonitor)
 	{
-		super(palette, name, 180);
+		super(palette, stash.getName(), 180);
 		this.palette = palette;
 		this.filled = true;
 		final String toolTipTextFormat = "Set stash unit as %s.";

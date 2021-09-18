@@ -40,4 +40,14 @@ public class FoldablePanelGrid<T extends FoldablePanel> extends DataGrid<T>
 		}
 		super.load(entries);
 	}
+
+	@Override
+	public void setVisible(boolean visible) {
+		if(!visible) {
+			for(final T entry : super.entries) {
+				entry.fold();
+			}
+		}
+		super.setVisible(visible);
+	}
 }

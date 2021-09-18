@@ -136,7 +136,7 @@ public class EmoteClueItemGrid extends FoldablePanelGrid<EmoteClueItemPanel>
 				DataGrid.getToolTipText("Toggle order by %s (ascending).", "quantity"),
 				Comparator.comparingInt(EmoteClueItemPanel::getQuantity).reversed()
 		);
-		super.addSort(new ImageIcon(EmoteClueImages.Toolbar.SortType.NAME_DESCENDING),
+		super.addSort(new ImageIcon(EmoteClueImages.Toolbar.SortType.NAME_ASCENDING),
 				DataGrid.getToolTipText("Toggle order by %s (ascending).", "name"),
 				Comparator.comparing(EmoteClueItemPanel::getName)
 		);

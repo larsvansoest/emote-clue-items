@@ -31,12 +31,12 @@ package com.larsvansoest.runelite.clueitems.progress;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueAssociations;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
+import com.larsvansoest.runelite.clueitems.data.StashUnit;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPanel;
 import com.larsvansoest.runelite.clueitems.ui.components.UpdatablePanel;
 import net.runelite.api.*;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit;
 import net.runelite.client.plugins.cluescrolls.clues.item.AllRequirementsCollection;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 
@@ -54,7 +54,7 @@ import java.util.*;
  */
 public class ProgressManager
 {
-	public final StashCacher stashCacher;
+	public final StashManager stashManager;
 	private final Map<EmoteClueItem, UpdatablePanel.Status> statusMap;
 	private final ItemMonitor itemsMonitor;
 	private final EmoteClueItemsPanel panel;
@@ -62,14 +62,14 @@ public class ProgressManager
 	private final ClientThread clientThread;
 	private boolean initialState;
 
-	public ProgressManager(final EmoteClueItemsPanel panel, final Client client, final ClientThread clientThread, final StashCacher stashCacher)
+	public ProgressManager(final EmoteClueItemsPanel panel, final Client client, final ClientThread clientThread, final StashManager stashManager)
 	{
 		this.statusMap = new HashMap<>(EmoteClueItem.values().length);
 		this.itemsMonitor = new ItemMonitor();
 		this.panel = panel;
 		this.client = client;
 		this.clientThread = clientThread;
-		this.stashCacher = stashCacher;
+		this.stashManager = stashManager;
 		this.reset();
 	}
 
@@ -83,7 +83,7 @@ public class ProgressManager
 			this.itemsMonitor.reset();
 			this.initialState = true;
 		}
-		for (final STASHUnit stashUnit : STASHUnit.values())
+		for (final StashUnit stashUnit : StashUnit.values())
 		{
 			this.panel.turnOnSTASHFilledButton(stashUnit);
 			this.panel.turnOffSTASHFilledButton(stashUnit, new ImageIcon(EmoteClueImages.Toolbar.CheckSquare.WAITING), "Please open your bank to log STASH progress.");
@@ -114,14 +114,14 @@ public class ProgressManager
 
 	public void handleSTASHUnits()
 	{
-		for (final STASHUnit stashUnit : STASHUnit.values())
+		for (final StashUnit stashUnit : StashUnit.values())
 		{
 			this.clientThread.invokeLater(() ->
 			{
-				this.client.runScript(ScriptID.WATSON_STASH_UNIT_CHECK, stashUnit.getObjectId(), 0, 0, 0);
+				this.client.runScript(ScriptID.WATSON_STASH_UNIT_CHECK, stashUnit.getStashUnit().getObjectId(), 0, 0, 0);
 				final boolean built = this.client.getIntStack()[0] == 1;
 				this.panel.turnOnSTASHFilledButton(stashUnit);
-				this.panel.setSTASHUnitStatus(stashUnit, built, this.stashCacher.getStashFilled(stashUnit));
+				this.panel.setSTASHUnitStatus(stashUnit, built, this.stashManager.getStashFilled(stashUnit));
 			});
 		}
 	}

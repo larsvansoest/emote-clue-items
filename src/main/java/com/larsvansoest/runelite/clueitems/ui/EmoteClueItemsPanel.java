@@ -3,7 +3,8 @@ package com.larsvansoest.runelite.clueitems.ui;
 import com.larsvansoest.runelite.clueitems.data.EmoteClue;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueAssociations;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
-import com.larsvansoest.runelite.clueitems.progress.StashCacher;
+import com.larsvansoest.runelite.clueitems.data.StashUnit;
+import com.larsvansoest.runelite.clueitems.progress.StashManager;
 import com.larsvansoest.runelite.clueitems.ui.clues.EmoteClueItemGrid;
 import com.larsvansoest.runelite.clueitems.ui.clues.EmoteClueItemPanel;
 import com.larsvansoest.runelite.clueitems.ui.clues.EmoteCluePanel;
@@ -11,9 +12,6 @@ import com.larsvansoest.runelite.clueitems.ui.components.*;
 import com.larsvansoest.runelite.clueitems.ui.stashes.StashUnitGrid;
 import com.larsvansoest.runelite.clueitems.ui.stashes.StashUnitPanel;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit;
-import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements;
-import net.runelite.client.plugins.cluescrolls.clues.item.SlotLimitationRequirement;
 import net.runelite.client.ui.PluginPanel;
 
 import javax.swing.*;
@@ -21,13 +19,14 @@ import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class EmoteClueItemsPanel extends PluginPanel
 {
 	private final Map<EmoteClueItem, EmoteClueItemPanel> itemPanelMap;
-	private final Map<STASHUnit, StashUnitPanel> stashUnitPanelMap;
+	private final Map<StashUnit, StashUnitPanel> stashUnitPanelMap;
 	private final Map<EmoteClue, EmoteCluePanel> emoteCluePanelMap;
 
 	private final Map<EmoteClueItem, ItemSlotPanel> itemSlotPanelMap;
@@ -36,7 +35,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 	private final StashUnitGrid STASHUnitGrid;
 
 	public EmoteClueItemsPanel(
-			final EmoteClueItemsPalette palette, final ItemManager itemManager, final StashCacher stashMonitor, final String pluginName, final String pluginVersion, final String gitHubUrl)
+			final EmoteClueItemsPalette palette, final ItemManager itemManager, final StashManager stashMonitor, final String pluginName, final String pluginVersion, final String gitHubUrl)
 	{
 		super();
 		super.setLayout(new GridBagLayout());
@@ -59,8 +58,8 @@ public class EmoteClueItemsPanel extends PluginPanel
 
 		// Create STASHUnit panels.
         this.stashUnitPanelMap = Arrays
-                .stream(STASHUnit.values())
-                .collect(Collectors.toMap(Function.identity(), stash -> new StashUnitPanel(palette, stash, EmoteClueAssociations.STASHUnitToEmoteClues.get(stash)[0].getLocationName(), stashMonitor)));
+                .stream(StashUnit.values())
+                .collect(Collectors.toMap(Function.identity(), stash -> new StashUnitPanel(palette, stash, stashMonitor)));
 
         // Setup item panels.
         this.itemPanelMap.forEach((emoteClueItem, itemPanel) -> {
@@ -73,7 +72,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 
         // Setup STASHUnit panels.
 		this.stashUnitPanelMap.forEach((stashUnit, stashUnitPanel) -> {
-			final ItemCollectionPanel collectionPanel = new ItemCollectionPanel(palette,  "Required Items", 6);
+			final ItemCollectionPanel collectionPanel = new ItemCollectionPanel(palette,  "Eligible Items", 6);
 			stashUnitPanel.addChild(collectionPanel);
 			stashUnitPanel.setHeaderColor(palette.getFoldHeaderTextColor()); // Header will not display collection progress.
 			for(EmoteClue emoteClue : EmoteClueAssociations.STASHUnitToEmoteClues.get(stashUnit)) {
@@ -157,7 +156,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 		}
 	}
 
-	public void turnOnSTASHFilledButton(final STASHUnit stashUnit)
+	public void turnOnSTASHFilledButton(final StashUnit stashUnit)
 	{
 		final StashUnitPanel stashUnitPanel = this.stashUnitPanelMap.get(stashUnit);
 		if (stashUnitPanel != null)
@@ -166,7 +165,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 		}
 	}
 
-	public void turnOffSTASHFilledButton(final STASHUnit stashUnit, final Icon icon, final String toolTip)
+	public void turnOffSTASHFilledButton(final StashUnit stashUnit, final Icon icon, final String toolTip)
 	{
 		final StashUnitPanel stashUnitPanel = this.stashUnitPanelMap.get(stashUnit);
 		if (stashUnitPanel != null)
@@ -175,7 +174,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 		}
 	}
 
-	public void setSTASHUnitStatus(final STASHUnit stashUnit, final boolean built, final boolean filled)
+	public void setSTASHUnitStatus(final StashUnit stashUnit, final boolean built, final boolean filled)
 	{
 		final StashUnitPanel stashUnitPanel = this.stashUnitPanelMap.get(stashUnit);
 		if (stashUnitPanel != null)
