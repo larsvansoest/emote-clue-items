@@ -1,7 +1,6 @@
 package com.larsvansoest.runelite.clueitems.ui.stashes;
 
-import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
-import com.larsvansoest.runelite.clueitems.data.StashUnit;
+import com.larsvansoest.runelite.clueitems.data.*;
 import com.larsvansoest.runelite.clueitems.progress.StashManager;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
 import com.larsvansoest.runelite.clueitems.ui.components.CycleButton;
@@ -11,6 +10,7 @@ import lombok.Getter;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 
 public class StashUnitPanel extends FoldablePanel
 {
@@ -24,6 +24,10 @@ public class StashUnitPanel extends FoldablePanel
 	private boolean built;
 	private Color headerColorBeforeTurnOff;
 	private boolean filledButtonTurnedOn;
+	@Getter
+	private final EmoteClueDifficulty[] difficulties;
+	@Getter
+	private final int quantity;
 
 	public StashUnitPanel(final EmoteClueItemsPalette palette, final StashUnit stash, final StashManager stashMonitor)
 	{
@@ -53,6 +57,13 @@ public class StashUnitPanel extends FoldablePanel
 		}, DataGrid.getToolTipText(toolTipTextFormat, "empty"));
 		this.filledButton.setOpaque(false);
 		super.addLeft(this.filledButton, new Insets(0, 0, 0, 0), 10, 10);
+
+		final EmoteClue[] emoteClues = EmoteClueAssociations.STASHUnitToEmoteClues.get(stash);
+		this.quantity = emoteClues.length;
+		this.difficulties = Arrays.stream(emoteClues).map(EmoteClue::getEmoteClueDifficulty).distinct().toArray(EmoteClueDifficulty[]::new);
+		final Insets insets = new Insets(2, 0, 2, 5);
+		Arrays.stream(this.difficulties).map(EmoteClueImages::getRibbon).map(ImageIcon::new).map(JLabel::new).forEach(label -> super.addRight(label, insets, 0, 0));
+		super.addRight(new JLabel(String.valueOf(this.quantity)), insets, 0, 0);
 	}
 
 	public void turnOffFilledButton(final Icon icon, final String toolTip)
