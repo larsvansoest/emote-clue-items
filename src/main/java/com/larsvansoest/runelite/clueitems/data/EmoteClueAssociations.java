@@ -73,4 +73,6 @@ public abstract class EmoteClueAssociations
 	public static final Map<EmoteClue, EmoteClueItem[]> EmoteClueToEmoteClueItems = EmoteClue.CLUES
 			.stream()
 			.collect(Collectors.toMap(Function.identity(), emoteClue -> Arrays.stream(emoteClue.getItemRequirements()).filter(EmoteClueItem.class::isInstance).map(EmoteClueItem.class::cast).toArray(EmoteClueItem[]::new)));
+
+	//TODO: Emote Clue Item to StashUnits.
 }
