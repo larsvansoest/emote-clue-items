@@ -36,9 +36,11 @@ import com.larsvansoest.runelite.clueitems.progress.ProgressManager;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPanel;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ScriptID;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.callback.ClientThread;
@@ -103,6 +105,13 @@ public class EmoteClueItemsPlugin extends Plugin
 
 	private void onStashFillStatusChanged(StashUnit stashUnit, boolean filled) {
 		this.progressManager.setStashUnitFilled(stashUnit, filled);
+	}
+
+	@Subscribe
+	protected void onChatMessage(final ChatMessage event) {
+		if(event.getType() == ChatMessageType.SPAM && event.getMessage().equals("You build a STASH unit.")) {
+			this.updateStashUnitBuildStatuses();
+		}
 	}
 
 	@Subscribe

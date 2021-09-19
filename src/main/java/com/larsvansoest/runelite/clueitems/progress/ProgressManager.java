@@ -120,20 +120,22 @@ public class ProgressManager
 
 	private void setEmoteClueItemStashFilledStatus(EmoteClueItem emoteClueItem, Boolean filled) {
 		this.stashFilledStatusMap.put(emoteClueItem, filled);
-		this.setEmoteClueItemStatus(emoteClueItem, this.getEmoteClueItemStatus(emoteClueItem));
+		this.setEmoteClueItemStatus(emoteClueItem, this.updateEmoteClueItemStatus(emoteClueItem));
 	}
 
 	private void setEmoteClueItemInventoryStatus(EmoteClueItem emoteClueItem, UpdatablePanel.Status status) {
 		this.inventoryStatusMap.put(emoteClueItem, status);
-		this.setEmoteClueItemStatus(emoteClueItem, this.getEmoteClueItemStatus(emoteClueItem));
+		this.setEmoteClueItemStatus(emoteClueItem, this.updateEmoteClueItemStatus(emoteClueItem));
 	}
 
-	private UpdatablePanel.Status getEmoteClueItemStatus(final EmoteClueItem emoteClueItem)
+	private UpdatablePanel.Status updateEmoteClueItemStatus(final EmoteClueItem emoteClueItem)
 	{
 		if(this.stashFilledStatusMap.get(emoteClueItem)) {
 			return UpdatablePanel.Status.Complete;
 		}
-		return this.inventoryStatusMap.get(emoteClueItem);
+		UpdatablePanel.Status inventoryStatus = this.inventoryStatusMap.get(emoteClueItem);
+		this.panel.setCollectionLogStatus(emoteClueItem, inventoryStatus);
+		return inventoryStatus;
 	}
 
 	private void setEmoteClueItemStatus(EmoteClueItem emoteClueItem, UpdatablePanel.Status status) {
@@ -154,7 +156,7 @@ public class ProgressManager
 	{
 		for (final EmoteClueItem child : children)
 		{
-			if (this.getEmoteClueItemStatus(child) == UpdatablePanel.Status.Complete)
+			if (this.updateEmoteClueItemStatus(child) == UpdatablePanel.Status.Complete)
 			{
 				return UpdatablePanel.Status.Complete;
 			}
@@ -168,7 +170,7 @@ public class ProgressManager
 		boolean allMatch = true;
 		for (final EmoteClueItem child : children)
 		{
-			if (this.getEmoteClueItemStatus(child) == UpdatablePanel.Status.Complete)
+			if (this.updateEmoteClueItemStatus(child) == UpdatablePanel.Status.Complete)
 			{
 				anyMatch = true;
 			}
