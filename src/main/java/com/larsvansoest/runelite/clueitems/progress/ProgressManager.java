@@ -130,11 +130,13 @@ public class ProgressManager
 
 	private UpdatablePanel.Status updateEmoteClueItemStatus(final EmoteClueItem emoteClueItem)
 	{
+		UpdatablePanel.Status inventoryStatus = this.inventoryStatusMap.get(emoteClueItem);
+		this.panel.setCollectionLogStatus(emoteClueItem, inventoryStatus);
+
 		if(this.stashFilledStatusMap.get(emoteClueItem)) {
 			return UpdatablePanel.Status.Complete;
 		}
-		UpdatablePanel.Status inventoryStatus = this.inventoryStatusMap.get(emoteClueItem);
-		this.panel.setCollectionLogStatus(emoteClueItem, inventoryStatus);
+
 		return inventoryStatus;
 	}
 
