@@ -135,7 +135,7 @@ public class ProgressManager
 
 		if(this.stashFilledStatusMap.get(emoteClueItem)) {
 			return UpdatablePanel.Status.Complete;
-		}
+		} // TODO: Map currently assumes emote clue item has one stash unit, but there are cases (adamant square shield) where theres more than one, so in progress should be implemented.
 
 		return inventoryStatus;
 	}
