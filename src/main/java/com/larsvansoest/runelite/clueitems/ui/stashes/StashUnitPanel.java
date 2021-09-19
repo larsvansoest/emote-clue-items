@@ -1,7 +1,6 @@
 package com.larsvansoest.runelite.clueitems.ui.stashes;
 
 import com.larsvansoest.runelite.clueitems.data.*;
-import com.larsvansoest.runelite.clueitems.progress.StashManager;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
 import com.larsvansoest.runelite.clueitems.ui.components.CycleButton;
 import com.larsvansoest.runelite.clueitems.ui.components.DataGrid;
@@ -11,6 +10,7 @@ import lombok.Getter;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
+import java.util.function.BiConsumer;
 
 public class StashUnitPanel extends FoldablePanel
 {
@@ -29,9 +29,9 @@ public class StashUnitPanel extends FoldablePanel
 	@Getter
 	private final int quantity;
 
-	public StashUnitPanel(final EmoteClueItemsPalette palette, final StashUnit stash, final StashManager stashMonitor)
+	public StashUnitPanel(final EmoteClueItemsPalette palette, final StashUnit stash, final BiConsumer<StashUnit, Boolean> onStashFillStatusChanged)
 	{
-		super(palette, stash.getName(), 180);
+		super(palette, stash.getName(), 160);
 		this.palette = palette;
 		this.filled = true;
 		final String toolTipTextFormat = "Set stash unit as %s.";
@@ -40,7 +40,7 @@ public class StashUnitPanel extends FoldablePanel
 		{
 			if (this.filledButtonTurnedOn)
 			{
-				stashMonitor.setStashFilled(stash, false);
+				onStashFillStatusChanged.accept(stash, false);
 				super.setStatus(Status.InComplete);
 				this.filled = false;
 			}
@@ -50,7 +50,7 @@ public class StashUnitPanel extends FoldablePanel
 		{
 			if (this.filledButtonTurnedOn)
 			{
-				stashMonitor.setStashFilled(stash, true);
+				onStashFillStatusChanged.accept(stash, true);
 				super.setStatus(Status.Complete);
 				this.filled = true;
 			}

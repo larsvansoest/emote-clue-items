@@ -124,7 +124,7 @@ public class FoldablePanel extends UpdatablePanel
 		super.add(this.foldContent, c);
 	}
 
-	private final JPanel getHeader()
+	private JPanel getHeader()
 	{
 		final JPanel header = new JPanel(new GridBagLayout());
 		header.setBackground(this.emoteClueItemsPalette.getDefaultColor());
@@ -182,6 +182,7 @@ public class FoldablePanel extends UpdatablePanel
 		c.fill = GridBagConstraints.BOTH;
 		c.weightx = 1;
 		c.insets = new Insets(0, this.foldContentLeftInset, this.foldContentBottomInset, this.foldContentRightInset);
+		c.gridx = 0;
 		c.gridy = 0;
 		for (int i = 0; i < this.foldContentElements.size(); i++)
 		{
@@ -249,7 +250,6 @@ public class FoldablePanel extends UpdatablePanel
 		// Add left icons & buttons
 		this.addHeaderElements(this.leftHeaderElements, c);
 
-		c.insets = new Insets(2, 0, 2, 0);
 		this.header.add(this.statusHeaderName, c);
 		c.weightx = 1;
 
@@ -260,7 +260,6 @@ public class FoldablePanel extends UpdatablePanel
 		c.gridx++;
 		this.addHeaderElements(this.rightHeaderElements, c);
 
-		c.insets = new Insets(6, 0, 6, 5);
 		this.header.add(this.foldIcon, c);
 		super.revalidate();
 		super.repaint();

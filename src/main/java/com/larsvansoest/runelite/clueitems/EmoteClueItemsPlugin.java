@@ -33,14 +33,12 @@ import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
 import com.larsvansoest.runelite.clueitems.data.StashUnit;
 import com.larsvansoest.runelite.clueitems.overlay.EmoteClueItemsOverlay;
 import com.larsvansoest.runelite.clueitems.progress.ProgressManager;
-import com.larsvansoest.runelite.clueitems.progress.StashManager;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPanel;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.events.CommandExecuted;
+import net.runelite.api.ScriptID;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.callback.ClientThread;
@@ -50,7 +48,6 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -81,7 +78,6 @@ public class EmoteClueItemsPlugin extends Plugin
 	private NavigationButton navigationButton;
 	private ProgressManager progressManager;
 	private EmoteClueItemsPanel emoteClueItemsPanel;
-	private StashManager stashManager;
 
 	@Override
 	protected void startUp()
@@ -90,8 +86,7 @@ public class EmoteClueItemsPlugin extends Plugin
 		this.overlayManager.add(this.overlay);
 
 		final EmoteClueItemsPalette emoteClueItemsPalette = EmoteClueItemsPalette.RUNELITE;
-		this.stashManager = new StashManager("[EmoteClueItems]", "STASHUnit fill statuses", this.configManager);
-		this.emoteClueItemsPanel = new EmoteClueItemsPanel(emoteClueItemsPalette, this.itemManager, this.stashManager, "Emote Clue Items", "v3.0.0", "https://github.com/larsvansoest/emote-clue-items");
+		this.emoteClueItemsPanel = new EmoteClueItemsPanel(emoteClueItemsPalette, this.itemManager, this::onStashFillStatusChanged, "Emote Clue Items", "v3.0.0", "https://github.com/larsvansoest/emote-clue-items");
 
 		this.navigationButton = NavigationButton
 				.builder()
@@ -103,21 +98,37 @@ public class EmoteClueItemsPlugin extends Plugin
 
 		this.clientToolbar.addNavigation(this.navigationButton);
 
-		this.progressManager = new ProgressManager(this.emoteClueItemsPanel, this.client, this.clientThread, this.stashManager);
+		this.progressManager = new ProgressManager(this.configManager, this.emoteClueItemsPanel, this.client, this.clientThread);
+	}
+
+	private void onStashFillStatusChanged(StashUnit stashUnit, boolean filled) {
+		this.progressManager.setStashUnitFilled(stashUnit, filled);
 	}
 
 	@Subscribe
 	protected void onItemContainerChanged(final ItemContainerChanged event)
 	{
-		this.progressManager.handleEmoteClueItemChanges(event);
+		this.progressManager.processInventoryChanges(event);
 		if (event.getContainerId() == 95)
 		{
 			this.emoteClueItemsPanel.removeEmoteClueItemGridDisclaimer();
 			this.emoteClueItemsPanel.removeSTASHUnitGridDisclaimer();
-			this.emoteClueItemsPanel.setSTASHUnitGridDisclaimer("To track STASH fill status, use the checkboxes to the left.");
-			this.progressManager.handleSTASHUnits();
+			this.updateStashUnitBuildStatuses();
 		}
 		// TODO match on any pin-required container to unlock stash tracking.
+	}
+
+	private void updateStashUnitBuildStatuses() {
+		for (final StashUnit stashUnit : StashUnit.values())
+		{
+			this.clientThread.invokeLater(() ->
+			{
+				this.client.runScript(ScriptID.WATSON_STASH_UNIT_CHECK, stashUnit.getStashUnit().getObjectId(), 0, 0, 0);
+				final boolean built = this.client.getIntStack()[0] == 1;
+				this.emoteClueItemsPanel.turnOnSTASHFilledButton(stashUnit);
+				this.emoteClueItemsPanel.setSTASHUnitStatus(stashUnit, built, this.progressManager.getStashUnitFilled(stashUnit));
+			});
+		}
 	}
 
 	@Subscribe
@@ -132,7 +143,7 @@ public class EmoteClueItemsPlugin extends Plugin
 		}
 		if (event.getGameState() == GameState.LOGGED_IN)
 		{
-			this.stashManager.validate();
+			this.progressManager.validateConfig();
 		}
 	}
 
@@ -149,60 +160,6 @@ public class EmoteClueItemsPlugin extends Plugin
 			{
 				this.clientToolbar.addNavigation(this.navigationButton);
 			}
-		}
-	}
-
-	@Subscribe
-	protected void onCommandExecuted(final CommandExecuted event)
-	{
-		switch (event.getCommand())
-		{
-			case "debug":
-				this.progressManager.stashManager.setStashFilled(StashUnit.GYPSY_TENT_ENTRANCE, true);
-				break;
-			case "clear":
-				for (int i = 0; i < 5; i++)
-				{
-					this.client.addChatMessage(ChatMessageType.CONSOLE, "", "", "sender-debug");
-				}
-				break;
-			case "callscript":
-				this.clientThread.invokeLater(() ->
-				{
-					final int[] intStackPrior = this.client.getIntStack().clone();
-					final String[] stringStackPrior = this.client.getStringStack().clone();
-					this.client.runScript(
-							Integer.valueOf(event.getArguments()[0]),
-							StashUnit.GYPSY_TENT_ENTRANCE.getStashUnit().getObjectId(),
-							Integer.valueOf(event.getArguments()[1]),
-							Integer.valueOf(event.getArguments()[2]),
-							Integer.valueOf(event.getArguments()[3])
-					);
-					final int[] intStackAfter = this.client.getIntStack().clone();
-					final String[] stringStackAfter = this.client.getStringStack().clone();
-					if (intStackPrior.length != intStackAfter.length || stringStackPrior.length != stringStackAfter.length)
-					{
-						this.client.addChatMessage(ChatMessageType.CONSOLE, "", "Unequal size", "sender-debug");
-					}
-					else
-					{
-						for (int i = 0; i < intStackPrior.length; i++)
-						{
-							if (intStackPrior[i] != intStackAfter[i])
-							{
-								this.client.addChatMessage(ChatMessageType.CONSOLE, "", "Int " + i + " changed: " + intStackPrior[i] + " -> " + intStackAfter[i], "sender-debug");
-							}
-						}
-						for (int i = 0; i < stringStackPrior.length; i++)
-						{
-							if (!stringStackPrior[i].equals(stringStackAfter[i]))
-							{
-								this.client.addChatMessage(ChatMessageType.CONSOLE, "", "String " + i + " changed: " + stringStackPrior[i] + " -> " + stringStackPrior[i], "sender-debug");
-							}
-						}
-					}
-				});
-				break;
 		}
 	}
 

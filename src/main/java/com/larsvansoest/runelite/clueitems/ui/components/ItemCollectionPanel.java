@@ -40,7 +40,6 @@ public class ItemCollectionPanel extends FoldablePanel
 	private final int slotRowSize;
 	private final ArrayList<ItemSlotPanel> itemSlots;
 	private final JPanel itemsPanel;
-	private final GridBagConstraints c;
 	private final Color itemSlotBackGround;
 
 	public ItemCollectionPanel(final EmoteClueItemsPalette palette, final String name, final int slotRowSize)
@@ -59,40 +58,42 @@ public class ItemCollectionPanel extends FoldablePanel
 		super.addChild(this.itemsPanel);
 
 		this.slotRowSize = slotRowSize;
-		this.c = new GridBagConstraints();
 		this.itemSlots = new ArrayList<>();
 	}
 
 	@Override
 	public void fold()
 	{
-		this.itemsPanel.removeAll();
+		this.itemSlots.forEach(this.itemsPanel::remove);
 		super.fold();
 	}
 
 	@Override
 	public void unfold()
 	{
-		this.c.gridx = 0;
-		this.c.gridy = 0;
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 0;
 		int i = 0;
 		while (i < this.itemSlots.size())
 		{
-			this.itemsPanel.add(this.itemSlots.get(i), this.c);
+			this.itemsPanel.add(this.itemSlots.get(i), c);
 			i++;
 			final int x = i % this.slotRowSize;
 			if (x == 0)
 			{
-				this.c.gridy++;
+				c.gridy++;
 			}
-			this.c.gridx = x;
+			c.gridx = x;
 		}
 		super.unfold();
 	}
 
 	public void addItem(final ItemSlotPanel itemSlotPanel)
 	{
-		itemSlotPanel.setBackground(this.itemSlotBackGround);
-		this.itemSlots.add(itemSlotPanel);
+		if(!this.itemSlots.contains(itemSlotPanel)) {
+			itemSlotPanel.setBackground(this.itemSlotBackGround);
+			this.itemSlots.add(itemSlotPanel);
+		}
 	}
 }

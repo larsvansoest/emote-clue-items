@@ -59,13 +59,13 @@ public class DataGrid<T extends JPanel> extends JPanel
 	private Comparator<T> sort;
 	private CycleButton sortButton;
 
-	public DataGrid(final EmoteClueItemsPalette palette)
+	public DataGrid(final EmoteClueItemsPalette palette, final int minSearchBarHeight)
 	{
 		super(new GridBagLayout());
 		this.entries = new ArrayList<>();
 
 		this.palette = palette;
-		this.searchBar = this.getSearchBar();
+		this.searchBar = this.getSearchBar(minSearchBarHeight);
 		this.filterButtons = new HashMap<>();
 		this.filters = new HashMap<>();
 		this.sort = Comparator.comparing(T::hashCode);
@@ -192,13 +192,16 @@ public class DataGrid<T extends JPanel> extends JPanel
 		this.addFilter(key, icon, toolTip, predicate, null);
 	}
 
-	private IconTextField getSearchBar()
+	private IconTextField getSearchBar(final int minSearchBarHeight)
 	{
 		final IconTextField searchBar = new IconTextField();
 		searchBar.setIcon(IconTextField.Icon.SEARCH);
 		searchBar.setBackground(this.palette.getDefaultColor());
 		searchBar.setHoverBackgroundColor(this.palette.getHoverColor());
 		searchBar.setFont(FontManager.getRunescapeSmallFont());
+		Dimension size = new Dimension(searchBar.getWidth(), minSearchBarHeight);
+		searchBar.setMinimumSize(size);
+		searchBar.setPreferredSize(size);
 		searchBar.addKeyListener(new KeyListener()
 		{
 			@Override

@@ -4,7 +4,6 @@ import com.larsvansoest.runelite.clueitems.data.EmoteClue;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueAssociations;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
 import com.larsvansoest.runelite.clueitems.data.StashUnit;
-import com.larsvansoest.runelite.clueitems.progress.StashManager;
 import com.larsvansoest.runelite.clueitems.ui.clues.EmoteClueItemGrid;
 import com.larsvansoest.runelite.clueitems.ui.clues.EmoteClueItemPanel;
 import com.larsvansoest.runelite.clueitems.ui.clues.EmoteCluePanel;
@@ -19,7 +18,7 @@ import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -35,7 +34,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 	private final StashUnitGrid STASHUnitGrid;
 
 	public EmoteClueItemsPanel(
-			final EmoteClueItemsPalette palette, final ItemManager itemManager, final StashManager stashMonitor, final String pluginName, final String pluginVersion, final String gitHubUrl)
+			final EmoteClueItemsPalette palette, final ItemManager itemManager, final BiConsumer<StashUnit, Boolean> onStashFillStatusChanged, final String pluginName, final String pluginVersion, final String gitHubUrl)
 	{
 		super();
 		super.setLayout(new GridBagLayout());
@@ -59,7 +58,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 		// Create STASHUnit panels.
         this.stashUnitPanelMap = Arrays
                 .stream(StashUnit.values())
-                .collect(Collectors.toMap(Function.identity(), stash -> new StashUnitPanel(palette, stash, stashMonitor)));
+                .collect(Collectors.toMap(Function.identity(), stash -> new StashUnitPanel(palette, stash, onStashFillStatusChanged)));
 
         // Setup item panels.
         this.itemPanelMap.forEach((emoteClueItem, itemPanel) -> {

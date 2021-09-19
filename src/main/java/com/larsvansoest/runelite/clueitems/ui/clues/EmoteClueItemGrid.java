@@ -51,7 +51,7 @@ public class EmoteClueItemGrid extends FoldablePanelGrid<EmoteClueItemPanel>
 {
 	public EmoteClueItemGrid(final EmoteClueItemsPalette palette)
 	{
-		super(palette);
+		super(palette, 25);
 
 		this.createRequirementStatusFilterButton();
 		this.createDifficultyFilterButton(palette);
@@ -128,11 +128,11 @@ public class EmoteClueItemGrid extends FoldablePanelGrid<EmoteClueItemPanel>
 
 	private void createSortFilterButton()
 	{
-		super.addSort(new ImageIcon(EmoteClueImages.Toolbar.SortType.QUANTITY_DESCENDING),
+		super.addSort(new ImageIcon(EmoteClueImages.Toolbar.SortType.QUANTITY_ASCENDING),
 				DataGrid.getToolTipText("Toggle order by %s (descending).", "quantity"),
 				Comparator.comparingInt(EmoteClueItemPanel::getQuantity)
 		);
-		super.addSort(new ImageIcon(EmoteClueImages.Toolbar.SortType.QUANTITY_ASCENDING),
+		super.addSort(new ImageIcon(EmoteClueImages.Toolbar.SortType.QUANTITY_DESCENDING),
 				DataGrid.getToolTipText("Toggle order by %s (ascending).", "quantity"),
 				Comparator.comparingInt(EmoteClueItemPanel::getQuantity).reversed()
 		);

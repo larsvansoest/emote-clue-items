@@ -1,5 +1,7 @@
 package com.larsvansoest.runelite.clueitems.progress;
 
+import com.larsvansoest.runelite.clueitems.data.EmoteClueAssociations;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
 import com.larsvansoest.runelite.clueitems.data.StashUnit;
 import lombok.RequiredArgsConstructor;
 import net.runelite.client.config.ConfigManager;
@@ -12,7 +14,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-public class StashManager
+class StashMonitor
 {
 	private static final int[] STASH_IDS_ORDERED = Arrays.stream(StashUnit.values()).mapToInt(stashUnit -> stashUnit.getStashUnit().getObjectId()).sorted().toArray();
 	private static final String STASH_IDS_ORDERED_FINGERPRINT = Arrays.stream(STASH_IDS_ORDERED).mapToObj(String::valueOf).collect(Collectors.joining(","));

@@ -9,9 +9,9 @@ public class FoldablePanelGrid<T extends FoldablePanel> extends DataGrid<T>
 {
 	private FoldablePanel unfoldedPanel;
 
-	public FoldablePanelGrid(final EmoteClueItemsPalette palette)
+	public FoldablePanelGrid(final EmoteClueItemsPalette palette, final int minSearchBarHeight)
 	{
-		super(palette);
+		super(palette, minSearchBarHeight);
 	}
 
 	@Override

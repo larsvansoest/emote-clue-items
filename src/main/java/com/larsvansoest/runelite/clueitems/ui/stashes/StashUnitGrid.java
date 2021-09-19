@@ -15,10 +15,10 @@ public class StashUnitGrid extends FoldablePanelGrid<StashUnitPanel>
 {
 	public StashUnitGrid(final EmoteClueItemsPalette palette)
 	{
-		super(palette);
+		super(palette, 25);
 		this.createFilledFilterButton();
 		this.createSortFilterButton();
-		this.createDifficultyFilterButton(palette); //TODO: Duplicated code
+		this.createDifficultyFilterButton(palette);
 	}
 
 	private void createFilledFilterButton()
@@ -42,11 +42,11 @@ public class StashUnitGrid extends FoldablePanelGrid<StashUnitPanel>
 
 	private void createSortFilterButton()
 	{
-		super.addSort(new ImageIcon(EmoteClueImages.Toolbar.SortType.QUANTITY_DESCENDING),
+		super.addSort(new ImageIcon(EmoteClueImages.Toolbar.SortType.QUANTITY_ASCENDING),
 				DataGrid.getToolTipText("Toggle order by %s (descending).", "quantity"),
 				Comparator.comparingInt(StashUnitPanel::getQuantity)
 		);
-		super.addSort(new ImageIcon(EmoteClueImages.Toolbar.SortType.QUANTITY_ASCENDING),
+		super.addSort(new ImageIcon(EmoteClueImages.Toolbar.SortType.QUANTITY_DESCENDING),
 				DataGrid.getToolTipText("Toggle order by %s (ascending).", "quantity"),
 				Comparator.comparingInt(StashUnitPanel::getQuantity).reversed()
 		);
