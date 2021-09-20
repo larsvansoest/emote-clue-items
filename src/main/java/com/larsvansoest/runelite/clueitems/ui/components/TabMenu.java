@@ -97,7 +97,8 @@ public class TabMenu extends JPanel
 		{
 			this.setActive(tab, content);
 		}
-		else {
+		else
+		{
 			content.setVisible(false);
 		}
 		super.revalidate();

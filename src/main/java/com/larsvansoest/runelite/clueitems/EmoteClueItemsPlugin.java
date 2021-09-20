@@ -88,7 +88,14 @@ public class EmoteClueItemsPlugin extends Plugin
 		this.overlayManager.add(this.overlay);
 
 		final EmoteClueItemsPalette emoteClueItemsPalette = EmoteClueItemsPalette.RUNELITE;
-		this.emoteClueItemsPanel = new EmoteClueItemsPanel(emoteClueItemsPalette, this.itemManager, this::onStashFillStatusChanged, "Emote Clue Items", "v3.0.0", "https://github.com/larsvansoest/emote-clue-items");
+		this.emoteClueItemsPanel = new EmoteClueItemsPanel(
+				emoteClueItemsPalette,
+				this.itemManager,
+				this::onStashFillStatusChanged,
+				"Emote Clue Items",
+				"v3.0.0",
+				"https://github.com/larsvansoest/emote-clue-items"
+		);
 
 		this.navigationButton = NavigationButton
 				.builder()
@@ -103,13 +110,16 @@ public class EmoteClueItemsPlugin extends Plugin
 		this.progressManager = new ProgressManager(this.configManager, this.emoteClueItemsPanel, this.client, this.clientThread);
 	}
 
-	private void onStashFillStatusChanged(StashUnit stashUnit, boolean filled) {
+	private void onStashFillStatusChanged(final StashUnit stashUnit, final boolean filled)
+	{
 		this.progressManager.setStashUnitFilled(stashUnit, filled);
 	}
 
 	@Subscribe
-	protected void onChatMessage(final ChatMessage event) {
-		if(event.getType() == ChatMessageType.SPAM && event.getMessage().equals("You build a STASH unit.")) {
+	protected void onChatMessage(final ChatMessage event)
+	{
+		if (event.getType() == ChatMessageType.SPAM && event.getMessage().equals("You build a STASH unit."))
+		{
 			this.updateStashUnitBuildStatuses();
 		}
 	}
@@ -127,7 +137,8 @@ public class EmoteClueItemsPlugin extends Plugin
 		// TODO match on any pin-required container to unlock stash tracking.
 	}
 
-	private void updateStashUnitBuildStatuses() {
+	private void updateStashUnitBuildStatuses()
+	{
 		for (final StashUnit stashUnit : StashUnit.values())
 		{
 			this.clientThread.invokeLater(() ->

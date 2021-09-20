@@ -71,7 +71,7 @@ public class ItemCollectionPanel extends FoldablePanel
 	@Override
 	public void unfold()
 	{
-		GridBagConstraints c = new GridBagConstraints();
+		final GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
 		int i = 0;
@@ -91,7 +91,8 @@ public class ItemCollectionPanel extends FoldablePanel
 
 	public void addItem(final ItemSlotPanel itemSlotPanel)
 	{
-		if(!this.itemSlots.contains(itemSlotPanel)) {
+		if (!this.itemSlots.contains(itemSlotPanel))
+		{
 			itemSlotPanel.setBackground(this.itemSlotBackGround);
 			this.itemSlots.add(itemSlotPanel);
 		}

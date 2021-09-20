@@ -43,7 +43,7 @@ import java.awt.*;
 public abstract class UpdatablePanel extends JPanel
 {
 	public abstract void setStatus(UpdatablePanel.Status status);
-	
+
 	public enum Status
 	{
 		Complete(ColorScheme.PROGRESS_COMPLETE_COLOR),

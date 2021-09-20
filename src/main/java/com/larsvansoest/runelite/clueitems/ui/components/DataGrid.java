@@ -199,7 +199,7 @@ public class DataGrid<T extends JPanel> extends JPanel
 		searchBar.setBackground(this.palette.getDefaultColor());
 		searchBar.setHoverBackgroundColor(this.palette.getHoverColor());
 		searchBar.setFont(FontManager.getRunescapeSmallFont());
-		Dimension size = new Dimension(searchBar.getWidth(), minSearchBarHeight);
+		final Dimension size = new Dimension(searchBar.getWidth(), minSearchBarHeight);
 		searchBar.setMinimumSize(size);
 		searchBar.setPreferredSize(size);
 		searchBar.addKeyListener(new KeyListener()

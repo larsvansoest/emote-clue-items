@@ -19,15 +19,15 @@ public class StashUnitPanel extends FoldablePanel
 	private final int filledButtonInComplete;
 	private final EmoteClueItemsPalette palette;
 	@Getter
+	private final EmoteClueDifficulty[] difficulties;
+	@Getter
+	private final int quantity;
+	@Getter
 	private boolean filled;
 	@Getter
 	private boolean built;
 	private Color headerColorBeforeTurnOff;
 	private boolean filledButtonTurnedOn;
-	@Getter
-	private final EmoteClueDifficulty[] difficulties;
-	@Getter
-	private final int quantity;
 
 	public StashUnitPanel(final EmoteClueItemsPalette palette, final StashUnit stash, final BiConsumer<StashUnit, Boolean> onStashFillStatusChanged)
 	{

@@ -1,6 +1,5 @@
 package com.larsvansoest.runelite.clueitems.progress;
 
-import com.google.common.reflect.AbstractInvocationHandler;
 import com.larsvansoest.runelite.clueitems.data.*;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPanel;
 import com.larsvansoest.runelite.clueitems.ui.components.UpdatablePanel;
@@ -12,12 +11,12 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.cluescrolls.clues.item.AllRequirementsCollection;
-import net.runelite.client.plugins.cluescrolls.clues.item.AnyRequirementCollection;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
-import net.runelite.client.plugins.cluescrolls.clues.item.SingleItemRequirement;
 
 import javax.swing.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class ProgressManager
 {
@@ -30,7 +29,8 @@ public class ProgressManager
 	private final ClientThread clientThread;
 	private boolean initialState;
 
-	public ProgressManager(ConfigManager configManager, EmoteClueItemsPanel panel, Client client, ClientThread clientThread) {
+	public ProgressManager(final ConfigManager configManager, final EmoteClueItemsPanel panel, final Client client, final ClientThread clientThread)
+	{
 		this.panel = panel;
 		this.client = client;
 		this.clientThread = clientThread;
@@ -80,10 +80,12 @@ public class ProgressManager
 		}
 	}
 
-	public void validateConfig() {
+	public void validateConfig()
+	{
 		this.stashMonitor.validate();
-		for(StashUnit stashUnit : StashUnit.values()) {
-			this.setStashUnitFilled(stashUnit, stashMonitor.getStashFilled(stashUnit));
+		for (final StashUnit stashUnit : StashUnit.values())
+		{
+			this.setStashUnitFilled(stashUnit, this.stashMonitor.getStashFilled(stashUnit));
 		}
 	}
 
@@ -105,44 +107,53 @@ public class ProgressManager
 		}
 	}
 
-	public boolean getStashUnitFilled(StashUnit stashUnit) {
+	public boolean getStashUnitFilled(final StashUnit stashUnit)
+	{
 		return this.stashMonitor.getStashFilled(stashUnit);
 	}
 
-	public void setStashUnitFilled(StashUnit stashUnit, boolean filled) {
+	public void setStashUnitFilled(final StashUnit stashUnit, final boolean filled)
+	{
 		this.stashMonitor.setStashFilled(stashUnit, filled);
-		for(EmoteClue emoteClue : EmoteClueAssociations.STASHUnitToEmoteClues.get(stashUnit)) {
-			for(EmoteClueItem emoteClueItem : EmoteClueAssociations.EmoteClueToEmoteClueItems.get(emoteClue)) {
+		for (final EmoteClue emoteClue : EmoteClueAssociations.STASHUnitToEmoteClues.get(stashUnit))
+		{
+			for (final EmoteClueItem emoteClueItem : EmoteClueAssociations.EmoteClueToEmoteClueItems.get(emoteClue))
+			{
 				this.setEmoteClueItemStashFilledStatus(emoteClueItem, filled);
 			}
 		}
 	}
 
-	private void setEmoteClueItemStashFilledStatus(EmoteClueItem emoteClueItem, Boolean filled) {
+	private void setEmoteClueItemStashFilledStatus(final EmoteClueItem emoteClueItem, final Boolean filled)
+	{
 		this.stashFilledStatusMap.put(emoteClueItem, filled);
 		this.setEmoteClueItemStatus(emoteClueItem, this.updateEmoteClueItemStatus(emoteClueItem));
 	}
 
-	private void setEmoteClueItemInventoryStatus(EmoteClueItem emoteClueItem, UpdatablePanel.Status status) {
+	private void setEmoteClueItemInventoryStatus(final EmoteClueItem emoteClueItem, final UpdatablePanel.Status status)
+	{
 		this.inventoryStatusMap.put(emoteClueItem, status);
 		this.setEmoteClueItemStatus(emoteClueItem, this.updateEmoteClueItemStatus(emoteClueItem));
 	}
 
 	private UpdatablePanel.Status updateEmoteClueItemStatus(final EmoteClueItem emoteClueItem)
 	{
-		UpdatablePanel.Status inventoryStatus = this.inventoryStatusMap.get(emoteClueItem);
+		final UpdatablePanel.Status inventoryStatus = this.inventoryStatusMap.get(emoteClueItem);
 		this.panel.setCollectionLogStatus(emoteClueItem, inventoryStatus);
 
-		if(this.stashFilledStatusMap.get(emoteClueItem)) {
+		if (this.stashFilledStatusMap.get(emoteClueItem))
+		{
 			return UpdatablePanel.Status.Complete;
 		} // TODO: Map currently assumes emote clue item has one stash unit, but there are cases (adamant square shield) where theres more than one, so in progress should be implemented.
 
 		return inventoryStatus;
 	}
 
-	private void setEmoteClueItemStatus(EmoteClueItem emoteClueItem, UpdatablePanel.Status status) {
+	private void setEmoteClueItemStatus(final EmoteClueItem emoteClueItem, final UpdatablePanel.Status status)
+	{
 		this.panel.setEmoteClueItemStatus(emoteClueItem, status);
-		for(EmoteClueItem parent : emoteClueItem.getParents()) {
+		for (final EmoteClueItem parent : emoteClueItem.getParents())
+		{
 			this.setEmoteClueItemStatus(parent, this.getParentStatus(parent));
 		}
 	}

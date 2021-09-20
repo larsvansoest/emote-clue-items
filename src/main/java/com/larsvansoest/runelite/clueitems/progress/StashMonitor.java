@@ -1,11 +1,8 @@
 package com.larsvansoest.runelite.clueitems.progress;
 
-import com.larsvansoest.runelite.clueitems.data.EmoteClueAssociations;
-import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
 import com.larsvansoest.runelite.clueitems.data.StashUnit;
 import lombok.RequiredArgsConstructor;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
