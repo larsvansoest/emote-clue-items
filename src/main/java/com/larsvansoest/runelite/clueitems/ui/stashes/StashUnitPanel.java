@@ -31,7 +31,7 @@ public class StashUnitPanel extends FoldablePanel
 
 	public StashUnitPanel(final EmoteClueItemsPalette palette, final StashUnit stash, final BiConsumer<StashUnit, Boolean> onStashFillStatusChanged)
 	{
-		super(palette, stash.getName(), 160);
+		super(palette, stash.getName(), 160, 20);
 		this.palette = palette;
 		this.filled = true;
 		final String toolTipTextFormat = "Set stash unit as %s.";
@@ -56,14 +56,14 @@ public class StashUnitPanel extends FoldablePanel
 			}
 		}, DataGrid.getToolTipText(toolTipTextFormat, "empty"));
 		this.filledButton.setOpaque(false);
-		super.addLeft(this.filledButton, new Insets(0, 0, 0, 0), 10, 10);
+		super.addLeft(this.filledButton, new Insets(0, 0, 0, 0), 10, 10, DisplayMode.All);
 
 		final EmoteClue[] emoteClues = EmoteClueAssociations.STASHUnitToEmoteClues.get(stash);
 		this.quantity = emoteClues.length;
 		this.difficulties = Arrays.stream(emoteClues).map(EmoteClue::getEmoteClueDifficulty).distinct().toArray(EmoteClueDifficulty[]::new);
 		final Insets insets = new Insets(2, 0, 2, 5);
-		Arrays.stream(this.difficulties).map(EmoteClueImages::getRibbon).map(ImageIcon::new).map(JLabel::new).forEach(label -> super.addRight(label, insets, 0, 0));
-		super.addRight(new JLabel(String.valueOf(this.quantity)), insets, 0, 0);
+		Arrays.stream(this.difficulties).map(EmoteClueImages::getRibbon).map(ImageIcon::new).map(JLabel::new).forEach(label -> super.addRight(label, insets, 0, 0, DisplayMode.Default));
+		super.addRight(new JLabel(String.valueOf(this.quantity)), insets, 0, 0, DisplayMode.Default);
 	}
 
 	public void turnOffFilledButton(final Icon icon, final String toolTip)

@@ -59,21 +59,21 @@ public class EmoteCluePanel extends FoldablePanel
 
 	public EmoteCluePanel(final EmoteClueItemsPalette palette, final EmoteClue emoteClue)
 	{
-		super(palette, emoteClue.getLocationName(), 160);
+		super(palette, emoteClue.getLocationName(), 160, 20);
 
 		this.difficulty = emoteClue.getEmoteClueDifficulty();
-		super.addLeft(new JLabel(new ImageIcon(EmoteClueImages.getScroll(this.difficulty))), new Insets(2, 4, 2, 0), 0, 0);
+		super.addLeft(new JLabel(new ImageIcon(EmoteClueImages.getScroll(this.difficulty))), new Insets(2, 4, 2, 0), 0, 0, DisplayMode.All);
 
 		this.firstEmote = emoteClue.getFirstEmote();
 		this.secondEmote = emoteClue.getSecondEmote();
 		this.enemy = emoteClue.getEnemy();
 		this.description = emoteClue.getText();
 
-		super.addChild(this.getPropertyPanel(palette, "Difficulty", this.difficulty.name()));
-		super.addChild(this.getPropertyPanel(palette, "First emote", this.firstEmote.getName()));
-		super.addChild(this.getPropertyPanel(palette, "Second emote", this.secondEmote == null ? "none" : this.secondEmote.getName()));
-		super.addChild(this.getPropertyPanel(palette, "Enemy", this.enemy == null ? "none" : this.enemy.getText()));
-		super.addChild(this.getDescriptionPanel(palette, this.description));
+		super.addChild(this.getPropertyPanel(palette, "Difficulty", this.difficulty.name()), DisplayMode.All);
+		super.addChild(this.getPropertyPanel(palette, "First emote", this.firstEmote.getName()), DisplayMode.All);
+		super.addChild(this.getPropertyPanel(palette, "Second emote", this.secondEmote == null ? "none" : this.secondEmote.getName()), DisplayMode.All);
+		super.addChild(this.getPropertyPanel(palette, "Enemy", this.enemy == null ? "none" : this.enemy.getText()), DisplayMode.All);
+		super.addChild(this.getDescriptionPanel(palette, this.description), DisplayMode.All);
 	}
 
 	private JPanel getPropertyPanel(final EmoteClueItemsPalette palette, final String name, final String value)

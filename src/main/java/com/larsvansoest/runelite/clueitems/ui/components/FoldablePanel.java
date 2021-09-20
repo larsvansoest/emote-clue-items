@@ -42,19 +42,24 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 public class FoldablePanel extends UpdatablePanel
 {
 	private final EmoteClueItemsPalette emoteClueItemsPalette;
 	private final JLabel foldIcon;
 	private final JShadowedLabel statusHeaderName;
-	private final JPanel foldContent;
-	private final ArrayList<JComponent> foldContentElements;
-	private final ArrayList<FoldablePanel> foldContentFoldablePanels;
-	private final ArrayList<HeaderElement> leftHeaderElements;
-	private final ArrayList<HeaderElement> rightHeaderElements;
+	private final JPanel foldContentDisplay;
 	private final JPanel header;
+	private final HashMap<DisplayMode, ArrayList<HeaderElement>> leftHeaderElements;
+	private final HashMap<DisplayMode, ArrayList<HeaderElement>> rightHeaderElements;
+	private final HashMap<DisplayMode, ArrayList<FoldablePanel>> foldContentPanels;
+	private final HashMap<DisplayMode, ArrayList<JComponent>> foldContent;
+	@Getter
+	private DisplayMode displayMode;
 	@Setter
 	@Getter
 	private int foldContentLeftInset;
@@ -75,25 +80,27 @@ public class FoldablePanel extends UpdatablePanel
 	@Getter
 	private Status status;
 
-	public FoldablePanel(final EmoteClueItemsPalette emoteClueItemsPalette, final String name, final int headerNameWidth)
+	public FoldablePanel(final EmoteClueItemsPalette emoteClueItemsPalette, final String name, final int headerNameWidth, final int headerMinHeight)
 	{
 		super.setLayout(new GridBagLayout());
 		super.setBackground(emoteClueItemsPalette.getDefaultColor());
 		super.setName(name);
 
 		this.expanded = false;
+		this.displayMode = DisplayMode.Default;
 
 		this.emoteClueItemsPalette = emoteClueItemsPalette;
-		this.foldContent = new JPanel(new GridBagLayout());
+		this.foldContentDisplay = new JPanel(new GridBagLayout());
 
-		this.foldContent.setBackground(emoteClueItemsPalette.getFoldContentColor());
+		this.foldContentDisplay.setBackground(emoteClueItemsPalette.getFoldContentColor());
 
-		this.foldContentElements = new ArrayList<>();
-		this.foldContentFoldablePanels = new ArrayList<>();
+		this.leftHeaderElements = this.newDisplayModeMap();
+		this.rightHeaderElements = this.newDisplayModeMap();
+		this.foldContentPanels = this.newDisplayModeMap();
+		this.foldContent = this.newDisplayModeMap();
+
 		this.foldIcon = new JLabel(FOLD_ICONS.LEFT);
-		this.statusHeaderName = this.getHeaderText(name, headerNameWidth);
-		this.leftHeaderElements = new ArrayList<>();
-		this.rightHeaderElements = new ArrayList<>();
+		this.statusHeaderName = this.getHeaderText(name, headerNameWidth, headerMinHeight);
 		this.header = this.getHeader();
 		this.paintHeaderLabels();
 
@@ -121,7 +128,7 @@ public class FoldablePanel extends UpdatablePanel
 		super.add(this.header, c);
 
 		c.gridy++;
-		super.add(this.foldContent, c);
+		super.add(this.foldContentDisplay, c);
 	}
 
 	private JPanel getHeader()
@@ -152,28 +159,26 @@ public class FoldablePanel extends UpdatablePanel
 		return header;
 	}
 
-	public void addChild(final FoldablePanel child)
+	public void addChild(final FoldablePanel child, final DisplayMode... displayModes)
 	{
-		this.foldContentElements.add(child);
-		this.foldContentFoldablePanels.add(child);
+		this.addDisplayModeComponents(this.foldContentPanels, child, displayModes);
 	}
 
-	public void addChild(final JComponent child)
+	public void addChild(final JComponent child, final DisplayMode... displayModes)
 	{
-		this.foldContentElements.add(child);
+		this.addDisplayModeComponents(this.foldContent, child, displayModes);
 	}
 
 	public void fold()
 	{
-		this.foldContentFoldablePanels.forEach(FoldablePanel::fold);
-		this.foldContent.setVisible(false);
+		this.getDisplayModeComponents(this.foldContentPanels).forEach(FoldablePanel::fold);
+		this.foldContentDisplay.removeAll();
+		this.foldContentDisplay.setVisible(false);
+		this.foldContentDisplay.revalidate();
+		this.foldContentDisplay.repaint();
 		this.header.setBackground(this.emoteClueItemsPalette.getDefaultColor());
-		// Detach panels to enable re-use of panels under more than one foldable panel.
-		this.foldContentElements.forEach(this.foldContent::remove);
-		this.foldIcon.setIcon(FOLD_ICONS.LEFT);
 		this.expanded = false;
-		this.foldContent.revalidate();
-		this.foldContent.repaint();
+		this.foldIcon.setIcon(FOLD_ICONS.LEFT);
 	}
 
 	public void unfold()
@@ -184,18 +189,25 @@ public class FoldablePanel extends UpdatablePanel
 		c.insets = new Insets(0, this.foldContentLeftInset, this.foldContentBottomInset, this.foldContentRightInset);
 		c.gridx = 0;
 		c.gridy = 0;
-		for (int i = 0; i < this.foldContentElements.size(); i++)
+		this.getDisplayModeComponents(this.foldContent).forEach(foldContentElement ->
 		{
-			c.insets.top = Objects.nonNull(this.fixedFoldContentTopInset) ? this.fixedFoldContentTopInset : i == 0 ? 5 : 0;
-			this.foldContent.add(this.foldContentElements.get(i), c);
+			c.insets.top = Objects.nonNull(this.fixedFoldContentTopInset) ? this.fixedFoldContentTopInset : c.gridy == 0 ? 5 : 0;
+			this.foldContentDisplay.add(foldContentElement, c);
 			c.gridy++;
-		}
+		});
+		this.getDisplayModeComponents(this.foldContentPanels).forEach(foldablePanel ->
+		{
+			c.insets.top = Objects.nonNull(this.fixedFoldContentTopInset) ? this.fixedFoldContentTopInset : c.gridy == 0 ? 5 : 0;
+			foldablePanel.setDisplayMode(DisplayMode.Nested);
+			this.foldContentDisplay.add(foldablePanel, c);
+			c.gridy++;
+		});
 		this.header.setBackground(this.emoteClueItemsPalette.getSelectColor());
-		this.foldContent.setVisible(true);
+		this.foldContentDisplay.setVisible(true);
 		this.foldIcon.setIcon(FOLD_ICONS.DOWN);
 		this.expanded = true;
-		this.foldContent.revalidate();
-		this.foldContent.repaint();
+		this.foldContentDisplay.revalidate();
+		this.foldContentDisplay.repaint();
 	}
 
 	public void setStatus(final Status status)
@@ -214,31 +226,91 @@ public class FoldablePanel extends UpdatablePanel
 		this.statusHeaderName.setForeground(colour);
 	}
 
-	public final void addRight(final CycleButton cycleButton, final Insets insets, final int ipadX, final int ipadY)
+	public void setDisplayMode(final DisplayMode displayMode)
 	{
-		this.rightHeaderElements.add(new HeaderElement(cycleButton, insets, ipadX, ipadY));
+		this.displayMode = displayMode;
 		this.paintHeaderLabels();
 	}
 
-	public final void addRight(final JLabel iconLabel, final Insets insets, final int ipadX, final int ipadY)
+	private <T> HashMap<DisplayMode, ArrayList<T>> newDisplayModeMap()
 	{
-		this.rightHeaderElements.add(new HeaderElement(iconLabel, insets, ipadX, ipadY));
+		final HashMap<DisplayMode, ArrayList<T>> displayModeMap = new HashMap<>();
+		for (final DisplayMode displayMode : DisplayMode.values())
+		{
+			if (!displayMode.equals(DisplayMode.All))
+			{
+				displayModeMap.put(displayMode, new ArrayList<>());
+			}
+		}
+		return displayModeMap;
+	}
+
+	private <T> void addDisplayModeComponents(final HashMap<DisplayMode, ArrayList<T>> map, final T component, final DisplayMode... displayModes)
+	{
+		if (displayModes.length == 0)
+		{
+			this.addDisplayModeComponent(map, component, DisplayMode.Default);
+		}
+		else if (Arrays.asList(displayModes).contains(DisplayMode.All))
+		{
+			for (final DisplayMode displayMode : DisplayMode.values())
+			{
+				if (!displayMode.equals(DisplayMode.All))
+				{
+					this.addDisplayModeComponent(map, component, displayMode);
+				}
+			}
+		}
+		else
+		{
+			for (final DisplayMode displayMode : displayModes)
+			{
+				this.addDisplayModeComponent(map, component, displayMode);
+			}
+		}
+	}
+
+	private <T> void addDisplayModeComponent(final HashMap<DisplayMode, ArrayList<T>> map, final T component, final DisplayMode displayMode)
+	{
+		final ArrayList<T> list = map.get(displayMode);
+		list.add(component);
+		map.put(displayMode, list);
+	}
+
+	private <T> Stream<T> getDisplayModeComponents(final HashMap<DisplayMode, ArrayList<T>> map)
+	{
+		if (this.displayMode.equals(DisplayMode.All))
+		{
+			return Arrays.stream(DisplayMode.values()).filter(displayMode -> !displayMode.equals(DisplayMode.All)).map(map::get).flatMap(ArrayList::stream);
+		}
+		return map.get(this.displayMode).stream();
+	}
+
+	public final void addRight(final CycleButton cycleButton, final Insets insets, final int ipadX, final int ipadY, final DisplayMode... displayModes)
+	{
+		this.addDisplayModeComponents(this.rightHeaderElements, new HeaderElement(cycleButton, insets, ipadX, ipadY), displayModes);
 		this.paintHeaderLabels();
 	}
 
-	public final void addLeft(final CycleButton cycleButton, final Insets insets, final int ipadX, final int ipadY)
+	public final void addRight(final JLabel iconLabel, final Insets insets, final int ipadX, final int ipadY, final DisplayMode... displayModes)
 	{
-		this.leftHeaderElements.add(new HeaderElement(cycleButton, insets, ipadX, ipadY));
+		this.addDisplayModeComponents(this.rightHeaderElements, new HeaderElement(iconLabel, insets, ipadX, ipadY), displayModes);
 		this.paintHeaderLabels();
 	}
 
-	public final void addLeft(final JLabel iconLabel, final Insets insets, final int ipadX, final int ipadY)
+	public final void addLeft(final CycleButton cycleButton, final Insets insets, final int ipadX, final int ipadY, final DisplayMode... displayModes)
 	{
-		this.leftHeaderElements.add(new HeaderElement(iconLabel, insets, ipadX, ipadY));
+		this.addDisplayModeComponents(this.leftHeaderElements, new HeaderElement(cycleButton, insets, ipadX, ipadY), displayModes);
 		this.paintHeaderLabels();
 	}
 
-	private final void paintHeaderLabels()
+	public final void addLeft(final JLabel iconLabel, final Insets insets, final int ipadX, final int ipadY, final DisplayMode... displayModes)
+	{
+		this.addDisplayModeComponents(this.leftHeaderElements, new HeaderElement(iconLabel, insets, ipadX, ipadY), displayModes);
+		this.paintHeaderLabels();
+	}
+
+	private void paintHeaderLabels()
 	{
 		this.header.removeAll();
 		final GridBagConstraints c = new GridBagConstraints();
@@ -248,7 +320,7 @@ public class FoldablePanel extends UpdatablePanel
 		c.weightx = 0;
 
 		// Add left icons & buttons
-		this.addHeaderElements(this.leftHeaderElements, c);
+		this.addHeaderElements(this.getDisplayModeComponents(this.leftHeaderElements), c);
 
 		this.header.add(this.statusHeaderName, c);
 		c.weightx = 1;
@@ -258,35 +330,36 @@ public class FoldablePanel extends UpdatablePanel
 		c.weightx = 0;
 
 		c.gridx++;
-		this.addHeaderElements(this.rightHeaderElements, c);
+		this.addHeaderElements(this.getDisplayModeComponents(this.rightHeaderElements), c);
 
+		c.insets.right = 4;
 		this.header.add(this.foldIcon, c);
 		super.revalidate();
 		super.repaint();
 	}
 
-	private void addHeaderElements(final ArrayList<HeaderElement> headerElements, final GridBagConstraints c)
+	private void addHeaderElements(final Stream<HeaderElement> headerElements, final GridBagConstraints c)
 	{
 		final Insets previousInsets = c.insets;
 		final int previousIpadX = c.ipadx;
 		final int previousIpadY = c.ipady;
-		for (final HeaderElement headerElement : headerElements)
+		headerElements.forEach(headerElement ->
 		{
 			c.insets = headerElement.getInsets();
 			c.ipadx = headerElement.getIpadX();
 			c.ipady = headerElement.getIpadY();
 			this.header.add(headerElement.getElement(), c);
 			c.gridx++;
-		}
+		});
 		c.insets = previousInsets;
 		c.ipadx = previousIpadX;
 		c.ipady = previousIpadY;
 	}
 
-	private JShadowedLabel getHeaderText(final String text, final int fixedWidth)
+	private JShadowedLabel getHeaderText(final String text, final int fixedNameWidth, final int fixedHeight)
 	{
 		final JShadowedLabel label = new JShadowedLabel(text);
-		final Dimension size = new Dimension(fixedWidth, label.getHeight());
+		final Dimension size = new Dimension(fixedNameWidth, fixedHeight);
 		label.setMinimumSize(size);
 		label.setPreferredSize(size);
 		label.setMaximumSize(size);
@@ -295,6 +368,13 @@ public class FoldablePanel extends UpdatablePanel
 		label.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		return label;
+	}
+
+	public enum DisplayMode
+	{
+		All(),
+		Default(),
+		Nested()
 	}
 
 	private final static class FOLD_ICONS

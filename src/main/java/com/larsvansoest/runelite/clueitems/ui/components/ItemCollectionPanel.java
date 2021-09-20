@@ -44,9 +44,9 @@ public class ItemCollectionPanel extends FoldablePanel
 
 	public ItemCollectionPanel(final EmoteClueItemsPalette palette, final String name, final int slotRowSize)
 	{
-		super(palette, name, 160);
+		super(palette, name, 160, 20);
 		super.setStatus(Status.Unknown);
-		super.addLeft(new JLabel(new ImageIcon(EmoteClueImages.Toolbar.Requirement.INVENTORY)), new Insets(2, 4, 2, 0), 0, 0);
+		super.addLeft(new JLabel(new ImageIcon(EmoteClueImages.Toolbar.Requirement.INVENTORY)), new Insets(2, 4, 2, 0), 0, 0, DisplayMode.All);
 
 		this.itemSlotBackGround = palette.getFoldContentColor();
 
@@ -55,7 +55,7 @@ public class ItemCollectionPanel extends FoldablePanel
 		super.setFoldContentLeftInset(0);
 		super.setFoldContentRightInset(0);
 		super.setFixedFoldContentTopInset(1);
-		super.addChild(this.itemsPanel);
+		super.addChild(this.itemsPanel, DisplayMode.All);
 
 		this.slotRowSize = slotRowSize;
 		this.itemSlots = new ArrayList<>();

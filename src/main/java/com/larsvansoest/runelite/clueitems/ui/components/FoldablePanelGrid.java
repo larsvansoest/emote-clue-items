@@ -20,6 +20,7 @@ public class FoldablePanelGrid<T extends FoldablePanel> extends DataGrid<T>
 		this.unfoldedPanel = null;
 		for (final T entry : entries)
 		{
+			entry.setDisplayMode(FoldablePanel.DisplayMode.All);
 			entry.setOnHeaderMousePressed(() ->
 			{
 				if (entry.getExpanded())
@@ -49,6 +50,13 @@ public class FoldablePanelGrid<T extends FoldablePanel> extends DataGrid<T>
 			for (final T entry : super.entries)
 			{
 				entry.fold();
+			}
+		}
+		else
+		{
+			for (final T entry : super.entries)
+			{
+				entry.setDisplayMode(FoldablePanel.DisplayMode.All);
 			}
 		}
 		super.setVisible(visible);
