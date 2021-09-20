@@ -56,7 +56,7 @@ public class StashUnitPanel extends FoldablePanel
 			}
 		}, DataGrid.getToolTipText(toolTipTextFormat, "empty"));
 		this.filledButton.setOpaque(false);
-		super.addLeft(this.filledButton, new Insets(0, 0, 0, 0), 10, 10, DisplayMode.All);
+		super.addLeft(this.filledButton, new Insets(0, 1, 0, 0), 10, 10, DisplayMode.All);
 
 		final EmoteClue[] emoteClues = EmoteClueAssociations.STASHUnitToEmoteClues.get(stash);
 		this.quantity = emoteClues.length;
