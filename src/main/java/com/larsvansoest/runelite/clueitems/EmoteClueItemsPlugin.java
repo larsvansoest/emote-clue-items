@@ -56,6 +56,14 @@ import net.runelite.client.ui.overlay.OverlayManager;
 
 import javax.inject.Inject;
 
+/**
+ * Main class of the plugin.
+ * <p>
+ * Provides the user with an overlay and item collection database to track {@link com.larsvansoest.runelite.clueitems.data.EmoteClue} requirement progression.
+ *
+ * @see com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPanel
+ * @see com.larsvansoest.runelite.clueitems.overlay.EmoteClueItemsOverlay
+ */
 @Slf4j
 @PluginDescriptor(name = "Emote Clue Items",
                   description = "Highlight required items for emote clue steps.",

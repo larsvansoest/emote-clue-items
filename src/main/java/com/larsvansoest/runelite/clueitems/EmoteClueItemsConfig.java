@@ -33,6 +33,14 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
 
+/**
+ * Config setup for the {@link com.larsvansoest.runelite.clueitems.EmoteClueItemsPlugin}.
+ * <p>
+ * Allows for enabling plugin user settings in Runelite.
+ *
+ * @author Lars van Soest
+ * @since 1.0.4
+ */
 @SuppressWarnings("SameReturnValue")
 @ConfigGroup("example")
 public interface EmoteClueItemsConfig extends Config
