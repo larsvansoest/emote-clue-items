@@ -22,6 +22,18 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+/**
+ * Main {@link net.runelite.client.ui.PluginPanel} of the {@link com.larsvansoest.runelite.clueitems.EmoteClueItemsPlugin}.
+ * <p>
+ * Creates a hierarchy of all {@link com.larsvansoest.runelite.clueitems.data.EmoteClueItem} and {@link com.larsvansoest.runelite.clueitems.data.StashUnit} requirements for completing {@link com.larsvansoest.runelite.clueitems.data.EmoteClue} in Runescape.
+ * <p>
+ * Provides functionality to change requirement statuses and toggling UI functionality.
+ * <p>
+ * Consists of a {@link com.larsvansoest.runelite.clueitems.ui.components.TabMenu} with tabs for a {@link com.larsvansoest.runelite.clueitems.ui.clues.EmoteClueItemGrid} and a {@link com.larsvansoest.runelite.clueitems.ui.stashes.StashUnitGrid}.
+ *
+ * @author Lars van Soest
+ * @since 1.0.4
+ */
 public class EmoteClueItemsPanel extends PluginPanel
 {
 	private final Map<EmoteClueItem, EmoteClueItemPanel> itemPanelMap;
@@ -34,6 +46,16 @@ public class EmoteClueItemsPanel extends PluginPanel
 	private final EmoteClueItemGrid clueItemsGrid;
 	private final StashUnitGrid STASHUnitGrid;
 
+	/**
+	 * Creates the panel.
+	 *
+	 * @param palette                  Colour scheme for the grid.
+	 * @param itemManager              RuneLite's itemManager to derive item icons in {@link com.larsvansoest.runelite.clueitems.ui.components.ItemCollectionPanel}.
+	 * @param onStashFillStatusChanged Behaviour to run when the player changes stash unit fill status.
+	 * @param pluginName               Plugin name to display in the footer.
+	 * @param pluginVersion            Plugin version to display in the footer.
+	 * @param gitHubUrl                Hyperlink when clicking the GitHub icon in the footer.
+	 */
 	public EmoteClueItemsPanel(
 			final EmoteClueItemsPalette palette, final ItemManager itemManager, final BiConsumer<StashUnit, Boolean> onStashFillStatusChanged, final String pluginName, final String pluginVersion,
 			final String gitHubUrl)
@@ -158,6 +180,12 @@ public class EmoteClueItemsPanel extends PluginPanel
 		}
 	}
 
+	/**
+	 * Changes an {@link com.larsvansoest.runelite.clueitems.data.EmoteClueItem} requirement status for all {@link com.larsvansoest.runelite.clueitems.ui.components.ItemRequirementCollectionPanel} that contain it and are used by the {@link com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPanel}.
+	 *
+	 * @param emoteClueItem the EmoteClueItem requirement to change the status of in all corresponding {@link com.larsvansoest.runelite.clueitems.ui.components.ItemRequirementCollectionPanel}.
+	 * @param status        the new status of the EmoteClueItem requirement.
+	 */
 	public void setCollectionLogStatus(final EmoteClueItem emoteClueItem, final UpdatablePanel.Status status)
 	{
 		for (final ItemRequirementCollectionPanel itemRequirementCollectionPanel : this.emoteClueItemCollectionPanelMap.get(emoteClueItem))
@@ -167,9 +195,9 @@ public class EmoteClueItemsPanel extends PluginPanel
 	}
 
 	/**
-	 * Changes an {@link EmoteClue} {@link EmoteClueItem} status panel to represent given {@link UpdatablePanel.Status} status, if a mapping to {@link EmoteClueItemPanel} exists.
+	 * Changes an {@link com.larsvansoest.runelite.clueitems.data.EmoteClueItem} {@link com.larsvansoest.runelite.clueitems.ui.clues.EmoteClueItemPanel} status panel to represent given status, if a mapping to {@link com.larsvansoest.runelite.clueitems.ui.clues.EmoteClueItemPanel} exists.
 	 *
-	 * @param emoteClueItem the {@link EmoteClue} {@link EmoteClueItem} requirement to display.
+	 * @param emoteClueItem the emote to change the status of in the corresponding {@link com.larsvansoest.runelite.clueitems.ui.stashes.StashUnitPanel}.
 	 * @param status        the desired {@link UpdatablePanel.Status} status to display.
 	 */
 	public void setEmoteClueItemStatus(final EmoteClueItem emoteClueItem, final UpdatablePanel.Status status)
@@ -181,6 +209,15 @@ public class EmoteClueItemsPanel extends PluginPanel
 		}
 	}
 
+	/**
+	 * Changes a {@link com.larsvansoest.runelite.clueitems.data.StashUnit} {@link com.larsvansoest.runelite.clueitems.ui.stashes.StashUnitPanel} status panel to represent given STASHUnit build and fill status, if a mapping to {@link com.larsvansoest.runelite.clueitems.ui.stashes.StashUnitPanel} exists.
+	 * <p>
+	 * Does not check fill status if built = false.
+	 *
+	 * @param stashUnit the STASHUnit to change the status of in the corresponding {@link com.larsvansoest.runelite.clueitems.ui.stashes.StashUnitPanel}.
+	 * @param built     specify if the given STASHUnit has been built.
+	 * @param filled    specify if the given STASHUnit has been filled.
+	 */
 	public void setSTASHUnitStatus(final StashUnit stashUnit, final boolean built, final boolean filled)
 	{
 		final StashUnitPanel stashUnitPanel = this.stashUnitPanelMap.get(stashUnit);
@@ -198,6 +235,15 @@ public class EmoteClueItemsPanel extends PluginPanel
 		}
 	}
 
+	/**
+	 * Turn on the stash unit filled button of the {@link com.larsvansoest.runelite.clueitems.ui.stashes.StashUnitPanel} of the {@link com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPanel} that corresponds to given STASHUnit, if a mapping to {@link com.larsvansoest.runelite.clueitems.ui.stashes.StashUnitPanel} exists.
+	 * <p>
+	 * Enabled by default.
+	 * <p>
+	 * Used to re-enable the stash unit filled button after executing {@link #turnOffSTASHFilledButton(com.larsvansoest.runelite.clueitems.data.StashUnit, javax.swing.Icon, String)}.
+	 *
+	 * @param stashUnit the STASHUnit of which to turn on the filled button.
+	 */
 	public void turnOnSTASHFilledButton(final StashUnit stashUnit)
 	{
 		final StashUnitPanel stashUnitPanel = this.stashUnitPanelMap.get(stashUnit);
@@ -207,6 +253,15 @@ public class EmoteClueItemsPanel extends PluginPanel
 		}
 	}
 
+	/**
+	 * Turn off the stash unit filled button of the {@link com.larsvansoest.runelite.clueitems.ui.stashes.StashUnitPanel} of the {@link com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPanel} that corresponds to given STASHUnit, if a mapping to {@link com.larsvansoest.runelite.clueitems.ui.stashes.StashUnitPanel} exists.
+	 * <p>
+	 * Can be re-enabled by executing {@link #turnOnSTASHFilledButton(com.larsvansoest.runelite.clueitems.data.StashUnit)}.
+	 *
+	 * @param stashUnit the STASHUnit of which to turn off the filled button.
+	 * @param icon      the icon to display on the button.
+	 * @param toolTip   the tooltip to display when hovering the button.
+	 */
 	public void turnOffSTASHFilledButton(final StashUnit stashUnit, final Icon icon, final String toolTip)
 	{
 		final StashUnitPanel stashUnitPanel = this.stashUnitPanelMap.get(stashUnit);
@@ -216,21 +271,45 @@ public class EmoteClueItemsPanel extends PluginPanel
 		}
 	}
 
+	/**
+	 * Underneath the {@link com.larsvansoest.runelite.clueitems.ui.clues.EmoteClueItemGrid}'s searchbar, add a notification with given text.
+	 * <p>
+	 * Overwrites existing notification.
+	 * <p>
+	 * Notification can be removed by {@link #removeEmoteClueItemGridDisclaimer()}.
+	 *
+	 * @param text text to display in te notification.
+	 */
 	public void setEmoteClueItemGridDisclaimer(final String text)
 	{
 		this.clueItemsGrid.setDisclaimer(text);
 	}
 
+	/**
+	 * Underneath the {@link com.larsvansoest.runelite.clueitems.ui.stashes.StashUnitGrid}'s searchbar, add a notification with given text.
+	 * <p>
+	 * Overwrites existing notification.
+	 * <p>
+	 * Notification can be removed by {@link #removeSTASHUnitGridDisclaimer()}.
+	 *
+	 * @param text text to display in te notification.
+	 */
 	public void setSTASHUnitGridDisclaimer(final String text)
 	{
 		this.STASHUnitGrid.setDisclaimer(text);
 	}
 
+	/**
+	 * Removes any notification added by {@link #setEmoteClueItemGridDisclaimer(String)}.
+	 */
 	public void removeEmoteClueItemGridDisclaimer()
 	{
 		this.clueItemsGrid.removeDisclaimer();
 	}
 
+	/**
+	 * Removes any notification added by {@link #setSTASHUnitGridDisclaimer(String)}.
+	 */
 	public void removeSTASHUnitGridDisclaimer()
 	{
 		this.STASHUnitGrid.removeDisclaimer();

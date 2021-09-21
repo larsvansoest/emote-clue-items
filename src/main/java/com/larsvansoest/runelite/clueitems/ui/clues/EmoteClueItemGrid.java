@@ -40,7 +40,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 /**
- * Main {@link net.runelite.client.ui.PluginPanel} of the {@link com.larsvansoest.runelite.clueitems.EmoteClueItemsPlugin}, which displays {@link com.larsvansoest.runelite.clueitems.data.EmoteClueItem} requirement status progression.
+ * Primary display of the {@link com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPanel} of the {@link com.larsvansoest.runelite.clueitems.EmoteClueItemsPlugin}, which displays {@link com.larsvansoest.runelite.clueitems.data.EmoteClueItem} requirement status progression.
  * <p>
  * Includes search bar, buttons to filter and sort by properties.
  *

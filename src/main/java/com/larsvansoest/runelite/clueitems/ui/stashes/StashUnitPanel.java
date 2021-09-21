@@ -12,6 +12,14 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 
+/**
+ * Displays data of a {@link com.larsvansoest.runelite.clueitems.data.StashUnit}. Implements {@link com.larsvansoest.runelite.clueitems.ui.components.FoldablePanel}.
+ * <p>
+ * Contains a button which allows the user to select which {@link com.larsvansoest.runelite.clueitems.data.StashUnit} has been filled by the player.
+ *
+ * @author Lars van Soest
+ * @since 3.0.0
+ */
 public class StashUnitPanel extends RequirementPanel
 {
 	private final CycleButton filledButton;
@@ -34,6 +42,13 @@ public class StashUnitPanel extends RequirementPanel
 	@Getter
 	private ItemRequirementCollectionPanel itemCollectionPanel;
 
+	/**
+	 * Creates the panel.
+	 *
+	 * @param palette                  Colour scheme for the grid.
+	 * @param stash                    StashUnit of which data is displayed by this panel.
+	 * @param onStashFillStatusChanged Behaviour to run when the player changes stash unit fill status.
+	 */
 	public StashUnitPanel(final EmoteClueItemsPalette palette, final StashUnit stash, final BiConsumer<StashUnit, Boolean> onStashFillStatusChanged)
 	{
 		super(palette, stash.getName(), 160, 20);
@@ -78,6 +93,12 @@ public class StashUnitPanel extends RequirementPanel
 		super.addChild(this.getDetailsPanel(palette, this.difficulties[0]), DisplayMode.All);
 	}
 
+	/**
+	 * Specify the {@link com.larsvansoest.runelite.clueitems.ui.components.ItemRequirementCollectionPanel} containing all items required to fill the {@link com.larsvansoest.runelite.clueitems.data.StashUnit}.
+	 *
+	 * @param itemCollectionPanel Item collection panel displaying items required to fill the {@link com.larsvansoest.runelite.clueitems.data.StashUnit}.
+	 * @param displayModes        Specify when the panel should be displayed.
+	 */
 	public void setItemCollectionPanel(final ItemRequirementCollectionPanel itemCollectionPanel, final DisplayMode... displayModes)
 	{
 		if (Objects.nonNull(this.itemCollectionPanel))
@@ -158,6 +179,14 @@ public class StashUnitPanel extends RequirementPanel
 		return detailsPanel;
 	}
 
+	/**
+	 * Turn off the stash unit filled button.
+	 * <p>
+	 * Can be re-enabled by executing {@link #turnOnFilledButton()}.
+	 *
+	 * @param icon    the icon to display on the button.
+	 * @param toolTip the tooltip to display when hovering the button.
+	 */
 	public void turnOffFilledButton(final Icon icon, final String toolTip)
 	{
 		if (this.filledButtonTurnedOn)
@@ -169,6 +198,13 @@ public class StashUnitPanel extends RequirementPanel
 		}
 	}
 
+	/**
+	 * Turn on the stash unit filled button.
+	 * <p>
+	 * Enabled by default.
+	 * <p>
+	 * Used to re-enable the stash unit filled button after executing {@link #turnOffFilledButton(javax.swing.Icon, String)}.
+	 */
 	public void turnOnFilledButton()
 	{
 		if (!this.filledButtonTurnedOn)
@@ -180,6 +216,16 @@ public class StashUnitPanel extends RequirementPanel
 		}
 	}
 
+	/**
+	 * Toggle the built status display of the {@link com.larsvansoest.runelite.clueitems.data.StashUnit} the {@link com.larsvansoest.runelite.clueitems.ui.stashes.StashUnitPanel} represents.
+	 * <p>
+	 * <ul>
+	 *     <li>When built = false, disables the stash unit fill button and displays a construction icon.</li>
+	 *     <li>When built = true, re-enables the stash unit fill button.</li>
+	 * </ul>
+	 *
+	 * @param built display if {@link com.larsvansoest.runelite.clueitems.data.StashUnit} is built or not.
+	 */
 	public void setBuilt(final boolean built)
 	{
 		if (built)
@@ -195,6 +241,13 @@ public class StashUnitPanel extends RequirementPanel
 		this.built = built;
 	}
 
+	/**
+	 * Toggle the fill status display of the {@link com.larsvansoest.runelite.clueitems.data.StashUnit} the {@link com.larsvansoest.runelite.clueitems.ui.stashes.StashUnitPanel} represents.
+	 * <p>
+	 * Changes the {@link com.larsvansoest.runelite.clueitems.ui.components.FoldablePanel} header color corresponding to the stash fill (completion) status.
+	 *
+	 * @param filled display if {@link com.larsvansoest.runelite.clueitems.data.StashUnit} is built or not.
+	 */
 	public void setFilled(final boolean filled)
 	{
 		this.filledButton.cycleToStage(filled ? this.filledButtonComplete : this.filledButtonInComplete);

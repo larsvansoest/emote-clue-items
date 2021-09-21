@@ -10,8 +10,21 @@ import javax.swing.*;
 import java.util.Arrays;
 import java.util.Comparator;
 
+/**
+ * Secondary display of the {@link com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPanel} of the {@link com.larsvansoest.runelite.clueitems.EmoteClueItemsPlugin}, which displays {@link com.larsvansoest.runelite.clueitems.data.StashUnit} requirement status progression.
+ * <p>
+ * Includes search bar, buttons to filter and sort by properties.
+ *
+ * @author Lars van Soest
+ * @since 3.0.0
+ */
 public class StashUnitGrid extends FoldablePanelGrid<StashUnitPanel>
 {
+	/**
+	 * Creates the grid.
+	 *
+	 * @param palette Colour scheme for the grid.
+	 */
 	public StashUnitGrid(final EmoteClueItemsPalette palette)
 	{
 		super(palette, 25);

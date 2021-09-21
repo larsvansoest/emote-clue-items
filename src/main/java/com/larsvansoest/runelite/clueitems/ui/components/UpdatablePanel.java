@@ -42,6 +42,16 @@ import java.awt.*;
  */
 public interface UpdatablePanel
 {
+	/**
+	 * In similar fashion to Runescape's quest progression, requirement progression is represented by the following states:
+	 * <ul>
+	 *     <li>Complete</li>
+	 *     <li>InProgress</li>
+	 *     <li>InComplete</li>
+	 * </ul>
+	 * <p>
+	 * For practicality, this enum also contains an entry for Unknown.
+	 */
 	enum Status
 	{
 		Complete(ColorScheme.PROGRESS_COMPLETE_COLOR),
