@@ -41,6 +41,12 @@ import java.util.ArrayDeque;
 import java.util.Objects;
 import java.util.Queue;
 
+/**
+ * Button which cycles values each time it is clicked. Allows use of unique icons to display currently selected value.
+ *
+ * @author Lars van Soest
+ * @since 3.0.0
+ */
 public class CycleButton extends JPanel
 {
 	private final JLabel optionLabel;
@@ -122,6 +128,11 @@ public class CycleButton extends JPanel
 		super.add(this.optionLabel, c);
 	}
 
+	/**
+	 * Cycle through values until value with specified stage id is reached.
+	 *
+	 * @param id Value stage returned by {@link #addOption(javax.swing.Icon, Runnable, String)} and {@link #addOption(javax.swing.Icon, Runnable, javax.swing.Icon, Runnable, String)}.
+	 */
 	public void cycleToStage(final int id)
 	{
 		final int initialId = this.currentStage.id;
@@ -165,11 +176,31 @@ public class CycleButton extends JPanel
 		runnable.run();
 	}
 
+	/**
+	 * Add a new value to the button cycle.
+	 *
+	 * @param icon     Icon to display when value is selected.
+	 * @param onSelect Runnable to execute when value is selected.
+	 * @param toolTip  Tooltip to display when hovering the {@link com.larsvansoest.runelite.clueitems.ui.components.CycleButton}.
+	 * @return Returns the stage id of added value, to be used as parameter for {@link #cycleToStage(int)}.
+	 */
 	public int addOption(final Icon icon, final Runnable onSelect, final String toolTip)
 	{
 		return this.addOption(icon, onSelect, null, null, toolTip);
 	}
 
+	/**
+	 * Add a new value to the button cycle.
+	 * <p>
+	 * When the value is selected, right-clicking the {@link com.larsvansoest.runelite.clueitems.ui.components.CycleButton} toggles the specified primary value to the secondary, and vice versa.
+	 *
+	 * @param primary           Icon to display when primary value is selected.
+	 * @param onSelectPrimary   Runnable to execute when primary value is selected.
+	 * @param secondary         Runnable to execute when secondary value is selected.
+	 * @param onSelectSecondary Runnable to execute when secondary value is selected.
+	 * @param toolTip           Tooltip to display when hovering the {@link com.larsvansoest.runelite.clueitems.ui.components.CycleButton}.
+	 * @return Returns the stage id of added value, to be used as parameter for {@link #cycleToStage(int)}.
+	 */
 	public int addOption(
 			final Icon primary, final Runnable onSelectPrimary, final Icon secondary, final Runnable onSelectSecondary, final String toolTip)
 	{
@@ -183,6 +214,11 @@ public class CycleButton extends JPanel
 		return stageId;
 	}
 
+	/**
+	 * Enables cycle function when clicking the {@link com.larsvansoest.runelite.clueitems.ui.components.CycleButton}.
+	 * <p>
+	 * Enabled by default. Needed to re-enable cycling after executing {@link #turnOff(javax.swing.Icon, String)}.
+	 */
 	public void turnOn()
 	{
 		if (!this.turnedOn)
@@ -195,6 +231,16 @@ public class CycleButton extends JPanel
 		}
 	}
 
+	/**
+	 * Disable cycle function when clicking {@link com.larsvansoest.runelite.clueitems.ui.components.CycleButton}.
+	 * <p>
+	 * When turned off, the {@link com.larsvansoest.runelite.clueitems.ui.components.CycleButton} will display given icon, and shows given tooltip when the user hovers the button.
+	 * <p>
+	 * To re-enable the cycle function, execute {@link #turnOn()}.
+	 *
+	 * @param disabledIcon    The {@link javax.swing.Icon} to display while the button is disabled.
+	 * @param disabledToolTip Tooltip to display when hovering the {@link com.larsvansoest.runelite.clueitems.ui.components.CycleButton}.
+	 */
 	public void turnOff(
 			@NonNull
 			final Icon disabledIcon, final String disabledToolTip)

@@ -4,6 +4,12 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit;
 
+/**
+ * Contains and wraps all {@link net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit} used by {@link net.runelite.client.plugins.cluescrolls.clues.EmoteClue}, integrated in vendored {@link com.larsvansoest.runelite.clueitems.data.EmoteClue} class.
+ *
+ * @author Lars van Soest
+ * @since 3.0.0
+ */
 @Getter
 @RequiredArgsConstructor
 public enum StashUnit

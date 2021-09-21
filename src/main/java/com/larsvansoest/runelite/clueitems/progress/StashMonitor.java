@@ -10,6 +10,12 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * Provides utility to write and read stash fill status to Runelite's {@link net.runelite.client.config.ConfigManager}.
+ *
+ * @author Lars van Soest
+ * @since 3.0.0
+ */
 @RequiredArgsConstructor
 class StashMonitor
 {

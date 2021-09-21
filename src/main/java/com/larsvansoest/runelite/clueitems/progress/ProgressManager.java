@@ -19,6 +19,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Keeps track of item requirement progression. Contains inventory change and STASHUnit fill status functionality.
+ *
+ * @author Lars van Soest
+ * @since 2.0.0
+ */
 public class ProgressManager
 {
 	private final InventoryMonitor inventoryMonitor;
@@ -50,6 +56,9 @@ public class ProgressManager
 		}));
 	}
 
+	/**
+	 * Clears all cached progression data.
+	 */
 	public void reset()
 	{
 		this.initialState = true;
@@ -72,6 +81,9 @@ public class ProgressManager
 		}
 	}
 
+	/**
+	 * Writes item changes to progression data.
+	 */
 	public void processInventoryChanges(final ItemContainerChanged event)
 	{
 		final int containerId = event.getContainerId();
@@ -94,6 +106,13 @@ public class ProgressManager
 		}
 	}
 
+	/**
+	 * Call this function after user login.
+	 * <p>
+	 * Using {@link com.larsvansoest.runelite.clueitems.progress.StashMonitor}, verifies if user-data is consistent with data stored in Runelite's {@link net.runelite.client.config.ConfigManager}.
+	 * <p>
+	 * Resets config data if data is corrupted, possible by game update.
+	 */
 	public void validateConfig()
 	{
 		this.stashMonitor.validate();
@@ -120,11 +139,17 @@ public class ProgressManager
 		}
 	}
 
+	/**
+	 * Returns whether given {@link com.larsvansoest.runelite.clueitems.data.StashUnit} is set as filled in progression data.
+	 */
 	public boolean getStashUnitFilled(final StashUnit stashUnit)
 	{
 		return this.stashMonitor.getStashFilled(stashUnit);
 	}
 
+	/**
+	 * Specify given {@link com.larsvansoest.runelite.clueitems.data.StashUnit} as filled in progression data.
+	 */
 	public void setStashUnitFilled(final StashUnit stashUnit, final boolean filled)
 	{
 		this.stashMonitor.setStashFilled(stashUnit, filled);

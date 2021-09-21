@@ -87,6 +87,13 @@ public class DataGrid<T extends JPanel> extends JPanel
 		this.paint();
 	}
 
+	/**
+	 * Returns html-formatted {@link java.lang.String}, adding bold markup to the specified keyword.
+	 *
+	 * @param format  String format which depicts where the bold keyword should be displayed (e.g. "Toggle show %s statuses.").
+	 * @param keyword Keyword to display with bold formatting inside of the specified format (e.g. "complete").
+	 * @return html-formatted {@link java.lang.String}.
+	 */
 	public static String getToolTipText(final String format, final String keyword)
 	{
 		return String.format("<html>%s</html>", String.format(format, String.format("<b>%s</b>", keyword)));
@@ -128,6 +135,11 @@ public class DataGrid<T extends JPanel> extends JPanel
 		this.query();
 	}
 
+	/**
+	 * Apply all filters and sort the grid entries.
+	 * <p>
+	 * Result corresponds to currently active filters and sorting method selected using the {@link com.larsvansoest.runelite.clueitems.ui.components.DataGrid}'s {@link com.larsvansoest.runelite.clueitems.ui.components.CycleButton}.
+	 */
 	public final void query()
 	{
 		this.entryList.removeAll();
@@ -145,6 +157,15 @@ public class DataGrid<T extends JPanel> extends JPanel
 		super.repaint();
 	}
 
+	/**
+	 * Adds a {@link com.larsvansoest.runelite.clueitems.ui.components.CycleButton} to the search bar to allow sorting the entries by specified sort comparator.
+	 * <p>
+	 * If a sort {@link com.larsvansoest.runelite.clueitems.ui.components.CycleButton} already exists, adds a new cycle stage as value to the existing {@link com.larsvansoest.runelite.clueitems.ui.components.CycleButton}.
+	 *
+	 * @param icon    Icon to display when given sort comparator is selected.
+	 * @param toolTip Tooltip to display on the sort {@link com.larsvansoest.runelite.clueitems.ui.components.CycleButton} when the comparator is selected.
+	 * @param sort    Sort comparator to order the {@link com.larsvansoest.runelite.clueitems.ui.components.DataGrid}'s entries.
+	 */
 	public void addSort(final Icon icon, final String toolTip, final Comparator<T> sort)
 	{
 		final Runnable onSelect = () ->
@@ -163,6 +184,19 @@ public class DataGrid<T extends JPanel> extends JPanel
 		this.paint();
 	}
 
+	/**
+	 * Adds a {@link com.larsvansoest.runelite.clueitems.ui.components.CycleButton} to the search bar to allow filtering the entries by specified predicate.
+	 * <p>
+	 * Adds a new {@link com.larsvansoest.runelite.clueitems.ui.components.CycleButton} for every unique key, and adds subsequent added filters with the same key.
+	 * <p>
+	 * When given predicate is selected, changes the {@link com.larsvansoest.runelite.clueitems.ui.components.DataGrid}'s searchbar separator color to given color.
+	 *
+	 * @param key            Key which represents a unique filter {@link com.larsvansoest.runelite.clueitems.ui.components.CycleButton}.
+	 * @param icon           Icon to display when given predicate is selected.
+	 * @param toolTip        Tooltip to display on the filter {@link com.larsvansoest.runelite.clueitems.ui.components.CycleButton} when the predicate is selected.
+	 * @param predicate      Predicate to filter the {@link com.larsvansoest.runelite.clueitems.ui.components.DataGrid}'s entries.
+	 * @param separatorColor The {@link com.larsvansoest.runelite.clueitems.ui.components.DataGrid}'s separator color to display when given predicate is selected.
+	 */
 	public void addFilter(final String key, final Icon icon, final String toolTip, final Predicate<T> predicate, final Color separatorColor)
 	{
 		final Runnable onSelect = () ->
@@ -187,6 +221,16 @@ public class DataGrid<T extends JPanel> extends JPanel
 		this.paint();
 	}
 
+	/**
+	 * Adds a {@link com.larsvansoest.runelite.clueitems.ui.components.CycleButton} to the search bar to allow filtering the entries by specified predicate.
+	 * <p>
+	 * Adds a new {@link com.larsvansoest.runelite.clueitems.ui.components.CycleButton} for every unique key, and adds subsequent added filters with the same key.
+	 *
+	 * @param key       Key which represents a unique filter {@link com.larsvansoest.runelite.clueitems.ui.components.CycleButton}.
+	 * @param icon      Icon to display when given predicate is selected.
+	 * @param toolTip   Tooltip to display on the filter {@link com.larsvansoest.runelite.clueitems.ui.components.CycleButton} when the predicate is selected.
+	 * @param predicate Predicate to filter the {@link com.larsvansoest.runelite.clueitems.ui.components.DataGrid}'s entries.
+	 */
 	public void addFilter(final String key, final Icon icon, final String toolTip, final Predicate<T> predicate)
 	{
 		this.addFilter(key, icon, toolTip, predicate, null);
@@ -224,6 +268,11 @@ public class DataGrid<T extends JPanel> extends JPanel
 		return searchBar;
 	}
 
+	/**
+	 * Specify which data set the {@link com.larsvansoest.runelite.clueitems.ui.components.DataGrid} should display. Replaces possible existing displayed data set.
+	 *
+	 * @param entries data set for the {@link com.larsvansoest.runelite.clueitems.ui.components.DataGrid} to display.
+	 */
 	public void load(final Collection<T> entries)
 	{
 		this.entries.clear();
@@ -231,17 +280,36 @@ public class DataGrid<T extends JPanel> extends JPanel
 		this.query();
 	}
 
+	/**
+	 * Underneath the {@link com.larsvansoest.runelite.clueitems.ui.components.DataGrid}'s searchbar, add a notification with given text.
+	 * <p>
+	 * Overwrites existing notification.
+	 * <p>
+	 * Notification can be removed by {@link #removeDisclaimer()}.
+	 *
+	 * @param text text to display in te notification.
+	 */
 	public void setDisclaimer(final String text)
 	{
 		this.disclaimerPanel.setText(text);
 		this.disclaimerPanel.setVisible(true);
 	}
 
+	/**
+	 * Set the {@link com.larsvansoest.runelite.clueitems.ui.components.DataGrid}'s searchbar separator color.
+	 * <p>
+	 * Specifying a separator color in {@link #addFilter(String, javax.swing.Icon, String, java.util.function.Predicate, java.awt.Color)} overwrites this setting once the corresponding value is selected.
+	 *
+	 * @param color the new separator color.
+	 */
 	public void setSeparatorColor(final Color color)
 	{
 		this.separator.setBackground(color);
 	}
 
+	/**
+	 * Removes any notification added by {@link #setDisclaimer(String)}.
+	 */
 	public void removeDisclaimer()
 	{
 		this.disclaimerPanel.setVisible(false);

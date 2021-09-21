@@ -42,7 +42,12 @@ import net.runelite.client.plugins.cluescrolls.clues.emote.Emote;
 import javax.swing.*;
 import java.awt.*;
 
-
+/**
+ * Displays data of a {@link com.larsvansoest.runelite.clueitems.data.EmoteClue}. Implements {@link com.larsvansoest.runelite.clueitems.ui.components.FoldablePanel}.
+ *
+ * @author Lars van Soest
+ * @since 2.0.0
+ */
 public class EmoteCluePanel extends FoldablePanel
 {
 	@Getter

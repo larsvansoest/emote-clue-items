@@ -43,6 +43,9 @@ import java.util.Arrays;
 
 /**
  * Extends {@link WidgetItemOverlay}. Scans and marks items required for emote clue scroll steps.
+ *
+ * @author Lars van Soest
+ * @since 1.0.4
  */
 public class EmoteClueItemsOverlay extends WidgetItemOverlay
 {
