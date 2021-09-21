@@ -116,14 +116,29 @@ public enum StashUnit
 	FINE_CLOTHES_ENTRANCE("Varrock Fine Clothes", STASHUnit.FINE_CLOTHES_ENTRANCE, Type.Bush),
 	BOB_AXES_ENTRANCE("Lumbridge Bob's Axes", STASHUnit.BOB_AXES_ENTRANCE, Type.Bush),
 	CRYSTALLINE_MAPLE_TREES("Crystalline Maple Trees", STASHUnit.CRYSTALLINE_MAPLE_TREES, Type.Hole),
-	CHARCOAL_BURNERS("Charcoal Burners", STASHUnit.CHARCOAL_BURNERS, Type.Crate),
-	;
+	CHARCOAL_BURNERS("Charcoal Burners", STASHUnit.CHARCOAL_BURNERS, Type.Crate);
 
 	private final String name;
 	private final STASHUnit stashUnit;
 	private final Type type;
 
-	public enum Type {
+	@Getter
+	@RequiredArgsConstructor
+	public enum DifficultyRequirements
+	{
+		Beginner(12, "2 planks, 10 nails"),
+		Easy(27, "2 planks, 10 nails"),
+		Medium(42, "2 oak planks, 10 nails"),
+		Hard(55, "2 teak planks, 10 nails"),
+		Elite(77, "2 mahogany planks, 10 nails"),
+		Master(88, "2 mahogany planks, 1 gold leaf, 10 nails");
+
+		private final int constructionLvl;
+		private final String constructionItems;
+	}
+
+	public enum Type
+	{
 		Bush(),
 		Crate(),
 		Hole(),

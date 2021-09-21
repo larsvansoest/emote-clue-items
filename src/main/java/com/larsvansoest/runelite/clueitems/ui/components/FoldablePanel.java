@@ -281,7 +281,7 @@ public class FoldablePanel extends UpdatablePanel
 	{
 		if (this.displayMode.equals(DisplayMode.All))
 		{
-			return Arrays.stream(DisplayMode.values()).filter(displayMode -> !displayMode.equals(DisplayMode.All)).map(map::get).flatMap(ArrayList::stream);
+			return Arrays.stream(DisplayMode.values()).filter(displayMode -> !displayMode.equals(DisplayMode.All)).map(map::get).flatMap(ArrayList::stream).distinct();
 		}
 		return map.get(this.displayMode).stream();
 	}

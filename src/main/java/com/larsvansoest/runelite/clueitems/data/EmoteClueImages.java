@@ -105,7 +105,7 @@ public abstract class EmoteClueImages
 		return ImageUtil.resizeCanvas(bufferedImage, width, height);
 	}
 
-	public static class Ribbon
+	public static final class Ribbon
 	{
 		private static final String folder = path(EmoteClueImages.folder, "ribbon");
 		public static final BufferedImage ALL = bufferedImage(Ribbon.folder, "all.png");
@@ -117,11 +117,11 @@ public abstract class EmoteClueImages
 		public static final BufferedImage MASTER = bufferedImage(Ribbon.folder, "master.png");
 	}
 
-	public static class Toolbar
+	public static final class Toolbar
 	{
 		private static final String folder = path(EmoteClueImages.folder, "toolbar");
 
-		public static class CheckSquare
+		public static final class CheckSquare
 		{
 			private static final String folder = path(Toolbar.folder, "check-square");
 			public static final BufferedImage UNKNOWN = bufferedImage(CheckSquare.folder, "unknown.png");
@@ -133,20 +133,20 @@ public abstract class EmoteClueImages
 			public static final BufferedImage UNBUILT = bufferedImage(CheckSquare.folder, "unbuilt.png");
 		}
 
-		public static class Chevron
+		public static final class Chevron
 		{
 			private static final String folder = path(Toolbar.folder, "chevron");
 			public static final BufferedImage DOWN = bufferedImage(Chevron.folder, "down.png");
 			public static final BufferedImage LEFT = bufferedImage(Chevron.folder, "left.png");
 		}
 
-		public static class Footer
+		public static final class Footer
 		{
 			private static final String folder = path(Toolbar.folder, "footer");
 			public static final BufferedImage GITHUB = bufferedImage(Footer.folder, "github.png");
 		}
 
-		public static class SortType
+		public static final class SortType
 		{
 			private static final String folder = path(Toolbar.folder, "sort-type");
 			public static final BufferedImage NAME_ASCENDING = bufferedImage(SortType.folder, "name-ascending.png");
@@ -155,20 +155,32 @@ public abstract class EmoteClueImages
 			public static final BufferedImage QUANTITY_DESCENDING = bufferedImage(SortType.folder, "quantity-descending.png");
 		}
 
-		public static class Disclaimer
+		public static final class StashUnit
+		{
+			private static final String folder = path(Toolbar.folder, "stash-unit");
+			public static final BufferedImage BUSH = bufferedImage(StashUnit.folder, "bush.png");
+			public static final BufferedImage BUSH_BUILT = bufferedImage(StashUnit.folder, "bush-built.png");
+			public static final BufferedImage CRATE = bufferedImage(StashUnit.folder, "crate.png");
+			public static final BufferedImage CRATE_BUILT = bufferedImage(StashUnit.folder, "crate-built.png");
+			public static final BufferedImage HOLE = bufferedImage(StashUnit.folder, "hole.png");
+			public static final BufferedImage HOLE_BUILT = bufferedImage(StashUnit.folder, "hole-built.png");
+			public static final BufferedImage ROCK = bufferedImage(StashUnit.folder, "rock.png");
+			public static final BufferedImage ROCK_BUILT = bufferedImage(StashUnit.folder, "rock-built.png");
+		}
+
+		public static final class Disclaimer
 		{
 			private static final String folder = path(Toolbar.folder, "disclaimer");
 			public static final BufferedImage QUESTION_CIRCLE = bufferedImage(Disclaimer.folder, "question-circle.png");
 			public static final BufferedImage CLOSE = bufferedImage(Disclaimer.folder, "close.png");
 		}
 
-		public static class Requirement
+		public static final class Requirement
 		{
 			private static final String folder = path(Toolbar.folder, "requirement");
 			public static final BufferedImage INVENTORY = bufferedImage(Requirement.folder, "inventory.png");
-			public static final BufferedImage STASH_UNIT = bufferedImage(Requirement.folder, "stash-unit.png");
 
-			public static class Scroll
+			public static final class Scroll
 			{
 				private static final String folder = path(Requirement.folder, "scroll");
 				public static final BufferedImage BEGINNER = bufferedImage(Scroll.folder, "beginner.png");
