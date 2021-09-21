@@ -35,6 +35,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
+/**
+ * Displays an item collection log, with item icons and quantity indicators.
+ * <p>
+ * Items are semi-transparent when quantity is 0.
+ */
 public class ItemCollectionPanel extends RequirementPanel
 {
 	private final int slotRowSize;
@@ -42,6 +47,13 @@ public class ItemCollectionPanel extends RequirementPanel
 	private final JPanel itemsPanel;
 	private final Color itemSlotBackGround;
 
+	/**
+	 * Creates the item collection panel.
+	 *
+	 * @param palette     Colour scheme for the grid.
+	 * @param name        Name to display as {@link com.larsvansoest.runelite.clueitems.ui.components.FoldablePanel} header text.
+	 * @param slotRowSize The amount of item icons per row.
+	 */
 	public ItemCollectionPanel(final EmoteClueItemsPalette palette, final String name, final int slotRowSize)
 	{
 		super(palette, name, 160, 20);
@@ -61,6 +73,11 @@ public class ItemCollectionPanel extends RequirementPanel
 		this.itemSlots = new ArrayList<>();
 	}
 
+	/**
+	 * Collapses the collection log.
+	 * <p>
+	 * Also removes all item panels to enable re-using them in another panel.
+	 */
 	@Override
 	public void fold()
 	{
@@ -68,6 +85,11 @@ public class ItemCollectionPanel extends RequirementPanel
 		super.fold();
 	}
 
+	/**
+	 * Un-collapses the collection log.
+	 * <p>
+	 * Also re-adds all item panels to enable re-using them in another panel. s
+	 */
 	@Override
 	public void unfold()
 	{
@@ -89,6 +111,11 @@ public class ItemCollectionPanel extends RequirementPanel
 		super.unfold();
 	}
 
+	/**
+	 * Adds an item to the item collection log.
+	 *
+	 * @param itemSlotPanel the panel which displays the item.
+	 */
 	public void addItem(final ItemSlotPanel itemSlotPanel)
 	{
 		if (!this.itemSlots.contains(itemSlotPanel))
