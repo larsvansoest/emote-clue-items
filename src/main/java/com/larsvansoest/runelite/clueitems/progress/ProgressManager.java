@@ -14,16 +14,14 @@ import net.runelite.client.plugins.cluescrolls.clues.item.AllRequirementsCollect
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class ProgressManager
 {
 	private final InventoryMonitor inventoryMonitor;
 	private final StashMonitor stashMonitor;
 	private final HashMap<EmoteClueItem, UpdatablePanel.Status> inventoryStatusMap;
-	private final HashMap<EmoteClueItem, Boolean> stashFilledStatusMap;
+	private final Map<EmoteClueItem, Map<StashUnit, Boolean>> stashFilledStatusMap;
 	private final EmoteClueItemsPanel panel;
 	private final Client client;
 	private final ClientThread clientThread;
@@ -37,19 +35,32 @@ public class ProgressManager
 		this.inventoryMonitor = new InventoryMonitor();
 		this.stashMonitor = new StashMonitor("[EmoteClueItems]", "STASHUnit fill statuses", configManager);
 		this.inventoryStatusMap = new HashMap<>(EmoteClueItem.values().length);
-		this.stashFilledStatusMap = new HashMap<>(EmoteClueItem.values().length);
+		this.stashFilledStatusMap = new HashMap<>(EmoteClueAssociations.EmoteClueItemToEmoteClues.keySet().size());
+		EmoteClueAssociations.EmoteClueItemToEmoteClues.forEach(((emoteClueItem, emoteClues) ->
+		{
+			final Map<StashUnit, Boolean> emoteClueStashFillStatusMap = new HashMap<>(emoteClues.length);
+			for (final EmoteClue emoteClue : emoteClues)
+			{
+				emoteClueStashFillStatusMap.put(emoteClue.getStashUnit(), false);
+			}
+			this.stashFilledStatusMap.put(emoteClueItem, emoteClueStashFillStatusMap);
+		}));
 	}
 
 	public void reset()
 	{
 		this.initialState = true;
 		this.inventoryMonitor.reset();
+		for (final EmoteClueItem emoteClueItem : EmoteClueAssociations.EmoteClueItemToEmoteClues.keySet())
+		{
+			final Map<StashUnit, Boolean> emoteClueStashFillStatusMap = this.stashFilledStatusMap.get(emoteClueItem);
+			emoteClueStashFillStatusMap.keySet().forEach(key -> emoteClueStashFillStatusMap.put(key, false));
+			this.panel.setEmoteClueItemStatus(emoteClueItem, UpdatablePanel.Status.InComplete);
+			this.panel.setItemSlotStatus(emoteClueItem, 0);
+		}
 		for (final EmoteClueItem emoteClueItem : EmoteClueItem.values())
 		{
 			this.inventoryStatusMap.put(emoteClueItem, UpdatablePanel.Status.InComplete);
-			this.stashFilledStatusMap.put(emoteClueItem, false);
-			this.panel.setEmoteClueItemStatus(emoteClueItem, UpdatablePanel.Status.InComplete);
-			this.panel.setItemSlotStatus(emoteClueItem, 0);
 		}
 		for (final StashUnit stashUnit : StashUnit.values())
 		{
@@ -119,14 +130,14 @@ public class ProgressManager
 		{
 			for (final EmoteClueItem emoteClueItem : EmoteClueAssociations.EmoteClueToEmoteClueItems.get(emoteClue))
 			{
-				this.setEmoteClueItemStashFilledStatus(emoteClueItem, filled);
+				this.setEmoteClueItemStashFilledStatus(emoteClueItem, stashUnit, filled);
 			}
 		}
 	}
 
-	private void setEmoteClueItemStashFilledStatus(final EmoteClueItem emoteClueItem, final Boolean filled)
+	private void setEmoteClueItemStashFilledStatus(final EmoteClueItem emoteClueItem, final StashUnit stashUnit, final Boolean filled)
 	{
-		this.stashFilledStatusMap.put(emoteClueItem, filled);
+		this.stashFilledStatusMap.get(emoteClueItem).put(stashUnit, filled);
 		this.setEmoteClueItemStatus(emoteClueItem, this.updateEmoteClueItemStatus(emoteClueItem));
 	}
 
@@ -140,12 +151,22 @@ public class ProgressManager
 	{
 		final UpdatablePanel.Status inventoryStatus = this.inventoryStatusMap.get(emoteClueItem);
 		this.panel.setCollectionLogStatus(emoteClueItem, inventoryStatus);
-
-		if (this.stashFilledStatusMap.get(emoteClueItem))
+		if (inventoryStatus == UpdatablePanel.Status.Complete)
 		{
 			return UpdatablePanel.Status.Complete;
-		} // TODO: Map currently assumes emote clue item has one stash unit, but there are cases (adamant square shield) where theres more than one, so in progress should be implemented.
-
+		}
+		final Map<StashUnit, Boolean> emoteClueStashFilledMap = this.stashFilledStatusMap.get(emoteClueItem);
+		if (Objects.nonNull(emoteClueStashFilledMap) && !this.initialState)
+		{
+			if (this.stashFilledStatusMap.get(emoteClueItem).values().stream().allMatch(Boolean::booleanValue))
+			{
+				return UpdatablePanel.Status.Complete;
+			}
+			if (this.stashFilledStatusMap.get(emoteClueItem).values().stream().anyMatch(Boolean::booleanValue))
+			{
+				return UpdatablePanel.Status.InProgress;
+			}
+		}
 		return inventoryStatus;
 	}
 

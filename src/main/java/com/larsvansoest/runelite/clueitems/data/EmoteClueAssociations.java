@@ -28,7 +28,6 @@
 
 package com.larsvansoest.runelite.clueitems.data;
 
-import net.runelite.client.plugins.cluescrolls.clues.item.SlotLimitationRequirement;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.AbstractMap;
@@ -61,8 +60,8 @@ public abstract class EmoteClueAssociations
 			.stream()
 			.flatMap(emoteClue -> Arrays
 					.stream(emoteClue.getItemRequirements())
-					.filter(itemRequirement -> !(itemRequirement instanceof SlotLimitationRequirement))
-					.map(itemRequirement -> (EmoteClueItem) itemRequirement)
+					.filter(itemRequirement -> (itemRequirement instanceof EmoteClueItem))
+					.map(EmoteClueItem.class::cast)
 					.map(emoteClueItem -> new AbstractMap.SimpleImmutableEntry<>(emoteClue, emoteClueItem)))
 			.collect(Collectors.toMap(AbstractMap.SimpleImmutableEntry::getValue, entry -> new EmoteClue[]{entry.getKey()}, ArrayUtils::addAll));
 
@@ -72,10 +71,7 @@ public abstract class EmoteClueAssociations
 
 	public static final Map<EmoteClue, EmoteClueItem[]> EmoteClueToEmoteClueItems = EmoteClue.CLUES
 			.stream()
-			.collect(Collectors.toMap(
-					Function.identity(),
+			.collect(Collectors.toMap(Function.identity(),
 					emoteClue -> Arrays.stream(emoteClue.getItemRequirements()).filter(EmoteClueItem.class::isInstance).map(EmoteClueItem.class::cast).toArray(EmoteClueItem[]::new)
 			));
-
-	//TODO: Emote Clue Item to StashUnits.
 }
