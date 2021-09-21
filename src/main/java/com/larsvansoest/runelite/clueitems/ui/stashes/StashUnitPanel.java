@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.function.BiConsumer;
 
 public class StashUnitPanel extends FoldablePanel
@@ -30,7 +31,8 @@ public class StashUnitPanel extends FoldablePanel
 	private boolean built;
 	private Color headerColorBeforeTurnOff;
 	private boolean filledButtonTurnedOn;
-
+	@Getter
+	private ItemRequirementCollectionPanel itemCollectionPanel;
 
 	public StashUnitPanel(final EmoteClueItemsPalette palette, final StashUnit stash, final BiConsumer<StashUnit, Boolean> onStashFillStatusChanged)
 	{
@@ -73,7 +75,17 @@ public class StashUnitPanel extends FoldablePanel
 		final Insets insets = new Insets(2, 0, 2, 5);
 		Arrays.stream(this.difficulties).map(EmoteClueImages::getRibbon).map(ImageIcon::new).map(JLabel::new).forEach(label -> super.addRight(label, insets, 0, 0, DisplayMode.Default));
 		super.addRight(new JLabel(String.valueOf(this.quantity)), insets, 0, 0, DisplayMode.Default);
-		super.addChild(this.getDetailsPanel(palette, this.difficulties[0], stash.getType()), DisplayMode.All);
+		super.addChild(this.getDetailsPanel(palette, this.difficulties[0]), DisplayMode.All);
+	}
+
+	public void setItemCollectionPanel(final ItemRequirementCollectionPanel itemCollectionPanel, final DisplayMode... displayModes)
+	{
+		if (Objects.nonNull(this.itemCollectionPanel))
+		{
+			super.removeChild(itemCollectionPanel);
+		}
+		this.itemCollectionPanel = itemCollectionPanel;
+		super.addChild(itemCollectionPanel, displayModes);
 	}
 
 	private ImageIcon getBuiltStashIcon(final StashUnit.Type type)
@@ -118,7 +130,7 @@ public class StashUnitPanel extends FoldablePanel
 		return new ImageIcon(stashUnitImage);
 	}
 
-	private JPanel getDetailsPanel(final EmoteClueItemsPalette palette, final EmoteClueDifficulty difficulty, final StashUnit.Type type)
+	private JPanel getDetailsPanel(final EmoteClueItemsPalette palette, final EmoteClueDifficulty difficulty)
 	{
 		final JPanel detailsPanel = new JPanel(new GridBagLayout());
 		detailsPanel.setBackground(palette.getFoldContentColor());

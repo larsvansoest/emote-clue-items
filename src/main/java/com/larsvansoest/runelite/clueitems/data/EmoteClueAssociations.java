@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
 /**
  * Provides static predicate mappings over {@link EmoteClueItem} data set.
  * <p>
- * Use-case examples are requirement progression inference by {@link ProgressManager} class, nested requirement visualisation by {@link com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPanel}.
+ * Use-case examples are requirement progression inference by {@link com.larsvansoest.runelite.clueitems.progress.ProgressManager} class, nested requirement visualisation by {@link com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPanel}.
  *
  * @author Lars van Soest
  * @since 2.0.0

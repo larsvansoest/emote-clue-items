@@ -128,7 +128,7 @@ public class DataGrid<T extends JPanel> extends JPanel
 		this.query();
 	}
 
-	private void query()
+	public final void query()
 	{
 		this.entryList.removeAll();
 		final GridBagConstraints c = new GridBagConstraints();

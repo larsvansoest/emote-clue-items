@@ -66,7 +66,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 		this.itemPanelMap.forEach((emoteClueItem, itemPanel) ->
 		{
 			final ItemRequirementCollectionPanel collectionPanel = new ItemRequirementCollectionPanel(palette, "Eligible Inventory Items", 6);
-			itemPanel.addChild(collectionPanel);
+			itemPanel.setItemCollectionPanel(collectionPanel);
 			this.addEmoteClueItemToCollectionPanel(collectionPanel, emoteClueItem);
 			collectionPanel.setStatus(UpdatablePanel.Status.InComplete);
 			Arrays.stream(EmoteClueAssociations.EmoteClueItemToEmoteClues.get(emoteClueItem)).map(this.emoteCluePanelMap::get).forEach(itemPanel::addChild);
@@ -76,7 +76,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 		this.stashUnitPanelMap.forEach((stashUnit, stashUnitPanel) ->
 		{
 			final ItemRequirementCollectionPanel collectionPanel = new ItemRequirementCollectionPanel(palette, "Eligible Inventory Items", 6);
-			stashUnitPanel.addChild(collectionPanel);
+			stashUnitPanel.setItemCollectionPanel(collectionPanel, FoldablePanel.DisplayMode.All);
 			collectionPanel.setStatus(UpdatablePanel.Status.InComplete);
 			for (final EmoteClue emoteClue : EmoteClueAssociations.STASHUnitToEmoteClues.get(stashUnit))
 			{
@@ -86,7 +86,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 					{
 						final EmoteClueItem emoteClueItem = (EmoteClueItem) itemRequirement;
 						this.addEmoteClueItemToCollectionPanel(collectionPanel, emoteClueItem);
-						this.itemPanelMap.get(emoteClueItem).addChild(stashUnitPanel);
+						this.itemPanelMap.get(emoteClueItem).addStashUnitPanel(stashUnitPanel);
 					}
 				}
 				stashUnitPanel.addChild(this.emoteCluePanelMap.get(emoteClue));

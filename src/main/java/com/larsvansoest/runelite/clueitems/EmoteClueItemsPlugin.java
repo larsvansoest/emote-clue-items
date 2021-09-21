@@ -88,8 +88,7 @@ public class EmoteClueItemsPlugin extends Plugin
 		this.overlayManager.add(this.overlay);
 
 		final EmoteClueItemsPalette emoteClueItemsPalette = EmoteClueItemsPalette.RUNELITE;
-		this.emoteClueItemsPanel = new EmoteClueItemsPanel(
-				emoteClueItemsPalette,
+		this.emoteClueItemsPanel = new EmoteClueItemsPanel(emoteClueItemsPalette,
 				this.itemManager,
 				this::onStashFillStatusChanged,
 				"Emote Clue Items",

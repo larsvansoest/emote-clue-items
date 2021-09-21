@@ -76,8 +76,7 @@ public class ItemSlotPanel extends UpdatablePanel
 		this.quantity = quantity;
 		this.setStatus(quantity > 0 ? Status.Complete : Status.InComplete);
 	}
-
-	@Override
+ 
 	public void setStatus(final Status status)
 	{
 		this.itemIcon.setIcon(status == Status.Complete ? new ImageIcon(this.itemManager.getImage(this.itemId, this.quantity, true)) : this.transparentIcon);

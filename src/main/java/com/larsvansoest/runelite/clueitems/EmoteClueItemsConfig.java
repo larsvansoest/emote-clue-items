@@ -33,6 +33,7 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
 
+@SuppressWarnings("SameReturnValue")
 @ConfigGroup("example")
 public interface EmoteClueItemsConfig extends Config
 {
@@ -60,7 +61,6 @@ public interface EmoteClueItemsConfig extends Config
 	{
 		return true;
 	}
-
 
 	@ConfigItem(keyName = "HighlightDepositBox",
 	            name = "Deposit Box",

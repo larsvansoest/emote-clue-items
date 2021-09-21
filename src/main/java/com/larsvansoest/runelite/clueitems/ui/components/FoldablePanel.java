@@ -169,6 +169,16 @@ public class FoldablePanel extends UpdatablePanel
 		this.addDisplayModeComponents(this.foldContent, child, displayModes);
 	}
 
+	public void removeChild(final FoldablePanel child, final DisplayMode... displayModes)
+	{
+		this.removeDisplayModeComponents(this.foldContentPanels, child, displayModes);
+	}
+
+	public void removeChild(final JComponent child, final DisplayMode... displayModes)
+	{
+		this.removeDisplayModeComponents(this.foldContent, child, displayModes);
+	}
+
 	public void fold()
 	{
 		this.getDisplayModeComponents(this.foldContentPanels).forEach(FoldablePanel::fold);
@@ -268,6 +278,34 @@ public class FoldablePanel extends UpdatablePanel
 				this.addDisplayModeComponent(map, component, displayMode);
 			}
 		}
+	}
+
+	private <T> void removeDisplayModeComponents(final HashMap<DisplayMode, ArrayList<T>> map, final T component, final DisplayMode... displayModes)
+	{
+		if (displayModes.length == 0 || Arrays.asList(displayModes).contains(DisplayMode.All))
+		{
+			for (final DisplayMode displayMode : DisplayMode.values())
+			{
+				if (!displayMode.equals(DisplayMode.All))
+				{
+					this.removeDisplayModeComponent(map, component, displayMode);
+				}
+			}
+		}
+		else
+		{
+			for (final DisplayMode displayMode : displayModes)
+			{
+				this.removeDisplayModeComponent(map, component, displayMode);
+			}
+		}
+	}
+
+	private <T> void removeDisplayModeComponent(final HashMap<DisplayMode, ArrayList<T>> map, final T component, final DisplayMode displayMode)
+	{
+		final ArrayList<T> list = map.get(displayMode);
+		list.remove(component);
+		map.put(displayMode, list);
 	}
 
 	private <T> void addDisplayModeComponent(final HashMap<DisplayMode, ArrayList<T>> map, final T component, final DisplayMode displayMode)
@@ -379,8 +417,8 @@ public class FoldablePanel extends UpdatablePanel
 
 	private final static class FOLD_ICONS
 	{
-		static ImageIcon DOWN = new ImageIcon(EmoteClueImages.Toolbar.Chevron.DOWN);
-		static ImageIcon LEFT = new ImageIcon(EmoteClueImages.Toolbar.Chevron.LEFT);
+		static final ImageIcon DOWN = new ImageIcon(EmoteClueImages.Toolbar.Chevron.DOWN);
+		static final ImageIcon LEFT = new ImageIcon(EmoteClueImages.Toolbar.Chevron.LEFT);
 	}
 
 	@Getter

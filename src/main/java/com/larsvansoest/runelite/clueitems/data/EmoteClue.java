@@ -49,6 +49,7 @@ import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement
  * <p>
  * Source: https://github.com/runelite/runelite/tree/master/runelite-client/src/main/java/net/runelite/client/plugins/cluescrolls/clues
  */
+@SuppressWarnings("SameParameterValue")
 @Getter
 public final class EmoteClue implements TextClueScroll, LocationClueScroll
 {

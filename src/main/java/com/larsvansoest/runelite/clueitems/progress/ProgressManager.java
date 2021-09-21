@@ -14,7 +14,10 @@ import net.runelite.client.plugins.cluescrolls.clues.item.AllRequirementsCollect
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 
 import javax.swing.*;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class ProgressManager
 {
@@ -104,7 +107,6 @@ public class ProgressManager
 	{
 		if (emoteClueItemChanges != null)
 		{
-			final ArrayList<EmoteClueItem> emoteClueItems = new ArrayList<>();
 			// Set single item (sub-)requirement status
 			for (final Item item : emoteClueItemChanges)
 			{
