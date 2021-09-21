@@ -61,6 +61,12 @@ public class EmoteCluePanel extends FoldablePanel
 	@Getter
 	private final EmoteClueDifficulty difficulty;
 
+	/**
+	 * Creates the panel.
+	 *
+	 * @param palette   Colour scheme for the panel.
+	 * @param emoteClue EmoteClue of which the data is displayed by this panel.
+	 */
 	public EmoteCluePanel(final EmoteClueItemsPalette palette, final EmoteClue emoteClue)
 	{
 		super(palette, emoteClue.getLocationName(), 160, 20);

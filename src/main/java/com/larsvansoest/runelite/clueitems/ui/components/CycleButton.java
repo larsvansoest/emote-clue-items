@@ -64,12 +64,29 @@ public class CycleButton extends JPanel
 
 	private int stageCount;
 
+	/**
+	 * Creates the button with specified default value.
+	 *
+	 * @param primary         Icon to display when value is selected.
+	 * @param onSelectPrimary Runnable to execute when value is selected.
+	 * @param defaultToolTip  Tooltip to display when hovering the cycle button.
+	 */
 	public CycleButton(
 			final EmoteClueItemsPalette emoteClueItemsPalette, final Icon primary, final Runnable onSelectPrimary, final String defaultToolTip)
 	{
 		this(emoteClueItemsPalette, primary, onSelectPrimary, null, null, defaultToolTip);
 	}
 
+	/**
+	 * Creates the button with specified default left and right-click value.
+	 *
+	 * @param emoteClueItemsPalette Colour scheme for the button.
+	 * @param primary               Icon to display when value is selected.
+	 * @param onSelectPrimary       Runnable to execute when value is selected.
+	 * @param secondary             Runnable to execute when secondary value is selected.
+	 * @param onSelectSecondary     Runnable to execute when secondary value is selected.
+	 * @param defaultToolTip        Tooltip to display when hovering the cycle button.
+	 */
 	public CycleButton(
 			final EmoteClueItemsPalette emoteClueItemsPalette, final Icon primary, final Runnable onSelectPrimary, final Icon secondary, final Runnable onSelectSecondary, final String defaultToolTip)
 	{

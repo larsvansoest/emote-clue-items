@@ -56,6 +56,12 @@ public class EmoteClueItemPanel extends RequirementPanel
 	private final ArrayList<StashUnitPanel> stashUnitPanels;
 	private ItemRequirementCollectionPanel itemCollectionPanel;
 
+	/**
+	 * Creates the panel.
+	 *
+	 * @param palette       Colour scheme for the panel.
+	 * @param emoteClueItem EmoteClueItem of which data is displayed by this panel.
+	 */
 	public EmoteClueItemPanel(final EmoteClueItemsPalette palette, final EmoteClueItem emoteClueItem)
 	{
 		super(palette, emoteClueItem.getCollectiveName(), 160, 20);

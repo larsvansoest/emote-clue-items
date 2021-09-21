@@ -59,6 +59,12 @@ public class DataGrid<T extends JPanel> extends JPanel
 	private Comparator<T> sort;
 	private CycleButton sortButton;
 
+	/**
+	 * Creates the grid.
+	 *
+	 * @param palette            Colour scheme for the grid.
+	 * @param minSearchBarHeight Minimum height for the grid's searchbar.
+	 */
 	public DataGrid(final EmoteClueItemsPalette palette, final int minSearchBarHeight)
 	{
 		super(new GridBagLayout());

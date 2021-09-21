@@ -48,7 +48,7 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
- * Panel with fold and unfold functionality to allow collapsing and un-collapsing a details panel. Allows for
+ * Panel with fold and unfold functionality to allow collapsing and un-collapsing a details panel.
  *
  * @author Lars van Soest
  * @since 2.0.0
@@ -84,6 +84,14 @@ public class FoldablePanel extends JPanel
 	@Getter
 	private Boolean expanded;
 
+	/**
+	 * Creates the panel.
+	 *
+	 * @param emoteClueItemsPalette Colour scheme for the panel.
+	 * @param name                  Name displayed as the panel header text.
+	 * @param headerNameWidth       Fixed panel width to contain the panel header text.
+	 * @param headerMinHeight       Minimum panel header height.
+	 */
 	public FoldablePanel(final EmoteClueItemsPalette emoteClueItemsPalette, final String name, final int headerNameWidth, final int headerMinHeight)
 	{
 		super.setLayout(new GridBagLayout());
@@ -163,26 +171,53 @@ public class FoldablePanel extends JPanel
 		return header;
 	}
 
+	/**
+	 * Adds a {@link com.larsvansoest.runelite.clueitems.ui.components.FoldablePanel} sub-panel to the details.
+	 *
+	 * @param child        the sub-panel to display when unfolding.
+	 * @param displayModes specify in which display modes the sub-panel should be displayed.
+	 */
 	public void addChild(final FoldablePanel child, final DisplayMode... displayModes)
 	{
 		this.addDisplayModeComponents(this.foldContentPanels, child, displayModes);
 	}
 
+	/**
+	 * Adds a {@link javax.swing.JComponent} element to the details.
+	 *
+	 * @param child        the element to display when unfolding.
+	 * @param displayModes specify in which display modes the element should be displayed.
+	 */
 	public void addChild(final JComponent child, final DisplayMode... displayModes)
 	{
 		this.addDisplayModeComponents(this.foldContent, child, displayModes);
 	}
 
+	/**
+	 * Removes a {@link com.larsvansoest.runelite.clueitems.ui.components.FoldablePanel} sub-panel from the details.
+	 *
+	 * @param child        the sub-panel to remove.
+	 * @param displayModes specify from which display modes the sub-panel should be removed.
+	 */
 	public void removeChild(final FoldablePanel child, final DisplayMode... displayModes)
 	{
 		this.removeDisplayModeComponents(this.foldContentPanels, child, displayModes);
 	}
 
+	/**
+	 * Removes a {@link javax.swing.JComponent} element from the details.
+	 *
+	 * @param child        the element to remove.
+	 * @param displayModes specify from which display modes the element should be removed.
+	 */
 	public void removeChild(final JComponent child, final DisplayMode... displayModes)
 	{
 		this.removeDisplayModeComponents(this.foldContent, child, displayModes);
 	}
 
+	/**
+	 * Collapses the details view.
+	 */
 	public void fold()
 	{
 		this.getDisplayModeComponents(this.foldContentPanels).forEach(FoldablePanel::fold);
@@ -195,6 +230,9 @@ public class FoldablePanel extends JPanel
 		this.foldIcon.setIcon(FOLD_ICONS.LEFT);
 	}
 
+	/**
+	 * Uncollapses the details view.
+	 */
 	public void unfold()
 	{
 		final GridBagConstraints c = new GridBagConstraints();
@@ -224,16 +262,31 @@ public class FoldablePanel extends JPanel
 		this.foldContentDisplay.repaint();
 	}
 
+	/**
+	 * Returns the color of the header text.
+	 *
+	 * @return the color.
+	 */
 	public Color getHeaderColor()
 	{
 		return this.statusHeaderName.getForeground();
 	}
 
+	/**
+	 * Sets the color of the header text.
+	 *
+	 * @param colour the new color of the header text.
+	 */
 	public void setHeaderColor(final Color colour)
 	{
 		this.statusHeaderName.setForeground(colour);
 	}
 
+	/**
+	 * Changes the display mode of the foldable panel, changing which elements, header icons and sub-panels should be displayed.
+	 *
+	 * @param displayMode the new display mode.
+	 */
 	public void setDisplayMode(final DisplayMode displayMode)
 	{
 		this.displayMode = displayMode;
@@ -322,24 +375,60 @@ public class FoldablePanel extends JPanel
 		return map.get(this.displayMode).stream();
 	}
 
+	/**
+	 * Adds a {@link com.larsvansoest.runelite.clueitems.ui.components.CycleButton} to the right side of the header text.
+	 *
+	 * @param cycleButton  the button to add to the header.
+	 * @param insets       the {@link java.awt.GridBagConstraints} insets to adjust placement on the header.
+	 * @param ipadX        the {@link java.awt.GridBagConstraints} ipadX to adjust placement on the header.
+	 * @param ipadY        the {@link java.awt.GridBagConstraints} ipadY to adjust placement on the header.
+	 * @param displayModes specify in which display modes the sub-panel should be displayed.
+	 */
 	public final void addRight(final CycleButton cycleButton, final Insets insets, final int ipadX, final int ipadY, final DisplayMode... displayModes)
 	{
 		this.addDisplayModeComponents(this.rightHeaderElements, new HeaderElement(cycleButton, insets, ipadX, ipadY), displayModes);
 		this.paintHeaderLabels();
 	}
 
+	/**
+	 * Adds a {@link JLabel} to the right side of the header text.
+	 *
+	 * @param iconLabel    the button to add to the header.
+	 * @param insets       the {@link java.awt.GridBagConstraints} insets to adjust placement on the header.
+	 * @param ipadX        the {@link java.awt.GridBagConstraints} ipadX to adjust placement on the header.
+	 * @param ipadY        the {@link java.awt.GridBagConstraints} ipadY to adjust placement on the header.
+	 * @param displayModes specify in which display modes the sub-panel should be displayed.
+	 */
 	public final void addRight(final JLabel iconLabel, final Insets insets, final int ipadX, final int ipadY, final DisplayMode... displayModes)
 	{
 		this.addDisplayModeComponents(this.rightHeaderElements, new HeaderElement(iconLabel, insets, ipadX, ipadY), displayModes);
 		this.paintHeaderLabels();
 	}
 
+	/**
+	 * Adds a {@link com.larsvansoest.runelite.clueitems.ui.components.CycleButton} to the left side of the header text.
+	 *
+	 * @param cycleButton  the button to add to the header.
+	 * @param insets       the {@link java.awt.GridBagConstraints} insets to adjust placement on the header.
+	 * @param ipadX        the {@link java.awt.GridBagConstraints} ipadX to adjust placement on the header.
+	 * @param ipadY        the {@link java.awt.GridBagConstraints} ipadY to adjust placement on the header.
+	 * @param displayModes specify in which display modes the sub-panel should be displayed.
+	 */
 	public final void addLeft(final CycleButton cycleButton, final Insets insets, final int ipadX, final int ipadY, final DisplayMode... displayModes)
 	{
 		this.addDisplayModeComponents(this.leftHeaderElements, new HeaderElement(cycleButton, insets, ipadX, ipadY), displayModes);
 		this.paintHeaderLabels();
 	}
 
+	/**
+	 * Adds a {@link JLabel} to the left side of the header text.
+	 *
+	 * @param iconLabel    the button to add to the header.
+	 * @param insets       the {@link java.awt.GridBagConstraints} insets to adjust placement on the header.
+	 * @param ipadX        the {@link java.awt.GridBagConstraints} ipadX to adjust placement on the header.
+	 * @param ipadY        the {@link java.awt.GridBagConstraints} ipadY to adjust placement on the header.
+	 * @param displayModes specify in which display modes the sub-panel should be displayed.
+	 */
 	public final void addLeft(final JLabel iconLabel, final Insets insets, final int ipadX, final int ipadY, final DisplayMode... displayModes)
 	{
 		this.addDisplayModeComponents(this.leftHeaderElements, new HeaderElement(iconLabel, insets, ipadX, ipadY), displayModes);
@@ -406,6 +495,11 @@ public class FoldablePanel extends JPanel
 		return label;
 	}
 
+	/**
+	 * DisplayModes to distinguish different display environments.
+	 * <p>
+	 * Specifying a display mode allows for choosing which previously added elements, header icons and sub-panels should be displayed on the panel.
+	 */
 	public enum DisplayMode
 	{
 		All(),

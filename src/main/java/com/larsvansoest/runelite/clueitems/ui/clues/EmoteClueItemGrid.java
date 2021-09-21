@@ -49,6 +49,11 @@ import java.util.Comparator;
  */
 public class EmoteClueItemGrid extends FoldablePanelGrid<EmoteClueItemPanel>
 {
+	/**
+	 * Creates the grid.
+	 *
+	 * @param palette Colour scheme for the grid.
+	 */
 	public EmoteClueItemGrid(final EmoteClueItemsPalette palette)
 	{
 		super(palette, 25);

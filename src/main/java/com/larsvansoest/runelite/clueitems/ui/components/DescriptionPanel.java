@@ -16,6 +16,13 @@ import java.awt.*;
  */
 public class DescriptionPanel extends JPanel
 {
+	/**
+	 * Creates the panel.
+	 *
+	 * @param palette     Colour scheme for the panel.
+	 * @param title       Title to display above the separator.
+	 * @param description Description to display underneath the separator.
+	 */
 	public DescriptionPanel(final EmoteClueItemsPalette palette, final String title, final String description)
 	{
 		super(new GridBagLayout());

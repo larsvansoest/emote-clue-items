@@ -48,6 +48,12 @@ public class DisclaimerPanel extends JPanel
 {
 	private final JLabel textLabel;
 
+	/**
+	 * Creates the panel.
+	 *
+	 * @param emoteClueItemsPalette Colour scheme for the panel.
+	 * @param onClick               Behaviour to run when the notification's close button is pressed.
+	 */
 	public DisclaimerPanel(final EmoteClueItemsPalette emoteClueItemsPalette, final Runnable onClick)
 	{
 		super(new GridBagLayout());

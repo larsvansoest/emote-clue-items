@@ -128,6 +128,9 @@ public enum StashUnit
 	private final STASHUnit stashUnit;
 	private final Type type;
 
+	/**
+	 * Contains {@link com.larsvansoest.runelite.clueitems.data.StashUnit} build requirement data for each {@link com.larsvansoest.runelite.clueitems.data.StashUnit.Type}.
+	 */
 	@Getter
 	@RequiredArgsConstructor
 	public enum DifficultyRequirements
@@ -143,6 +146,9 @@ public enum StashUnit
 		private final String constructionItems;
 	}
 
+	/**
+	 * Represents the object type of the {@link com.larsvansoest.runelite.clueitems.data.StashUnit}.
+	 */
 	public enum Type
 	{
 		Bush(),
