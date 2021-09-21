@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 
-public class StashUnitPanel extends FoldablePanel
+public class StashUnitPanel extends RequirementPanel
 {
 	private final CycleButton filledButton;
 	private final int filledButtonComplete;

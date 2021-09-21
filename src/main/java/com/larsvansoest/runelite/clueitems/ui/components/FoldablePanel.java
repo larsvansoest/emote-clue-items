@@ -47,7 +47,13 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-public class FoldablePanel extends UpdatablePanel
+/**
+ * Panel with fold and unfold functionality to allow collapsing and un-collapsing a details panel. Allows for
+ *
+ * @author Lars van Soest
+ * @since 2.0.0
+ */
+public class FoldablePanel extends JPanel
 {
 	private final EmoteClueItemsPalette emoteClueItemsPalette;
 	private final JLabel foldIcon;
@@ -77,8 +83,6 @@ public class FoldablePanel extends UpdatablePanel
 	private Runnable onHeaderMousePressed;
 	@Getter
 	private Boolean expanded;
-	@Getter
-	private Status status;
 
 	public FoldablePanel(final EmoteClueItemsPalette emoteClueItemsPalette, final String name, final int headerNameWidth, final int headerMinHeight)
 	{
@@ -218,12 +222,6 @@ public class FoldablePanel extends UpdatablePanel
 		this.expanded = true;
 		this.foldContentDisplay.revalidate();
 		this.foldContentDisplay.repaint();
-	}
-
-	public void setStatus(final Status status)
-	{
-		this.setHeaderColor(status.colour);
-		this.status = status;
 	}
 
 	public Color getHeaderColor()

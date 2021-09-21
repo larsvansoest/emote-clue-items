@@ -35,7 +35,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class ItemCollectionPanel extends FoldablePanel
+public class ItemCollectionPanel extends RequirementPanel
 {
 	private final int slotRowSize;
 	private final ArrayList<ItemSlotPanel> itemSlots;

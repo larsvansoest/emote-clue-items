@@ -40,9 +40,9 @@ import java.awt.*;
  * @see FoldablePanel
  * @since 2.0.0
  */
-public abstract class UpdatablePanel extends JPanel
+public interface UpdatablePanel
 {
-	public enum Status
+	enum Status
 	{
 		Complete(ColorScheme.PROGRESS_COMPLETE_COLOR),
 

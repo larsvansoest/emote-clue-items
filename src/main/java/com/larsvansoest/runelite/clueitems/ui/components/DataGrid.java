@@ -44,7 +44,7 @@ import java.util.function.Predicate;
  * Lists {@link FoldablePanel} entries, provides functionality to display filtered sub-sets.
  *
  * @author Lars van Soest
- * @since 2.0.0
+ * @since 3.0.0
  */
 public class DataGrid<T extends JPanel> extends JPanel
 {

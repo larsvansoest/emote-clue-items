@@ -7,6 +7,12 @@ import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Displays a key-value pair in similar fashion to "<b>key:</b> value".
+ *
+ * @author Lars van Soest
+ * @since 3.0.0
+ */
 public class PropertyPanel extends JPanel
 {
 	private final JLabel nameLabel;

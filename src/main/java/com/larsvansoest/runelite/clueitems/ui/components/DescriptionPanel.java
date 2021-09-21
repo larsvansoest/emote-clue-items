@@ -8,6 +8,12 @@ import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
 
+/**
+ * Displays a title and description. The title has a shadowed markup and is supported by a separator. Underneath this separator, the description is html-formatted and displayed using html automatic line breaks.
+ *
+ * @author Lars van Soest
+ * @since 3.0.0
+ */
 public class DescriptionPanel extends JPanel
 {
 	public DescriptionPanel(final EmoteClueItemsPalette palette, final String title, final String description)

@@ -35,7 +35,7 @@ import net.runelite.client.util.ImageUtil;
 import javax.swing.*;
 import java.awt.*;
 
-public class ItemSlotPanel extends UpdatablePanel
+public class ItemSlotPanel extends JPanel implements UpdatablePanel
 {
 	private final ItemManager itemManager;
 	private final int itemId;
@@ -76,7 +76,7 @@ public class ItemSlotPanel extends UpdatablePanel
 		this.quantity = quantity;
 		this.setStatus(quantity > 0 ? Status.Complete : Status.InComplete);
 	}
- 
+
 	public void setStatus(final Status status)
 	{
 		this.itemIcon.setIcon(status == Status.Complete ? new ImageIcon(this.itemManager.getImage(this.itemId, this.quantity, true)) : this.transparentIcon);

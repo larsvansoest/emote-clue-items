@@ -33,7 +33,7 @@ import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
 import com.larsvansoest.runelite.clueitems.ui.components.DataGrid;
 import com.larsvansoest.runelite.clueitems.ui.components.FoldablePanelGrid;
-import com.larsvansoest.runelite.clueitems.ui.components.UpdatablePanel;
+import com.larsvansoest.runelite.clueitems.ui.components.RequirementPanel;
 
 import javax.swing.*;
 import java.util.Arrays;
@@ -42,7 +42,7 @@ import java.util.Comparator;
 /**
  * Main {@link net.runelite.client.ui.PluginPanel} of the {@link com.larsvansoest.runelite.clueitems.EmoteClueItemsPlugin}, which displays {@link com.larsvansoest.runelite.clueitems.data.EmoteClueItem} requirement status progression.
  * <p>
- * Includes search bar, buttons to filter and sort by properties, such as {@link com.larsvansoest.runelite.clueitems.ui.components.UpdatablePanel}, requirement name, and more.
+ * Includes search bar, buttons to filter and sort by properties.
  *
  * @author Lars van Soest
  * @since 2.0.0
@@ -67,17 +67,17 @@ public class EmoteClueItemGrid extends FoldablePanelGrid<EmoteClueItemPanel>
 		super.addFilter(filterKey,
 				new ImageIcon(EmoteClueImages.Toolbar.CheckSquare.INCOMPLETE),
 				DataGrid.getToolTipText(toolTipTextFormat, "incomplete"),
-				itemPanel -> itemPanel.getStatus() == UpdatablePanel.Status.InComplete
+				itemPanel -> itemPanel.getStatus() == RequirementPanel.Status.InComplete
 		);
 		super.addFilter(filterKey,
 				new ImageIcon(EmoteClueImages.Toolbar.CheckSquare.IN_PROGRESS),
 				DataGrid.getToolTipText(toolTipTextFormat, "in progress"),
-				itemPanel -> itemPanel.getStatus() == UpdatablePanel.Status.InProgress
+				itemPanel -> itemPanel.getStatus() == RequirementPanel.Status.InProgress
 		);
 		super.addFilter(filterKey,
 				new ImageIcon(EmoteClueImages.Toolbar.CheckSquare.COMPLETE),
 				DataGrid.getToolTipText(toolTipTextFormat, "complete"),
-				itemPanel -> itemPanel.getStatus() == UpdatablePanel.Status.Complete
+				itemPanel -> itemPanel.getStatus() == RequirementPanel.Status.Complete
 		);
 	}
 

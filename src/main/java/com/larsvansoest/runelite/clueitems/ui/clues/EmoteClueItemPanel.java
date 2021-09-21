@@ -30,8 +30,8 @@ package com.larsvansoest.runelite.clueitems.ui.clues;
 
 import com.larsvansoest.runelite.clueitems.data.*;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
-import com.larsvansoest.runelite.clueitems.ui.components.FoldablePanel;
 import com.larsvansoest.runelite.clueitems.ui.components.ItemRequirementCollectionPanel;
+import com.larsvansoest.runelite.clueitems.ui.components.RequirementPanel;
 import com.larsvansoest.runelite.clueitems.ui.stashes.StashUnitPanel;
 import lombok.Getter;
 
@@ -47,7 +47,7 @@ import java.util.Objects;
  * @author Lars van Soest
  * @since 2.0.0
  */
-public class EmoteClueItemPanel extends FoldablePanel
+public class EmoteClueItemPanel extends RequirementPanel
 {
 	@Getter
 	private final EmoteClueDifficulty[] difficulties;
