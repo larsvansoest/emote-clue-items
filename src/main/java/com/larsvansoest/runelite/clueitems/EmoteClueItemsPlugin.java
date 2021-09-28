@@ -103,7 +103,7 @@ public class EmoteClueItemsPlugin extends Plugin
 				this.itemManager,
 				this::onStashUnitFilledChanged,
 				"Emote Clue Items",
-				"v3.0.1",
+				"v3.1.0",
 				"https://github.com/larsvansoest/emote-clue-items"
 		);
 
@@ -133,14 +133,14 @@ public class EmoteClueItemsPlugin extends Plugin
 		this.progressManager.reset();
 		this.emoteClueItemsPanel.reset();
 
+		final String loginDisclaimer = "To start display of progression, please login first.";
 		for (final StashUnit stashUnit : StashUnit.values())
 		{
 			this.emoteClueItemsPanel.turnOnSTASHFilledButton(stashUnit);
-			this.emoteClueItemsPanel.turnOffSTASHFilledButton(stashUnit, new ImageIcon(EmoteClueImages.Toolbar.CheckSquare.WAITING), "Please open your bank to log STASH progress.");
+			this.emoteClueItemsPanel.turnOffSTASHFilledButton(stashUnit, new ImageIcon(EmoteClueImages.Toolbar.CheckSquare.WAITING), loginDisclaimer);
 		}
-
-		final String loginDisclaimer = "Open item containers to add items to this overview.";
 		this.emoteClueItemsPanel.setEmoteClueItemGridDisclaimer(loginDisclaimer);
+		this.emoteClueItemsPanel.setSTASHUnitGridDisclaimer(loginDisclaimer);
 
 		this.updateStashBuiltStatusOnNextGameTick = false;
 	}
@@ -200,8 +200,7 @@ public class EmoteClueItemsPlugin extends Plugin
 			this.clientThread.invokeLater(() ->
 			{
 				this.client.runScript(ScriptID.WATSON_STASH_UNIT_CHECK, stashUnit.getStashUnit().getObjectId(), 0, 0, 0);
-				final int[] stack = this.client.getIntStack();
-				final boolean built = stack[0] == 1;
+				final boolean built = this.client.getIntStack()[0] == 1;
 				this.emoteClueItemsPanel.turnOnSTASHFilledButton(stashUnit);
 				this.emoteClueItemsPanel.setSTASHUnitStatus(stashUnit, built, this.progressManager.getStashUnitFilled(stashUnit));
 			});
@@ -219,6 +218,9 @@ public class EmoteClueItemsPlugin extends Plugin
 		{
 			this.progressManager.validateConfig();
 			this.updateStashBuiltStatusOnNextGameTick = true;
+			this.emoteClueItemsPanel.removeEmoteClueItemGridDisclaimer();
+			this.emoteClueItemsPanel.removeSTASHUnitGridDisclaimer();
+			this.emoteClueItemsPanel.setEmoteClueItemGridDisclaimer("To include bank items, please open your bank once.");
 		}
 	}
 
