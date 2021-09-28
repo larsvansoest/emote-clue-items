@@ -143,6 +143,11 @@ public class EmoteClueItemsPlugin extends Plugin
 		this.emoteClueItemsPanel.setSTASHUnitGridDisclaimer(loginDisclaimer);
 
 		this.updateStashBuiltStatusOnNextGameTick = false;
+
+		if (this.client.getGameState() == GameState.LOGGED_IN)
+		{
+			this.onPlayerLoggedIn();
+		}
 	}
 
 	private void onStashUnitFilledChanged(final StashUnit stashUnit, final boolean filled)
@@ -216,12 +221,17 @@ public class EmoteClueItemsPlugin extends Plugin
 		}
 		if (event.getGameState() == GameState.LOGGED_IN)
 		{
-			this.progressManager.validateConfig();
-			this.updateStashBuiltStatusOnNextGameTick = true;
-			this.emoteClueItemsPanel.removeEmoteClueItemGridDisclaimer();
-			this.emoteClueItemsPanel.removeSTASHUnitGridDisclaimer();
-			this.emoteClueItemsPanel.setEmoteClueItemGridDisclaimer("To include bank items, please open your bank once.");
+			this.onPlayerLoggedIn();
 		}
+	}
+
+	private void onPlayerLoggedIn()
+	{
+		this.progressManager.validateConfig();
+		this.updateStashBuiltStatusOnNextGameTick = true;
+		this.emoteClueItemsPanel.removeEmoteClueItemGridDisclaimer();
+		this.emoteClueItemsPanel.removeSTASHUnitGridDisclaimer();
+		this.emoteClueItemsPanel.setEmoteClueItemGridDisclaimer("To include bank items, please open your bank once.");
 	}
 
 	@Subscribe
