@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.function.BiConsumer;
@@ -41,7 +41,7 @@ public class ProgressManager
 	private final BiConsumer<EmoteClueItem, Integer> onEmoteClueItemQuantityChanged;
 	private final BiConsumer<EmoteClueItem, UpdatablePanel.Status> onEmoteClueItemInventoryStatusChanged;
 	private final BiConsumer<EmoteClueItem, UpdatablePanel.Status> onEmoteClueItemStatusChanged;
-	private CopyOnWriteArraySet<Integer> unstashItems;
+	private ConcurrentHashMap<Integer, Integer> unstashItems; // The second integer stores flags for difficulties/tiers
 
 	private boolean bankNeverOpened;
 
@@ -78,7 +78,7 @@ public class ProgressManager
 	public void reset()
 	{
 		this.inventoryMonitor.reset();
-		this.unstashItems = new CopyOnWriteArraySet<>();
+		this.unstashItems = new ConcurrentHashMap<Integer, Integer>();
 		for (final EmoteClueItem emoteClueItem : EmoteClueItem.values())
 		{
 			this.inventoryStatusMap.put(emoteClueItem, UpdatablePanel.Status.InComplete);
@@ -175,11 +175,11 @@ public class ProgressManager
 
 				if (filled)
 				{
-					delUnstash(emoteClueItem);
+					delUnstash(emoteClueItem, emoteClue.getEmoteClueDifficulty().getVal());
 				}
 				else
 				{
-					addUnstash(emoteClueItem);
+					addUnstash(emoteClueItem, emoteClue.getEmoteClueDifficulty().getVal());
 				}
 			}
 		}
@@ -187,35 +187,45 @@ public class ProgressManager
 
 	public boolean isUnstash(int id)
 	{
-		return this.unstashItems.contains(id);
+		return this.unstashItems.containsKey(id);
 	}
 
-	public void addUnstash(EmoteClueItem item) {
+	public int unstashDiffFlags(int id) {
+		Integer diff = this.unstashItems.get(id);
+		return diff == null ? 0 : diff;
+	}
+
+	public void addUnstash(EmoteClueItem item, int newDifficulty) {
 		Queue<EmoteClueItem> items = new LinkedList<EmoteClueItem>();
+		Integer id;
 		do {
-			if (item != null)
+			id = item.getItemId();
+			if (id != null)
 			{
-				this.unstashItems.add(item.getItemId());
+				this.unstashItems.put(id, (this.unstashDiffFlags(id) | newDifficulty));
 			}
-			for (EmoteClueItem child : item.getChildren())
-			{
-				items.add(child);
-			}
+			items.addAll(item.getChildren());
 			item = items.poll();
 		} while (item != null);
 	}
 
-	public void delUnstash(EmoteClueItem item) {
+	public void delUnstash(EmoteClueItem item, int removedDifficulty) {
 		Queue<EmoteClueItem> items = new LinkedList<EmoteClueItem>();
+		Integer id;
 		do {
-			if (item != null)
+			id = item.getItemId();
+			if (id != null)
 			{
-				this.unstashItems.remove(item.getItemId());
+				int diff = unstashDiffFlags(id);
+				diff &= ~removedDifficulty;
+				if (diff > 0) {
+					this.unstashItems.put(id, diff);
+				}
+				else {
+					this.unstashItems.remove(id);
+				}
 			}
-			for (EmoteClueItem child : item.getChildren())
-			{
-				items.add(child);
-			}
+			items.addAll(item.getChildren());
 			item = items.poll();
 		} while (item != null);
 	}

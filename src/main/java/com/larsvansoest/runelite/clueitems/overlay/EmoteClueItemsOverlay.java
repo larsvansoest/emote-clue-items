@@ -83,26 +83,35 @@ public class EmoteClueItemsOverlay extends WidgetItemOverlay
 			return;
 		}
 
-		// Filter items according to config
 		EmoteClueItemsConfig.HighlightType mode = config.highlightType();
-		if (mode == EmoteClueItemsConfig.HighlightType.NONE ||
-			(mode == EmoteClueItemsConfig.HighlightType.UNSTASH &&
-			!this.progressManager.isUnstash(itemId)))
+		// Highlighting type: none
+		if (mode == EmoteClueItemsConfig.HighlightType.NONE)
 		{
 			return;
 		}
 
-		final int item = this.itemManager.canonicalize(itemId);
-
 		final Rectangle bounds = itemWidget.getCanvasBounds();
 		final int x = bounds.x + bounds.width + this.getXOffset(widgetContainer, widgetContext);
 		int y = bounds.y;
-		y = this.renderClueItemDetection(graphics, EmoteClueDifficulty.Beginner, Component.Ribbon.BEGINNER, item, x, y);
-		y = this.renderClueItemDetection(graphics, EmoteClueDifficulty.Easy, Component.Ribbon.EASY, item, x, y);
-		y = this.renderClueItemDetection(graphics, EmoteClueDifficulty.Medium, Component.Ribbon.MEDIUM, item, x, y);
-		y = this.renderClueItemDetection(graphics, EmoteClueDifficulty.Hard, Component.Ribbon.HARD, item, x, y);
-		y = this.renderClueItemDetection(graphics, EmoteClueDifficulty.Elite, Component.Ribbon.ELITE, item, x, y);
-		this.renderClueItemDetection(graphics, EmoteClueDifficulty.Master, Component.Ribbon.MASTER, item, x, y);
+		final int item = this.itemManager.canonicalize(itemId);
+
+		// Highlighting type: all
+		if (mode == EmoteClueItemsConfig.HighlightType.ALL)
+		{
+			for (EmoteClueDifficulty diff : EmoteClueDifficulty.values())
+			{
+				y = this.renderClueItemDetection(graphics, diff, Ribbon.getDifficultyRibbon(diff), item, x, y);
+			}
+		}
+		// Highlighting type: unstash
+		else if (this.progressManager.isUnstash(itemId))
+		{
+			int diffFlags = this.progressManager.unstashDiffFlags(itemId);
+			for (EmoteClueDifficulty diff : EmoteClueDifficulty.getDifficulties(diffFlags))
+			{
+				y = this.renderClueItemDetection(graphics, diff, Ribbon.getDifficultyRibbon(diff), item, x, y);
+			}
+		}
 	}
 
 	private boolean interfaceGroupSelected(final WidgetContainer widgetContainer)
@@ -158,19 +167,33 @@ public class EmoteClueItemsOverlay extends WidgetItemOverlay
 		return ribbon.getBounds();
 	}
 
-	static class Component
+	static final class Ribbon
 	{
-		static final class Ribbon
-		{
-			static final ImageComponent BEGINNER = new ImageComponent(EmoteClueImages.Ribbon.BEGINNER);
-			static final ImageComponent EASY = new ImageComponent(EmoteClueImages.Ribbon.EASY);
-			static final ImageComponent MEDIUM = new ImageComponent(EmoteClueImages.Ribbon.MEDIUM);
-			static final ImageComponent HARD = new ImageComponent(EmoteClueImages.Ribbon.HARD);
-			static final ImageComponent ELITE = new ImageComponent(EmoteClueImages.Ribbon.ELITE);
-			static final ImageComponent MASTER = new ImageComponent(EmoteClueImages.Ribbon.MASTER);
+		static final ImageComponent BEGINNER = new ImageComponent(EmoteClueImages.Ribbon.BEGINNER);
+		static final ImageComponent EASY = new ImageComponent(EmoteClueImages.Ribbon.EASY);
+		static final ImageComponent MEDIUM = new ImageComponent(EmoteClueImages.Ribbon.MEDIUM);
+		static final ImageComponent HARD = new ImageComponent(EmoteClueImages.Ribbon.HARD);
+		static final ImageComponent ELITE = new ImageComponent(EmoteClueImages.Ribbon.ELITE);
+		static final ImageComponent MASTER = new ImageComponent(EmoteClueImages.Ribbon.MASTER);
 
-			private Ribbon()
+		public static ImageComponent getDifficultyRibbon(EmoteClueDifficulty difficulty)
+		{
+			switch (difficulty)
 			{
+				case Beginner:
+					return BEGINNER;
+				case Easy:
+					return EASY;
+				case Medium:
+					return MEDIUM;
+				case Hard:
+					return HARD;
+				case Elite:
+					return ELITE;
+				case Master:
+					return MASTER;
+				default:
+					return null;
 			}
 		}
 	}
