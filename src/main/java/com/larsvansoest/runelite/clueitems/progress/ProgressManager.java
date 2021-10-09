@@ -190,15 +190,18 @@ public class ProgressManager
 		return this.unstashItems.containsKey(id);
 	}
 
-	public int unstashDiffFlags(int id) {
+	public int unstashDiffFlags(int id)
+	{
 		Integer diff = this.unstashItems.get(id);
 		return diff == null ? 0 : diff;
 	}
 
-	public void addUnstash(EmoteClueItem item, int newDifficulty) {
+	public void addUnstash(EmoteClueItem item, int newDifficulty)
+	{
 		Queue<EmoteClueItem> items = new LinkedList<EmoteClueItem>();
 		Integer id;
-		do {
+		do
+		{
 			id = item.getItemId();
 			if (id != null)
 			{
@@ -209,19 +212,23 @@ public class ProgressManager
 		} while (item != null);
 	}
 
-	public void delUnstash(EmoteClueItem item, int removedDifficulty) {
+	public void delUnstash(EmoteClueItem item, int removedDifficulty)
+	{
 		Queue<EmoteClueItem> items = new LinkedList<EmoteClueItem>();
 		Integer id;
-		do {
+		do
+		{
 			id = item.getItemId();
 			if (id != null)
 			{
 				int diff = unstashDiffFlags(id);
 				diff &= ~removedDifficulty;
-				if (diff > 0) {
+				if (diff > 0)
+				{
 					this.unstashItems.put(id, diff);
 				}
-				else {
+				else
+				{
 					this.unstashItems.remove(id);
 				}
 			}

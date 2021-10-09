@@ -56,7 +56,8 @@ public enum EmoteClueDifficulty
 	@Getter
 	private int val;
 
-	EmoteClueDifficulty(int val, Color color) {
+	EmoteClueDifficulty(int val, Color color)
+	{
 		this.color = color;
 		this.val = val;
 	}
@@ -72,22 +73,28 @@ public enum EmoteClueDifficulty
 		return difficulties;
 	}
 
-	public static boolean isBeginner(int val) {
+	public static boolean isBeginner(int val)
+	{
 		return ((val & Beginner.getVal()) != 0);
 	}
-	public static boolean isEasy(int val) {
+	public static boolean isEasy(int val)
+	{
 		return ((val & Easy.getVal()) != 0);
 	}
-	public static boolean isMedium(int val) {
+	public static boolean isMedium(int val)
+	{
 		return ((val & Medium.getVal()) != 0);
 	}
-	public static boolean isHard(int val) {
+	public static boolean isHard(int val)
+	{
 		return ((val & Hard.getVal()) != 0);
 	}
-	public static boolean isElite(int val) {
+	public static boolean isElite(int val)
+	{
 		return ((val & Elite.getVal()) != 0);
 	}
-	public static boolean isMaster(int val) {
+	public static boolean isMaster(int val)
+	{
 		return ((val & Master.getVal()) != 0);
 	}
 }
