@@ -19,6 +19,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.function.BiConsumer;
 
 /**
@@ -38,6 +41,7 @@ public class ProgressManager
 	private final BiConsumer<EmoteClueItem, Integer> onEmoteClueItemQuantityChanged;
 	private final BiConsumer<EmoteClueItem, UpdatablePanel.Status> onEmoteClueItemInventoryStatusChanged;
 	private final BiConsumer<EmoteClueItem, UpdatablePanel.Status> onEmoteClueItemStatusChanged;
+	private CopyOnWriteArraySet<Integer> unstashItems;
 
 	private boolean bankNeverOpened;
 
@@ -74,6 +78,7 @@ public class ProgressManager
 	public void reset()
 	{
 		this.inventoryMonitor.reset();
+		this.unstashItems = new CopyOnWriteArraySet<>();
 		for (final EmoteClueItem emoteClueItem : EmoteClueItem.values())
 		{
 			this.inventoryStatusMap.put(emoteClueItem, UpdatablePanel.Status.InComplete);
@@ -167,8 +172,52 @@ public class ProgressManager
 			{
 				this.stashFilledStatusMap.get(emoteClueItem).put(stashUnit, filled);
 				this.setEmoteClueItemStatus(emoteClueItem, this.updateEmoteClueItemStatus(emoteClueItem));
+
+				if (filled)
+				{
+					delUnstash(emoteClueItem);
+				}
+				else
+				{
+					addUnstash(emoteClueItem);
+				}
 			}
 		}
+	}
+
+	public boolean isUnstash(int id)
+	{
+		return this.unstashItems.contains(id);
+	}
+
+	public void addUnstash(EmoteClueItem item) {
+		Queue<EmoteClueItem> items = new LinkedList<EmoteClueItem>();
+		do {
+			if (item != null)
+			{
+				this.unstashItems.add(item.getItemId());
+			}
+			for (EmoteClueItem child : item.getChildren())
+			{
+				items.add(child);
+			}
+			item = items.poll();
+		} while (item != null);
+	}
+
+	public void delUnstash(EmoteClueItem item) {
+		Queue<EmoteClueItem> items = new LinkedList<EmoteClueItem>();
+		do {
+			if (item != null)
+			{
+				this.unstashItems.remove(item.getItemId());
+			}
+			for (EmoteClueItem child : item.getChildren())
+			{
+				items.add(child);
+			}
+			item = items.poll();
+		} while (item != null);
 	}
 
 	private UpdatablePanel.Status updateEmoteClueItemStatus(final EmoteClueItem emoteClueItem)

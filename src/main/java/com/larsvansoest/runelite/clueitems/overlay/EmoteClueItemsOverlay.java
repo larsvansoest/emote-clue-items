@@ -32,6 +32,7 @@ import com.larsvansoest.runelite.clueitems.EmoteClueItemsConfig;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueAssociations;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
+import com.larsvansoest.runelite.clueitems.progress.ProgressManager;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
@@ -51,14 +52,16 @@ public class EmoteClueItemsOverlay extends WidgetItemOverlay
 {
 	private final EmoteClueItemsConfig config;
 	private final ItemManager itemManager;
+	private final ProgressManager progressManager;
 	// Single object allocations, re-used every sequential iteration.
 	private final WidgetData widgetData;
 	private final Point point;
 
 	@Inject
-	public EmoteClueItemsOverlay(final ItemManager itemManager, final EmoteClueItemsConfig config)
+	public EmoteClueItemsOverlay(final ItemManager itemManager, final EmoteClueItemsConfig config, final ProgressManager progressManager)
 	{
 		this.itemManager = itemManager;
+		this.progressManager = progressManager;
 
 		this.config = config;
 		this.widgetData = new WidgetData();
@@ -79,6 +82,16 @@ public class EmoteClueItemsOverlay extends WidgetItemOverlay
 		{
 			return;
 		}
+
+		// Filter items according to config
+		EmoteClueItemsConfig.HighlightType mode = config.highlightType();
+		if (mode == EmoteClueItemsConfig.HighlightType.NONE ||
+			(mode == EmoteClueItemsConfig.HighlightType.UNSTASH &&
+			!this.progressManager.isUnstash(itemId)))
+		{
+			return;
+		}
+
 		final int item = this.itemManager.canonicalize(itemId);
 
 		final Rectangle bounds = itemWidget.getCanvasBounds();
