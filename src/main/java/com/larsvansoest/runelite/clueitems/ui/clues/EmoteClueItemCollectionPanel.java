@@ -24,6 +24,13 @@ public class EmoteClueItemCollectionPanel extends ItemCollectionPanel
 		this.strong = strong;
 	}
 
+	/**
+	 * Add an {@link com.larsvansoest.runelite.clueitems.data.EmoteClueItem} requirement to include in inventory status checking.
+	 * <p>
+	 * Automatically adds the children of given {@link com.larsvansoest.runelite.clueitems.data.EmoteClueItem} to the inner data structure, which serve as parameter for {@link #setStatus(com.larsvansoest.runelite.clueitems.data.EmoteClueItem, com.larsvansoest.runelite.clueitems.ui.components.UpdatablePanel.Status)}.
+	 *
+	 * @param emoteClueItem the requirement to include.
+	 */
 	public void addRequirement(final EmoteClueItem emoteClueItem)
 	{
 		this.parents.add(emoteClueItem);
@@ -36,6 +43,12 @@ public class EmoteClueItemCollectionPanel extends ItemCollectionPanel
 		emoteClueItem.getChildren().forEach(this::addRequirementStatus);
 	}
 
+	/**
+	 * Set the status of a requirement or any of its children. Automatically checks if collection log is complete.
+	 *
+	 * @param emoteClueItem the requirement, must have been added through {@link #addRequirement(com.larsvansoest.runelite.clueitems.data.EmoteClueItem)}.
+	 * @param status        the status of the requirement.
+	 */
 	public void setStatus(final EmoteClueItem emoteClueItem, final Status status)
 	{
 		if (this.requirementStatuses.containsKey(emoteClueItem))
