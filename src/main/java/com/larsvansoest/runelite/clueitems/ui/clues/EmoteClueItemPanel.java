@@ -66,7 +66,7 @@ public class EmoteClueItemPanel extends RequirementPanel
 	{
 		super(palette, emoteClueItem.getCollectiveName(), 160, 20);
 
-		final EmoteClue[] emoteClues = EmoteClueAssociations.EmoteClueItemToEmoteClues.get(emoteClueItem);
+		final EmoteClue[] emoteClues = EmoteClueAssociations.EmoteClueItemParentToEmoteClues.get(emoteClueItem);
 
 		this.stashUnitPanels = new ArrayList<>();
 		this.difficulties = Arrays.stream(emoteClues).map(EmoteClue::getEmoteClueDifficulty).distinct().toArray(EmoteClueDifficulty[]::new);

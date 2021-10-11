@@ -67,7 +67,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 		this.emoteClueItemCollectionPanelMap = new HashMap<>();
 
 		// Create item panels.
-		this.itemPanelMap = EmoteClueAssociations.EmoteClueItemToEmoteClues
+		this.itemPanelMap = EmoteClueAssociations.EmoteClueItemParentToEmoteClues
 				.keySet()
 				.stream()
 				.collect(Collectors.toMap(Function.identity(), emoteClueItem -> new EmoteClueItemPanel(palette, emoteClueItem)));
@@ -91,7 +91,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 			itemPanel.setItemCollectionPanel(collectionPanel);
 			this.addEmoteClueItemToCollectionPanel(collectionPanel, emoteClueItem);
 			collectionPanel.setStatus(UpdatablePanel.Status.InComplete);
-			Arrays.stream(EmoteClueAssociations.EmoteClueItemToEmoteClues.get(emoteClueItem)).map(this.emoteCluePanelMap::get).forEach(itemPanel::addChild);
+			Arrays.stream(EmoteClueAssociations.EmoteClueItemParentToEmoteClues.get(emoteClueItem)).map(this.emoteCluePanelMap::get).forEach(itemPanel::addChild);
 		});
 
 		// Setup STASHUnit panels.
