@@ -32,6 +32,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Contains values for all {@link EmoteClue} difficulties.
@@ -43,17 +45,56 @@ import java.awt.*;
 @RequiredArgsConstructor
 public enum EmoteClueDifficulty
 {
-	Beginner(new Color(169, 158, 157)),
-
-	Easy(new Color(9, 96, 13)),
-
-	Medium(new Color(86, 150, 153)),
-
-	Hard(new Color(131, 55, 152)),
-
-	Elite(new Color(189, 165, 24)),
-
-	Master(new Color(155, 48, 38));
+	Beginner(1, new Color(169, 158, 157)),
+	Easy(2, new Color(9, 96, 13)),
+	Medium(4, new Color(86, 150, 153)),
+	Hard(8, new Color(131, 55, 152)),
+	Elite(16, new Color(189, 165, 24)),
+	Master(32, new Color(155, 48, 38));
 
 	private final Color color;
+	@Getter
+	private int val;
+
+	EmoteClueDifficulty(int val, Color color)
+	{
+		this.color = color;
+		this.val = val;
+	}
+
+	public static List<EmoteClueDifficulty> getDifficulties(int val)
+	{
+		List<EmoteClueDifficulty> difficulties = new ArrayList<EmoteClueDifficulty>();
+		for (EmoteClueDifficulty d : values())
+		{
+			if ((val & d.getVal()) != 0)
+				difficulties.add(d);
+		}
+		return difficulties;
+	}
+
+	public static boolean isBeginner(int val)
+	{
+		return ((val & Beginner.getVal()) != 0);
+	}
+	public static boolean isEasy(int val)
+	{
+		return ((val & Easy.getVal()) != 0);
+	}
+	public static boolean isMedium(int val)
+	{
+		return ((val & Medium.getVal()) != 0);
+	}
+	public static boolean isHard(int val)
+	{
+		return ((val & Hard.getVal()) != 0);
+	}
+	public static boolean isElite(int val)
+	{
+		return ((val & Elite.getVal()) != 0);
+	}
+	public static boolean isMaster(int val)
+	{
+		return ((val & Master.getVal()) != 0);
+	}
 }
