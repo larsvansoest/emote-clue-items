@@ -28,7 +28,6 @@
 
 package com.larsvansoest.runelite.clueitems;
 
-import lombok.AllArgsConstructor;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -46,42 +45,25 @@ import net.runelite.client.config.ConfigSection;
 @ConfigGroup("example")
 public interface EmoteClueItemsConfig extends Config
 {
-	@AllArgsConstructor
-	enum HighlightType
-	{
-		ALL("All"),
-		UNSTASH("Not in STASH"),
-		NONE("None");
-
-		private final String value;
-
-		@Override
-		public String toString()
-		{
-			return value;
-		}
-	}
-
-
-	@ConfigItem(keyName = "highlightType",
-			name = "Highlight:",
-			description = "Which items to highlight",
-			position = 0)
-	default HighlightType highlightType()
-	{
-		return HighlightType.UNSTASH;
-	}
-
 	@ConfigSection(name = "Interface Selection",
 	               description = "Toggle highlighting per interface type.",
 	               position = 1)
 	String Section_selectInterface = "selectInterface";
 
+	@ConfigItem(keyName = "FilterInStash",
+	            name = "Filter items in STASH",
+	            description = "Do not highlight items already in STASH units.",
+	            position = 0)
+	default boolean filterInStash()
+	{
+		return true;
+	}
+
 	@ConfigItem(keyName = "HighlightBank",
 	            name = "Bank",
 	            description = "Show highlights on bank interface.",
 	            section = Section_selectInterface,
-	            position = 1)
+	            position = 0)
 	default boolean highlightBank()
 	{
 		return true;
@@ -91,7 +73,7 @@ public interface EmoteClueItemsConfig extends Config
 	            name = "Inventory",
 	            description = "Show highlights on inventory interface.",
 	            section = Section_selectInterface,
-	            position = 2)
+	            position = 1)
 	default boolean highlightInventory()
 	{
 		return true;
@@ -101,7 +83,7 @@ public interface EmoteClueItemsConfig extends Config
 	            name = "Deposit Box",
 	            description = "Show highlights on deposit box interface.",
 	            section = Section_selectInterface,
-	            position = 3)
+	            position = 2)
 	default boolean highlightDepositBox()
 	{
 		return false;
@@ -111,7 +93,7 @@ public interface EmoteClueItemsConfig extends Config
 	            name = "Equipment",
 	            description = "Show highlights on equipment interface.",
 	            section = Section_selectInterface,
-	            position = 4)
+	            position = 3)
 	default boolean highlightEquipment()
 	{
 		return false;
@@ -121,7 +103,7 @@ public interface EmoteClueItemsConfig extends Config
 	            name = "Guide Prices",
 	            description = "Show highlights on guide prices interface.",
 	            section = Section_selectInterface,
-	            position = 5)
+	            position = 4)
 	default boolean highlightGuidePrices()
 	{
 		return false;
@@ -131,7 +113,7 @@ public interface EmoteClueItemsConfig extends Config
 	            name = "Kept on Death",
 	            description = "Show highlights on kept on death interface.",
 	            section = Section_selectInterface,
-	            position = 6)
+	            position = 5)
 	default boolean highlightKeptOnDeath()
 	{
 		return false;
@@ -141,7 +123,7 @@ public interface EmoteClueItemsConfig extends Config
 	            name = "Shops",
 	            description = "Show highlights on shop interfaces.",
 	            section = Section_selectInterface,
-	            position = 7)
+	            position = 6)
 	default boolean highlightShop()
 	{
 		return false;

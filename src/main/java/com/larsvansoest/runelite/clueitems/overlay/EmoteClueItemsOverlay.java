@@ -29,9 +29,7 @@
 package com.larsvansoest.runelite.clueitems.overlay;
 
 import com.larsvansoest.runelite.clueitems.EmoteClueItemsConfig;
-import com.larsvansoest.runelite.clueitems.data.EmoteClueAssociations;
-import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
-import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
+import com.larsvansoest.runelite.clueitems.data.*;
 import com.larsvansoest.runelite.clueitems.progress.ProgressManager;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
@@ -41,6 +39,8 @@ import net.runelite.client.ui.overlay.components.ImageComponent;
 import javax.inject.Inject;
 import java.awt.*;
 import java.util.Arrays;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 /**
  * Extends {@link WidgetItemOverlay}. Scans and marks items required for emote clue scroll steps.
@@ -56,6 +56,8 @@ public class EmoteClueItemsOverlay extends WidgetItemOverlay
 	// Single object allocations, re-used every sequential iteration.
 	private final WidgetData widgetData;
 	private final Point point;
+	private int x;
+	private int y;
 
 	@Inject
 	public EmoteClueItemsOverlay(final ItemManager itemManager, final EmoteClueItemsConfig config, final ProgressManager progressManager)
@@ -78,40 +80,36 @@ public class EmoteClueItemsOverlay extends WidgetItemOverlay
 		final WidgetContext widgetContext = this.widgetData.getWidgetContext();
 
 		// Filter unsupported and turned off interfaces.
-		if (widgetContext == null || widgetContainer == null || !this.interfaceGroupSelected(widgetContainer))
+		if (Objects.isNull(widgetContext) || Objects.isNull(widgetContainer) || !this.interfaceGroupSelected(widgetContainer))
 		{
 			return;
 		}
 
-		EmoteClueItemsConfig.HighlightType mode = config.highlightType();
-		// Highlighting type: none
-		if (mode == EmoteClueItemsConfig.HighlightType.NONE)
+		final EmoteClueItem emoteClueItem = EmoteClueAssociations.ItemIdToEmoteClueItem.get(this.itemManager.canonicalize(itemId));
+
+		// Filter items not required for emote clues.
+		if (Objects.isNull(emoteClueItem))
 		{
 			return;
+		}
+
+		Stream<EmoteClue> emoteClues = Arrays.stream(EmoteClueAssociations.EmoteClueItemToEmoteClues.get(emoteClueItem));
+		if (this.config.filterInStash())
+		{
+			emoteClues = emoteClues.filter(emoteClue -> !this.progressManager.getStashUnitFilled(emoteClue.getStashUnit()));
 		}
 
 		final Rectangle bounds = itemWidget.getCanvasBounds();
-		final int x = bounds.x + bounds.width + this.getXOffset(widgetContainer, widgetContext);
-		int y = bounds.y;
-		final int item = this.itemManager.canonicalize(itemId);
+		this.x = bounds.x + bounds.width + this.getXOffset(widgetContainer, widgetContext);
+		this.y = bounds.y;
 
-		// Highlighting type: all
-		if (mode == EmoteClueItemsConfig.HighlightType.ALL)
+		emoteClues.map(EmoteClue::getEmoteClueDifficulty).distinct().map(RibbonComponent::ofDifficulty).forEach(ribbon ->
 		{
-			for (EmoteClueDifficulty diff : EmoteClueDifficulty.values())
-			{
-				y = this.renderClueItemDetection(graphics, diff, Ribbon.getDifficultyRibbon(diff), item, x, y);
-			}
-		}
-		// Highlighting type: unstash
-		else if (this.progressManager.isUnstash(itemId))
-		{
-			int diffFlags = this.progressManager.unstashDiffFlags(itemId);
-			for (EmoteClueDifficulty diff : EmoteClueDifficulty.getDifficulties(diffFlags))
-			{
-				y = this.renderClueItemDetection(graphics, diff, Ribbon.getDifficultyRibbon(diff), item, x, y);
-			}
-		}
+			this.point.setLocation(this.x, this.y);
+			ribbon.setPreferredLocation(this.point);
+			ribbon.render(graphics);
+			this.y += ribbon.getBounds().getHeight() + 1;
+		});
 	}
 
 	private boolean interfaceGroupSelected(final WidgetContainer widgetContainer)
@@ -149,25 +147,7 @@ public class EmoteClueItemsOverlay extends WidgetItemOverlay
 		return widgetContainer == WidgetContainer.Equipment ? -10 : widgetContext == WidgetContext.Default ? -1 : -5;
 	}
 
-	private int renderClueItemDetection(
-			final Graphics2D graphics, final EmoteClueDifficulty emoteClueDifficulty, final ImageComponent component, final int id, final int x, final int y)
-	{
-		return Arrays
-				.stream(EmoteClueAssociations.DifficultyToEmoteClues.get(emoteClueDifficulty))
-				.anyMatch(emoteClue -> Arrays.stream(emoteClue.getItemRequirements()).anyMatch(itemRequirement -> itemRequirement.fulfilledBy(id))) ? (int) (y + this
-				.renderRibbon(graphics, component, x, y)
-				.getHeight()) + 1 : y;
-	}
-
-	private Rectangle renderRibbon(final Graphics2D graphics, final ImageComponent ribbon, final int x, final int y)
-	{
-		this.point.setLocation(x, y);
-		ribbon.setPreferredLocation(this.point);
-		ribbon.render(graphics);
-		return ribbon.getBounds();
-	}
-
-	static final class Ribbon
+	private static final class RibbonComponent
 	{
 		static final ImageComponent BEGINNER = new ImageComponent(EmoteClueImages.Ribbon.BEGINNER);
 		static final ImageComponent EASY = new ImageComponent(EmoteClueImages.Ribbon.EASY);
@@ -176,7 +156,7 @@ public class EmoteClueItemsOverlay extends WidgetItemOverlay
 		static final ImageComponent ELITE = new ImageComponent(EmoteClueImages.Ribbon.ELITE);
 		static final ImageComponent MASTER = new ImageComponent(EmoteClueImages.Ribbon.MASTER);
 
-		public static ImageComponent getDifficultyRibbon(EmoteClueDifficulty difficulty)
+		public static ImageComponent ofDifficulty(final EmoteClueDifficulty difficulty)
 		{
 			switch (difficulty)
 			{
@@ -190,10 +170,8 @@ public class EmoteClueItemsOverlay extends WidgetItemOverlay
 					return HARD;
 				case Elite:
 					return ELITE;
-				case Master:
-					return MASTER;
 				default:
-					return null;
+					return MASTER;
 			}
 		}
 	}
