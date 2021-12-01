@@ -30,14 +30,14 @@ class StashMonitor
 	public void setStashFilled(final StashUnit stashUnit, final boolean filled)
 	{
 		final StringBuilder stashesBuilder = new StringBuilder(this.config.getRSProfileConfiguration(this.group, this.key));
-		stashesBuilder.setCharAt(ArrayUtils.indexOf(STASH_IDS_ORDERED, stashUnit.getStashUnit().getObjectId()), filled ? '1' : '0');
+		stashesBuilder.setCharAt(ArrayUtils.indexOf(STASH_IDS_ORDERED, stashUnit.getStashUnit().getObjectId()), filled ? 't' : 'f');
 		this.config.setRSProfileConfiguration(this.group, this.key, stashesBuilder.toString());
 	}
 
 	public boolean getStashFilled(final StashUnit stashUnit)
 	{
 		final String stashes = this.config.getRSProfileConfiguration(this.group, this.key);
-		return stashes.charAt(ArrayUtils.indexOf(STASH_IDS_ORDERED, stashUnit.getStashUnit().getObjectId())) == '1';
+		return stashes.charAt(ArrayUtils.indexOf(STASH_IDS_ORDERED, stashUnit.getStashUnit().getObjectId())) == 't';
 	}
 
 	public void validate()
@@ -46,7 +46,7 @@ class StashMonitor
 		final String fingerPrint = this.config.getRSProfileConfiguration(this.group, FINGERPRINT_KEY);
 		if (Objects.isNull(stashes) || Objects.isNull(fingerPrint) || !fingerPrint.equals(STASH_IDS_ORDERED_FINGERPRINT) || stashes.length() != STASH_IDS_ORDERED.length)
 		{
-			this.config.setRSProfileConfiguration(this.group, this.key, StringUtils.repeat('0', STASH_IDS_ORDERED.length));
+			this.config.setRSProfileConfiguration(this.group, this.key, StringUtils.repeat('f', STASH_IDS_ORDERED.length));
 			this.config.setRSProfileConfiguration(this.group, FINGERPRINT_KEY, STASH_IDS_ORDERED_FINGERPRINT);
 		}
 	}
