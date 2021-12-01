@@ -29,15 +29,19 @@ class StashMonitor
 
 	public void setStashFilled(final StashUnit stashUnit, final boolean filled)
 	{
-		final StringBuilder stashesBuilder = new StringBuilder(this.config.getRSProfileConfiguration(this.group, this.key));
-		stashesBuilder.setCharAt(ArrayUtils.indexOf(STASH_IDS_ORDERED, stashUnit.getStashUnit().getObjectId()), filled ? 't' : 'f');
-		this.config.setRSProfileConfiguration(this.group, this.key, stashesBuilder.toString());
+		final String stashes = this.config.getRSProfileConfiguration(this.group, this.key);
+		if (Objects.nonNull(stashes)) // player is logged in.
+		{
+			final StringBuilder stashesBuilder = new StringBuilder(stashes);
+			stashesBuilder.setCharAt(ArrayUtils.indexOf(STASH_IDS_ORDERED, stashUnit.getStashUnit().getObjectId()), filled ? 't' : 'f');
+			this.config.setRSProfileConfiguration(this.group, this.key, stashesBuilder.toString());
+		}
 	}
 
 	public boolean getStashFilled(final StashUnit stashUnit)
 	{
 		final String stashes = this.config.getRSProfileConfiguration(this.group, this.key);
-		return stashes.charAt(ArrayUtils.indexOf(STASH_IDS_ORDERED, stashUnit.getStashUnit().getObjectId())) == 't';
+		return Objects.nonNull(stashes) && stashes.charAt(ArrayUtils.indexOf(STASH_IDS_ORDERED, stashUnit.getStashUnit().getObjectId())) == 't';
 	}
 
 	public void validate()
