@@ -41,7 +41,12 @@ class StashMonitor
 	public boolean getStashFilled(final StashUnit stashUnit)
 	{
 		final String stashes = this.config.getRSProfileConfiguration(this.group, this.key);
-		return Objects.nonNull(stashes) && stashes.charAt(ArrayUtils.indexOf(STASH_IDS_ORDERED, stashUnit.getStashUnit().getObjectId())) == 't';
+		if (Objects.isNull(stashes))
+		{
+			return false;
+		}
+		final char stash = stashes.charAt(ArrayUtils.indexOf(STASH_IDS_ORDERED, stashUnit.getStashUnit().getObjectId()));
+		return stash == 't' || stash == '1'; // '1' was previously used, added for backwards compatibility.
 	}
 
 	public void validate()
