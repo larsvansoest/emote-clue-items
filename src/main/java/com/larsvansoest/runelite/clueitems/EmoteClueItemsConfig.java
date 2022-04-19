@@ -128,4 +128,14 @@ public interface EmoteClueItemsConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(keyName = "HighlightGroupStorage",
+	            name = "Group Storage",
+	            description = "Show highlights on group iron man storage.",
+	            section = Section_selectInterface,
+	            position = 7)
+	default boolean highlightGroupStorage()
+	{
+		return false;
+	}
 }

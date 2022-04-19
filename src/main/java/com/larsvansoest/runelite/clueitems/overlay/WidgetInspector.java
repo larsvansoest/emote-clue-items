@@ -150,6 +150,18 @@ public abstract class WidgetInspector
 				return;
 			}
 
+			else if (id == Widget.GROUP_STORAGE.id)
+			{
+				widgetDataRef.setWidgetContext(WidgetContext.InGroupStorage);
+				widgetDataRef.setWidgetContainer(WidgetContainer.GroupStorage);
+			}
+
+			else if (id == Widget.GROUP_STORAGE_INVENTORY.id)
+			{
+				widgetDataRef.setWidgetContext(WidgetContext.InGroupStorage);
+				widgetDataRef.setWidgetContainer(WidgetContainer.Inventory);
+			}
+
 			widget = widget.getParent();
 			i++;
 		}

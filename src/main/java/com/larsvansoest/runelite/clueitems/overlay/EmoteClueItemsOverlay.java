@@ -137,6 +137,9 @@ public class EmoteClueItemsOverlay extends WidgetItemOverlay
 			case GuidePrices:
 				return this.config.highlightGuidePrices();
 
+			case GroupStorage:
+				return this.config.highlightGroupStorage();
+
 			default:
 				return false;
 		}
