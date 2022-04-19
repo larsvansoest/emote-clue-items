@@ -13,9 +13,10 @@ emote clue items.
 
 This update of Emote Clue Items features the following updates.
 - Fixed typos in STASHUnit names. (see [emote-clue-items/pull40](https://github.com/larsvansoest/emote-clue-items/pull/40))
-- Updated to Runelite version 1.18.17 (see [emote-clue-items/pull44](https://github.com/larsvansoest/emote-clue-items/pull/44))
+- Updated to RuneLite version 1.18.17. (see [emote-clue-items/pull44](https://github.com/larsvansoest/emote-clue-items/pull/44))
 - Overhauled nested item requirement status display. (see [emote-clue-items#39](https://github.com/larsvansoest/emote-clue-items/issues/39))
-- Added overlay for group iron man storage (see [emote-clue-items#41](https://github.com/larsvansoest/emote-clue-items/issues/41))
+- Added overlay for group iron man storage. (see [emote-clue-items#41](https://github.com/larsvansoest/emote-clue-items/issues/41))
+- Update emote clue data base up to [d129c49](https://github.com/runelite/runelite/commits/master/runelite-client/src/main/java/net/runelite/client/plugins/cluescrolls/clues/EmoteClue.java). (see [emote-clue-items/pull45](https://github.com/larsvansoest/emote-clue-items/pull/45))
 
 #### Filling stashes now updates the emote clue item requirement status
 
