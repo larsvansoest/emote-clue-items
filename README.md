@@ -1,4 +1,4 @@
-## Emote Clue Items v3.3.0 [![Plugin Installs](http://img.shields.io/endpoint?url=https://i.pluginhub.info/shields/installs/plugin/emote-clue-items&label=Active%20installs)](https://runelite.net/plugin-hub/Lars%20van%20Soest)
+## Emote Clue Items v3.4.0 [![Plugin Installs](http://img.shields.io/endpoint?url=https://i.pluginhub.info/shields/installs/plugin/emote-clue-items&label=Active%20installs)](https://runelite.net/plugin-hub/Lars%20van%20Soest)
 
 Emote Clue Items is a RuneLite plugin which highlights items required for emote clue steps and provides a user-friendly
 item collection log with STASHUnit integration.
@@ -9,13 +9,13 @@ Maintaining bank space can be quite cumbersome, especially when you are not sure
 clue scrolls. With this plugin, throwing away items may be a bit less stressful, as this plugin aims to highlight all
 emote clue items.
 
-### 3.3.0 Patch notes
+### 3.4.0 Patch notes
 
 This update of Emote Clue Items features the following updates.
-- fixed stash fill status resetting after RuneLite restart. (see [emote-clue-items#33](https://github.com/larsvansoest/emote-clue-items/issues/33), [runelite#14433](https://github.com/runelite/runelite/issues/14433))
-- synchronised EmoteClue data from runelite up to [5df5abd](https://github.com/runelite/runelite/commits/master/runelite-client/src/main/java/net/runelite/client/plugins/cluescrolls/clues/EmoteClue.java).
-- updated runelite version.
-
+- Fixed typos in STASHUnit names. (see [emote-clue-items/pull40](https://github.com/larsvansoest/emote-clue-items/pull/40))
+- Updated to Runelite version 1.18.17 (see [emote-clue-items/pull44](https://github.com/larsvansoest/emote-clue-items/pull/44))
+- Overhauled nested item requirement status display. (see [emote-clue-items#39](https://github.com/larsvansoest/emote-clue-items/issues/39))
+- Added overlay for group iron man storage (see [emote-clue-items#41](https://github.com/larsvansoest/emote-clue-items/issues/41))
 
 #### Filling stashes now updates the emote clue item requirement status
 
