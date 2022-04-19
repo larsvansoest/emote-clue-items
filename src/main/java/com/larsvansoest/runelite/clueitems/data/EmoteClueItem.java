@@ -47,6 +47,7 @@ import java.util.List;
  */
 public enum EmoteClueItem implements ItemRequirement
 {
+	ABYSSAL_WHIP_OR("Abyssal whip or", ItemID.ABYSSAL_WHIP_OR),
 	ABYSSAL_WHIP("Abyssal whip", ItemID.ABYSSAL_WHIP),
 	ADAMANT_2H_SWORD("Adamant 2h sword", ItemID.ADAMANT_2H_SWORD),
 	ADAMANT_BOOTS("Adamant boots", ItemID.ADAMANT_BOOTS),
@@ -144,9 +145,13 @@ public enum EmoteClueItem implements ItemRequirement
 	BODY_TIARA("Body tiara", ItemID.BODY_TIARA),
 	BONE_DAGGER("Bone dagger", ItemID.BONE_DAGGER),
 	BONE_SPEAR("Bone spear", ItemID.BONE_SPEAR),
+	BOOK_OF_BALANCE_OR("Book of balance or", ItemID.BOOK_OF_BALANCE_OR),
 	BOOK_OF_BALANCE("Book of balance", ItemID.BOOK_OF_BALANCE),
+	BOOK_OF_DARKNESS_OR("Book of darkness or", ItemID.BOOK_OF_DARKNESS_OR),
 	BOOK_OF_DARKNESS("Book of darkness", ItemID.BOOK_OF_DARKNESS),
+	BOOK_OF_LAW_OR("Book of law or", ItemID.BOOK_OF_LAW_OR),
 	BOOK_OF_LAW("Book of law", ItemID.BOOK_OF_LAW),
+	BOOK_OF_WAR_OR("Book of war or", ItemID.BOOK_OF_WAR_OR),
 	BOOK_OF_WAR("Book of war", ItemID.BOOK_OF_WAR),
 	BRINE_SABRE("Brine sabre", ItemID.BRINE_SABRE),
 	BRONZE_2H_SWORD("Bronze 2h sword", ItemID.BRONZE_2H_SWORD),
@@ -294,6 +299,7 @@ public enum EmoteClueItem implements ItemRequirement
 	HAM_ROBE("Ham robe", ItemID.HAM_ROBE),
 	HARDLEATHER_BODY("Hardleather body", ItemID.HARDLEATHER_BODY),
 	HELM_OF_NEITIZNOT("Helm of neitiznot", ItemID.HELM_OF_NEITIZNOT),
+	HOLY_BOOK_OR("Holy book or", ItemID.HOLY_BOOK_OR),
 	HOLY_BOOK("Holy book", ItemID.HOLY_BOOK),
 	HYDRA_SLAYER_HELMET_I_25189("Hydra slayer helmet i 25189", ItemID.HYDRA_SLAYER_HELMET_I_25189),
 	HYDRA_SLAYER_HELMET_I("Hydra slayer helmet i", ItemID.HYDRA_SLAYER_HELMET_I),
@@ -447,6 +453,7 @@ public enum EmoteClueItem implements ItemRequirement
 	RUBY_RING("Ruby ring", ItemID.RUBY_RING),
 	RUNE_AXE("Rune axe", ItemID.RUNE_AXE),
 	RUNE_BOOTS("Rune boots", ItemID.RUNE_BOOTS),
+	RUNE_CROSSBOW_OR("Rune crossbow or", ItemID.RUNE_CROSSBOW_OR),
 	RUNE_CROSSBOW("Rune crossbow", ItemID.RUNE_CROSSBOW),
 	RUNE_FULL_HELM("Rune full helm", ItemID.RUNE_FULL_HELM),
 	RUNE_HALBERD("Rune halberd", ItemID.RUNE_HALBERD),
@@ -596,6 +603,7 @@ public enum EmoteClueItem implements ItemRequirement
 	TZTOK_SLAYER_HELMET_I_25902("Tzkal slayer helmet i 25902", ItemID.TZTOK_SLAYER_HELMET_I_25902),
 	TZTOK_SLAYER_HELMET_I("Tztok slayer helmet i", ItemID.TZTOK_SLAYER_HELMET_I),
 	TZTOK_SLAYER_HELMET("Tztok slayer helmet", ItemID.TZTOK_SLAYER_HELMET),
+	UNHOLY_BOOK_OR("Unholy book or", ItemID.UNHOLY_BOOK_OR),
 	UNHOLY_BOOK("Unholy book", ItemID.UNHOLY_BOOK),
 	VAMPYRIC_SLAYER_HELMET_I_25908("Vampyric slayer helmet i 25908", ItemID.VAMPYRIC_SLAYER_HELMET_I_25908),
 	VAMPYRIC_SLAYER_HELMET_I("Vampyric slayer helmet i", ItemID.VAMPYRIC_SLAYER_HELMET_I),
@@ -635,7 +643,7 @@ public enum EmoteClueItem implements ItemRequirement
 	ZAMORAK_MITRE("Zamorak mitre", ItemID.ZAMORAK_MITRE),
 	ZAMORAK_STOLE("Zamorak stole", ItemID.ZAMORAK_STOLE),
 
-	ANY_ABYSSAL_WHIP("Abyssal whip", false, EmoteClueItem.ABYSSAL_WHIP, EmoteClueItem.VOLCANIC_ABYSSAL_WHIP, EmoteClueItem.FROZEN_ABYSSAL_WHIP),
+	ANY_ABYSSAL_WHIP("Abyssal whip", false, EmoteClueItem.ABYSSAL_WHIP, EmoteClueItem.VOLCANIC_ABYSSAL_WHIP, EmoteClueItem.FROZEN_ABYSSAL_WHIP, EmoteClueItem.ABYSSAL_WHIP_OR),
 	ANY_AHRIMS_HOOD("Ahrim's hood",
 			false,
 			EmoteClueItem.AHRIMS_HOOD,
@@ -804,7 +812,13 @@ public enum EmoteClueItem implements ItemRequirement
 			EmoteClueItem.UNHOLY_BOOK,
 			EmoteClueItem.BOOK_OF_LAW,
 			EmoteClueItem.BOOK_OF_WAR,
-			EmoteClueItem.BOOK_OF_DARKNESS
+			EmoteClueItem.BOOK_OF_DARKNESS,
+			EmoteClueItem.HOLY_BOOK_OR,
+			EmoteClueItem.BOOK_OF_BALANCE_OR,
+			EmoteClueItem.UNHOLY_BOOK_OR,
+			EmoteClueItem.BOOK_OF_LAW_OR,
+			EmoteClueItem.BOOK_OF_WAR_OR,
+			EmoteClueItem.BOOK_OF_DARKNESS_OR
 	),
 	ANY_GUTHANS_CHAINSKIRT("Guthans chainskirt",
 			false,
@@ -923,6 +937,7 @@ public enum EmoteClueItem implements ItemRequirement
 			EmoteClueItem.PHARAOHS_SCEPTRE_8
 	),
 	ANY_PIRATE_BANDANA("Any pirate bandana", false, EmoteClueItem.PIRATE_BANDANA, EmoteClueItem.PIRATE_BANDANA_7124, EmoteClueItem.PIRATE_BANDANA_7130, EmoteClueItem.PIRATE_BANDANA_7136),
+	ANY_RUNE_CROSSBOW("Any rune crossbow", false, EmoteClueItem.RUNE_CROSSBOW, EmoteClueItem.RUNE_CROSSBOW_OR),
 	ANY_RING_OF_DUELING("Ring of dueling",
 			false,
 			EmoteClueItem.RING_OF_DUELING1,

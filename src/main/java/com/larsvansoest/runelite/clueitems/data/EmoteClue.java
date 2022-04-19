@@ -51,7 +51,8 @@ import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement
  * Source: https://github.com/runelite/runelite/tree/master/runelite-client/src/main/java/net/runelite/client/plugins/cluescrolls/clues
  * </p>
  * <p>
- * Maintained up to 5df5abd.
+ * Maintained up to d129c49.
+ * To check for any updates, see https://github.com/runelite/runelite/commits/master/runelite-client/src/main/java/net/runelite/client/plugins/cluescrolls/clues/EmoteClue.java
  * </p>
  *
  * @since 2.0.0
@@ -98,7 +99,7 @@ public final class EmoteClue implements TextClueScroll, LocationClueScroll
 					new WorldPoint(2629, 5071, 0),
 					CHEER,
 					EmoteClueItem.ANY_MITRE,
-					EmoteClueItem.RUNE_CROSSBOW,
+					EmoteClueItem.ANY_RUNE_CROSSBOW,
 					EmoteClueItem.CLIMBING_BOOTS,
 					EmoteClueItem.RING_OF_VISIBILITY
 			),
