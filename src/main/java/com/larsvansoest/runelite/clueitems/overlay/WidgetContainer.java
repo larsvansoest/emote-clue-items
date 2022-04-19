@@ -42,5 +42,7 @@ enum WidgetContainer
 
 	KeptOnDeath(),
 
-	Equipment()
+	Equipment(),
+
+	GroupStorage()
 }

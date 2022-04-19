@@ -43,4 +43,6 @@ enum WidgetContext
 	InEquipment(),
 
 	InKeptOnDeath(),
+
+	InGroupStorage()
 }

@@ -56,7 +56,11 @@ enum Widget
 
 	SHOP(300, 16),
 
-	SHOP_INVENTORY(301, 0);
+	SHOP_INVENTORY(301, 0),
+
+	GROUP_STORAGE(724, 10),
+
+	GROUP_STORAGE_INVENTORY(725, 0);
 
 	public final int id;
 
