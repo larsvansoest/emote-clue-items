@@ -13,6 +13,7 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.cluescrolls.clues.item.AllRequirementsCollection;
+import net.runelite.client.plugins.cluescrolls.clues.item.AnyRequirementCollection;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 
 import java.util.HashMap;
@@ -142,7 +143,7 @@ public class ProgressManager
 				final UpdatablePanel.Status status = quantity > 0 ? UpdatablePanel.Status.Complete : UpdatablePanel.Status.InComplete;
 				this.inventoryStatusMap.put(emoteClueItem, status);
 
-				this.setEmoteClueItemStatus(emoteClueItem, this.updateEmoteClueItemStatus(emoteClueItem));
+				this.setEmoteClueItemStatus(emoteClueItem, this.getEmoteClueItemStatus(emoteClueItem));
 			}
 		}
 	}
@@ -166,19 +167,22 @@ public class ProgressManager
 			for (final EmoteClueItem emoteClueItem : EmoteClueAssociations.EmoteClueToEmoteClueItems.get(emoteClue))
 			{
 				this.stashFilledStatusMap.get(emoteClueItem).put(stashUnit, filled);
-				this.setEmoteClueItemStatus(emoteClueItem, this.updateEmoteClueItemStatus(emoteClueItem));
+				this.setEmoteClueItemStatus(emoteClueItem, this.getEmoteClueItemStatus(emoteClueItem));
 			}
 		}
 	}
 
-	private UpdatablePanel.Status updateEmoteClueItemStatus(final EmoteClueItem emoteClueItem)
+	private UpdatablePanel.Status getEmoteClueItemStatus(final EmoteClueItem emoteClueItem)
 	{
-		final UpdatablePanel.Status inventoryStatus = this.inventoryStatusMap.get(emoteClueItem);
-		this.onEmoteClueItemInventoryStatusChanged.accept(emoteClueItem, inventoryStatus);
-		if (inventoryStatus == UpdatablePanel.Status.Complete)
+		// Check inventory data.
+		UpdatablePanel.Status intermediateStatus = this.inventoryStatusMap.get(emoteClueItem);
+		this.onEmoteClueItemInventoryStatusChanged.accept(emoteClueItem, intermediateStatus);
+		if (intermediateStatus == UpdatablePanel.Status.Complete)
 		{
 			return UpdatablePanel.Status.Complete;
 		}
+
+		// Check STASHUnit fill status.
 		final Map<StashUnit, Boolean> emoteClueStashFilledMap = this.stashFilledStatusMap.get(emoteClueItem);
 		if (Objects.nonNull(emoteClueStashFilledMap))
 		{
@@ -188,10 +192,43 @@ public class ProgressManager
 			}
 			if (this.stashFilledStatusMap.get(emoteClueItem).values().stream().anyMatch(Boolean::booleanValue))
 			{
-				return UpdatablePanel.Status.InProgress;
+				intermediateStatus = UpdatablePanel.Status.InProgress;
 			}
 		}
-		return inventoryStatus;
+
+		// Check item requirement relations.
+		final ItemRequirement itemRequirement = emoteClueItem.getItemRequirement();
+		if (itemRequirement instanceof AnyRequirementCollection) {
+			for (final EmoteClueItem child : emoteClueItem.getChildren())
+			{
+				if (this.getEmoteClueItemStatus(child) == UpdatablePanel.Status.Complete)
+				{
+					return UpdatablePanel.Status.Complete;
+				}
+			}
+		}
+		if (itemRequirement instanceof AllRequirementsCollection) {
+			boolean anyMatch = false;
+			boolean allMatch = true;
+			for (final EmoteClueItem child : emoteClueItem.getChildren())
+			{
+				if (this.getEmoteClueItemStatus(child) == UpdatablePanel.Status.Complete)
+				{
+					anyMatch = true;
+				}
+				else
+				{
+					allMatch = false;
+				}
+			}
+			if(allMatch) {
+				return UpdatablePanel.Status.Complete;
+			}
+			if(anyMatch) {
+				intermediateStatus = UpdatablePanel.Status.InProgress;
+			}
+		}
+		return intermediateStatus;
 	}
 
 	private void setEmoteClueItemStatus(final EmoteClueItem emoteClueItem, final UpdatablePanel.Status status)
@@ -199,44 +236,7 @@ public class ProgressManager
 		this.onEmoteClueItemStatusChanged.accept(emoteClueItem, status);
 		for (final EmoteClueItem parent : emoteClueItem.getParents())
 		{
-			this.setEmoteClueItemStatus(parent, this.getParentStatus(parent));
+			this.setEmoteClueItemStatus(parent, this.getEmoteClueItemStatus(parent));
 		}
-	}
-
-	private UpdatablePanel.Status getParentStatus(final EmoteClueItem parent)
-	{
-		final ItemRequirement parentRequirement = parent.getItemRequirement();
-		final List<EmoteClueItem> children = parent.getChildren();
-		return (parentRequirement instanceof AllRequirementsCollection) ? this.getParentAllStatus(children) : this.getParentAnyStatus(children);
-	}
-
-	private UpdatablePanel.Status getParentAnyStatus(final List<EmoteClueItem> children)
-	{
-		for (final EmoteClueItem child : children)
-		{
-			if (this.updateEmoteClueItemStatus(child) == UpdatablePanel.Status.Complete)
-			{
-				return UpdatablePanel.Status.Complete;
-			}
-		}
-		return UpdatablePanel.Status.InComplete;
-	}
-
-	private UpdatablePanel.Status getParentAllStatus(final List<EmoteClueItem> children)
-	{
-		boolean anyMatch = false;
-		boolean allMatch = true;
-		for (final EmoteClueItem child : children)
-		{
-			if (this.updateEmoteClueItemStatus(child) == UpdatablePanel.Status.Complete)
-			{
-				anyMatch = true;
-			}
-			else
-			{
-				allMatch = false;
-			}
-		}
-		return allMatch ? UpdatablePanel.Status.Complete : anyMatch ? UpdatablePanel.Status.InProgress : UpdatablePanel.Status.InComplete;
 	}
 }
