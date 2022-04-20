@@ -28,26 +28,43 @@
 
 package com.larsvansoest.runelite.clueitems.progress;
 
+import com.larsvansoest.runelite.clueitems.EmoteClueItemsConfig;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueAssociations;
 import net.runelite.api.Item;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 class InventoryMonitor
 {
-	private final ItemTracker inventoryTracker;
-	private final ItemTracker bankTracker;
-	private final ItemTracker equipmentTracker;
 	private final HashMap<Integer, Integer> collectionLog;
 
-	public InventoryMonitor()
+	private final ItemTracker bankTracker;
+	private final ItemTracker inventoryTracker;
+	private final ItemTracker equipmentTracker;
+	private final ItemTracker groupStorageTracker;
+
+	private Boolean isTrackingBank;
+	private Boolean isTrackingInventory;
+	private Boolean isTrackingEquipment;
+	private Boolean isTrackingGroupStorage;
+
+	public InventoryMonitor(EmoteClueItemsConfig config)
 	{
-		this.inventoryTracker = new ItemTracker();
-		this.bankTracker = new ItemTracker();
-		this.equipmentTracker = new ItemTracker();
 		this.collectionLog = new HashMap<>(EmoteClueAssociations.ItemIdToEmoteClueItem.keySet().size());
+
+		this.bankTracker = new ItemTracker();
+		this.inventoryTracker = new ItemTracker();
+		this.equipmentTracker = new ItemTracker();
+		this.groupStorageTracker = new ItemTracker();
+
+		this.isTrackingBank = config.trackBank();
+		this.isTrackingInventory = config.trackInventory();
+		this.isTrackingEquipment = config.trackEquipment();
+		this.isTrackingGroupStorage = config.trackGroupStorage();
+
 		this.reset();
 	}
 
@@ -60,38 +77,79 @@ class InventoryMonitor
 		this.inventoryTracker.reset();
 		this.bankTracker.reset();
 		this.equipmentTracker.reset();
+		this.groupStorageTracker.reset();
+	}
+
+	public List<Item> toggleInventoryTracking(boolean track) {
+		this.isTrackingInventory = track;
+		return this.toggleItemTracker(this.inventoryTracker, track);
+	}
+
+	public List<Item> toggleBankTracking(boolean track) {
+		this.isTrackingBank = track;
+		return this.toggleItemTracker(this.bankTracker, track);
+	}
+
+	public List<Item> toggleEquipmentTracking(boolean track) {
+		this.isTrackingEquipment = track;
+		return this.toggleItemTracker(this.equipmentTracker, track);
+	}
+
+	public List<Item> toggleGroupStorageTracking(boolean track) {
+		this.isTrackingGroupStorage = track;
+		return this.toggleItemTracker(this.groupStorageTracker, track);
+	}
+
+	private List<Item> getEmoteClueItemDeltas(Map<Integer, Integer> deltas) {
+
+		final List<Item> emoteClueDeltas = new ArrayList<>();
+		deltas.forEach((id, delta) -> {
+			final Integer logQuantity = this.collectionLog.get(id);
+			if (logQuantity != null)
+			{
+				final int quantity = logQuantity + delta;
+				this.collectionLog.put(id, quantity);
+				emoteClueDeltas.add(new Item(id, quantity));
+			}
+		});
+		return emoteClueDeltas;
+	}
+
+	private List<Item> toggleItemTracker(ItemTracker itemTracker, boolean track) {
+		if (track) return null;
+		Map<Integer, Integer> items = itemTracker.getItems();
+		items.replaceAll((id, quantity) -> -quantity);
+		itemTracker.reset();
+		return this.getEmoteClueItemDeltas(items);
 	}
 
 	public List<Item> fetchEmoteClueItemChanges(final int containerId, final Item[] items)
 	{
-		final List<Item> deltas;
 		switch (containerId)
 		{
 			case 93:
-				deltas = this.inventoryTracker.writeDeltas(items);
-				break;
+			case 660: // Group storage inventory
+				if (this.isTrackingInventory) {
+					return this.getEmoteClueItemDeltas(this.inventoryTracker.writeDeltas(items));
+				}
+				return null;
 			case 94:
-				deltas = this.equipmentTracker.writeDeltas(items);
-				break;
+				if (this.isTrackingEquipment) {
+					return this.getEmoteClueItemDeltas(this.equipmentTracker.writeDeltas(items));
+				}
+				return null;
 			case 95:
-				deltas = this.bankTracker.writeDeltas(items);
-				break;
+				if (this.isTrackingBank) {
+					return this.getEmoteClueItemDeltas(this.bankTracker.writeDeltas(items));
+				}
+				return null;
+			case 659:
+				if (this.isTrackingGroupStorage) {
+					return this.getEmoteClueItemDeltas(this.groupStorageTracker.writeDeltas(items));
+				}
+				return null;
 			default:
 				return null;
 		}
-
-		final List<Item> emoteClueDeltas = new ArrayList<>();
-		for (final Item delta : deltas)
-		{
-			final int id = delta.getId();
-			final Integer logQuantity = this.collectionLog.get(id);
-			if (logQuantity != null)
-			{
-				final int quantity = logQuantity + delta.getQuantity();
-				this.collectionLog.put(id, quantity);
-				emoteClueDeltas.add(new Item(id, quantity));
-			}
-		}
-		return emoteClueDeltas;
 	}
 }

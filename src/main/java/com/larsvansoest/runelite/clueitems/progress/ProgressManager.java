@@ -1,5 +1,6 @@
 package com.larsvansoest.runelite.clueitems.progress;
 
+import com.larsvansoest.runelite.clueitems.EmoteClueItemsConfig;
 import com.larsvansoest.runelite.clueitems.data.EmoteClue;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueAssociations;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
@@ -40,15 +41,13 @@ public class ProgressManager
 	private final BiConsumer<EmoteClueItem, UpdatablePanel.Status> onEmoteClueItemInventoryStatusChanged;
 	private final BiConsumer<EmoteClueItem, UpdatablePanel.Status> onEmoteClueItemStatusChanged;
 
-	private boolean bankNeverOpened;
-
 	public ProgressManager(
-			final ConfigManager configManager, final Client client, final ClientThread clientThread, final BiConsumer<EmoteClueItem, Integer> onEmoteClueItemQuantityChanged,
+			final ConfigManager configManager, final Client client, final ClientThread clientThread, final EmoteClueItemsConfig config, final BiConsumer<EmoteClueItem, Integer> onEmoteClueItemQuantityChanged,
 			final BiConsumer<EmoteClueItem, UpdatablePanel.Status> onEmoteClueItemInventoryStatusChanged, final BiConsumer<EmoteClueItem, UpdatablePanel.Status> onEmoteClueItemStatusChanged)
 	{
 		this.client = client;
 		this.clientThread = clientThread;
-		this.inventoryMonitor = new InventoryMonitor();
+		this.inventoryMonitor = new InventoryMonitor(config);
 		this.stashMonitor = new StashMonitor("[EmoteClueItems]", "STASHUnit fill statuses", configManager);
 		this.inventoryStatusMap = new HashMap<>(EmoteClueItem.values().length);
 		this.stashFilledStatusMap = new HashMap<>(EmoteClueAssociations.EmoteClueItemToEmoteClues.keySet().size());
@@ -84,7 +83,6 @@ public class ProgressManager
 			final Map<StashUnit, Boolean> emoteClueStashFillStatusMap = this.stashFilledStatusMap.get(emoteClueItem);
 			emoteClueStashFillStatusMap.keySet().forEach(key -> emoteClueStashFillStatusMap.put(key, false));
 		}
-		this.bankNeverOpened = true;
 	}
 
 	/**
@@ -92,24 +90,23 @@ public class ProgressManager
 	 */
 	public void processInventoryChanges(final ItemContainerChanged event)
 	{
-		final int containerId = event.getContainerId();
+		this.handleItemChanges(this.inventoryMonitor.fetchEmoteClueItemChanges(event.getContainerId(), event.getItemContainer().getItems()));
+	}
 
-		if (this.bankNeverOpened && containerId == 95)
-		{
-			this.bankNeverOpened = false;
-			this.clientThread.invoke(() ->
-			{
-				final ItemContainer bankContainer = this.client.getItemContainer(InventoryID.BANK);
-				if (bankContainer != null)
-				{
-					this.handleItemChanges(this.inventoryMonitor.fetchEmoteClueItemChanges(95, bankContainer.getItems()));
-				}
-			});
-		}
-		else
-		{
-			this.handleItemChanges(this.inventoryMonitor.fetchEmoteClueItemChanges(containerId, event.getItemContainer().getItems()));
-		}
+	public void toggleBankTracking(final boolean track) {
+		this.handleItemChanges(this.inventoryMonitor.toggleBankTracking(track));
+	}
+
+	public void toggleInventoryTracking(final boolean track) {
+		this.handleItemChanges(this.inventoryMonitor.toggleInventoryTracking(track));
+	}
+
+	public void toggleEquipmentTracking(final boolean track) {
+		this.handleItemChanges(this.inventoryMonitor.toggleEquipmentTracking(track));
+	}
+
+	public void toggleGroupStorageTracking(boolean track) {
+		this.handleItemChanges(this.inventoryMonitor.toggleGroupStorageTracking(track));
 	}
 
 	/**

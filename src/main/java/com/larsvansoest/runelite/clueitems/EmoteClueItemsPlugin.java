@@ -59,6 +59,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 
 import javax.inject.Inject;
 import javax.swing.*;
+import java.util.Objects;
 
 /**
  * Main class of the plugin.
@@ -100,17 +101,20 @@ public class EmoteClueItemsPlugin extends Plugin
 	{
 		final EmoteClueItemsPalette emoteClueItemsPalette = EmoteClueItemsPalette.RUNELITE;
 
-		this.emoteClueItemsPanel = new EmoteClueItemsPanel(emoteClueItemsPalette,
+		this.emoteClueItemsPanel = new EmoteClueItemsPanel(
+				emoteClueItemsPalette,
 				this.itemManager,
 				this::onStashUnitFilledChanged,
 				"Emote Clue Items",
-				"v3.4.0",
+				"v4.0.0",
 				"https://github.com/larsvansoest/emote-clue-items"
 		);
 
-		this.progressManager = new ProgressManager(this.configManager,
+		this.progressManager = new ProgressManager(
+				this.configManager,
 				this.client,
 				this.clientThread,
+				this.config,
 				this::onEmoteClueItemQuantityChanged,
 				this::onEmoteClueItemInventoryStatusChanged,
 				this::onEmoteClueItemStatusChanged
@@ -239,18 +243,25 @@ public class EmoteClueItemsPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	protected void onConfigChanged(final ConfigChanged event)
 	{
-		if (event.getKey().equals("DisplayProgressPanel"))
-		{
-			if (event.getNewValue().equals("false"))
-			{
-				this.clientToolbar.removeNavigation(this.navigationButton);
-			}
-			else
-			{
-				this.clientToolbar.addNavigation(this.navigationButton);
-			}
+		final String key = event.getKey();
+		switch (key) {
+			case "TrackBank":
+				this.progressManager.toggleBankTracking(event.getNewValue().equals("true"));
+				break;
+			case "TrackInventory":
+				this.progressManager.toggleInventoryTracking(event.getNewValue().equals("true"));
+				break;
+			case "TrackEquipment":
+				this.progressManager.toggleEquipmentTracking(event.getNewValue().equals("true"));
+				break;
+			case "TrackGroupStorage":
+				this.progressManager.toggleGroupStorageTracking(event.getNewValue().equals("true"));
+				break;
+			default:
+				break;
 		}
 	}
 

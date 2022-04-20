@@ -28,11 +28,16 @@
 
 package com.larsvansoest.runelite.clueitems.progress;
 
+import lombok.Getter;
 import lombok.NonNull;
 import net.runelite.api.Item;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 class ItemTracker
 {
@@ -41,7 +46,11 @@ class ItemTracker
 	public ItemTracker()
 	{
 		this.items = new ArrayList<>();
-		this.reset();
+	}
+
+	public Map<Integer, Integer> getItems() {
+		return this.items.stream().filter(item -> item.getId() != -1)
+		                 .collect(Collectors.toMap(Item::getId, Item::getQuantity, Integer::sum));
 	}
 
 	public void reset()
@@ -49,11 +58,11 @@ class ItemTracker
 		this.items.clear();
 	}
 
-	public List<Item> writeDeltas(
+	public Map<Integer, Integer> writeDeltas(
 			@NonNull
 			final Item[] items)
 	{
-		final ArrayList<Item> deltas = new ArrayList<>();
+		final HashMap<Integer, Integer> deltas = new HashMap<>();
 		for (int i = 0; i < items.length; i++)
 		{
 			if (this.items.size() == i)
@@ -74,21 +83,21 @@ class ItemTracker
 			{
 				if (previousItemId == -1)
 				{
-					deltas.add(currentItem);
+					deltas.put(currentItemId, deltas.getOrDefault(currentItemId, 0) + currentQuantity);
 				}
 				else if (currentItemId == -1)
 				{
-					deltas.add(new Item(previousItemId, -previousQuantity));
+					deltas.put(previousItemId, deltas.getOrDefault(previousItemId, 0) - previousQuantity);
 				}
 				else
 				{
-					deltas.add(currentItem);
-					deltas.add(new Item(previousItemId, -previousQuantity));
+					deltas.put(currentItemId, deltas.getOrDefault(currentItemId, 0) + currentQuantity);
+					deltas.put(previousItemId, deltas.getOrDefault(previousItemId, 0) - previousQuantity);
 				}
 			}
 			else if (previousQuantity != currentQuantity)
 			{
-				deltas.add(new Item(currentItemId, currentQuantity - previousQuantity));
+				deltas.put(currentItemId, deltas.getOrDefault(currentItemId, 0) + (currentQuantity - previousQuantity));
 			}
 		}
 		return deltas;

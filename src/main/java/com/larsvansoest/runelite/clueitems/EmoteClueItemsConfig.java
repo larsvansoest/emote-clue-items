@@ -45,11 +45,6 @@ import net.runelite.client.config.ConfigSection;
 @ConfigGroup("example")
 public interface EmoteClueItemsConfig extends Config
 {
-	@ConfigSection(name = "Interface Selection",
-	               description = "Toggle highlighting per interface type.",
-	               position = 1)
-	String Section_selectInterface = "selectInterface";
-
 	@ConfigItem(keyName = "FilterInStash",
 	            name = "Filter items in STASH",
 	            description = "Do not highlight items already in STASH units.",
@@ -59,10 +54,15 @@ public interface EmoteClueItemsConfig extends Config
 		return true;
 	}
 
+	@ConfigSection(name = "Interface Highlighting",
+	               description = "Toggle emote clue icons per interface type.",
+	               position = 1)
+	String Section_interfaceHighlighting = "interfaceHighlighting";
+
 	@ConfigItem(keyName = "HighlightBank",
 	            name = "Bank",
 	            description = "Show highlights on bank interface.",
-	            section = Section_selectInterface,
+	            section = Section_interfaceHighlighting,
 	            position = 0)
 	default boolean highlightBank()
 	{
@@ -72,7 +72,7 @@ public interface EmoteClueItemsConfig extends Config
 	@ConfigItem(keyName = "HighlightInventory",
 	            name = "Inventory",
 	            description = "Show highlights on inventory interface.",
-	            section = Section_selectInterface,
+	            section = Section_interfaceHighlighting,
 	            position = 1)
 	default boolean highlightInventory()
 	{
@@ -82,7 +82,7 @@ public interface EmoteClueItemsConfig extends Config
 	@ConfigItem(keyName = "HighlightDepositBox",
 	            name = "Deposit Box",
 	            description = "Show highlights on deposit box interface.",
-	            section = Section_selectInterface,
+	            section = Section_interfaceHighlighting,
 	            position = 2)
 	default boolean highlightDepositBox()
 	{
@@ -92,7 +92,7 @@ public interface EmoteClueItemsConfig extends Config
 	@ConfigItem(keyName = "HighlightEquipment",
 	            name = "Equipment",
 	            description = "Show highlights on equipment interface.",
-	            section = Section_selectInterface,
+	            section = Section_interfaceHighlighting,
 	            position = 3)
 	default boolean highlightEquipment()
 	{
@@ -102,7 +102,7 @@ public interface EmoteClueItemsConfig extends Config
 	@ConfigItem(keyName = "HighlightGuidePrices",
 	            name = "Guide Prices",
 	            description = "Show highlights on guide prices interface.",
-	            section = Section_selectInterface,
+	            section = Section_interfaceHighlighting,
 	            position = 4)
 	default boolean highlightGuidePrices()
 	{
@@ -112,7 +112,7 @@ public interface EmoteClueItemsConfig extends Config
 	@ConfigItem(keyName = "HighlightKeptOnDeath",
 	            name = "Kept on Death",
 	            description = "Show highlights on kept on death interface.",
-	            section = Section_selectInterface,
+	            section = Section_interfaceHighlighting,
 	            position = 5)
 	default boolean highlightKeptOnDeath()
 	{
@@ -122,7 +122,7 @@ public interface EmoteClueItemsConfig extends Config
 	@ConfigItem(keyName = "HighlightShop",
 	            name = "Shops",
 	            description = "Show highlights on shop interfaces.",
-	            section = Section_selectInterface,
+	            section = Section_interfaceHighlighting,
 	            position = 6)
 	default boolean highlightShop()
 	{
@@ -132,9 +132,54 @@ public interface EmoteClueItemsConfig extends Config
 	@ConfigItem(keyName = "HighlightGroupStorage",
 	            name = "Group Storage",
 	            description = "Show highlights on group iron man storage.",
-	            section = Section_selectInterface,
+	            section = Section_interfaceHighlighting,
 	            position = 7)
 	default boolean highlightGroupStorage()
+	{
+		return false;
+	}
+
+	@ConfigSection(name = "Interface Tracking",
+	               description = "Toggle including items in the collection log per interface type.",
+	               position = 2)
+	String Section_interfaceTracking = "interfaceTracking";
+
+	@ConfigItem(keyName = "TrackBank",
+	            name = "Bank",
+	            description = "Include bank items in the collection log.",
+	            section = Section_interfaceTracking,
+	            position = 0)
+	default boolean trackBank()
+	{
+		return true;
+	}
+
+	@ConfigItem(keyName = "TrackInventory",
+	            name = "Inventory",
+	            description = "Include inventory items in the collection log.",
+	            section = Section_interfaceTracking,
+	            position = 1)
+	default boolean trackInventory()
+	{
+		return true;
+	}
+
+	@ConfigItem(keyName = "TrackEquipment",
+	            name = "Equipment",
+	            description = "Include equipped items in the collection log.",
+	            section = Section_interfaceTracking,
+	            position = 2)
+	default boolean trackEquipment()
+	{
+		return true;
+	}
+
+	@ConfigItem(keyName = "TrackGroupStorage",
+	            name = "Group Storage",
+	            description = "(Group iron men) include group storage items in the collection log.",
+	            section = Section_interfaceTracking,
+	            position = 3)
+	default boolean trackGroupStorage()
 	{
 		return false;
 	}
