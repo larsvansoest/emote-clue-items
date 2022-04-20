@@ -45,6 +45,15 @@ import net.runelite.client.config.ConfigSection;
 @ConfigGroup("example")
 public interface EmoteClueItemsConfig extends Config
 {
+	@ConfigSection(name = "Interface Highlighting",
+	               description = "Toggle emote clue icons per interface type.",
+	               position = 2)
+	String Section_interfaceHighlighting = "interfaceHighlighting";
+	@ConfigSection(name = "Interface Tracking",
+	               description = "Toggle including items in the collection log per interface type.",
+	               position = 3)
+	String Section_interfaceTracking = "interfaceTracking";
+
 	@ConfigItem(keyName = "FilterInStash",
 	            name = "Filter items in STASH",
 	            description = "Do not highlight items already in STASH units.",
@@ -62,11 +71,6 @@ public interface EmoteClueItemsConfig extends Config
 	{
 		return true;
 	}
-
-	@ConfigSection(name = "Interface Highlighting",
-	               description = "Toggle emote clue icons per interface type.",
-	               position = 2)
-	String Section_interfaceHighlighting = "interfaceHighlighting";
 
 	@ConfigItem(keyName = "HighlightBank",
 	            name = "Bank",
@@ -147,11 +151,6 @@ public interface EmoteClueItemsConfig extends Config
 	{
 		return false;
 	}
-
-	@ConfigSection(name = "Interface Tracking",
-	               description = "Toggle including items in the collection log per interface type.",
-	               position = 3)
-	String Section_interfaceTracking = "interfaceTracking";
 
 	@ConfigItem(keyName = "TrackBank",
 	            name = "Bank",

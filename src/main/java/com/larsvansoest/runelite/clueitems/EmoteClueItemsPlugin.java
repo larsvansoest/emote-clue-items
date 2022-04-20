@@ -59,7 +59,6 @@ import net.runelite.client.ui.overlay.OverlayManager;
 
 import javax.inject.Inject;
 import javax.swing.*;
-import java.util.Objects;
 
 /**
  * Main class of the plugin.
@@ -101,8 +100,7 @@ public class EmoteClueItemsPlugin extends Plugin
 	{
 		final EmoteClueItemsPalette emoteClueItemsPalette = EmoteClueItemsPalette.RUNELITE;
 
-		this.emoteClueItemsPanel = new EmoteClueItemsPanel(
-				emoteClueItemsPalette,
+		this.emoteClueItemsPanel = new EmoteClueItemsPanel(emoteClueItemsPalette,
 				this.itemManager,
 				this::onStashUnitFilledChanged,
 				"Emote Clue Items",
@@ -110,8 +108,7 @@ public class EmoteClueItemsPlugin extends Plugin
 				"https://github.com/larsvansoest/emote-clue-items"
 		);
 
-		this.progressManager = new ProgressManager(
-				this.configManager,
+		this.progressManager = new ProgressManager(this.configManager,
 				this.config,
 				this::onEmoteClueItemQuantityChanged,
 				this::onEmoteClueItemInventoryStatusChanged,
@@ -245,7 +242,8 @@ public class EmoteClueItemsPlugin extends Plugin
 	protected void onConfigChanged(final ConfigChanged event)
 	{
 		final String key = event.getKey();
-		switch (key) {
+		switch (key)
+		{
 			case "TrackBank":
 				this.progressManager.toggleBankTracking(event.getNewValue().equals("true"));
 				break;

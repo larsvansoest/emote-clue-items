@@ -1288,15 +1288,19 @@ public final class EmoteClue implements TextClueScroll, LocationClueScroll
 	}
 
 	private EmoteClue(
-		final EmoteClueDifficulty emoteClueDifficulty, final String text, final String locationName, final StashUnit stashUnit, final WorldPoint location, final Emote firstEmote,
-		final Emote secondEmote, @Varbit final int firePit, final ItemRequirement... itemRequirements)
+			final EmoteClueDifficulty emoteClueDifficulty, final String text, final String locationName, final StashUnit stashUnit, final WorldPoint location, final Emote firstEmote,
+			final Emote secondEmote,
+			@Varbit
+			final int firePit, final ItemRequirement... itemRequirements)
 	{
 		this(emoteClueDifficulty, text, locationName, stashUnit, location, firstEmote, secondEmote, null, firePit, itemRequirements);
 	}
 
 	private EmoteClue(
 			final EmoteClueDifficulty emoteClueDifficulty, final String text, final String locationName, final StashUnit stashUnit, final WorldPoint location, final Emote firstEmote,
-			final Emote secondEmote, final Enemy enemy, @Varbit final int hasFirePit, final ItemRequirement... itemRequirements)
+			final Emote secondEmote, final Enemy enemy,
+			@Varbit
+			final int hasFirePit, final ItemRequirement... itemRequirements)
 	{
 		this.emoteClueDifficulty = emoteClueDifficulty;
 		this.text = text;

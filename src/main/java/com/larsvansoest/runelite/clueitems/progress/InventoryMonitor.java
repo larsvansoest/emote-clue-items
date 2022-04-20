@@ -80,30 +80,36 @@ class InventoryMonitor
 		this.groupStorageTracker.reset();
 	}
 
-	public List<Item> toggleInventoryTracking(boolean track) {
+	public List<Item> toggleInventoryTracking(boolean track)
+	{
 		this.isTrackingInventory = track;
 		return this.toggleItemTracker(this.inventoryTracker, track);
 	}
 
-	public List<Item> toggleBankTracking(boolean track) {
+	public List<Item> toggleBankTracking(boolean track)
+	{
 		this.isTrackingBank = track;
 		return this.toggleItemTracker(this.bankTracker, track);
 	}
 
-	public List<Item> toggleEquipmentTracking(boolean track) {
+	public List<Item> toggleEquipmentTracking(boolean track)
+	{
 		this.isTrackingEquipment = track;
 		return this.toggleItemTracker(this.equipmentTracker, track);
 	}
 
-	public List<Item> toggleGroupStorageTracking(boolean track) {
+	public List<Item> toggleGroupStorageTracking(boolean track)
+	{
 		this.isTrackingGroupStorage = track;
 		return this.toggleItemTracker(this.groupStorageTracker, track);
 	}
 
-	private List<Item> getEmoteClueItemDeltas(Map<Integer, Integer> deltas) {
+	private List<Item> getEmoteClueItemDeltas(Map<Integer, Integer> deltas)
+	{
 
 		final List<Item> emoteClueDeltas = new ArrayList<>();
-		deltas.forEach((id, delta) -> {
+		deltas.forEach((id, delta) ->
+		{
 			final Integer logQuantity = this.collectionLog.get(id);
 			if (logQuantity != null)
 			{
@@ -115,8 +121,12 @@ class InventoryMonitor
 		return emoteClueDeltas;
 	}
 
-	private List<Item> toggleItemTracker(ItemTracker itemTracker, boolean track) {
-		if (track) return null;
+	private List<Item> toggleItemTracker(ItemTracker itemTracker, boolean track)
+	{
+		if (track)
+		{
+			return null;
+		}
 		Map<Integer, Integer> items = itemTracker.getItems();
 		items.replaceAll((id, quantity) -> -quantity);
 		itemTracker.reset();
@@ -129,22 +139,26 @@ class InventoryMonitor
 		{
 			case 93:
 			case 660: // Group storage inventory
-				if (this.isTrackingInventory) {
+				if (this.isTrackingInventory)
+				{
 					return this.getEmoteClueItemDeltas(this.inventoryTracker.writeDeltas(items));
 				}
 				return null;
 			case 94:
-				if (this.isTrackingEquipment) {
+				if (this.isTrackingEquipment)
+				{
 					return this.getEmoteClueItemDeltas(this.equipmentTracker.writeDeltas(items));
 				}
 				return null;
 			case 95:
-				if (this.isTrackingBank) {
+				if (this.isTrackingBank)
+				{
 					return this.getEmoteClueItemDeltas(this.bankTracker.writeDeltas(items));
 				}
 				return null;
 			case 659:
-				if (this.isTrackingGroupStorage) {
+				if (this.isTrackingGroupStorage)
+				{
 					return this.getEmoteClueItemDeltas(this.groupStorageTracker.writeDeltas(items));
 				}
 				return null;

@@ -28,16 +28,13 @@
 
 package com.larsvansoest.runelite.clueitems.progress;
 
-import lombok.Getter;
 import lombok.NonNull;
 import net.runelite.api.Item;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 class ItemTracker
 {
@@ -48,9 +45,9 @@ class ItemTracker
 		this.items = new ArrayList<>();
 	}
 
-	public Map<Integer, Integer> getItems() {
-		return this.items.stream().filter(item -> item.getId() != -1)
-		                 .collect(Collectors.toMap(Item::getId, Item::getQuantity, Integer::sum));
+	public Map<Integer, Integer> getItems()
+	{
+		return this.items.stream().filter(item -> item.getId() != -1).collect(Collectors.toMap(Item::getId, Item::getQuantity, Integer::sum));
 	}
 
 	public void reset()

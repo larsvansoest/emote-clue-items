@@ -6,12 +6,8 @@ import com.larsvansoest.runelite.clueitems.data.EmoteClueAssociations;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
 import com.larsvansoest.runelite.clueitems.data.StashUnit;
 import com.larsvansoest.runelite.clueitems.ui.components.UpdatablePanel;
-import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
 import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.cluescrolls.clues.item.AllRequirementsCollection;
 import net.runelite.client.plugins.cluescrolls.clues.item.AnyRequirementCollection;
@@ -89,19 +85,23 @@ public class ProgressManager
 		this.handleItemChanges(this.inventoryMonitor.fetchEmoteClueItemChanges(event.getContainerId(), event.getItemContainer().getItems()));
 	}
 
-	public void toggleBankTracking(final boolean track) {
+	public void toggleBankTracking(final boolean track)
+	{
 		this.handleItemChanges(this.inventoryMonitor.toggleBankTracking(track));
 	}
 
-	public void toggleInventoryTracking(final boolean track) {
+	public void toggleInventoryTracking(final boolean track)
+	{
 		this.handleItemChanges(this.inventoryMonitor.toggleInventoryTracking(track));
 	}
 
-	public void toggleEquipmentTracking(final boolean track) {
+	public void toggleEquipmentTracking(final boolean track)
+	{
 		this.handleItemChanges(this.inventoryMonitor.toggleEquipmentTracking(track));
 	}
 
-	public void toggleGroupStorageTracking(boolean track) {
+	public void toggleGroupStorageTracking(boolean track)
+	{
 		this.handleItemChanges(this.inventoryMonitor.toggleGroupStorageTracking(track));
 	}
 
@@ -191,7 +191,8 @@ public class ProgressManager
 
 		// Check item requirement relations.
 		final ItemRequirement itemRequirement = emoteClueItem.getItemRequirement();
-		if (itemRequirement instanceof AnyRequirementCollection) {
+		if (itemRequirement instanceof AnyRequirementCollection)
+		{
 			for (final EmoteClueItem child : emoteClueItem.getChildren())
 			{
 				if (this.getEmoteClueItemStatus(child) == UpdatablePanel.Status.Complete)
@@ -200,7 +201,8 @@ public class ProgressManager
 				}
 			}
 		}
-		if (itemRequirement instanceof AllRequirementsCollection) {
+		if (itemRequirement instanceof AllRequirementsCollection)
+		{
 			boolean anyMatch = false;
 			boolean allMatch = true;
 			for (final EmoteClueItem child : emoteClueItem.getChildren())
@@ -214,10 +216,12 @@ public class ProgressManager
 					allMatch = false;
 				}
 			}
-			if(allMatch) {
+			if (allMatch)
+			{
 				return UpdatablePanel.Status.Complete;
 			}
-			if(anyMatch) {
+			if (anyMatch)
+			{
 				intermediateStatus = UpdatablePanel.Status.InProgress;
 			}
 		}
