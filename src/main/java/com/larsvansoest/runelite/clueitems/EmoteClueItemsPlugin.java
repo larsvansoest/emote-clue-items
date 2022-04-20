@@ -112,8 +112,6 @@ public class EmoteClueItemsPlugin extends Plugin
 
 		this.progressManager = new ProgressManager(
 				this.configManager,
-				this.client,
-				this.clientThread,
 				this.config,
 				this::onEmoteClueItemQuantityChanged,
 				this::onEmoteClueItemInventoryStatusChanged,

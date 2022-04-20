@@ -54,9 +54,18 @@ public interface EmoteClueItemsConfig extends Config
 		return true;
 	}
 
+	@ConfigItem(keyName = "NotifyUnopenedInterfaces",
+	            name = "Show unopened interface notification",
+	            description = "Show notification for tracked interfaces that have not yet been opened.",
+	            position = 1)
+	default boolean notifyUnopenedInterfaces()
+	{
+		return true;
+	}
+
 	@ConfigSection(name = "Interface Highlighting",
 	               description = "Toggle emote clue icons per interface type.",
-	               position = 1)
+	               position = 2)
 	String Section_interfaceHighlighting = "interfaceHighlighting";
 
 	@ConfigItem(keyName = "HighlightBank",
@@ -141,7 +150,7 @@ public interface EmoteClueItemsConfig extends Config
 
 	@ConfigSection(name = "Interface Tracking",
 	               description = "Toggle including items in the collection log per interface type.",
-	               position = 2)
+	               position = 3)
 	String Section_interfaceTracking = "interfaceTracking";
 
 	@ConfigItem(keyName = "TrackBank",

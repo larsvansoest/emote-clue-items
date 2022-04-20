@@ -35,18 +35,14 @@ public class ProgressManager
 	private final StashMonitor stashMonitor;
 	private final HashMap<EmoteClueItem, UpdatablePanel.Status> inventoryStatusMap;
 	private final Map<EmoteClueItem, Map<StashUnit, Boolean>> stashFilledStatusMap;
-	private final Client client;
-	private final ClientThread clientThread;
 	private final BiConsumer<EmoteClueItem, Integer> onEmoteClueItemQuantityChanged;
 	private final BiConsumer<EmoteClueItem, UpdatablePanel.Status> onEmoteClueItemInventoryStatusChanged;
 	private final BiConsumer<EmoteClueItem, UpdatablePanel.Status> onEmoteClueItemStatusChanged;
 
 	public ProgressManager(
-			final ConfigManager configManager, final Client client, final ClientThread clientThread, final EmoteClueItemsConfig config, final BiConsumer<EmoteClueItem, Integer> onEmoteClueItemQuantityChanged,
+			final ConfigManager configManager, final EmoteClueItemsConfig config, final BiConsumer<EmoteClueItem, Integer> onEmoteClueItemQuantityChanged,
 			final BiConsumer<EmoteClueItem, UpdatablePanel.Status> onEmoteClueItemInventoryStatusChanged, final BiConsumer<EmoteClueItem, UpdatablePanel.Status> onEmoteClueItemStatusChanged)
 	{
-		this.client = client;
-		this.clientThread = clientThread;
 		this.inventoryMonitor = new InventoryMonitor(config);
 		this.stashMonitor = new StashMonitor("[EmoteClueItems]", "STASHUnit fill statuses", configManager);
 		this.inventoryStatusMap = new HashMap<>(EmoteClueItem.values().length);
