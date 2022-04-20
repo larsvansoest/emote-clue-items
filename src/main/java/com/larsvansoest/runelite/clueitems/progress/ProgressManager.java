@@ -6,17 +6,19 @@ import com.larsvansoest.runelite.clueitems.data.EmoteClueAssociations;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
 import com.larsvansoest.runelite.clueitems.data.StashUnit;
 import com.larsvansoest.runelite.clueitems.ui.components.UpdatablePanel;
+import net.runelite.api.Client;
+import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.vars.AccountType;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.cluescrolls.clues.item.AllRequirementsCollection;
 import net.runelite.client.plugins.cluescrolls.clues.item.AnyRequirementCollection;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.BiConsumer;
 
 /**
@@ -27,6 +29,9 @@ import java.util.function.BiConsumer;
  */
 public class ProgressManager
 {
+	private final Client client;
+	private final ClientThread clientThread;
+	private final EmoteClueItemsConfig config;
 	private final InventoryMonitor inventoryMonitor;
 	private final StashMonitor stashMonitor;
 	private final HashMap<EmoteClueItem, UpdatablePanel.Status> inventoryStatusMap;
@@ -36,9 +41,13 @@ public class ProgressManager
 	private final BiConsumer<EmoteClueItem, UpdatablePanel.Status> onEmoteClueItemStatusChanged;
 
 	public ProgressManager(
-			final ConfigManager configManager, final EmoteClueItemsConfig config, final BiConsumer<EmoteClueItem, Integer> onEmoteClueItemQuantityChanged,
-			final BiConsumer<EmoteClueItem, UpdatablePanel.Status> onEmoteClueItemInventoryStatusChanged, final BiConsumer<EmoteClueItem, UpdatablePanel.Status> onEmoteClueItemStatusChanged)
+			final Client client, final ClientThread clientThread, final ConfigManager configManager, final EmoteClueItemsConfig config,
+			final BiConsumer<EmoteClueItem, Integer> onEmoteClueItemQuantityChanged, final BiConsumer<EmoteClueItem, UpdatablePanel.Status> onEmoteClueItemInventoryStatusChanged,
+			final BiConsumer<EmoteClueItem, UpdatablePanel.Status> onEmoteClueItemStatusChanged)
 	{
+		this.client = client;
+		this.clientThread = clientThread;
+		this.config = config;
 		this.inventoryMonitor = new InventoryMonitor(config);
 		this.stashMonitor = new StashMonitor("[EmoteClueItems]", "STASHUnit fill statuses", configManager);
 		this.inventoryStatusMap = new HashMap<>(EmoteClueItem.values().length);
@@ -93,16 +102,61 @@ public class ProgressManager
 	public void toggleInventoryTracking(final boolean track)
 	{
 		this.handleItemChanges(this.inventoryMonitor.toggleInventoryTracking(track));
+		if (track)
+		{
+			this.clientThread.invoke(() ->
+			{
+				ItemContainer container = client.getItemContainer(InventoryID.INVENTORY);
+				if (container != null)
+				{
+					this.handleItemChanges(Arrays.asList(container.getItems()));
+				}
+			});
+		}
 	}
 
 	public void toggleEquipmentTracking(final boolean track)
 	{
 		this.handleItemChanges(this.inventoryMonitor.toggleEquipmentTracking(track));
+		if (track)
+		{
+			this.clientThread.invoke(() ->
+			{
+				ItemContainer container = client.getItemContainer(InventoryID.EQUIPMENT);
+				if (container != null)
+				{
+					this.handleItemChanges(Arrays.asList(container.getItems()));
+				}
+			});
+		}
 	}
 
 	public void toggleGroupStorageTracking(boolean track)
 	{
 		this.handleItemChanges(this.inventoryMonitor.toggleGroupStorageTracking(track));
+	}
+
+	public List<String> getUnopenedInterfaceNotification()
+	{
+		final List<String> unopenedContainers = new ArrayList<>(4);
+		if (this.config.trackBank() && !this.inventoryMonitor.getHasSeenBank())
+		{
+			unopenedContainers.add("bank");
+		}
+		if (this.config.trackInventory() && !this.inventoryMonitor.getHasSeenInventory())
+		{
+			unopenedContainers.add("inventory");
+		}
+		if (this.config.trackEquipment() && !this.inventoryMonitor.getHasSeenEquipment())
+		{
+			unopenedContainers.add("equipment");
+		}
+		final AccountType accountType = this.client.getAccountType();
+		if ((accountType == AccountType.GROUP_IRONMAN || accountType == AccountType.HARDCORE_GROUP_IRONMAN) && this.config.trackGroupStorage() && !this.inventoryMonitor.getHasSeenGroupStorage())
+		{
+			unopenedContainers.add("group storage");
+		}
+		return unopenedContainers;
 	}
 
 	/**

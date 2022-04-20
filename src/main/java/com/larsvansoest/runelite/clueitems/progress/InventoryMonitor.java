@@ -30,6 +30,7 @@ package com.larsvansoest.runelite.clueitems.progress;
 
 import com.larsvansoest.runelite.clueitems.EmoteClueItemsConfig;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueAssociations;
+import lombok.Getter;
 import net.runelite.api.Item;
 
 import java.util.ArrayList;
@@ -50,6 +51,15 @@ class InventoryMonitor
 	private Boolean isTrackingInventory;
 	private Boolean isTrackingEquipment;
 	private Boolean isTrackingGroupStorage;
+
+	@Getter
+	private Boolean hasSeenBank;
+	@Getter
+	private Boolean hasSeenInventory;
+	@Getter
+	private Boolean hasSeenEquipment;
+	@Getter
+	private Boolean hasSeenGroupStorage;
 
 	public InventoryMonitor(EmoteClueItemsConfig config)
 	{
@@ -74,39 +84,47 @@ class InventoryMonitor
 		{
 			this.collectionLog.put(itemId, 0);
 		}
-		this.inventoryTracker.reset();
 		this.bankTracker.reset();
+		this.inventoryTracker.reset();
 		this.equipmentTracker.reset();
 		this.groupStorageTracker.reset();
-	}
 
-	public List<Item> toggleInventoryTracking(boolean track)
-	{
-		this.isTrackingInventory = track;
-		return this.toggleItemTracker(this.inventoryTracker, track);
+		this.hasSeenBank = false;
+		this.hasSeenInventory = false;
+		this.hasSeenEquipment = false;
+		this.hasSeenGroupStorage = false;
 	}
 
 	public List<Item> toggleBankTracking(boolean track)
 	{
 		this.isTrackingBank = track;
+		this.hasSeenBank = false;
 		return this.toggleItemTracker(this.bankTracker, track);
+	}
+
+	public List<Item> toggleInventoryTracking(boolean track)
+	{
+		this.isTrackingInventory = track;
+		this.hasSeenInventory = false;
+		return this.toggleItemTracker(this.inventoryTracker, track);
 	}
 
 	public List<Item> toggleEquipmentTracking(boolean track)
 	{
 		this.isTrackingEquipment = track;
+		this.hasSeenEquipment = false;
 		return this.toggleItemTracker(this.equipmentTracker, track);
 	}
 
 	public List<Item> toggleGroupStorageTracking(boolean track)
 	{
 		this.isTrackingGroupStorage = track;
+		this.hasSeenGroupStorage = false;
 		return this.toggleItemTracker(this.groupStorageTracker, track);
 	}
 
 	private List<Item> getEmoteClueItemDeltas(Map<Integer, Integer> deltas)
 	{
-
 		final List<Item> emoteClueDeltas = new ArrayList<>();
 		deltas.forEach((id, delta) ->
 		{
@@ -137,28 +155,32 @@ class InventoryMonitor
 	{
 		switch (containerId)
 		{
+			case 95:
+				if (this.isTrackingBank)
+				{
+					this.hasSeenBank = true;
+					return this.getEmoteClueItemDeltas(this.bankTracker.writeDeltas(items));
+				}
+				return null;
 			case 93:
 			case 660: // Group storage inventory
 				if (this.isTrackingInventory)
 				{
+					this.hasSeenInventory = true;
 					return this.getEmoteClueItemDeltas(this.inventoryTracker.writeDeltas(items));
 				}
 				return null;
 			case 94:
 				if (this.isTrackingEquipment)
 				{
+					this.hasSeenEquipment = true;
 					return this.getEmoteClueItemDeltas(this.equipmentTracker.writeDeltas(items));
-				}
-				return null;
-			case 95:
-				if (this.isTrackingBank)
-				{
-					return this.getEmoteClueItemDeltas(this.bankTracker.writeDeltas(items));
 				}
 				return null;
 			case 659:
 				if (this.isTrackingGroupStorage)
 				{
+					this.hasSeenGroupStorage = true;
 					return this.getEmoteClueItemDeltas(this.groupStorageTracker.writeDeltas(items));
 				}
 				return null;

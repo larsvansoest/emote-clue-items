@@ -59,6 +59,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 
 import javax.inject.Inject;
 import javax.swing.*;
+import java.util.List;
 
 /**
  * Main class of the plugin.
@@ -108,7 +109,9 @@ public class EmoteClueItemsPlugin extends Plugin
 				"https://github.com/larsvansoest/emote-clue-items"
 		);
 
-		this.progressManager = new ProgressManager(this.configManager,
+		this.progressManager = new ProgressManager(this.client,
+				this.clientThread,
+				this.configManager,
 				this.config,
 				this::onEmoteClueItemQuantityChanged,
 				this::onEmoteClueItemInventoryStatusChanged,
@@ -186,10 +189,7 @@ public class EmoteClueItemsPlugin extends Plugin
 	protected void onItemContainerChanged(final ItemContainerChanged event)
 	{
 		this.progressManager.processInventoryChanges(event);
-		if (event.getContainerId() == 95)
-		{
-			this.emoteClueItemsPanel.removeEmoteClueItemGridDisclaimer();
-		}
+		this.handleUnopenedInterfaces();
 	}
 
 	private void updateStashUnitBuildStatuses()
@@ -225,7 +225,24 @@ public class EmoteClueItemsPlugin extends Plugin
 		this.updateStashBuiltStatusOnNextGameTick = true;
 		this.emoteClueItemsPanel.removeEmoteClueItemGridDisclaimer();
 		this.emoteClueItemsPanel.removeSTASHUnitGridDisclaimer();
-		this.emoteClueItemsPanel.setEmoteClueItemGridDisclaimer("To include bank items, please open your bank once.");
+		this.handleUnopenedInterfaces();
+	}
+
+	private void handleUnopenedInterfaces()
+	{
+		this.clientThread.invoke(() ->
+		{
+			if (this.client.getGameState() == GameState.LOGGED_IN)
+			{
+				this.emoteClueItemsPanel.removeEmoteClueItemGridDisclaimer();
+				final List<String> unopenedContainers = this.progressManager.getUnopenedInterfaceNotification();
+				if (this.config.notifyUnopenedInterfaces() && unopenedContainers.size() > 0)
+				{
+					final String notification = String.format("Not all items may be displayed. Please open your %s first.", String.join(", ", unopenedContainers));
+					this.emoteClueItemsPanel.setEmoteClueItemGridDisclaimer(notification);
+				}
+			}
+		});
 	}
 
 	@Subscribe
@@ -246,15 +263,22 @@ public class EmoteClueItemsPlugin extends Plugin
 		{
 			case "TrackBank":
 				this.progressManager.toggleBankTracking(event.getNewValue().equals("true"));
+				this.handleUnopenedInterfaces();
 				break;
 			case "TrackInventory":
 				this.progressManager.toggleInventoryTracking(event.getNewValue().equals("true"));
+				this.handleUnopenedInterfaces();
 				break;
 			case "TrackEquipment":
 				this.progressManager.toggleEquipmentTracking(event.getNewValue().equals("true"));
+				this.handleUnopenedInterfaces();
 				break;
 			case "TrackGroupStorage":
 				this.progressManager.toggleGroupStorageTracking(event.getNewValue().equals("true"));
+				this.handleUnopenedInterfaces();
+				break;
+			case "NotifyUnopenedInterfaces":
+				this.handleUnopenedInterfaces();
 				break;
 			default:
 				break;
