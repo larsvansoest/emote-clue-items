@@ -40,7 +40,7 @@ import java.util.Map;
 
 class InventoryMonitor
 {
-	private final HashMap<Integer, Integer> collectionLog;
+	private final HashMap<Integer, Integer> collection;
 
 	private final ItemTracker bankTracker;
 	private final ItemTracker inventoryTracker;
@@ -63,7 +63,7 @@ class InventoryMonitor
 
 	public InventoryMonitor(EmoteClueItemsConfig config)
 	{
-		this.collectionLog = new HashMap<>(EmoteClueAssociations.ItemIdToEmoteClueItem.keySet().size());
+		this.collection = new HashMap<>(EmoteClueAssociations.ItemIdToEmoteClueItem.keySet().size());
 
 		this.bankTracker = new ItemTracker();
 		this.inventoryTracker = new ItemTracker();
@@ -82,7 +82,7 @@ class InventoryMonitor
 	{
 		for (final Integer itemId : EmoteClueAssociations.ItemIdToEmoteClueItem.keySet())
 		{
-			this.collectionLog.put(itemId, 0);
+			this.collection.put(itemId, 0);
 		}
 		this.bankTracker.reset();
 		this.inventoryTracker.reset();
@@ -128,11 +128,11 @@ class InventoryMonitor
 		final List<Item> emoteClueDeltas = new ArrayList<>();
 		deltas.forEach((id, delta) ->
 		{
-			final Integer logQuantity = this.collectionLog.get(id);
+			final Integer logQuantity = this.collection.get(id);
 			if (logQuantity != null)
 			{
 				final int quantity = logQuantity + delta;
-				this.collectionLog.put(id, quantity);
+				this.collection.put(id, quantity);
 				emoteClueDeltas.add(new Item(id, quantity));
 			}
 		});

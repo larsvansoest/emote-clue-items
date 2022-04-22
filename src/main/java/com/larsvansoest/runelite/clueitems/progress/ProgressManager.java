@@ -94,11 +94,21 @@ public class ProgressManager
 		this.handleItemChanges(this.inventoryMonitor.fetchEmoteClueItemChanges(event.getContainerId(), event.getItemContainer().getItems()));
 	}
 
+	/**
+	 * Toggles including items from the bank in the collection log.
+	 *
+	 * @param track True if the bank should be tracked, false otherwise.
+	 */
 	public void toggleBankTracking(final boolean track)
 	{
 		this.handleItemChanges(this.inventoryMonitor.toggleBankTracking(track));
 	}
 
+	/**
+	 * Toggles including items from the inventory in the collection log.
+	 *
+	 * @param track True if the inventory should be tracked, false otherwise.
+	 */
 	public void toggleInventoryTracking(final boolean track)
 	{
 		this.handleItemChanges(this.inventoryMonitor.toggleInventoryTracking(track));
@@ -115,6 +125,11 @@ public class ProgressManager
 		}
 	}
 
+	/**
+	 * Toggles including equipped items in the collection log.
+	 *
+	 * @param track True if equipment should be tracked, false otherwise.
+	 */
 	public void toggleEquipmentTracking(final boolean track)
 	{
 		this.handleItemChanges(this.inventoryMonitor.toggleEquipmentTracking(track));
@@ -131,11 +146,23 @@ public class ProgressManager
 		}
 	}
 
+	/**
+	 * Toggles including items from the group storage in the collection log.
+	 *
+	 * @param track True if the group storage should be tracked, false otherwise.
+	 */
 	public void toggleGroupStorageTracking(boolean track)
 	{
 		this.handleItemChanges(this.inventoryMonitor.toggleGroupStorageTracking(track));
 	}
 
+	/**
+	 * Returns a list of unopened interfaces.
+	 * <p>
+	 * Only shows interfaces that are tracked and have not yet been seen once after reset.
+	 *
+	 * @return The list of unopened interfaces.
+	 */
 	public List<String> getUnopenedInterfaces()
 	{
 		final List<String> unopenedContainers = new ArrayList<>(4);
