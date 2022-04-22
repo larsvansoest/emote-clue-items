@@ -100,7 +100,7 @@ public class EmoteClueItemsOverlay extends WidgetItemOverlay
 		}
 
 		final Rectangle bounds = itemWidget.getCanvasBounds();
-		this.x = bounds.x + bounds.width + this.getXOffset(widgetContainer, widgetContext);
+		this.x = bounds.x + bounds.width + this.getXOffset(widgetContainer);
 		this.y = bounds.y;
 
 		emoteClues.map(EmoteClue::getEmoteClueDifficulty).distinct().map(RibbonComponent::ofDifficulty).forEach(ribbon ->
@@ -145,9 +145,9 @@ public class EmoteClueItemsOverlay extends WidgetItemOverlay
 		}
 	}
 
-	private int getXOffset(final WidgetContainer widgetContainer, final WidgetContext widgetContext)
+	private int getXOffset(final WidgetContainer widgetContainer)
 	{
-		return widgetContainer == WidgetContainer.Equipment ? -10 : widgetContext == WidgetContext.Default ? -1 : -5;
+		return widgetContainer == WidgetContainer.Equipment ? -10 : -5;
 	}
 
 	private static final class RibbonComponent

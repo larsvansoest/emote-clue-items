@@ -1,4 +1,4 @@
-## Emote Clue Items v3.4.0 [![Plugin Installs](http://img.shields.io/endpoint?url=https://i.pluginhub.info/shields/installs/plugin/emote-clue-items&label=Active%20installs)](https://runelite.net/plugin-hub/Lars%20van%20Soest)
+## Emote Clue Items v4.0.0 [![Plugin Installs](http://img.shields.io/endpoint?url=https://i.pluginhub.info/shields/installs/plugin/emote-clue-items&label=Active%20installs)](https://runelite.net/plugin-hub/Lars%20van%20Soest)
 
 Emote Clue Items is a RuneLite plugin which highlights items required for emote clue steps and provides a user-friendly
 item collection log with STASHUnit integration.
@@ -9,13 +9,16 @@ Maintaining bank space can be quite cumbersome, especially when you are not sure
 clue scrolls. With this plugin, throwing away items may be a bit less stressful, as this plugin aims to highlight all
 emote clue items.
 
-### 3.4.0 Patch notes
+### 4.0.0 Patch notes
+
+This updates comes with the addition of group storage support for group iron men. Furthermore, the update features several bugfixes and improvements.
 
 This update of Emote Clue Items features the following updates.
+- Added overlay for group iron man storage. (see [emote-clue-items#41](https://github.com/larsvansoest/emote-clue-items/issues/41))
+- Added optional collection log tracking for group iron man storage. (see [emote-clue-items#47](https://github.com/larsvansoest/emote-clue-items/issues/47))
 - Fixed typos in STASHUnit names. (see [emote-clue-items/pull40](https://github.com/larsvansoest/emote-clue-items/pull/40))
 - Updated to RuneLite version 1.18.17. (see [emote-clue-items/pull44](https://github.com/larsvansoest/emote-clue-items/pull/44))
 - Overhauled nested item requirement status display. (see [emote-clue-items#39](https://github.com/larsvansoest/emote-clue-items/issues/39))
-- Added overlay for group iron man storage. (see [emote-clue-items#41](https://github.com/larsvansoest/emote-clue-items/issues/41))
 - Update emote clue data base up to [d129c49](https://github.com/runelite/runelite/commits/master/runelite-client/src/main/java/net/runelite/client/plugins/cluescrolls/clues/EmoteClue.java). (see [emote-clue-items/pull45](https://github.com/larsvansoest/emote-clue-items/pull/45))
 
 #### Filling stashes now updates the emote clue item requirement status
