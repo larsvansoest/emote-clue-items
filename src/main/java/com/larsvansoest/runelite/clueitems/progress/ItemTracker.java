@@ -37,6 +37,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Keeps track of items inside an item container.
+ *
+ * @see com.larsvansoest.runelite.clueitems.progress.InventoryMonitor
+ * @since v2.0.0
+ */
 class ItemTracker
 {
 	private final ItemManager itemManager;
@@ -50,16 +56,32 @@ class ItemTracker
 		this.items = new ArrayList<>();
 	}
 
+	/**
+	 * Returns a collection of all items in the container.
+	 *
+	 * @return The dictionary of items, the key represents the item id, and the value the amount.
+	 */
 	public Map<Integer, Integer> getItems()
 	{
 		return this.items.stream().filter(item -> item.getId() != -1).collect(Collectors.toMap(Item::getId, Item::getQuantity, Integer::sum));
 	}
 
+	/**
+	 * Clears all item data.
+	 */
 	public void reset()
 	{
 		this.items.clear();
 	}
 
+	/**
+	 * Writes items inside the container to the stored item data.
+	 * <p>
+	 * Returns a collection of item changes.
+	 *
+	 * @param items The items inside the container.
+	 * @return The dictionary of items, the key represents the item id, and the value the amount changed.
+	 */
 	public Map<Integer, Integer> writeDeltas(
 			@NonNull
 			final Item[] items)

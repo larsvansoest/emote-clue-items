@@ -62,6 +62,9 @@ enum Widget
 
 	GROUP_STORAGE_INVENTORY(725, 0);
 
+	/**
+	 * id of the widget
+	 */
 	public final int id;
 
 	/**

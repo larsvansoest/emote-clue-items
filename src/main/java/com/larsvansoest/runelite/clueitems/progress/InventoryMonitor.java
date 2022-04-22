@@ -39,6 +39,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Keeps track of items in the bank, inventory, equipment and group storage.
+ * <p>
+ * Tracking for each interface can be toggled.
+ * <p>
+ * Contains functionality to monitor and return item changes.
+ *
+ * @see com.larsvansoest.runelite.clueitems.progress.ItemTracker
+ * @see com.larsvansoest.runelite.clueitems.progress.ProgressManager
+ * @since v2.0.0
+ */
 class InventoryMonitor
 {
 	private final HashMap<Integer, Integer> collection;
@@ -79,6 +90,9 @@ class InventoryMonitor
 		this.reset();
 	}
 
+	/**
+	 * Clears all item collection data.
+	 */
 	public void reset()
 	{
 		for (final Integer itemId : EmoteClueAssociations.ItemIdToEmoteClueItem.keySet())
@@ -96,6 +110,11 @@ class InventoryMonitor
 		this.hasSeenGroupStorage = false;
 	}
 
+	/**
+	 * Toggles including items from the bank in the collection log.
+	 *
+	 * @param track True if the bank should be tracked, false otherwise.
+	 */
 	public List<Item> toggleBankTracking(boolean track)
 	{
 		this.isTrackingBank = track;
@@ -103,6 +122,11 @@ class InventoryMonitor
 		return this.toggleItemTracker(this.bankTracker, track);
 	}
 
+	/**
+	 * Toggles including items from the inventory in the collection log.
+	 *
+	 * @param track True if the inventory should be tracked, false otherwise.
+	 */
 	public List<Item> toggleInventoryTracking(boolean track)
 	{
 		this.isTrackingInventory = track;
@@ -110,6 +134,11 @@ class InventoryMonitor
 		return this.toggleItemTracker(this.inventoryTracker, track);
 	}
 
+	/**
+	 * Toggles including equipped items in the collection log.
+	 *
+	 * @param track True if equipment should be tracked, false otherwise.
+	 */
 	public List<Item> toggleEquipmentTracking(boolean track)
 	{
 		this.isTrackingEquipment = track;
@@ -117,6 +146,11 @@ class InventoryMonitor
 		return this.toggleItemTracker(this.equipmentTracker, track);
 	}
 
+	/**
+	 * Toggles including items from the group storage in the collection log.
+	 *
+	 * @param track True if the group storage should be tracked, false otherwise.
+	 */
 	public List<Item> toggleGroupStorageTracking(boolean track)
 	{
 		this.isTrackingGroupStorage = track;
@@ -152,6 +186,15 @@ class InventoryMonitor
 		return this.getEmoteClueItemDeltas(items);
 	}
 
+	/**
+	 * Returns a list of newly added or changed items. Each entry is unique.
+	 * <p>
+	 * For every item, the id represents the item in the collection log, and the quantity represents the change in the amount stored.
+	 *
+	 * @param containerId The container that contains the items.
+	 * @param items       The list of items.
+	 * @return The list of item changes.
+	 */
 	public List<Item> fetchEmoteClueItemChanges(final int containerId, final Item[] items)
 	{
 		switch (containerId)
