@@ -10,7 +10,6 @@ import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.vars.AccountType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -88,73 +87,91 @@ public class ProgressManager
 	}
 
 	/**
-	 * Writes item changes to progression data.
+	 * Writes item container changes to progression data.
+	 *
+	 * @param containerId The modified item container
+	 * @param items       The items in the container
 	 */
-	public void processInventoryChanges(final ItemContainerChanged event)
+	public void processInventoryChanges(final int containerId, final Item[] items)
 	{
-		this.handleItemChanges(this.inventoryMonitor.fetchEmoteClueItemChanges(event.getContainerId(), event.getItemContainer().getItems()));
+		this.handleItemChanges(this.inventoryMonitor.fetchEmoteClueItemChanges(containerId, items));
 	}
 
 	/**
 	 * Toggles including items from the bank in the collection log.
+	 * <p>
+	 * Must be called on the clientThread.
 	 *
 	 * @param track True if the bank should be tracked, false otherwise.
+	 * @see net.runelite.client.callback.ClientThread
 	 */
 	public void toggleBankTracking(final boolean track)
 	{
 		this.handleItemChanges(this.inventoryMonitor.toggleBankTracking(track));
+		if (track)
+		{
+			refreshContainer(InventoryID.BANK);
+		}
 	}
 
 	/**
 	 * Toggles including items from the inventory in the collection log.
+	 * <p>
+	 * Must be called on the clientThread.
 	 *
 	 * @param track True if the inventory should be tracked, false otherwise.
+	 * @see net.runelite.client.callback.ClientThread
 	 */
 	public void toggleInventoryTracking(final boolean track)
 	{
 		this.handleItemChanges(this.inventoryMonitor.toggleInventoryTracking(track));
 		if (track)
 		{
-			this.clientThread.invoke(() ->
-			{
-				ItemContainer container = client.getItemContainer(InventoryID.INVENTORY);
-				if (container != null)
-				{
-					this.handleItemChanges(Arrays.asList(container.getItems()));
-				}
-			});
+			refreshContainer(InventoryID.INVENTORY);
 		}
 	}
 
 	/**
 	 * Toggles including equipped items in the collection log.
+	 * <p>
+	 * Must be called on the clientThread.
 	 *
 	 * @param track True if equipment should be tracked, false otherwise.
+	 * @see net.runelite.client.callback.ClientThread
 	 */
 	public void toggleEquipmentTracking(final boolean track)
 	{
 		this.handleItemChanges(this.inventoryMonitor.toggleEquipmentTracking(track));
 		if (track)
 		{
-			this.clientThread.invoke(() ->
-			{
-				ItemContainer container = client.getItemContainer(InventoryID.EQUIPMENT);
-				if (container != null)
-				{
-					this.handleItemChanges(Arrays.asList(container.getItems()));
-				}
-			});
+			refreshContainer(InventoryID.EQUIPMENT);
 		}
 	}
 
 	/**
 	 * Toggles including items from the group storage in the collection log.
+	 * <p>
+	 * Must be called on the clientThread.
 	 *
 	 * @param track True if the group storage should be tracked, false otherwise.
+	 * @see net.runelite.client.callback.ClientThread
 	 */
 	public void toggleGroupStorageTracking(boolean track)
 	{
 		this.handleItemChanges(this.inventoryMonitor.toggleGroupStorageTracking(track));
+		if (track)
+		{
+			refreshContainer(InventoryID.GROUP_STORAGE);
+		}
+	}
+
+	private void refreshContainer(InventoryID inventoryID)
+	{
+		ItemContainer container = client.getItemContainer(inventoryID);
+		if (container != null)
+		{
+			this.processInventoryChanges(container.getId(), container.getItems());
+		}
 	}
 
 	/**
