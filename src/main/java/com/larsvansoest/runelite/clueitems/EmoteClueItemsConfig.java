@@ -47,12 +47,21 @@ public interface EmoteClueItemsConfig extends Config
 {
 	@ConfigSection(name = "Interface Highlighting",
 	               description = "Toggle emote clue icons per interface type.",
-	               position = 0)
+	               position = 1)
 	String Section_interfaceHighlighting = "interfaceHighlighting";
 	@ConfigSection(name = "Interface Tracking",
 	               description = "Toggle including items in the collection log per interface type.",
-	               position = 2)
+	               position = 3)
 	String Section_interfaceTracking = "interfaceTracking";
+
+	@ConfigItem(keyName = "ShowNavigation",
+	            name = "Show collection log",
+	            description = "Show the collection log panel in the RuneLite toolbar.",
+	            position = 0)
+	default boolean showNavigation()
+	{
+		return true;
+	}
 
 	@ConfigItem(keyName = "HighlightBank",
 	            name = "Bank",
@@ -137,7 +146,7 @@ public interface EmoteClueItemsConfig extends Config
 	@ConfigItem(keyName = "FilterInStash",
 	            name = "Filter items in STASH",
 	            description = "Do not highlight items already in STASH units.",
-	            position = 1)
+	            position = 2)
 	default boolean filterInStash()
 	{
 		return true;
@@ -186,7 +195,7 @@ public interface EmoteClueItemsConfig extends Config
 	@ConfigItem(keyName = "NotifyUnopenedInterfaces",
 	            name = "Unopened interface notification",
 	            description = "Show notification for tracked interfaces that have not yet been opened.",
-	            position = 3)
+	            position = 4)
 	default boolean notifyUnopenedInterfaces()
 	{
 		return true;
