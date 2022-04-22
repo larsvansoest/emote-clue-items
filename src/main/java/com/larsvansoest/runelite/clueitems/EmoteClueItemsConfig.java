@@ -42,7 +42,7 @@ import net.runelite.client.config.ConfigSection;
  * @since 1.0.4
  */
 @SuppressWarnings("SameReturnValue")
-@ConfigGroup("example")
+@ConfigGroup("emote-clue-items")
 public interface EmoteClueItemsConfig extends Config
 {
 	@ConfigSection(name = "Interface Highlighting",

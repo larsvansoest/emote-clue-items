@@ -49,7 +49,7 @@ public class ProgressManager
 		this.clientThread = clientThread;
 		this.config = config;
 		this.inventoryMonitor = new InventoryMonitor(config, itemManager);
-		this.stashMonitor = new StashMonitor("[EmoteClueItems]", "STASHUnit fill statuses", configManager);
+		this.stashMonitor = new StashMonitor(configManager);
 		this.inventoryStatusMap = new HashMap<>(EmoteClueItem.values().length);
 		this.stashFilledStatusMap = new HashMap<>(EmoteClueAssociations.EmoteClueItemToEmoteClues.keySet().size());
 		this.onEmoteClueItemQuantityChanged = onEmoteClueItemQuantityChanged;
