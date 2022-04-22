@@ -30,6 +30,7 @@ package com.larsvansoest.runelite.clueitems.progress;
 
 import lombok.NonNull;
 import net.runelite.api.Item;
+import net.runelite.api.ItemComposition;
 import net.runelite.client.game.ItemManager;
 
 import java.util.ArrayList;
@@ -95,12 +96,12 @@ class ItemTracker
 			}
 
 			final Item previousItem = this.items.get(i);
-			final Item currentItem = items[i];
+			final Item currentItem = this.canonicalize(items[i]);
 			this.items.set(i, currentItem);
 
-			final int currentItemId = this.itemManager.canonicalize(currentItem.getId());
+			final int currentItemId = currentItem.getId();
 			final int currentQuantity = currentItem.getQuantity();
-			final int previousItemId = this.itemManager.canonicalize(previousItem.getId());
+			final int previousItemId = previousItem.getId();
 			final int previousQuantity = previousItem.getQuantity();
 
 			if (previousItemId != currentItemId)
@@ -125,5 +126,12 @@ class ItemTracker
 			}
 		}
 		return deltas;
+	}
+
+	private Item canonicalize(Item item)
+	{
+		final ItemComposition itemComposition = this.itemManager.getItemComposition(item.getId());
+		int quantity = itemComposition.getPlaceholderTemplateId() == -1 ? item.getQuantity() : 0;
+		return new Item(this.itemManager.canonicalize(item.getId()), quantity);
 	}
 }
