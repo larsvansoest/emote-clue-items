@@ -181,16 +181,16 @@ public class EmoteClueItemsPlugin extends Plugin
 
 	private void updateStashUnitBuildStatuses()
 	{
-		for (final StashUnit stashUnit : StashUnit.values())
+		this.clientThread.invoke(() ->
 		{
-			this.clientThread.invokeLater(() ->
+			for (final StashUnit stashUnit : StashUnit.values())
 			{
 				this.client.runScript(ScriptID.WATSON_STASH_UNIT_CHECK, stashUnit.getStashUnit().getObjectId(), 0, 0, 0);
 				final boolean built = this.client.getIntStack()[0] == 1;
 				this.emoteClueItemsPanel.turnOnSTASHFilledButton(stashUnit);
 				this.emoteClueItemsPanel.setSTASHUnitStatus(stashUnit, built, this.progressManager.getStashUnitFilled(stashUnit));
-			});
-		}
+			}
+		});
 	}
 
 	private void onPlayerLoggedIn()
@@ -199,30 +199,27 @@ public class EmoteClueItemsPlugin extends Plugin
 		this.updateStashBuiltStatusOnNextGameTick = true;
 		this.emoteClueItemsPanel.removeEmoteClueItemGridDisclaimer();
 		this.emoteClueItemsPanel.removeSTASHUnitGridDisclaimer();
-		this.setupUnopenedInterfaceNotification();
+		this.clientThread.invoke(this::setupUnopenedInterfaceNotification);
 	}
 
 	private void setupUnopenedInterfaceNotification()
 	{
-		this.clientThread.invoke(() ->
+		if (this.client.getGameState() == GameState.LOGGED_IN)
 		{
-			if (this.client.getGameState() == GameState.LOGGED_IN)
+			this.emoteClueItemsPanel.removeEmoteClueItemGridDisclaimer();
+			if (this.showUnopenedInterfaceNotification)
 			{
-				this.emoteClueItemsPanel.removeEmoteClueItemGridDisclaimer();
-				if (this.showUnopenedInterfaceNotification)
+				final List<String> unopenedInterfaces = this.progressManager.getUnopenedInterfaces();
+				if (this.config.notifyUnopenedInterfaces() && unopenedInterfaces.size() > 0)
 				{
-					final List<String> unopenedInterfaces = this.progressManager.getUnopenedInterfaces();
-					if (this.config.notifyUnopenedInterfaces() && unopenedInterfaces.size() > 0)
+					final String notification = String.format("Not all items may be displayed. Please open your %s first.", String.join(", ", unopenedInterfaces));
+					this.emoteClueItemsPanel.setEmoteClueItemGridDisclaimer(notification, () ->
 					{
-						final String notification = String.format("Not all items may be displayed. Please open your %s first.", String.join(", ", unopenedInterfaces));
-						this.emoteClueItemsPanel.setEmoteClueItemGridDisclaimer(notification, () ->
-						{
-							this.showUnopenedInterfaceNotification = false;
-						});
-					}
+						this.showUnopenedInterfaceNotification = false;
+					});
 				}
 			}
-		});
+		}
 	}
 
 	private void toggleCollectionLog(final boolean visible)
@@ -262,8 +259,8 @@ public class EmoteClueItemsPlugin extends Plugin
 	@Subscribe
 	protected void onItemContainerChanged(final ItemContainerChanged event)
 	{
-		this.progressManager.processInventoryChanges(event);
-		this.setupUnopenedInterfaceNotification();
+		this.progressManager.processInventoryChanges(event.getContainerId(), event.getItemContainer().getItems());
+		this.clientThread.invoke(this::setupUnopenedInterfaceNotification);
 	}
 
 	@Subscribe
@@ -279,35 +276,38 @@ public class EmoteClueItemsPlugin extends Plugin
 	@Subscribe
 	protected void onConfigChanged(final ConfigChanged event)
 	{
-		final String key = event.getKey();
-		switch (key)
+		this.clientThread.invoke(() ->
 		{
-			case "TrackBank":
-				this.progressManager.toggleBankTracking(event.getNewValue().equals("true"));
-				this.setupUnopenedInterfaceNotification();
-				break;
-			case "TrackInventory":
-				this.progressManager.toggleInventoryTracking(event.getNewValue().equals("true"));
-				this.setupUnopenedInterfaceNotification();
-				break;
-			case "TrackEquipment":
-				this.progressManager.toggleEquipmentTracking(event.getNewValue().equals("true"));
-				this.setupUnopenedInterfaceNotification();
-				break;
-			case "TrackGroupStorage":
-				this.progressManager.toggleGroupStorageTracking(event.getNewValue().equals("true"));
-				this.setupUnopenedInterfaceNotification();
-				break;
-			case "NotifyUnopenedInterfaces":
-				this.showUnopenedInterfaceNotification = event.getNewValue().equals("true");
-				this.setupUnopenedInterfaceNotification();
-				break;
-			case "ShowNavigation":
-				this.toggleCollectionLog(event.getNewValue().equals("true"));
-				break;
-			default:
-				break;
-		}
+			final String key = event.getKey();
+			switch (key)
+			{
+				case "TrackBank":
+					this.progressManager.toggleBankTracking(event.getNewValue().equals("true"));
+					this.setupUnopenedInterfaceNotification();
+					break;
+				case "TrackInventory":
+					this.progressManager.toggleInventoryTracking(event.getNewValue().equals("true"));
+					this.setupUnopenedInterfaceNotification();
+					break;
+				case "TrackEquipment":
+					this.progressManager.toggleEquipmentTracking(event.getNewValue().equals("true"));
+					this.setupUnopenedInterfaceNotification();
+					break;
+				case "TrackGroupStorage":
+					this.progressManager.toggleGroupStorageTracking(event.getNewValue().equals("true"));
+					this.setupUnopenedInterfaceNotification();
+					break;
+				case "NotifyUnopenedInterfaces":
+					this.showUnopenedInterfaceNotification = event.getNewValue().equals("true");
+					this.setupUnopenedInterfaceNotification();
+					break;
+				case "ShowNavigation":
+					this.toggleCollectionLog(event.getNewValue().equals("true"));
+					break;
+				default:
+					break;
+			}
+		});
 	}
 
 	@Override
