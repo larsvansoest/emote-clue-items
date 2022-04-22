@@ -308,12 +308,18 @@ public class DataGrid<T extends JPanel> extends JPanel
 	 * <p>
 	 * Notification can be removed by {@link #removeDisclaimer()}.
 	 *
-	 * @param text text to display in te notification.
+	 * @param text    text to display in te notification.
+	 * @param onClose runnable to execute when user clicks the notification close button.
 	 */
-	public void setDisclaimer(final String text)
+	public void setDisclaimer(final String text, Runnable onClose)
 	{
 		this.disclaimerPanel.setText(text);
 		this.disclaimerPanel.setVisible(true);
+		this.disclaimerPanel.setOnClose(() ->
+		{
+			onClose.run();
+			this.removeDisclaimer();
+		});
 	}
 
 	/**
@@ -329,7 +335,7 @@ public class DataGrid<T extends JPanel> extends JPanel
 	}
 
 	/**
-	 * Removes any notification added by {@link #setDisclaimer(String)}.
+	 * Removes any notification added by {@link #setDisclaimer(String, Runnable)}.
 	 */
 	public void removeDisclaimer()
 	{
