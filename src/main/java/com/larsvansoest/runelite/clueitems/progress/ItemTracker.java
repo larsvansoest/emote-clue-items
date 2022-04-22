@@ -30,6 +30,7 @@ package com.larsvansoest.runelite.clueitems.progress;
 
 import lombok.NonNull;
 import net.runelite.api.Item;
+import net.runelite.client.game.ItemManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,10 +39,14 @@ import java.util.stream.Collectors;
 
 class ItemTracker
 {
+	private final ItemManager itemManager;
+
 	private final ArrayList<Item> items;
 
-	public ItemTracker()
+	public ItemTracker(ItemManager itemManager)
 	{
+		this.itemManager = itemManager;
+
 		this.items = new ArrayList<>();
 	}
 
@@ -71,9 +76,9 @@ class ItemTracker
 			final Item currentItem = items[i];
 			this.items.set(i, currentItem);
 
-			final int currentItemId = currentItem.getId();
+			final int currentItemId = this.itemManager.canonicalize(currentItem.getId());
 			final int currentQuantity = currentItem.getQuantity();
-			final int previousItemId = previousItem.getId();
+			final int previousItemId = this.itemManager.canonicalize(previousItem.getId());
 			final int previousQuantity = previousItem.getQuantity();
 
 			if (previousItemId != currentItemId)

@@ -32,6 +32,7 @@ import com.larsvansoest.runelite.clueitems.EmoteClueItemsConfig;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueAssociations;
 import lombok.Getter;
 import net.runelite.api.Item;
+import net.runelite.client.game.ItemManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -61,14 +62,14 @@ class InventoryMonitor
 	@Getter
 	private Boolean hasSeenGroupStorage;
 
-	public InventoryMonitor(EmoteClueItemsConfig config)
+	public InventoryMonitor(final EmoteClueItemsConfig config, final ItemManager itemManager)
 	{
 		this.collection = new HashMap<>(EmoteClueAssociations.ItemIdToEmoteClueItem.keySet().size());
 
-		this.bankTracker = new ItemTracker();
-		this.inventoryTracker = new ItemTracker();
-		this.equipmentTracker = new ItemTracker();
-		this.groupStorageTracker = new ItemTracker();
+		this.bankTracker = new ItemTracker(itemManager);
+		this.inventoryTracker = new ItemTracker(itemManager);
+		this.equipmentTracker = new ItemTracker(itemManager);
+		this.groupStorageTracker = new ItemTracker(itemManager);
 
 		this.isTrackingBank = config.trackBank();
 		this.isTrackingInventory = config.trackInventory();
