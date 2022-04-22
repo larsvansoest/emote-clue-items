@@ -136,7 +136,7 @@ public class ProgressManager
 		this.handleItemChanges(this.inventoryMonitor.toggleGroupStorageTracking(track));
 	}
 
-	public List<String> getUnopenedInterfaceNotification()
+	public List<String> getUnopenedInterfaces()
 	{
 		final List<String> unopenedContainers = new ArrayList<>(4);
 		if (this.config.trackBank() && !this.inventoryMonitor.getHasSeenBank())

@@ -30,6 +30,7 @@ package com.larsvansoest.runelite.clueitems.ui.components;
 
 import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
+import lombok.Setter;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 
@@ -48,13 +49,16 @@ public class DisclaimerPanel extends JPanel
 {
 	private final JLabel textLabel;
 
+	@Setter
+	private Runnable onClose;
+
 	/**
 	 * Creates the panel.
 	 *
 	 * @param emoteClueItemsPalette Colour scheme for the panel.
-	 * @param onClick               Behaviour to run when the notification's close button is pressed.
+	 * @param onClose               Behaviour to run when the notification's close button is pressed.
 	 */
-	public DisclaimerPanel(final EmoteClueItemsPalette emoteClueItemsPalette, final Runnable onClick)
+	public DisclaimerPanel(final EmoteClueItemsPalette emoteClueItemsPalette, final Runnable onClose)
 	{
 		super(new GridBagLayout());
 		super.setBackground(emoteClueItemsPalette.getDisclaimerColor());
@@ -66,6 +70,8 @@ public class DisclaimerPanel extends JPanel
 		this.textLabel.setVerticalAlignment(JLabel.CENTER);
 		this.textLabel.setFont(FontManager.getRunescapeSmallFont());
 
+		this.onClose = onClose;
+
 		final Icon closeIllumatedIcon = new ImageIcon(EmoteClueImages.illuminate(EmoteClueImages.Toolbar.Disclaimer.CLOSE, 150));
 		final Icon closeIcon = new ImageIcon(EmoteClueImages.Toolbar.Disclaimer.CLOSE);
 		final JLabel closeIconLabel = new JLabel(closeIcon);
@@ -75,7 +81,7 @@ public class DisclaimerPanel extends JPanel
 			@Override
 			public void mousePressed(final MouseEvent e)
 			{
-				onClick.run();
+				DisclaimerPanel.this.onClose.run();
 			}
 
 			@Override

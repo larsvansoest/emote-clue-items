@@ -47,30 +47,12 @@ public interface EmoteClueItemsConfig extends Config
 {
 	@ConfigSection(name = "Interface Highlighting",
 	               description = "Toggle emote clue icons per interface type.",
-	               position = 2)
+	               position = 0)
 	String Section_interfaceHighlighting = "interfaceHighlighting";
 	@ConfigSection(name = "Interface Tracking",
 	               description = "Toggle including items in the collection log per interface type.",
-	               position = 3)
+	               position = 2)
 	String Section_interfaceTracking = "interfaceTracking";
-
-	@ConfigItem(keyName = "FilterInStash",
-	            name = "Filter items in STASH",
-	            description = "Do not highlight items already in STASH units.",
-	            position = 0)
-	default boolean filterInStash()
-	{
-		return true;
-	}
-
-	@ConfigItem(keyName = "NotifyUnopenedInterfaces",
-	            name = "Show unopened interface notification",
-	            description = "Show notification for tracked interfaces that have not yet been opened.",
-	            position = 1)
-	default boolean notifyUnopenedInterfaces()
-	{
-		return true;
-	}
 
 	@ConfigItem(keyName = "HighlightBank",
 	            name = "Bank",
@@ -152,6 +134,15 @@ public interface EmoteClueItemsConfig extends Config
 		return false;
 	}
 
+	@ConfigItem(keyName = "FilterInStash",
+	            name = "Filter items in STASH",
+	            description = "Do not highlight items already in STASH units.",
+	            position = 1)
+	default boolean filterInStash()
+	{
+		return true;
+	}
+
 	@ConfigItem(keyName = "TrackBank",
 	            name = "Bank",
 	            description = "Include bank items in the collection log.",
@@ -190,5 +181,14 @@ public interface EmoteClueItemsConfig extends Config
 	default boolean trackGroupStorage()
 	{
 		return false;
+	}
+
+	@ConfigItem(keyName = "NotifyUnopenedInterfaces",
+	            name = "Unopened interface notification",
+	            description = "Show notification for tracked interfaces that have not yet been opened.",
+	            position = 3)
+	default boolean notifyUnopenedInterfaces()
+	{
+		return true;
 	}
 }

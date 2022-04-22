@@ -304,11 +304,26 @@ public class EmoteClueItemsPanel extends PluginPanel
 	 * <p>
 	 * Notification can be removed by {@link #removeEmoteClueItemGridDisclaimer()}.
 	 *
-	 * @param text text to display in te notification.
+	 * @param text text to display in the notification.
 	 */
 	public void setEmoteClueItemGridDisclaimer(final String text)
 	{
-		this.clueItemsGrid.setDisclaimer(text);
+		this.clueItemsGrid.setDisclaimer(text, null);
+	}
+
+	/**
+	 * Underneath the {@link com.larsvansoest.runelite.clueitems.ui.clues.EmoteClueItemGrid}'s searchbar, add a notification with given text.
+	 * <p>
+	 * Overwrites existing notification.
+	 * <p>
+	 * Notification can be removed by {@link #removeEmoteClueItemGridDisclaimer()}.
+	 *
+	 * @param text    text to display in the notification.
+	 * @param onClose runnable to execute when user clicks the notification close button.
+	 */
+	public void setEmoteClueItemGridDisclaimer(final String text, Runnable onClose)
+	{
+		this.clueItemsGrid.setDisclaimer(text, onClose);
 	}
 
 	/**
@@ -322,7 +337,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 	 */
 	public void setSTASHUnitGridDisclaimer(final String text)
 	{
-		this.stashUnitGrid.setDisclaimer(text);
+		this.stashUnitGrid.setDisclaimer(text, null);
 	}
 
 	/**
