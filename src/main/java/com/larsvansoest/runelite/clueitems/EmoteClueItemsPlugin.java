@@ -127,7 +127,7 @@ public class EmoteClueItemsPlugin extends Plugin
 				.panel(this.emoteClueItemsPanel)
 				.build();
 
-		this.clientToolbar.addNavigation(this.navigationButton);
+		this.toggleCollectionLog(this.config.showNavigation());
 
 		this.overlay = new EmoteClueItemsOverlay(this.itemManager, this.config, this.progressManager);
 		this.overlayManager.add(this.overlay);
@@ -224,6 +224,18 @@ public class EmoteClueItemsPlugin extends Plugin
 		});
 	}
 
+	private void toggleCollectionLog(final boolean visible)
+	{
+		if (visible)
+		{
+			this.clientToolbar.addNavigation(this.navigationButton);
+		}
+		else
+		{
+			this.clientToolbar.removeNavigation(this.navigationButton);
+		}
+	}
+
 	@Subscribe
 	protected void onGameStateChanged(final GameStateChanged event)
 	{
@@ -288,6 +300,9 @@ public class EmoteClueItemsPlugin extends Plugin
 			case "NotifyUnopenedInterfaces":
 				this.showUnopenedInterfaceNotification = event.getNewValue().equals("true");
 				this.setupUnopenedInterfaceNotification();
+				break;
+			case "ShowNavigation":
+				this.toggleCollectionLog(event.getNewValue().equals("true"));
 				break;
 			default:
 				break;
