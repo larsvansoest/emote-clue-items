@@ -114,6 +114,7 @@ public class EmoteClueItemsPlugin extends Plugin
 				this.clientThread,
 				this.configManager,
 				this.config,
+				this.itemManager,
 				this::onEmoteClueItemQuantityChanged,
 				this::onEmoteClueItemInventoryStatusChanged,
 				this::onEmoteClueItemStatusChanged

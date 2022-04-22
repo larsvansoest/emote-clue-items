@@ -14,6 +14,7 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.vars.AccountType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.cluescrolls.clues.item.AllRequirementsCollection;
 import net.runelite.client.plugins.cluescrolls.clues.item.AnyRequirementCollection;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
@@ -41,14 +42,14 @@ public class ProgressManager
 	private final BiConsumer<EmoteClueItem, UpdatablePanel.Status> onEmoteClueItemStatusChanged;
 
 	public ProgressManager(
-			final Client client, final ClientThread clientThread, final ConfigManager configManager, final EmoteClueItemsConfig config,
+			final Client client, final ClientThread clientThread, final ConfigManager configManager, final EmoteClueItemsConfig config, final ItemManager itemManager,
 			final BiConsumer<EmoteClueItem, Integer> onEmoteClueItemQuantityChanged, final BiConsumer<EmoteClueItem, UpdatablePanel.Status> onEmoteClueItemInventoryStatusChanged,
 			final BiConsumer<EmoteClueItem, UpdatablePanel.Status> onEmoteClueItemStatusChanged)
 	{
 		this.client = client;
 		this.clientThread = clientThread;
 		this.config = config;
-		this.inventoryMonitor = new InventoryMonitor(config);
+		this.inventoryMonitor = new InventoryMonitor(config, itemManager);
 		this.stashMonitor = new StashMonitor("[EmoteClueItems]", "STASHUnit fill statuses", configManager);
 		this.inventoryStatusMap = new HashMap<>(EmoteClueItem.values().length);
 		this.stashFilledStatusMap = new HashMap<>(EmoteClueAssociations.EmoteClueItemToEmoteClues.keySet().size());

@@ -27,6 +27,12 @@ class StashMonitor
 	private final String key;
 	private final ConfigManager config;
 
+	/**
+	 * Toggles STASHUnit filled status.
+	 *
+	 * @param stashUnit The STASHunit.
+	 * @param filled    The filled status.
+	 */
 	public void setStashFilled(final StashUnit stashUnit, final boolean filled)
 	{
 		final String stashes = this.config.getRSProfileConfiguration(this.group, this.key);
@@ -38,6 +44,12 @@ class StashMonitor
 		}
 	}
 
+	/**
+	 * Returns whether a STASHUnit is filled.
+	 *
+	 * @param stashUnit The STASHUnit
+	 * @return True if filled, false otherwise.
+	 */
 	public boolean getStashFilled(final StashUnit stashUnit)
 	{
 		final String stashes = this.config.getRSProfileConfiguration(this.group, this.key);
@@ -49,6 +61,11 @@ class StashMonitor
 		return stash == 't' || stash == '1'; // '1' was previously used, added for backwards compatibility.
 	}
 
+	/**
+	 * Synchronises STASHUnit filled status list with the cloud.
+	 * <p>
+	 * Verifies integrity of cloud data. Clears the data if STASHUnit id list was changed by RuneLite.
+	 */
 	public void validate()
 	{
 		final String stashes = this.config.getRSProfileConfiguration(this.group, this.key);
