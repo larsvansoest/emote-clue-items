@@ -51,7 +51,7 @@ import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement
  * Source: https://github.com/runelite/runelite/tree/master/runelite-client/src/main/java/net/runelite/client/plugins/cluescrolls/clues
  * </p>
  * <p>
- * Maintained up to af5ae4a.
+ * Maintained up to 91e5d18.
  * To check for any updates, see https://github.com/runelite/runelite/commits/master/runelite-client/src/main/java/net/runelite/client/plugins/cluescrolls/clues/EmoteClue.java
  * </p>
  *
@@ -302,9 +302,9 @@ public final class EmoteClue implements TextClueScroll, LocationClueScroll
 					EmoteClueItem.ANY_AMULET_OF_GLORY
 			),
 			new EmoteClue(Easy,
-					"Bow in the ticket office of the Duel Arena. Equip an iron chain body, leather chaps and coif.",
-					"Duel Arena",
-					MUBARIZS_ROOM_AT_THE_DUEL_ARENA,
+					"Bow in the ticket office of the PvP Arena. Equip an iron chain body, leather chaps and coif.",
+					"PvP Arena",
+					PVP_ARENA_TICKET_OFFICE,
 					new WorldPoint(3314, 3241, 0),
 					BOW,
 					EmoteClueItem.IRON_CHAINBODY,
