@@ -10,7 +10,7 @@ import net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit;
  * Source https://github.com/runelite/runelite/blob/master/runelite-client/src/main/java/net/runelite/client/plugins/cluescrolls/clues/emote/STASHUnit.java
  * </p>
  * <p>
- * Maintained up to b7cbdcdf
+ * Maintained up to 91e5d18.
  * </p>
  *
  * @author Lars van Soest
@@ -44,7 +44,7 @@ public enum StashUnit
 	ROAD_JUNCTION_SOUTH_OF_SINCLAIR_MANSION("Sinclaire Mansion Junction", STASHUnit.ROAD_JUNCTION_SOUTH_OF_SINCLAIR_MANSION, Type.Rock),
 	OUTSIDE_THE_DIGSITE_EXAM_CENTRE("Digsite Exam Centre", STASHUnit.OUTSIDE_THE_DIGSITE_EXAM_CENTRE, Type.Bush),
 	NEAR_THE_SAWMILL_OPERATORS_BOOTH("Sawmill Operators Booth", STASHUnit.NEAR_THE_SAWMILL_OPERATORS_BOOTH, Type.Bush),
-	MUBARIZS_ROOM_AT_THE_DUEL_ARENA("Duel Arena Mubariz's Room", STASHUnit.MUBARIZS_ROOM_AT_THE_DUEL_ARENA, Type.Crate),
+	PVP_ARENA_TICKET_OFFICE("PvP Arena Ticket Office", STASHUnit.PVP_ARENA_TICKET_OFFICE, Type.Crate),
 	OUTSIDE_VARROCK_PALACE_COURTYARD("Varrock Palace Courtyard", STASHUnit.OUTSIDE_VARROCK_PALACE_COURTYARD, Type.Bush),
 	NEAR_HERQUINS_SHOP_IN_FALADOR("Falador Herquins Shop", STASHUnit.NEAR_HERQUINS_SHOP_IN_FALADOR, Type.Bush),
 	SOUTH_OF_THE_GRAND_EXCHANGE("Varrock Grand Exchange", STASHUnit.SOUTH_OF_THE_GRAND_EXCHANGE, Type.Bush),
