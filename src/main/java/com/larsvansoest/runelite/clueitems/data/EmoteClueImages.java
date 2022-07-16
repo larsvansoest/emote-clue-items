@@ -125,6 +125,8 @@ public abstract class EmoteClueImages
 	{
 		private static final String folder = path(EmoteClueImages.folder, "toolbar");
 
+		public static final BufferedImage LOCATION_PIN = bufferedImage(folder, "location-pin.png");
+
 		public static final class CheckSquare
 		{
 			private static final String folder = path(Toolbar.folder, "check-square");

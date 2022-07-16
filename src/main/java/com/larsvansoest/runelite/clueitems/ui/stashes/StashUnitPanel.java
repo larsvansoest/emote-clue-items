@@ -90,7 +90,7 @@ public class StashUnitPanel extends RequirementPanel
 		final Insets insets = new Insets(2, 0, 2, 5);
 		Arrays.stream(this.difficulties).map(EmoteClueImages::getRibbon).map(ImageIcon::new).map(JLabel::new).forEach(label -> super.addRight(label, insets, 0, 0, DisplayMode.Default));
 		super.addRight(new JLabel(String.valueOf(this.quantity)), insets, 0, 0, DisplayMode.Default);
-		super.addChild(this.getDetailsPanel(palette, this.difficulties[0]), DisplayMode.All);
+		super.addChild(this.getDetailsPanel(this.difficulties[0]), DisplayMode.All);
 	}
 
 	/**
@@ -151,10 +151,13 @@ public class StashUnitPanel extends RequirementPanel
 		return new ImageIcon(stashUnitImage);
 	}
 
-	private JPanel getDetailsPanel(final EmoteClueItemsPalette palette, final EmoteClueDifficulty difficulty)
+	private JPanel getDetailsPanel(final EmoteClueDifficulty difficulty)
 	{
 		final JPanel detailsPanel = new JPanel(new GridBagLayout());
-		detailsPanel.setBackground(palette.getFoldContentColor());
+
+		final Color backgroundColor = this.palette.getFoldContentColor();
+		detailsPanel.setBackground(backgroundColor);
+
 		final GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
@@ -164,19 +167,35 @@ public class StashUnitPanel extends RequirementPanel
 		c.insets.right = 5;
 		final StashUnit.DifficultyRequirements difficultyRequirements = StashUnit.DifficultyRequirements.valueOf(difficulty.name());
 		c.gridy++;
-		detailsPanel.add(new PropertyPanel(palette, "Difficulty", difficulty.name()), c);
+		detailsPanel.add(new PropertyPanel(this.palette, "Difficulty", difficulty.name()), c);
 		c.gridy++;
-		detailsPanel.add(new PropertyPanel(palette, "Construction lvl", String.valueOf(difficultyRequirements.getConstructionLvl())), c);
+		detailsPanel.add(new PropertyPanel(this.palette, "Construction lvl", String.valueOf(difficultyRequirements.getConstructionLvl())), c);
 		c.gridy++;
 		c.insets.top = 5;
-		detailsPanel.add(new DescriptionPanel(palette, "Build materials", difficultyRequirements.getConstructionItems()), c);
+		detailsPanel.add(new DescriptionPanel(this.palette, "Build materials", difficultyRequirements.getConstructionItems()), c);
 
 		c.gridy = 0;
 		c.gridx = 1;
 		c.gridheight = 4;
-		detailsPanel.add(this.stashUnitImage, c);
+		detailsPanel.add(this.getDetailsImagePanel(backgroundColor), c);
 
 		return detailsPanel;
+	}
+
+	private JPanel getDetailsImagePanel(final Color backgroundColor)
+	{
+		final JPanel rightPanel = new JPanel(new GridBagLayout());
+		rightPanel.setBackground(backgroundColor);
+		final GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 0;
+		c.weighty = 1;
+		c.weightx = 1;
+		c.fill = GridBagConstraints.BOTH;
+		rightPanel.add(this.stashUnitImage, c);
+		c.gridy++;
+		rightPanel.add(new MapLinkButton(this.palette), c);
+		return rightPanel;
 	}
 
 	/**
