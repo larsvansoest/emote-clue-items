@@ -95,6 +95,35 @@ public abstract class EmoteClueImages
 		}
 	}
 
+	public static BufferedImage getStashUnit(final com.larsvansoest.runelite.clueitems.data.StashUnit.Type type, final boolean built, final boolean small)
+	{
+		if (built)
+		{
+			switch (type)
+			{
+				case Bush:
+					return small ? EmoteClueImages.StashUnit.BUSH_BUILT_SMALL : EmoteClueImages.StashUnit.BUSH_BUILT;
+				case Hole:
+					return small ? EmoteClueImages.StashUnit.HOLE_BUILT_SMALL : EmoteClueImages.StashUnit.HOLE_BUILT;
+				case Rock:
+					return small ? EmoteClueImages.StashUnit.ROCK_BUILT_SMALL : EmoteClueImages.StashUnit.ROCK_BUILT;
+				default:
+					return small ? EmoteClueImages.StashUnit.CRATE_BUILT_SMALL : EmoteClueImages.StashUnit.CRATE_BUILT;
+			}
+		}
+		switch (type)
+		{
+			case Bush:
+				return small ? EmoteClueImages.StashUnit.BUSH_SMALL : EmoteClueImages.StashUnit.BUSH;
+			case Hole:
+				return small ? EmoteClueImages.StashUnit.HOLE_SMALL : EmoteClueImages.StashUnit.HOLE;
+			case Rock:
+				return small ? EmoteClueImages.StashUnit.ROCK_SMALL : EmoteClueImages.StashUnit.ROCK;
+			default:
+				return small ? EmoteClueImages.StashUnit.CRATE_SMALL : EmoteClueImages.StashUnit.CRATE;
+		}
+	}
+
 	public static BufferedImage illuminate(final BufferedImage bufferedImage, final float scale)
 	{
 		return ImageUtil.luminanceScale(bufferedImage, scale);
@@ -103,6 +132,32 @@ public abstract class EmoteClueImages
 	public static BufferedImage resizeCanvas(final BufferedImage bufferedImage, final int width, final int height)
 	{
 		return ImageUtil.resizeCanvas(bufferedImage, width, height);
+	}
+
+	public static final class RuneLite
+	{
+		public static final BufferedImage CLUE_ARROW = bufferedImage(Orb.folder, "clue-arrow.png");
+		private static final String folder = "/util";
+
+		private RuneLite()
+		{
+		}
+	}
+
+	public static final class Orb
+	{
+		private static final String folder = path(EmoteClueImages.folder, "orb");
+		public static final BufferedImage ORB_0 = bufferedImage(Orb.folder, "orb-0.png");
+		public static final BufferedImage ORB_45 = bufferedImage(Orb.folder, "orb-45.png");
+		public static final BufferedImage ORB_90 = bufferedImage(Orb.folder, "orb-90.png");
+		public static final BufferedImage ORB_135 = bufferedImage(Orb.folder, "orb-135.png");
+		public static final BufferedImage ORB_180 = bufferedImage(Orb.folder, "orb-180.png");
+		public static final BufferedImage ORB_225 = bufferedImage(Orb.folder, "orb-225.png");
+		public static final BufferedImage ORB_270 = bufferedImage(Orb.folder, "orb-270.png");
+
+		private Orb()
+		{
+		}
 	}
 
 	public static final class Ribbon
@@ -117,6 +172,31 @@ public abstract class EmoteClueImages
 		public static final BufferedImage MASTER = bufferedImage(Ribbon.folder, "master.png");
 
 		private Ribbon()
+		{
+		}
+	}
+
+	public static final class StashUnit
+	{
+		private static final String folder = path(EmoteClueImages.folder, "stash-unit");
+		public static final BufferedImage BUSH = bufferedImage(StashUnit.folder, "bush.png");
+		public static final BufferedImage BUSH_SMALL = bufferedImage(StashUnit.folder, "bush-small.png");
+		public static final BufferedImage BUSH_BUILT = bufferedImage(StashUnit.folder, "bush-built.png");
+		public static final BufferedImage BUSH_BUILT_SMALL = bufferedImage(StashUnit.folder, "bush-built-small.png");
+		public static final BufferedImage CRATE = bufferedImage(StashUnit.folder, "crate.png");
+		public static final BufferedImage CRATE_SMALL = bufferedImage(StashUnit.folder, "crate-small.png");
+		public static final BufferedImage CRATE_BUILT = bufferedImage(StashUnit.folder, "crate-built.png");
+		public static final BufferedImage CRATE_BUILT_SMALL = bufferedImage(StashUnit.folder, "crate-built-small.png");
+		public static final BufferedImage HOLE = bufferedImage(StashUnit.folder, "hole.png");
+		public static final BufferedImage HOLE_SMALL = bufferedImage(StashUnit.folder, "hole-small.png");
+		public static final BufferedImage HOLE_BUILT = bufferedImage(StashUnit.folder, "hole-built.png");
+		public static final BufferedImage HOLE_BUILT_SMALL = bufferedImage(StashUnit.folder, "hole-built-small.png");
+		public static final BufferedImage ROCK = bufferedImage(StashUnit.folder, "rock.png");
+		public static final BufferedImage ROCK_SMALL = bufferedImage(StashUnit.folder, "rock-small.png");
+		public static final BufferedImage ROCK_BUILT = bufferedImage(StashUnit.folder, "rock-built.png");
+		public static final BufferedImage ROCK_BUILT_SMALL = bufferedImage(StashUnit.folder, "rock-built-small.png");
+
+		private StashUnit()
 		{
 		}
 	}
@@ -173,23 +253,6 @@ public abstract class EmoteClueImages
 			public static final BufferedImage QUANTITY_DESCENDING = bufferedImage(SortType.folder, "quantity-descending.png");
 
 			private SortType()
-			{
-			}
-		}
-
-		public static final class StashUnit
-		{
-			private static final String folder = path(Toolbar.folder, "stash-unit");
-			public static final BufferedImage BUSH = bufferedImage(StashUnit.folder, "bush.png");
-			public static final BufferedImage BUSH_BUILT = bufferedImage(StashUnit.folder, "bush-built.png");
-			public static final BufferedImage CRATE = bufferedImage(StashUnit.folder, "crate.png");
-			public static final BufferedImage CRATE_BUILT = bufferedImage(StashUnit.folder, "crate-built.png");
-			public static final BufferedImage HOLE = bufferedImage(StashUnit.folder, "hole.png");
-			public static final BufferedImage HOLE_BUILT = bufferedImage(StashUnit.folder, "hole-built.png");
-			public static final BufferedImage ROCK = bufferedImage(StashUnit.folder, "rock.png");
-			public static final BufferedImage ROCK_BUILT = bufferedImage(StashUnit.folder, "rock-built.png");
-
-			private StashUnit()
 			{
 			}
 		}
