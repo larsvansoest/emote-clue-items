@@ -110,7 +110,7 @@ public class ProgressManager
 		this.handleItemChanges(this.inventoryMonitor.toggleBankTracking(track));
 		if (track)
 		{
-			refreshContainer(InventoryID.BANK);
+			this.refreshContainer(InventoryID.BANK);
 		}
 	}
 
@@ -127,7 +127,7 @@ public class ProgressManager
 		this.handleItemChanges(this.inventoryMonitor.toggleInventoryTracking(track));
 		if (track)
 		{
-			refreshContainer(InventoryID.INVENTORY);
+			this.refreshContainer(InventoryID.INVENTORY);
 		}
 	}
 
@@ -144,7 +144,7 @@ public class ProgressManager
 		this.handleItemChanges(this.inventoryMonitor.toggleEquipmentTracking(track));
 		if (track)
 		{
-			refreshContainer(InventoryID.EQUIPMENT);
+			this.refreshContainer(InventoryID.EQUIPMENT);
 		}
 	}
 
@@ -156,18 +156,18 @@ public class ProgressManager
 	 * @param track True if the group storage should be tracked, false otherwise.
 	 * @see net.runelite.client.callback.ClientThread
 	 */
-	public void toggleGroupStorageTracking(boolean track)
+	public void toggleGroupStorageTracking(final boolean track)
 	{
 		this.handleItemChanges(this.inventoryMonitor.toggleGroupStorageTracking(track));
 		if (track)
 		{
-			refreshContainer(InventoryID.GROUP_STORAGE);
+			this.refreshContainer(InventoryID.GROUP_STORAGE);
 		}
 	}
 
-	private void refreshContainer(InventoryID inventoryID)
+	private void refreshContainer(final InventoryID inventoryID)
 	{
-		ItemContainer container = client.getItemContainer(inventoryID);
+		final ItemContainer container = this.client.getItemContainer(inventoryID);
 		if (container != null)
 		{
 			this.processInventoryChanges(container.getId(), container.getItems());

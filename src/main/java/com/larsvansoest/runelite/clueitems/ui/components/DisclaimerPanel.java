@@ -28,11 +28,12 @@
 
 package com.larsvansoest.runelite.clueitems.ui.components;
 
-import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
+import com.larsvansoest.runelite.clueitems.EmoteClueItemsImages;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
 import lombok.Setter;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
+import net.runelite.client.util.ImageUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -63,7 +64,7 @@ public class DisclaimerPanel extends JPanel
 		super(new GridBagLayout());
 		super.setBackground(emoteClueItemsPalette.getDisclaimerColor());
 
-		final JLabel questionCircleIconLabel = new JLabel(new ImageIcon(EmoteClueImages.Toolbar.Disclaimer.QUESTION_CIRCLE));
+		final JLabel questionCircleIconLabel = new JLabel(new ImageIcon(EmoteClueItemsImages.Icons.QUESTION));
 
 		this.textLabel = new JShadowedLabel();
 		this.textLabel.setHorizontalAlignment(JLabel.LEFT);
@@ -72,8 +73,8 @@ public class DisclaimerPanel extends JPanel
 
 		this.onClose = onClose;
 
-		final Icon closeIllumatedIcon = new ImageIcon(EmoteClueImages.illuminate(EmoteClueImages.Toolbar.Disclaimer.CLOSE, 150));
-		final Icon closeIcon = new ImageIcon(EmoteClueImages.Toolbar.Disclaimer.CLOSE);
+		final Icon closeIllumatedIcon = new ImageIcon(ImageUtil.luminanceScale(EmoteClueItemsImages.Icons.CLOSE, 150));
+		final Icon closeIcon = new ImageIcon(EmoteClueItemsImages.Icons.CLOSE);
 		final JLabel closeIconLabel = new JLabel(closeIcon);
 		closeIconLabel.setToolTipText("Close");
 		closeIconLabel.addMouseListener(new MouseAdapter()

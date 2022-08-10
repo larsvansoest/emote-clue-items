@@ -1,13 +1,16 @@
 package com.larsvansoest.runelite.clueitems.ui.stashes;
 
-import com.larsvansoest.runelite.clueitems.data.*;
+import com.larsvansoest.runelite.clueitems.EmoteClueItemsImages;
+import com.larsvansoest.runelite.clueitems.data.EmoteClue;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueAssociations;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
+import com.larsvansoest.runelite.clueitems.data.StashUnit;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
 import com.larsvansoest.runelite.clueitems.ui.components.*;
 import lombok.Getter;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.BiConsumer;
@@ -54,14 +57,14 @@ public class StashUnitPanel extends RequirementPanel
 		super(palette, stash.getName(), 160, 20);
 		this.palette = palette;
 
-		this.stashBuiltIcon = this.getBuiltStashIcon(stash.getType());
-		this.stashNotBuiltIcon = this.getNotBuiltStashIcon(stash.getType());
+		this.stashBuiltIcon = new ImageIcon(EmoteClueItemsImages.Icons.RuneScape.StashUnit.get(stash.getType(), true, false));
+		this.stashNotBuiltIcon = new ImageIcon(EmoteClueItemsImages.Icons.RuneScape.StashUnit.get(stash.getType(), false, false));
 		this.stashUnitImage = new JLabel(this.stashNotBuiltIcon);
 
 		this.filled = true;
 		final String toolTipTextFormat = "Set stash unit as %s.";
 		this.filledButtonTurnedOn = false;
-		this.filledButton = new CycleButton(palette, new ImageIcon(EmoteClueImages.Toolbar.CheckSquare.INCOMPLETE_EMPTY), () ->
+		this.filledButton = new CycleButton(palette, new ImageIcon(EmoteClueItemsImages.Icons.CheckSquare.INCOMPLETE_EMPTY), () ->
 		{
 			if (this.filledButtonTurnedOn)
 			{
@@ -71,7 +74,7 @@ public class StashUnitPanel extends RequirementPanel
 			}
 		}, DataGrid.getToolTipText(toolTipTextFormat, "filled"));
 		this.filledButtonInComplete = 0;
-		this.filledButtonComplete = this.filledButton.addOption(new ImageIcon(EmoteClueImages.Toolbar.CheckSquare.COMPLETE), () ->
+		this.filledButtonComplete = this.filledButton.addOption(new ImageIcon(EmoteClueItemsImages.Icons.CheckSquare.COMPLETE), () ->
 		{
 			if (this.filledButtonTurnedOn)
 			{
@@ -88,7 +91,12 @@ public class StashUnitPanel extends RequirementPanel
 		this.quantity = emoteClues.length;
 		this.difficulties = Arrays.stream(emoteClues).map(EmoteClue::getEmoteClueDifficulty).distinct().toArray(EmoteClueDifficulty[]::new);
 		final Insets insets = new Insets(2, 0, 2, 5);
-		Arrays.stream(this.difficulties).map(EmoteClueImages::getRibbon).map(ImageIcon::new).map(JLabel::new).forEach(label -> super.addRight(label, insets, 0, 0, DisplayMode.Default));
+		Arrays
+				.stream(this.difficulties)
+				.map(EmoteClueItemsImages.Icons.RuneScape.EmoteClue.Ribbon::get)
+				.map(ImageIcon::new)
+				.map(JLabel::new)
+				.forEach(label -> super.addRight(label, insets, 0, 0, DisplayMode.Default));
 		super.addRight(new JLabel(String.valueOf(this.quantity)), insets, 0, 0, DisplayMode.Default);
 		super.addChild(this.getDetailsPanel(this.difficulties[0]), DisplayMode.All);
 	}
@@ -107,48 +115,6 @@ public class StashUnitPanel extends RequirementPanel
 		}
 		this.itemCollectionPanel = itemCollectionPanel;
 		super.addChild(itemCollectionPanel, displayModes);
-	}
-
-	private ImageIcon getBuiltStashIcon(final StashUnit.Type type)
-	{
-		final BufferedImage stashUnitImage;
-		switch (type)
-		{
-			case Bush:
-				stashUnitImage = EmoteClueImages.Toolbar.StashUnit.BUSH_BUILT;
-				break;
-			case Hole:
-				stashUnitImage = EmoteClueImages.Toolbar.StashUnit.HOLE_BUILT;
-				break;
-			case Rock:
-				stashUnitImage = EmoteClueImages.Toolbar.StashUnit.ROCK_BUILT;
-				break;
-			default:
-				stashUnitImage = EmoteClueImages.Toolbar.StashUnit.CRATE_BUILT;
-				break;
-		}
-		return new ImageIcon(stashUnitImage);
-	}
-
-	private ImageIcon getNotBuiltStashIcon(final StashUnit.Type type)
-	{
-		final BufferedImage stashUnitImage;
-		switch (type)
-		{
-			case Bush:
-				stashUnitImage = EmoteClueImages.Toolbar.StashUnit.BUSH;
-				break;
-			case Hole:
-				stashUnitImage = EmoteClueImages.Toolbar.StashUnit.HOLE;
-				break;
-			case Rock:
-				stashUnitImage = EmoteClueImages.Toolbar.StashUnit.ROCK;
-				break;
-			default:
-				stashUnitImage = EmoteClueImages.Toolbar.StashUnit.CRATE;
-				break;
-		}
-		return new ImageIcon(stashUnitImage);
 	}
 
 	private JPanel getDetailsPanel(final EmoteClueDifficulty difficulty)
@@ -254,7 +220,7 @@ public class StashUnitPanel extends RequirementPanel
 		}
 		else
 		{
-			this.turnOffFilledButton(new ImageIcon(EmoteClueImages.Toolbar.CheckSquare.UNBUILT), "Please build the STASH unit in-game first.");
+			this.turnOffFilledButton(new ImageIcon(EmoteClueItemsImages.Icons.CheckSquare.UNBUILT), "Please build the STASH unit in-game first.");
 			this.stashUnitImage.setIcon(this.stashNotBuiltIcon);
 		}
 		this.built = built;

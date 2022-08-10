@@ -28,7 +28,7 @@
 
 package com.larsvansoest.runelite.clueitems.ui.components;
 
-import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
+import com.larsvansoest.runelite.clueitems.EmoteClueItemsImages;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
 
 import javax.swing.*;
@@ -58,7 +58,7 @@ public class ItemCollectionPanel extends RequirementPanel
 	{
 		super(palette, name, 160, 20);
 		super.setStatus(Status.InComplete);
-		super.addLeft(new JLabel(new ImageIcon(EmoteClueImages.Toolbar.Requirement.INVENTORY)), new Insets(2, 4, 2, 0), 0, 0, DisplayMode.All);
+		super.addLeft(new JLabel(new ImageIcon(EmoteClueItemsImages.Icons.RuneScape.INVENTORY)), new Insets(2, 4, 2, 0), 0, 0, DisplayMode.All);
 
 		this.itemSlotBackGround = palette.getFoldContentColor();
 

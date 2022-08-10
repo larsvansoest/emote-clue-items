@@ -311,7 +311,7 @@ public class DataGrid<T extends JPanel> extends JPanel
 	 * @param text    text to display in te notification.
 	 * @param onClose runnable to execute when user clicks the notification close button.
 	 */
-	public void setDisclaimer(final String text, Runnable onClose)
+	public void setDisclaimer(final String text, final Runnable onClose)
 	{
 		this.disclaimerPanel.setText(text);
 		this.disclaimerPanel.setVisible(true);

@@ -115,7 +115,7 @@ class InventoryMonitor
 	 *
 	 * @param track True if the bank should be tracked, false otherwise.
 	 */
-	public List<Item> toggleBankTracking(boolean track)
+	public List<Item> toggleBankTracking(final boolean track)
 	{
 		this.isTrackingBank = track;
 		this.hasSeenBank = false;
@@ -127,7 +127,7 @@ class InventoryMonitor
 	 *
 	 * @param track True if the inventory should be tracked, false otherwise.
 	 */
-	public List<Item> toggleInventoryTracking(boolean track)
+	public List<Item> toggleInventoryTracking(final boolean track)
 	{
 		this.isTrackingInventory = track;
 		this.hasSeenInventory = false;
@@ -139,7 +139,7 @@ class InventoryMonitor
 	 *
 	 * @param track True if equipment should be tracked, false otherwise.
 	 */
-	public List<Item> toggleEquipmentTracking(boolean track)
+	public List<Item> toggleEquipmentTracking(final boolean track)
 	{
 		this.isTrackingEquipment = track;
 		this.hasSeenEquipment = false;
@@ -151,14 +151,14 @@ class InventoryMonitor
 	 *
 	 * @param track True if the group storage should be tracked, false otherwise.
 	 */
-	public List<Item> toggleGroupStorageTracking(boolean track)
+	public List<Item> toggleGroupStorageTracking(final boolean track)
 	{
 		this.isTrackingGroupStorage = track;
 		this.hasSeenGroupStorage = false;
 		return this.toggleItemTracker(this.groupStorageTracker, track);
 	}
 
-	private List<Item> getEmoteClueItemDeltas(Map<Integer, Integer> deltas)
+	private List<Item> getEmoteClueItemDeltas(final Map<Integer, Integer> deltas)
 	{
 		final List<Item> emoteClueDeltas = new ArrayList<>();
 		deltas.forEach((id, delta) ->
@@ -174,13 +174,13 @@ class InventoryMonitor
 		return emoteClueDeltas;
 	}
 
-	private List<Item> toggleItemTracker(ItemTracker itemTracker, boolean track)
+	private List<Item> toggleItemTracker(final ItemTracker itemTracker, final boolean track)
 	{
 		if (track)
 		{
 			return null;
 		}
-		Map<Integer, Integer> items = itemTracker.getItems();
+		final Map<Integer, Integer> items = itemTracker.getItems();
 		items.replaceAll((id, quantity) -> -quantity);
 		itemTracker.reset();
 		return this.getEmoteClueItemDeltas(items);

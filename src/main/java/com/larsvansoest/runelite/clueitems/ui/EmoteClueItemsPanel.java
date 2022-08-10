@@ -321,7 +321,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 	 * @param text    text to display in the notification.
 	 * @param onClose runnable to execute when user clicks the notification close button.
 	 */
-	public void setEmoteClueItemGridDisclaimer(final String text, Runnable onClose)
+	public void setEmoteClueItemGridDisclaimer(final String text, final Runnable onClose)
 	{
 		this.clueItemsGrid.setDisclaimer(text, onClose);
 	}

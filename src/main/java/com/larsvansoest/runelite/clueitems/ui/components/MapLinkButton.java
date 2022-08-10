@@ -1,6 +1,6 @@
 package com.larsvansoest.runelite.clueitems.ui.components;
 
-import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
+import com.larsvansoest.runelite.clueitems.EmoteClueItemsImages;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
 import net.runelite.client.ui.FontManager;
 
@@ -22,7 +22,7 @@ import java.util.Map;
 public class MapLinkButton extends JPanel
 {
 	private static final String LABEL_TEXT = "maplink";
-	private static final Icon ICON = new ImageIcon(EmoteClueImages.Toolbar.LOCATION_PIN);
+	private static final Icon ICON = new ImageIcon(EmoteClueItemsImages.Icons.Location.PIN);
 	private static final Font LABEL_FONT = FontManager.getRunescapeSmallFont();
 	private static final Font LABEL_FONT_UNDERLINED = MapLinkButton.getUnderLinedFont(MapLinkButton.LABEL_FONT);
 

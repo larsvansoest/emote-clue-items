@@ -1,6 +1,7 @@
 package com.larsvansoest.runelite.clueitems.map;
 
-import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
+import com.larsvansoest.runelite.clueitems.EmoteClueItemsImages;
+import net.runelite.api.Client;
 import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
@@ -10,12 +11,13 @@ import java.awt.image.BufferedImage;
 
 public class WorldMapMarker extends WorldMapPoint
 {
-	private static final BufferedImage BACKGROUND_IMAGE = EmoteClueImages.RuneLite.CLUE_ARROW;
+	private static final BufferedImage BACKGROUND_IMAGE = EmoteClueItemsImages.RuneLite.CLUE_ARROW;
 	private static final BufferedImage WORLD_IMAGE = new BufferedImage(BACKGROUND_IMAGE.getWidth(), BACKGROUND_IMAGE.getHeight(), BufferedImage.TYPE_INT_ARGB);
 	private static final Point WORLD_IMAGE_POINT = new Point(WORLD_IMAGE.getWidth() / 2, WORLD_IMAGE.getHeight());
 	private static final Graphics GRAPHICS = WORLD_IMAGE.getGraphics();
 
-	private BufferedImage orb;
+	private final WorldMapOrb orb;
+	private boolean edgeSnapped;
 
 	public WorldMapMarker(final WorldPoint worldPoint, final BufferedImage image, final String name)
 	{
@@ -24,34 +26,19 @@ public class WorldMapMarker extends WorldMapPoint
 		super.setJumpOnClick(true);
 		super.setName(name);
 
-		this.orb = getOrbImage(0);
+		this.orb = new WorldMapOrb(worldPoint);
 		this.setImage(image);
+
+		this.edgeSnapped = false;
 	}
 
-	private static BufferedImage getOrbImage(final int rotation)
+	public void rotateOrb(final Client client, final Graphics2D graphics)
 	{
-		switch (rotation)
+		this.orb.updateOrientation(client, graphics);
+		if (this.edgeSnapped)
 		{
-			case 45:
-				return EmoteClueImages.Orb.ORB_45;
-			case 90:
-				return EmoteClueImages.Orb.ORB_90;
-			case 135:
-				return EmoteClueImages.Orb.ORB_135;
-			case 180:
-				return EmoteClueImages.Orb.ORB_180;
-			case 225:
-				return EmoteClueImages.Orb.ORB_225;
-			case 270:
-				return EmoteClueImages.Orb.ORB_270;
-			default:
-				return EmoteClueImages.Orb.ORB_0;
+			super.setImage(this.orb.getImage());
 		}
-	}
-
-	public void rotateOrb(final int rotation)
-	{
-		this.orb = getOrbImage(rotation);
 	}
 
 	public void setImage(final BufferedImage image)
@@ -65,13 +52,15 @@ public class WorldMapMarker extends WorldMapPoint
 	@Override
 	public void onEdgeSnap()
 	{
-		super.setImage(this.orb);
+		this.edgeSnapped = true;
+		this.orb.resetOrientation();
 		super.setImagePoint(null);
 	}
 
 	@Override
 	public void onEdgeUnsnap()
 	{
+		this.edgeSnapped = false;
 		super.setImage(WORLD_IMAGE);
 		super.setImagePoint(WORLD_IMAGE_POINT);
 	}

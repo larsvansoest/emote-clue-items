@@ -29,9 +29,10 @@
 package com.larsvansoest.runelite.clueitems;
 
 import com.google.inject.Provides;
-import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
 import com.larsvansoest.runelite.clueitems.data.StashUnit;
+import com.larsvansoest.runelite.clueitems.map.StashUnitMapPoint;
+import com.larsvansoest.runelite.clueitems.map.WorldMapMarker;
 import com.larsvansoest.runelite.clueitems.overlay.EmoteClueItemsOverlay;
 import com.larsvansoest.runelite.clueitems.progress.ProgressManager;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
@@ -56,6 +57,8 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
+import net.runelite.client.util.ImageUtil;
 
 import javax.inject.Inject;
 import javax.swing.*;
@@ -89,6 +92,9 @@ public class EmoteClueItemsPlugin extends Plugin
 	private ItemManager itemManager;
 	@Inject
 	private ClientToolbar clientToolbar;
+	@Inject
+	private WorldMapPointManager worldMapPointManager;
+
 	private EmoteClueItemsOverlay overlay;
 	private NavigationButton navigationButton;
 	private ProgressManager progressManager;
@@ -123,14 +129,14 @@ public class EmoteClueItemsPlugin extends Plugin
 		this.navigationButton = NavigationButton
 				.builder()
 				.tooltip("Emote Clue Items")
-				.icon(EmoteClueImages.resizeCanvas(EmoteClueImages.Ribbon.ALL, 16, 16))
+				.icon(ImageUtil.resizeCanvas(EmoteClueItemsImages.Icons.RuneScape.EmoteClue.Ribbon.ALL, 16, 16))
 				.priority(7)
 				.panel(this.emoteClueItemsPanel)
 				.build();
 
 		this.toggleCollectionLog(this.config.showNavigation());
 
-		this.overlay = new EmoteClueItemsOverlay(this.itemManager, this.config, this.progressManager);
+		this.overlay = new EmoteClueItemsOverlay(this.client, this.clientThread, this.itemManager, this.config, this.progressManager);
 		this.overlayManager.add(this.overlay);
 
 		this.reset();
@@ -145,7 +151,7 @@ public class EmoteClueItemsPlugin extends Plugin
 		for (final StashUnit stashUnit : StashUnit.values())
 		{
 			this.emoteClueItemsPanel.turnOnSTASHFilledButton(stashUnit);
-			this.emoteClueItemsPanel.turnOffSTASHFilledButton(stashUnit, new ImageIcon(EmoteClueImages.Toolbar.CheckSquare.WAITING), loginDisclaimer);
+			this.emoteClueItemsPanel.turnOffSTASHFilledButton(stashUnit, new ImageIcon(EmoteClueItemsImages.Icons.CheckSquare.WAITING), loginDisclaimer);
 		}
 		this.emoteClueItemsPanel.setEmoteClueItemGridDisclaimer(loginDisclaimer);
 		this.emoteClueItemsPanel.setSTASHUnitGridDisclaimer(loginDisclaimer);
@@ -157,6 +163,13 @@ public class EmoteClueItemsPlugin extends Plugin
 		{
 			this.onPlayerLoggedIn();
 		}
+
+		// TODO: remove
+		final StashUnit stash = StashUnit.HOSIDIUS_MESS;
+		final WorldMapMarker worldMapPoint = new StashUnitMapPoint(stash.getStashUnit().getWorldPoints()[0], stash, false);
+		this.worldMapPointManager.removeIf(x -> true);
+		this.worldMapPointManager.add(worldMapPoint);
+		this.overlay.addWorldMarker(worldMapPoint);
 	}
 
 	private void onStashUnitFilledChanged(final StashUnit stashUnit, final boolean filled)

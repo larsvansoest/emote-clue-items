@@ -29,7 +29,7 @@ public class RequirementPanel extends FoldablePanel implements UpdatablePanel
 	}
 
 	/**
-	 * Change the status of the {@link com.larsvansoest.runelite.clueitems.data.EmoteClueImages.Toolbar.Requirement}.
+	 * Change the status of the requirement.
 	 * <p>
 	 * Changes the header text color the color corresponding with given {@link com.larsvansoest.runelite.clueitems.ui.components.UpdatablePanel.Status}.
 	 *

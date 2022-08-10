@@ -28,7 +28,7 @@
 
 package com.larsvansoest.runelite.clueitems.ui.components;
 
-import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
+import com.larsvansoest.runelite.clueitems.EmoteClueItemsImages;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -509,8 +509,8 @@ public class FoldablePanel extends JPanel
 
 	private final static class FOLD_ICONS
 	{
-		static final ImageIcon DOWN = new ImageIcon(EmoteClueImages.Toolbar.Chevron.DOWN);
-		static final ImageIcon LEFT = new ImageIcon(EmoteClueImages.Toolbar.Chevron.LEFT);
+		static final ImageIcon DOWN = new ImageIcon(EmoteClueItemsImages.Icons.Chevron.DOWN);
+		static final ImageIcon LEFT = new ImageIcon(EmoteClueItemsImages.Icons.Chevron.LEFT);
 	}
 
 	@Getter

@@ -50,7 +50,7 @@ class ItemTracker
 
 	private final ArrayList<Item> items;
 
-	public ItemTracker(ItemManager itemManager)
+	public ItemTracker(final ItemManager itemManager)
 	{
 		this.itemManager = itemManager;
 
@@ -128,10 +128,10 @@ class ItemTracker
 		return deltas;
 	}
 
-	private Item canonicalize(Item item)
+	private Item canonicalize(final Item item)
 	{
 		final ItemComposition itemComposition = this.itemManager.getItemComposition(item.getId());
-		int quantity = itemComposition.getPlaceholderTemplateId() == -1 ? item.getQuantity() : 0;
+		final int quantity = itemComposition.getPlaceholderTemplateId() == -1 ? item.getQuantity() : 0;
 		return new Item(this.itemManager.canonicalize(item.getId()), quantity);
 	}
 }
