@@ -32,7 +32,6 @@ import net.runelite.api.annotations.Varbit;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.plugins.cluescrolls.clues.Enemy;
 import net.runelite.client.plugins.cluescrolls.clues.LocationClueScroll;
-import net.runelite.client.plugins.cluescrolls.clues.TextClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.emote.Emote;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 
@@ -51,7 +50,7 @@ import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement
  * Source: https://github.com/runelite/runelite/tree/master/runelite-client/src/main/java/net/runelite/client/plugins/cluescrolls/clues
  * </p>
  * <p>
- * Maintained up to 91e5d18.
+ * Maintained up to 3e65e49.
  * To check for any updates, see https://github.com/runelite/runelite/commits/master/runelite-client/src/main/java/net/runelite/client/plugins/cluescrolls/clues/EmoteClue.java
  * </p>
  *
@@ -59,7 +58,7 @@ import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement
  */
 @SuppressWarnings("SameParameterValue")
 @Getter
-public final class EmoteClue implements TextClueScroll, LocationClueScroll
+public final class EmoteClue implements LocationClueScroll
 {
 	public static final Set<EmoteClue> CLUES = ImmutableSet.of(
 			new EmoteClue(
