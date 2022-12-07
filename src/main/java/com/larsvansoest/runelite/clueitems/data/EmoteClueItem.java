@@ -167,7 +167,7 @@ public enum EmoteClueItem implements ItemRequirement
 	BRUISE_BLUE_SNELM_POINTED("Bruise blue snelm (pointed)", ItemID.BRUISE_BLUE_SNELM_3343),
 	BRYOPHYTAS_STAFF_UNCHARGED("Bryophytas' staff (uncharged)", ItemID.BRYOPHYTAS_STAFF_UNCHARGED),
 	BRYOPHYTAS_STAFF("Bryophytas' staff", ItemID.BRYOPHYTAS_STAFF),
-	BULL_ROARER("Bull roarer", ItemID.BULL_ROARER),
+	BULL_ROARER("Bull roarer", ItemID.BULLROARER),
 	CAPE_OF_LEGENDS("Cape of legends", ItemID.CAPE_OF_LEGENDS),
 	CASTLE_WARS_BRACELET1("Castle wars bracelet1", ItemID.CASTLE_WARS_BRACELET1),
 	CASTLE_WARS_BRACELET2("Castle wars bracelet2", ItemID.CASTLE_WARS_BRACELET2),
