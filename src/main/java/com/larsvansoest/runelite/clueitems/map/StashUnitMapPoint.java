@@ -12,11 +12,12 @@ public class StashUnitMapPoint extends WorldMapMarker
 	public StashUnitMapPoint(final WorldPoint worldPoint, final StashUnit stash, final boolean built)
 	{
 		super(worldPoint, EmoteClueItemsImages.Icons.RuneScape.StashUnit.get(stash.getType(), built, true), NAME);
+		// TODO: include stash name in name.
 		this.stash = stash;
 	}
 
 	public void setStashUnitBuildStatus(final boolean built)
 	{
-		super.setImage(EmoteClueItemsImages.Icons.RuneScape.StashUnit.get(this.stash.getType(), built, true));
+		super.setMarkerIcon(EmoteClueItemsImages.Icons.RuneScape.StashUnit.get(this.stash.getType(), built, true));
 	}
 }

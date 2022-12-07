@@ -137,7 +137,7 @@ public class EmoteClueItemsOverlay extends WidgetItemOverlay
 	{
 		this.clientThread.invoke(() ->
 		{
-			this.worldMapMarkers.forEach(worldMapMarker -> worldMapMarker.rotateOrb(this.client, graphics));
+			this.worldMapMarkers.forEach(worldMapMarker -> worldMapMarker.rotateOrb(this.client));
 		});
 		return null;
 	}

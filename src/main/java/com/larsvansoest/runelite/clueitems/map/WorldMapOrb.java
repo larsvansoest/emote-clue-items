@@ -1,6 +1,7 @@
 package com.larsvansoest.runelite.clueitems.map;
 
 import com.larsvansoest.runelite.clueitems.EmoteClueItemsImages;
+import com.larsvansoest.runelite.clueitems.data.StashUnit;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
@@ -14,10 +15,12 @@ import java.awt.image.BufferedImage;
 
 public class WorldMapOrb
 {
+	private static final BufferedImage ORB_IMAGE = new BufferedImage(40, 40, BufferedImage.TYPE_INT_ARGB);
+
 	private final WorldPoint worldPoint;
 
 	@Getter
-	private BufferedImage image;
+	private BufferedImage image = ORB_IMAGE;
 
 	public WorldMapOrb(final WorldPoint worldPoint)
 	{
@@ -78,7 +81,7 @@ public class WorldMapOrb
 		this.setImage(-1);
 	}
 
-	public void updateOrientation(final Client client, final Graphics2D graphics)
+	public void updateOrientation(final Client client)
 	{
 		final Rectangle mapViewArea = getWorldMapClipArea(client);
 		final Point drawPoint = mapWorldPointToGraphicsPoint(client, this.worldPoint);
@@ -97,7 +100,10 @@ public class WorldMapOrb
 
 	private void setImage(final int rotation)
 	{
-		this.image = EmoteClueItemsImages.MapOrb.get(rotation);
+		// TODO: how to clear the image?
+		this.image.getGraphics().clearRect(0, 0, this.image.getWidth(), this.image.getHeight());
+		this.image.getGraphics().drawImage(EmoteClueItemsImages.MapOrb.get(rotation), 0, 0, null);
+		this.image.getGraphics().drawImage(EmoteClueItemsImages.Icons.RuneScape.StashUnit.get(StashUnit.Type.Crate, false, true), 0, 0, null);
 	}
 
 	private int getRotation(final int x, final int y, final int minX, final int maxX, final int minY, final int maxY)

@@ -29,6 +29,7 @@
 package com.larsvansoest.runelite.clueitems;
 
 import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
+import com.larsvansoest.runelite.clueitems.data.StashUnit;
 import net.runelite.client.util.ImageUtil;
 
 import java.awt.image.BufferedImage;
@@ -69,6 +70,7 @@ public abstract class EmoteClueItemsImages
 		private static final String folder = path(EmoteClueItemsImages.folder, "map-orb");
 
 		public static final BufferedImage ORB = getBufferedImage(MapOrb.folder, "orb.png");
+
 		public static final BufferedImage ORB_0 = getBufferedImage(MapOrb.folder, "orb-0.png");
 		public static final BufferedImage ORB_90 = getBufferedImage(MapOrb.folder, "orb-90.png");
 		public static final BufferedImage ORB_180 = getBufferedImage(MapOrb.folder, "orb-180.png");

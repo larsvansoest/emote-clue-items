@@ -27,25 +27,25 @@ public class WorldMapMarker extends WorldMapPoint
 		super.setName(name);
 
 		this.orb = new WorldMapOrb(worldPoint);
-		this.setImage(image);
+		this.setMarkerIcon(image);
 
 		this.edgeSnapped = false;
 	}
 
-	public void rotateOrb(final Client client, final Graphics2D graphics)
+	public void rotateOrb(final Client client)
 	{
-		this.orb.updateOrientation(client, graphics);
+		this.orb.updateOrientation(client);
 		if (this.edgeSnapped)
 		{
 			super.setImage(this.orb.getImage());
 		}
 	}
 
-	public void setImage(final BufferedImage image)
+	public void setMarkerIcon(final BufferedImage image)
 	{
 		GRAPHICS.drawImage(BACKGROUND_IMAGE, 0, 0, null);
-		final int x = Math.max(BACKGROUND_IMAGE.getWidth() - image.getWidth() / 2, 0);
-		final int y = Math.max((int) (BACKGROUND_IMAGE.getHeight() - image.getHeight() / 2.5), 0);
+		final int x = Math.max((BACKGROUND_IMAGE.getWidth() - image.getWidth()) / 2, 0);
+		final int y = Math.max((int)((BACKGROUND_IMAGE.getHeight() - image.getHeight()) / 2.5), 0);
 		GRAPHICS.drawImage(image, x, y, null);
 	}
 
