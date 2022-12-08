@@ -1,5 +1,6 @@
 package com.larsvansoest.runelite.clueitems.map;
 
+
 import com.larsvansoest.runelite.clueitems.EmoteClueItemsImages;
 import com.larsvansoest.runelite.clueitems.data.StashUnit;
 import lombok.Getter;
@@ -15,7 +16,7 @@ public class StashUnitWorldMapOrb extends WorldMapOrb {
     private BufferedImage image;
 
     public StashUnitWorldMapOrb(WorldPoint worldPoint) {
-        super(worldPoint);
+        super(worldPoint, null);
     }
 
     @Override

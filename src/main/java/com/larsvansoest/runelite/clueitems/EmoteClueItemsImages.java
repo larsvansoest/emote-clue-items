@@ -83,31 +83,6 @@ public abstract class EmoteClueItemsImages
 		private MapOrb()
 		{
 		}
-
-		public static BufferedImage get(final int rotation)
-		{
-			switch (rotation)
-			{
-				case 0:
-					return EmoteClueItemsImages.MapOrb.ORB_0;
-				case 45:
-					return EmoteClueItemsImages.MapOrb.ORB_45;
-				case 90:
-					return EmoteClueItemsImages.MapOrb.ORB_90;
-				case 135:
-					return EmoteClueItemsImages.MapOrb.ORB_135;
-				case 180:
-					return EmoteClueItemsImages.MapOrb.ORB_180;
-				case 225:
-					return EmoteClueItemsImages.MapOrb.ORB_225;
-				case 270:
-					return EmoteClueItemsImages.MapOrb.ORB_270;
-				case 315:
-					return EmoteClueItemsImages.MapOrb.ORB_315;
-				default:
-					return EmoteClueItemsImages.MapOrb.ORB;
-			}
-		}
 	}
 
 	public static final class Icons

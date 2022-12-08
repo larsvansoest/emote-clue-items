@@ -1,6 +1,7 @@
 package com.larsvansoest.runelite.clueitems.map;
 
 import com.larsvansoest.runelite.clueitems.EmoteClueItemsImages;
+import com.larsvansoest.runelite.clueitems.data.StashUnit;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
@@ -26,7 +27,7 @@ public class WorldMapMarker extends WorldMapPoint
 		super.setJumpOnClick(true);
 		super.setName(name);
 
-		this.orb = new WorldMapOrb(worldPoint);
+		this.orb = new WorldMapOrb(worldPoint, EmoteClueItemsImages.Icons.RuneScape.StashUnit.get(StashUnit.Type.Crate, false, true));
 		this.setMarkerIcon(image);
 
 		this.edgeSnapped = false;
