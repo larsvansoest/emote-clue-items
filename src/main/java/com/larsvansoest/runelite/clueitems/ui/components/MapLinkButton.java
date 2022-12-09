@@ -86,10 +86,12 @@ public class MapLinkButton extends JPanel
 		final GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
-		c.weightx = 1;
+		c.weightx = 0;
 		c.weighty = 1;
 		c.fill = GridBagConstraints.BOTH;
 		super.add(this.pinLabel, c);
+		c.insets.left = 5;
+		c.weightx = 1;
 		c.gridx++;
 		super.add(this.label, c);
 	}

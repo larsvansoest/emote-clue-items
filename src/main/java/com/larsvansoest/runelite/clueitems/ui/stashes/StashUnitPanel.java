@@ -14,7 +14,6 @@ import java.awt.*;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 /**
  * Displays data of a {@link com.larsvansoest.runelite.clueitems.data.StashUnit}. Implements {@link com.larsvansoest.runelite.clueitems.ui.components.FoldablePanel}.
@@ -49,8 +48,8 @@ public class StashUnitPanel extends RequirementPanel
 	@Getter
 	private ItemCollectionPanel itemCollectionPanel;
 
-	private int requiredConstructionLevel;
-	private PropertyPanel constructionLevelPanel;
+	private final int requiredConstructionLevel;
+	private final PropertyPanel constructionLevelPanel;
 
 	/**
 	 * Creates the panel.
@@ -163,8 +162,6 @@ public class StashUnitPanel extends RequirementPanel
 		return detailsPanel;
 	}
 
-
-
 	private JPanel getDetailsImagePanel(final Color backgroundColor)
 	{
 		final JPanel rightPanel = new JPanel(new GridBagLayout());
@@ -175,9 +172,15 @@ public class StashUnitPanel extends RequirementPanel
 		c.weighty = 1;
 		c.weightx = 1;
 		c.fill = GridBagConstraints.BOTH;
+		c.gridwidth = 3;
 		rightPanel.add(this.stashUnitImage, c);
+		c.gridwidth = 1;
 		c.gridy++;
+		rightPanel.add(new JLabel(), c);
+		c.gridx++;
 		rightPanel.add(this.mapLinkButton, c);
+		c.gridx++;
+		rightPanel.add(new JLabel(), c);
 		return rightPanel;
 	}
 
