@@ -3,6 +3,7 @@ package com.larsvansoest.runelite.clueitems.ui.components;
 import com.larsvansoest.runelite.clueitems.EmoteClueItemsImages;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.util.ImageUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,6 +25,8 @@ public class MapLinkButton extends JPanel
 	private static final String LABEL_TEXT = "maplink";
 	private static final Icon PIN_ICON = new ImageIcon(EmoteClueItemsImages.Icons.Location.PIN);
 
+	private static final Icon PIN_ICON_DISABLED = new ImageIcon(ImageUtil.grayscaleImage(EmoteClueItemsImages.Icons.Location.PIN));
+
 	private static final Icon PIN_DELETE_ICON = new ImageIcon(EmoteClueItemsImages.Icons.Location.PIN_DELETE);
 
 	private static final Font LABEL_FONT = FontManager.getRunescapeSmallFont();
@@ -34,6 +37,8 @@ public class MapLinkButton extends JPanel
 	private final JLabel pinLabel;
 
 	private boolean showDelete;
+
+	private boolean disabled;
 
 	/**
 	 * Creates the button.
@@ -50,27 +55,32 @@ public class MapLinkButton extends JPanel
 		this.label = this.getMapLinkLabel(labelColor);
 		this.pinLabel = new JLabel();
 		this.setShowDelete(false);
+		this.disabled = false;
 
 		super.addMouseListener(new MouseAdapter()
 		{
 			@Override
 			public void mousePressed(final MouseEvent e)
 			{
-				if (MapLinkButton.this.showDelete) {
-					onClickDelete.run();
+				if (!MapLinkButton.this.disabled) {
+					if (MapLinkButton.this.showDelete) {
+						onClickDelete.run();
+					}
+					else {
+						onClick.run();
+					}
+					MapLinkButton.this.setShowDelete(!MapLinkButton.this.showDelete);
 				}
-				else {
-					onClick.run();
-				}
-				MapLinkButton.this.setShowDelete(!MapLinkButton.this.showDelete);
 				super.mousePressed(e);
 			}
 
 			@Override
 			public void mouseEntered(final MouseEvent e)
 			{
-				MapLinkButton.this.label.setForeground(labelHoverColor);
-				MapLinkButton.this.label.setFont(MapLinkButton.LABEL_FONT_UNDERLINED);
+				if (!MapLinkButton.this.disabled) {
+					MapLinkButton.this.label.setForeground(labelHoverColor);
+					MapLinkButton.this.label.setFont(MapLinkButton.LABEL_FONT_UNDERLINED);
+				}
 				super.mouseEntered(e);
 			}
 
@@ -117,5 +127,19 @@ public class MapLinkButton extends JPanel
 	public void setShowDelete(boolean show) {
 		this.showDelete = show;
 		this.pinLabel.setIcon(show ? PIN_DELETE_ICON : PIN_ICON);
+	}
+
+	public void turnOff() {
+		if (!this.disabled) {
+			this.disabled = true;
+			this.pinLabel.setIcon(PIN_ICON_DISABLED);
+		}
+	}
+
+	public void turnOn() {
+		if (this.disabled) {
+			this.disabled = false;
+			this.setShowDelete(this.showDelete);
+		}
 	}
 }

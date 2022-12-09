@@ -229,6 +229,7 @@ public class EmoteClueItemsPlugin extends Plugin
 			int playerConstructionLevel = client.getBoostedSkillLevel(Skill.CONSTRUCTION);
 			this.updatePlayerConstructionLevel(playerConstructionLevel);
 		});
+		this.emoteClueItemsPanel.enableMapLinks();
 	}
 
 	private void updatePlayerConstructionLevel(Integer level) {

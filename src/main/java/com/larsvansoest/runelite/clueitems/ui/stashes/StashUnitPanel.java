@@ -269,4 +269,12 @@ public class StashUnitPanel extends RequirementPanel
 				: Status.Complete;
 		this.constructionLevelPanel.setStatus(status);
 	}
+
+	public void turnOffMapLinkButton() {
+		this.mapLinkButton.turnOff();
+	}
+
+	public void turnOnMapLinkButton() {
+		this.mapLinkButton.turnOn();
+	}
 }

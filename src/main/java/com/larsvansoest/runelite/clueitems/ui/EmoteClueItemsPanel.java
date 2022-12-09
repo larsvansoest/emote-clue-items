@@ -184,6 +184,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 		this.setPlayerConstructionLevel(null);
 		this.clueItemsGrid.reset();
 		this.stashUnitGrid.reset();
+		this.disableMapLinks();
 	}
 
 	private void setStashUnitShownOnMap(StashUnitPanel stashUnitPanel) {
@@ -382,5 +383,13 @@ public class EmoteClueItemsPanel extends PluginPanel
 
 	public void setPlayerConstructionLevel(Integer level) {
 		this.stashUnitPanelMap.values().forEach(stashUnitPanel -> stashUnitPanel.setPlayerConstructionLevel(level));
+	}
+
+	public void enableMapLinks() {
+		this.stashUnitPanelMap.values().forEach(StashUnitPanel::turnOnMapLinkButton);
+	}
+
+	public void disableMapLinks() {
+		this.stashUnitPanelMap.values().forEach(StashUnitPanel::turnOffMapLinkButton);
 	}
 }
