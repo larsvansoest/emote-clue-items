@@ -13,7 +13,7 @@ import java.awt.*;
  * @author Lars van Soest
  * @since 3.0.0
  */
-public class PropertyPanel extends JPanel
+public class PropertyPanel extends JPanel implements StatusPanel
 {
 	private final JLabel nameLabel;
 	private final JLabel valueLabel;
@@ -39,8 +39,8 @@ public class PropertyPanel extends JPanel
 		this.valueLabel = new JLabel();
 		this.setValue(value);
 		this.valueLabel.setFont(FontManager.getRunescapeSmallFont());
-		this.valueLabel.setForeground(palette.getPropertyValueColor());
 		this.valueLabel.setHorizontalAlignment(JLabel.CENTER);
+		this.setStatus(Status.InComplete);
 
 		final GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
@@ -72,5 +72,10 @@ public class PropertyPanel extends JPanel
 	public void setValue(final String value)
 	{
 		this.valueLabel.setText(value.toLowerCase());
+	}
+
+	@Override
+	public void setStatus(Status status) {
+		this.valueLabel.setForeground(status.colour);
 	}
 }

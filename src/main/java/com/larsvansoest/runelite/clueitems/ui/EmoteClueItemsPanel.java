@@ -15,14 +15,12 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.cluescrolls.clues.item.AllRequirementsCollection;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 import net.runelite.client.ui.PluginPanel;
-import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 import java.util.*;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -123,7 +121,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 		{
 			final EmoteClueItemCollectionPanel collectionPanel = new EmoteClueItemCollectionPanel(palette, "Eligible Inventory Items", 6, true);
 			stashUnitPanel.setItemCollectionPanel(collectionPanel, FoldablePanel.DisplayMode.All);
-			collectionPanel.setStatus(UpdatablePanel.Status.InComplete);
+			collectionPanel.setStatus(StatusPanel.Status.InComplete);
 
 			for (final EmoteClue emoteClue : EmoteClueAssociations.STASHUnitToEmoteClues.get(stashUnit))
 			{
@@ -175,14 +173,15 @@ public class EmoteClueItemsPanel extends PluginPanel
 		for (final EmoteClueItem emoteClueItem : EmoteClueItem.values())
 		{
 			this.setEmoteClueItemQuantity(emoteClueItem, 0);
-			this.setEmoteClueItemStatus(emoteClueItem, UpdatablePanel.Status.InComplete);
-			this.setEmoteClueItemCollectionLogStatus(emoteClueItem, UpdatablePanel.Status.InComplete);
+			this.setEmoteClueItemStatus(emoteClueItem, StatusPanel.Status.InComplete);
+			this.setEmoteClueItemCollectionLogStatus(emoteClueItem, StatusPanel.Status.InComplete);
 		}
 		for (final StashUnit stashUnit : StashUnit.values())
 		{
 			this.setSTASHUnitStatus(stashUnit, false, false);
 		}
 		this.setStashUnitShownOnMap(null);
+		this.setPlayerConstructionLevel(null);
 		this.clueItemsGrid.reset();
 		this.stashUnitGrid.reset();
 	}
@@ -237,7 +236,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 	 * @param emoteClueItem the EmoteClueItem requirement to change the status of in all corresponding {@link ItemCollectionPanel}.
 	 * @param status        the new status of the EmoteClueItem requirement.
 	 */
-	public void setEmoteClueItemCollectionLogStatus(final EmoteClueItem emoteClueItem, final UpdatablePanel.Status status)
+	public void setEmoteClueItemCollectionLogStatus(final EmoteClueItem emoteClueItem, final StatusPanel.Status status)
 	{
 		for (final EmoteClueItemCollectionPanel collectionPanel : this.collectionPanelsMap.get(emoteClueItem))
 		{
@@ -249,9 +248,9 @@ public class EmoteClueItemsPanel extends PluginPanel
 	 * Changes an {@link com.larsvansoest.runelite.clueitems.data.EmoteClueItem} {@link com.larsvansoest.runelite.clueitems.ui.clues.EmoteClueItemPanel} status panel to represent given status, if a mapping to {@link com.larsvansoest.runelite.clueitems.ui.clues.EmoteClueItemPanel} exists.
 	 *
 	 * @param emoteClueItem the emote to change the status of in the corresponding {@link com.larsvansoest.runelite.clueitems.ui.stashes.StashUnitPanel}.
-	 * @param status        the desired {@link UpdatablePanel.Status} status to display.
+	 * @param status        the desired {@link StatusPanel.Status} status to display.
 	 */
-	public void setEmoteClueItemStatus(final EmoteClueItem emoteClueItem, final UpdatablePanel.Status status)
+	public void setEmoteClueItemStatus(final EmoteClueItem emoteClueItem, final StatusPanel.Status status)
 	{
 		final EmoteClueItemPanel itemPanel = this.itemPanelMap.get(emoteClueItem);
 		if (itemPanel != null)
@@ -379,5 +378,9 @@ public class EmoteClueItemsPanel extends PluginPanel
 	public void removeSTASHUnitGridDisclaimer()
 	{
 		this.stashUnitGrid.removeDisclaimer();
+	}
+
+	public void setPlayerConstructionLevel(Integer level) {
+		this.stashUnitPanelMap.values().forEach(stashUnitPanel -> stashUnitPanel.setPlayerConstructionLevel(level));
 	}
 }

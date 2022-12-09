@@ -43,7 +43,7 @@ import java.awt.*;
  * <p>
  * If the quantity is 0, the icon is semi-faded.
  */
-public class ItemSlotPanel extends JPanel implements UpdatablePanel
+public class ItemSlotPanel extends JPanel implements StatusPanel
 {
 	private final ItemManager itemManager;
 	private final int itemId;

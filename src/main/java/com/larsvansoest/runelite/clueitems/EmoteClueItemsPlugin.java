@@ -36,16 +36,10 @@ import com.larsvansoest.runelite.clueitems.overlay.EmoteClueItemsOverlay;
 import com.larsvansoest.runelite.clueitems.progress.ProgressManager;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPanel;
-import com.larsvansoest.runelite.clueitems.ui.components.UpdatablePanel;
+import com.larsvansoest.runelite.clueitems.ui.components.StatusPanel;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.ScriptID;
-import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.*;
+import net.runelite.api.events.*;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -105,6 +99,8 @@ public class EmoteClueItemsPlugin extends Plugin
 	private boolean updateStashBuiltStatusOnNextGameTick;
 	private boolean showUnopenedInterfaceNotification;
 
+	private Integer cachedPlayerConstructionLevel;
+
 	@Override
 	protected void startUp()
 	{
@@ -162,6 +158,7 @@ public class EmoteClueItemsPlugin extends Plugin
 
 		this.updateStashBuiltStatusOnNextGameTick = false;
 		this.showUnopenedInterfaceNotification = this.config.notifyUnopenedInterfaces();
+		this.cachedPlayerConstructionLevel = null;
 
 		if (this.client.getGameState() == GameState.LOGGED_IN)
 		{
@@ -197,12 +194,12 @@ public class EmoteClueItemsPlugin extends Plugin
 		this.emoteClueItemsPanel.setEmoteClueItemQuantity(emoteClueItem, quantity);
 	}
 
-	private void onEmoteClueItemInventoryStatusChanged(final EmoteClueItem emoteClueItem, final UpdatablePanel.Status status)
+	private void onEmoteClueItemInventoryStatusChanged(final EmoteClueItem emoteClueItem, final StatusPanel.Status status)
 	{
 		this.emoteClueItemsPanel.setEmoteClueItemCollectionLogStatus(emoteClueItem, status);
 	}
 
-	private void onEmoteClueItemStatusChanged(final EmoteClueItem emoteClueItem, final UpdatablePanel.Status status)
+	private void onEmoteClueItemStatusChanged(final EmoteClueItem emoteClueItem, final StatusPanel.Status status)
 	{
 		this.emoteClueItemsPanel.setEmoteClueItemStatus(emoteClueItem, status);
 	}
@@ -228,6 +225,17 @@ public class EmoteClueItemsPlugin extends Plugin
 		this.emoteClueItemsPanel.removeEmoteClueItemGridDisclaimer();
 		this.emoteClueItemsPanel.removeSTASHUnitGridDisclaimer();
 		this.clientThread.invoke(this::setupUnopenedInterfaceNotification);
+		this.clientThread.invoke(() -> {
+			int playerConstructionLevel = client.getBoostedSkillLevel(Skill.CONSTRUCTION);
+			this.updatePlayerConstructionLevel(playerConstructionLevel);
+		});
+	}
+
+	private void updatePlayerConstructionLevel(Integer level) {
+		if (!Objects.equals(this.cachedPlayerConstructionLevel, level)) {
+			this.cachedPlayerConstructionLevel = level;
+			this.emoteClueItemsPanel.setPlayerConstructionLevel(level);
+		}
 	}
 
 	private void setupUnopenedInterfaceNotification()
@@ -272,6 +280,13 @@ public class EmoteClueItemsPlugin extends Plugin
 		if (event.getGameState() == GameState.LOGGED_IN)
 		{
 			this.onPlayerLoggedIn();
+		}
+	}
+
+	@Subscribe
+	protected void onStatChanged(final StatChanged event) {
+		if (Objects.equals(event.getSkill(), Skill.CONSTRUCTION)) {
+			this.updatePlayerConstructionLevel(event.getLevel());
 		}
 	}
 

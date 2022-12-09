@@ -49,6 +49,9 @@ public class StashUnitPanel extends RequirementPanel
 	@Getter
 	private ItemCollectionPanel itemCollectionPanel;
 
+	private int requiredConstructionLevel;
+	private PropertyPanel constructionLevelPanel;
+
 	/**
 	 * Creates the panel.
 	 *
@@ -103,8 +106,14 @@ public class StashUnitPanel extends RequirementPanel
 				.map(ImageIcon::new)
 				.map(JLabel::new)
 				.forEach(label -> super.addRight(label, insets, 0, 0, DisplayMode.Default));
+
+		EmoteClueDifficulty difficulty = this.difficulties[0];
+
+		this.requiredConstructionLevel = StashUnit.DifficultyRequirements.valueOf(difficulty.name()).getConstructionLvl();
+		this.constructionLevelPanel = new PropertyPanel(this.palette, "Construction lvl", Integer.toString(this.requiredConstructionLevel));
+
 		super.addRight(new JLabel(String.valueOf(this.quantity)), insets, 0, 0, DisplayMode.Default);
-		super.addChild(this.getDetailsPanel(this.difficulties[0]), DisplayMode.All);
+		super.addChild(this.getDetailsPanel(difficulty), DisplayMode.All);
 	}
 
 	/**
@@ -141,7 +150,7 @@ public class StashUnitPanel extends RequirementPanel
 		c.gridy++;
 		detailsPanel.add(new PropertyPanel(this.palette, "Difficulty", difficulty.name()), c);
 		c.gridy++;
-		detailsPanel.add(new PropertyPanel(this.palette, "Construction lvl", String.valueOf(difficultyRequirements.getConstructionLvl())), c);
+		detailsPanel.add(this.constructionLevelPanel, c);
 		c.gridy++;
 		c.insets.top = 5;
 		detailsPanel.add(new DescriptionPanel(this.palette, "Build materials", difficultyRequirements.getConstructionItems()), c);
@@ -249,5 +258,12 @@ public class StashUnitPanel extends RequirementPanel
 
 	public void setMapLinkShowDelete(boolean showDelete) {
 		this.mapLinkButton.setShowDelete(showDelete);
+	}
+
+	public void setPlayerConstructionLevel(Integer level) {
+		final Status status = Objects.isNull(level) ? Status.InComplete
+				: level < this.requiredConstructionLevel ? Status.InProgress
+				: Status.Complete;
+		this.constructionLevelPanel.setStatus(status);
 	}
 }
