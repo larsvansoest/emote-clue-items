@@ -22,18 +22,25 @@ import java.util.Map;
 public class MapLinkButton extends JPanel
 {
 	private static final String LABEL_TEXT = "maplink";
-	private static final Icon ICON = new ImageIcon(EmoteClueItemsImages.Icons.Location.PIN);
+	private static final Icon PIN_ICON = new ImageIcon(EmoteClueItemsImages.Icons.Location.PIN);
+
+	private static final Icon PIN_DELETE_ICON = new ImageIcon(EmoteClueItemsImages.Icons.Location.PIN_DELETE);
+
 	private static final Font LABEL_FONT = FontManager.getRunescapeSmallFont();
 	private static final Font LABEL_FONT_UNDERLINED = MapLinkButton.getUnderLinedFont(MapLinkButton.LABEL_FONT);
 
 	private final JLabel label;
+
+	private final JLabel pinLabel;
+
+	private boolean showDelete;
 
 	/**
 	 * Creates the button.
 	 *
 	 * @param palette Colour scheme for the button.
 	 */
-	public MapLinkButton(final EmoteClueItemsPalette palette) // TODO: Add location parameter and highlight it on click.
+	public MapLinkButton(final EmoteClueItemsPalette palette, final Runnable onClick, final Runnable onClickDelete) // TODO: Add location parameter and highlight it on click.
 	{
 		super(new GridBagLayout());
 		super.setBackground(palette.getFoldContentColor());
@@ -41,12 +48,21 @@ public class MapLinkButton extends JPanel
 		final Color labelColor = palette.getPropertyValueColor();
 		final Color labelHoverColor = palette.getPropertyNameColor();
 		this.label = this.getMapLinkLabel(labelColor);
+		this.pinLabel = new JLabel();
+		this.setShowDelete(false);
 
 		super.addMouseListener(new MouseAdapter()
 		{
 			@Override
 			public void mousePressed(final MouseEvent e)
 			{
+				if (MapLinkButton.this.showDelete) {
+					onClickDelete.run();
+				}
+				else {
+					onClick.run();
+				}
+				MapLinkButton.this.setShowDelete(!MapLinkButton.this.showDelete);
 				super.mousePressed(e);
 			}
 
@@ -73,7 +89,7 @@ public class MapLinkButton extends JPanel
 		c.weightx = 1;
 		c.weighty = 1;
 		c.fill = GridBagConstraints.BOTH;
-		super.add(new JLabel(MapLinkButton.ICON), c);
+		super.add(this.pinLabel, c);
 		c.gridx++;
 		super.add(this.label, c);
 	}
@@ -94,5 +110,10 @@ public class MapLinkButton extends JPanel
 		label.setFont(LABEL_FONT);
 		label.setForeground(textColor);
 		return label;
+	}
+
+	public void setShowDelete(boolean show) {
+		this.showDelete = show;
+		this.pinLabel.setIcon(show ? PIN_DELETE_ICON : PIN_ICON);
 	}
 }

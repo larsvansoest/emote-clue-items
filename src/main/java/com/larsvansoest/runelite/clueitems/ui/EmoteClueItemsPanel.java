@@ -15,12 +15,14 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.cluescrolls.clues.item.AllRequirementsCollection;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 import java.util.*;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -49,6 +51,8 @@ public class EmoteClueItemsPanel extends PluginPanel
 	private final EmoteClueItemGrid clueItemsGrid;
 	private final StashUnitGrid stashUnitGrid;
 
+	private StashUnitPanel stashUnitPanelShownOnMap;
+
 	/**
 	 * Creates the panel.
 	 *
@@ -60,7 +64,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 	 * @param gitHubUrl                Hyperlink when clicking the GitHub icon in the footer.
 	 */
 	public EmoteClueItemsPanel(
-			final EmoteClueItemsPalette palette, final ItemManager itemManager, final BiConsumer<StashUnit, Boolean> onStashFillStatusChanged, final String pluginName, final String pluginVersion,
+			final EmoteClueItemsPalette palette, final ItemManager itemManager, final BiConsumer<StashUnit, Boolean> onStashFillStatusChanged, final BiConsumer<StashUnit, Boolean> onAddStashUnitToMap, final Runnable onRemoveStashUnitFromMap, final String pluginName, final String pluginVersion,
 			final String gitHubUrl)
 	{
 		super();
@@ -85,7 +89,20 @@ public class EmoteClueItemsPanel extends PluginPanel
 		this.emoteCluePanelMap = EmoteClue.CLUES.stream().collect(Collectors.toMap(Function.identity(), emoteClue -> new EmoteCluePanel(palette, emoteClue)));
 
 		// Create STASHUnit panels.
-		this.stashUnitPanelMap = Arrays.stream(StashUnit.values()).collect(Collectors.toMap(Function.identity(), stash -> new StashUnitPanel(palette, stash, onStashFillStatusChanged)));
+		this.stashUnitPanelShownOnMap = null;
+		this.stashUnitPanelMap = Arrays.stream(StashUnit.values()).collect(Collectors.toMap(
+				Function.identity(),
+				stash -> new StashUnitPanel(
+						palette,
+						stash,
+						onStashFillStatusChanged,
+						(panel, built) -> {
+							this.setStashUnitShownOnMap(panel);
+							onAddStashUnitToMap.accept(stash, built);
+						},
+						onRemoveStashUnitFromMap
+				)
+		));
 
 		// Setup item panels.
 		this.itemPanelMap.forEach((emoteClueItem, itemPanel) ->
@@ -165,8 +182,16 @@ public class EmoteClueItemsPanel extends PluginPanel
 		{
 			this.setSTASHUnitStatus(stashUnit, false, false);
 		}
+		this.setStashUnitShownOnMap(null);
 		this.clueItemsGrid.reset();
 		this.stashUnitGrid.reset();
+	}
+
+	private void setStashUnitShownOnMap(StashUnitPanel stashUnitPanel) {
+		if(Objects.nonNull(this.stashUnitPanelShownOnMap)) {
+			this.stashUnitPanelShownOnMap.setMapLinkShowDelete(false);
+		}
+		this.stashUnitPanelShownOnMap = stashUnitPanel;
 	}
 
 	private void addEmoteClueItemToCollectionPanel(final EmoteClueItemCollectionPanel collectionPanel, final EmoteClueItem emoteClueItem)

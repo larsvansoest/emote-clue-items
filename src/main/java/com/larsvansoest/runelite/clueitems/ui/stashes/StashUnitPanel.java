@@ -14,6 +14,7 @@ import java.awt.*;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * Displays data of a {@link com.larsvansoest.runelite.clueitems.data.StashUnit}. Implements {@link com.larsvansoest.runelite.clueitems.ui.components.FoldablePanel}.
@@ -35,6 +36,9 @@ public class StashUnitPanel extends RequirementPanel
 	private final int quantity;
 	private final ImageIcon stashBuiltIcon;
 	private final ImageIcon stashNotBuiltIcon;
+
+	private final MapLinkButton mapLinkButton;
+
 	private final JLabel stashUnitImage;
 	@Getter
 	private boolean filled;
@@ -52,7 +56,7 @@ public class StashUnitPanel extends RequirementPanel
 	 * @param stash                    StashUnit of which data is displayed by this panel.
 	 * @param onStashFillStatusChanged Behaviour to run when the player changes stash unit fill status.
 	 */
-	public StashUnitPanel(final EmoteClueItemsPalette palette, final StashUnit stash, final BiConsumer<StashUnit, Boolean> onStashFillStatusChanged)
+	public StashUnitPanel(final EmoteClueItemsPalette palette, final StashUnit stash, final BiConsumer<StashUnit, Boolean> onStashFillStatusChanged, final BiConsumer<StashUnitPanel, Boolean> onAddStashUnitToMap, final Runnable onRemoveStashUnitFromMap)
 	{
 		super(palette, stash.getName(), 160, 20);
 		this.palette = palette;
@@ -84,6 +88,8 @@ public class StashUnitPanel extends RequirementPanel
 			}
 		}, DataGrid.getToolTipText(toolTipTextFormat, "empty"));
 		this.filledButton.setOpaque(false);
+
+		this.mapLinkButton = new MapLinkButton(this.palette, () -> onAddStashUnitToMap.accept(this, this.built), onRemoveStashUnitFromMap);
 
 		super.addLeft(this.filledButton, new Insets(0, 1, 0, 0), 10, 10, DisplayMode.All);
 
@@ -148,6 +154,8 @@ public class StashUnitPanel extends RequirementPanel
 		return detailsPanel;
 	}
 
+
+
 	private JPanel getDetailsImagePanel(final Color backgroundColor)
 	{
 		final JPanel rightPanel = new JPanel(new GridBagLayout());
@@ -160,7 +168,7 @@ public class StashUnitPanel extends RequirementPanel
 		c.fill = GridBagConstraints.BOTH;
 		rightPanel.add(this.stashUnitImage, c);
 		c.gridy++;
-		rightPanel.add(new MapLinkButton(this.palette), c);
+		rightPanel.add(this.mapLinkButton, c);
 		return rightPanel;
 	}
 
@@ -237,5 +245,9 @@ public class StashUnitPanel extends RequirementPanel
 	{
 		this.filledButton.cycleToStage(filled ? this.filledButtonComplete : this.filledButtonInComplete);
 		this.filled = filled;
+	}
+
+	public void setMapLinkShowDelete(boolean showDelete) {
+		this.mapLinkButton.setShowDelete(showDelete);
 	}
 }

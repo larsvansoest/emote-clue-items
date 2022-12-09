@@ -88,8 +88,11 @@ public class EmoteClueItemsOverlay extends WidgetItemOverlay
 
 	public void addWorldMarker(final WorldMapMarker marker)
 	{
-		this.worldMapMarkers.clear(); // TODO: remove
 		this.worldMapMarkers.add(marker);
+	}
+
+	public void clearWorldMarkers() {
+		this.worldMapMarkers.clear();
 	}
 
 	@Override

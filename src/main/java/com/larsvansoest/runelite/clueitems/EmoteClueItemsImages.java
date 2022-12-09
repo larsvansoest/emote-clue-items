@@ -29,10 +29,11 @@
 package com.larsvansoest.runelite.clueitems;
 
 import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
-import com.larsvansoest.runelite.clueitems.data.StashUnit;
 import net.runelite.client.util.ImageUtil;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Objects;
 
 /**
  * Provides static objects for each image used by {@link EmoteClueItemsPlugin}.
@@ -52,6 +53,30 @@ public abstract class EmoteClueItemsImages
 	private static String path(final String current, final String next)
 	{
 		return String.format("%s/%s", current, next);
+	}
+
+	public static final class Utils {
+		private Utils()
+		{
+
+		}
+
+		private static final Color TRANSPARENT = new Color(0, 0, 0, 0);
+
+		public static BufferedImage createBufferFromImage(BufferedImage image) {
+			return ImageUtil.fillImage(image, TRANSPARENT);
+		}
+
+		public static void drawIconWithBackground(BufferedImage bufferedImage, BufferedImage background, BufferedImage icon, double devideX, double devideY) {
+			Graphics g2d = bufferedImage.createGraphics();
+			g2d.drawImage(background, 0, 0, null);
+			if (Objects.nonNull(icon) && devideX != 0 && devideY != 0) {
+				final int x = Math.max((int)((background.getWidth() - icon.getWidth()) / devideX), 0);
+				final int y = Math.max((int)((background.getHeight() - icon.getHeight()) / devideY), 0);
+				g2d.drawImage(icon, x, y, null);
+			}
+			g2d.dispose();
+		}
 	}
 
 	public static final class RuneLite

@@ -12,48 +12,40 @@ import java.awt.image.BufferedImage;
 
 public class WorldMapMarker extends WorldMapPoint
 {
-	private static final BufferedImage BACKGROUND_IMAGE = EmoteClueItemsImages.RuneLite.CLUE_ARROW;
-	private static final BufferedImage WORLD_IMAGE = new BufferedImage(BACKGROUND_IMAGE.getWidth(), BACKGROUND_IMAGE.getHeight(), BufferedImage.TYPE_INT_ARGB);
-	private static final Point WORLD_IMAGE_POINT = new Point(WORLD_IMAGE.getWidth() / 2, WORLD_IMAGE.getHeight());
-	private static final Graphics GRAPHICS = WORLD_IMAGE.getGraphics();
-
+	private final BufferedImage marker = EmoteClueItemsImages.Utils.createBufferFromImage(EmoteClueItemsImages.RuneLite.CLUE_ARROW);
+	private final Point markerPoint = new Point(marker.getWidth() / 2, marker.getHeight());
 	private final WorldMapOrb orb;
-	private boolean edgeSnapped;
 
-	public WorldMapMarker(final WorldPoint worldPoint, final BufferedImage image, final String name)
+	public WorldMapMarker(final WorldPoint worldPoint, final BufferedImage icon, final String name)
 	{
-		super(worldPoint, image);
+		super(worldPoint, icon);
 		super.setSnapToEdge(true);
 		super.setJumpOnClick(true);
 		super.setName(name);
 
-		this.orb = new WorldMapOrb(worldPoint, EmoteClueItemsImages.Icons.RuneScape.StashUnit.get(StashUnit.Type.Crate, false, true));
-		this.setMarkerIcon(image);
+		this.orb = new WorldMapOrb(worldPoint, icon);
+		this.setIcon(icon);
 
-		this.edgeSnapped = false;
 	}
 
 	public void rotateOrb(final Client client)
 	{
 		this.orb.updateOrientation(client);
-		if (this.edgeSnapped)
+		if (super.isCurrentlyEdgeSnapped())
 		{
 			super.setImage(this.orb.getImage());
 		}
 	}
 
-	public void setMarkerIcon(final BufferedImage image)
+	public void setIcon(final BufferedImage icon)
 	{
-		GRAPHICS.drawImage(BACKGROUND_IMAGE, 0, 0, null);
-		final int x = Math.max((BACKGROUND_IMAGE.getWidth() - image.getWidth()) / 2, 0);
-		final int y = Math.max((int)((BACKGROUND_IMAGE.getHeight() - image.getHeight()) / 2.5), 0);
-		GRAPHICS.drawImage(image, x, y, null);
+		this.orb.setIcon(icon);
+		EmoteClueItemsImages.Utils.drawIconWithBackground(this.marker, EmoteClueItemsImages.RuneLite.CLUE_ARROW, icon, 2, 2.5);
 	}
 
 	@Override
 	public void onEdgeSnap()
 	{
-		this.edgeSnapped = true;
 		this.orb.resetOrientation();
 		super.setImagePoint(null);
 	}
@@ -61,8 +53,13 @@ public class WorldMapMarker extends WorldMapPoint
 	@Override
 	public void onEdgeUnsnap()
 	{
-		this.edgeSnapped = false;
-		super.setImage(WORLD_IMAGE);
-		super.setImagePoint(WORLD_IMAGE_POINT);
+		super.setImage(this.marker);
+		super.setImagePoint(this.markerPoint);
 	}
+
+	public void setWorldPoint(WorldPoint worldPoint) {
+		super.setWorldPoint(worldPoint);
+		this.orb.setWorldPoint(worldPoint);
+	}
+
 }

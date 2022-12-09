@@ -31,8 +31,7 @@ package com.larsvansoest.runelite.clueitems;
 import com.google.inject.Provides;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
 import com.larsvansoest.runelite.clueitems.data.StashUnit;
-import com.larsvansoest.runelite.clueitems.map.StashUnitMapPoint;
-import com.larsvansoest.runelite.clueitems.map.WorldMapMarker;
+import com.larsvansoest.runelite.clueitems.map.StashUnitWorldMapMarker;
 import com.larsvansoest.runelite.clueitems.overlay.EmoteClueItemsOverlay;
 import com.larsvansoest.runelite.clueitems.progress.ProgressManager;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
@@ -63,6 +62,7 @@ import net.runelite.client.util.ImageUtil;
 import javax.inject.Inject;
 import javax.swing.*;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Main class of the plugin.
@@ -95,6 +95,8 @@ public class EmoteClueItemsPlugin extends Plugin
 	@Inject
 	private WorldMapPointManager worldMapPointManager;
 
+	private StashUnitWorldMapMarker stashUnitWorldMapMarker = null;
+
 	private EmoteClueItemsOverlay overlay;
 	private NavigationButton navigationButton;
 	private ProgressManager progressManager;
@@ -111,6 +113,8 @@ public class EmoteClueItemsPlugin extends Plugin
 		this.emoteClueItemsPanel = new EmoteClueItemsPanel(emoteClueItemsPalette,
 				this.itemManager,
 				this::onStashUnitFilledChanged,
+				this::addStashUnitMarkerToMap,
+				this::removeStashUnitMarkerFromMap,
 				"Emote Clue Items",
 				"v4.1.0",
 				"https://github.com/larsvansoest/emote-clue-items"
@@ -164,12 +168,23 @@ public class EmoteClueItemsPlugin extends Plugin
 			this.onPlayerLoggedIn();
 		}
 
-		// TODO: remove
-		final StashUnit stash = StashUnit.HOSIDIUS_MESS;
-		final WorldMapMarker worldMapPoint = new StashUnitMapPoint(stash.getStashUnit().getWorldPoints()[0], stash, false);
-		this.worldMapPointManager.removeIf(x -> true);
-		this.worldMapPointManager.add(worldMapPoint);
-		this.overlay.addWorldMarker(worldMapPoint);
+		this.removeStashUnitMarkerFromMap();
+	}
+
+	private void addStashUnitMarkerToMap(final StashUnit stashUnit, final boolean built) {
+		removeStashUnitMarkerFromMap();
+		if (Objects.isNull(this.stashUnitWorldMapMarker)) {
+			this.stashUnitWorldMapMarker = new StashUnitWorldMapMarker(stashUnit, built);
+		}
+
+		this.stashUnitWorldMapMarker.setStashUnit(stashUnit, built);
+		this.worldMapPointManager.add(this.stashUnitWorldMapMarker);
+		this.overlay.addWorldMarker(this.stashUnitWorldMapMarker);
+	}
+
+	private void removeStashUnitMarkerFromMap() {
+		this.worldMapPointManager.remove(this.stashUnitWorldMapMarker);
+		this.overlay.clearWorldMarkers();
 	}
 
 	private void onStashUnitFilledChanged(final StashUnit stashUnit, final boolean filled)
