@@ -172,15 +172,10 @@ public class StashUnitPanel extends RequirementPanel
 		c.weighty = 1;
 		c.weightx = 1;
 		c.fill = GridBagConstraints.BOTH;
-		c.gridwidth = 3;
 		rightPanel.add(this.stashUnitImage, c);
-		c.gridwidth = 1;
 		c.gridy++;
-		rightPanel.add(new JLabel(), c);
-		c.gridx++;
+		c.insets.left = 4;
 		rightPanel.add(this.mapLinkButton, c);
-		c.gridx++;
-		rightPanel.add(new JLabel(), c);
 		return rightPanel;
 	}
 

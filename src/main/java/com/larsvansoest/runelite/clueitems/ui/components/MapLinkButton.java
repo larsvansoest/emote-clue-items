@@ -22,7 +22,9 @@ import java.util.Map;
  */
 public class MapLinkButton extends JPanel
 {
-	private static final String LABEL_TEXT = "maplink";
+	private static final String LABEL_TEXT = "mark map";
+	private static final String LABEL_TEXT_DISABLE = "un-mark";
+
 	private static final Icon PIN_ICON = new ImageIcon(EmoteClueItemsImages.Icons.Location.PIN);
 
 	private static final Icon PIN_ICON_DISABLED = new ImageIcon(ImageUtil.grayscaleImage(EmoteClueItemsImages.Icons.Location.PIN));
@@ -100,7 +102,6 @@ public class MapLinkButton extends JPanel
 		c.weighty = 1;
 		c.fill = GridBagConstraints.BOTH;
 		super.add(this.pinLabel, c);
-		c.insets.left = 5;
 		c.weightx = 1;
 		c.gridx++;
 		super.add(this.label, c);
@@ -117,7 +118,7 @@ public class MapLinkButton extends JPanel
 	{
 		final JLabel label = new JLabel();
 		label.setText(MapLinkButton.LABEL_TEXT);
-		label.setHorizontalAlignment(JLabel.LEFT);
+		label.setHorizontalAlignment(JLabel.CENTER);
 		label.setVerticalAlignment(JLabel.CENTER);
 		label.setFont(LABEL_FONT);
 		label.setForeground(textColor);
@@ -127,6 +128,7 @@ public class MapLinkButton extends JPanel
 	public void setShowDelete(boolean show) {
 		this.showDelete = show;
 		this.pinLabel.setIcon(show ? PIN_DELETE_ICON : PIN_ICON);
+		this.label.setText(show ? LABEL_TEXT_DISABLE : LABEL_TEXT);
 	}
 
 	public void turnOff() {
