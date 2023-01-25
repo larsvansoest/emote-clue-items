@@ -80,7 +80,7 @@ public class EmoteClueItemsOverlay extends WidgetItemOverlay
 		final WidgetContext widgetContext = this.widgetData.getWidgetContext();
 
 		// Filter unsupported and turned off interfaces.
-		if (Objects.isNull(widgetContext) || Objects.isNull(widgetContainer) || !this.interfaceGroupSelected(widgetContainer))
+		if (Objects.isNull(widgetContext) || Objects.isNull(widgetContainer) || !this.interfaceGroupSettingEnabled(widgetContainer))
 		{
 			return;
 		}
@@ -103,7 +103,11 @@ public class EmoteClueItemsOverlay extends WidgetItemOverlay
 		this.x = bounds.x + bounds.width + this.getXOffset(widgetContainer);
 		this.y = bounds.y;
 
-		emoteClues.map(EmoteClue::getEmoteClueDifficulty).distinct().map(RibbonComponent::ofDifficulty).forEach(ribbon ->
+		emoteClues.map(EmoteClue::getEmoteClueDifficulty)
+				.distinct()
+				.filter(this::difficultySettingEnabled)
+				.map(RibbonComponent::ofDifficulty)
+				.forEach(ribbon ->
 		{
 			this.point.setLocation(this.x, this.y);
 			ribbon.setPreferredLocation(this.point);
@@ -112,34 +116,46 @@ public class EmoteClueItemsOverlay extends WidgetItemOverlay
 		});
 	}
 
-	private boolean interfaceGroupSelected(final WidgetContainer widgetContainer)
+	private boolean difficultySettingEnabled(final EmoteClueDifficulty difficulty) {
+		switch (difficulty)
+		{
+			case Beginner:
+				return this.config.highlightBeginner();
+			case Easy:
+				return this.config.highlightEasy();
+			case Medium:
+				return this.config.highlightMedium();
+			case Hard:
+				return this.config.highlightHard();
+			case Elite:
+				return this.config.highlightElite();
+			case Master:
+				return this.config.highlightMaster();
+			default:
+				return false;
+		}
+	}
+
+	private boolean interfaceGroupSettingEnabled(final WidgetContainer widgetContainer)
 	{
 		switch (widgetContainer)
 		{
 			case Bank:
 				return this.config.highlightBank();
-
 			case DepositBox:
 				return this.config.highlightDepositBox();
-
 			case Inventory:
 				return this.config.highlightInventory();
-
 			case Equipment:
 				return this.config.highlightEquipment();
-
 			case Shop:
 				return this.config.highlightShop();
-
 			case KeptOnDeath:
 				return this.config.highlightKeptOnDeath();
-
 			case GuidePrices:
 				return this.config.highlightGuidePrices();
-
 			case GroupStorage:
 				return this.config.highlightGroupStorage();
-
 			default:
 				return false;
 		}
