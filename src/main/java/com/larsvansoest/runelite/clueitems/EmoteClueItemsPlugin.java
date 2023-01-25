@@ -29,23 +29,17 @@
 package com.larsvansoest.runelite.clueitems;
 
 import com.google.inject.Provides;
-import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
 import com.larsvansoest.runelite.clueitems.data.StashUnit;
+import com.larsvansoest.runelite.clueitems.map.StashUnitWorldMapMarker;
 import com.larsvansoest.runelite.clueitems.overlay.EmoteClueItemsOverlay;
 import com.larsvansoest.runelite.clueitems.progress.ProgressManager;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPanel;
-import com.larsvansoest.runelite.clueitems.ui.components.UpdatablePanel;
+import com.larsvansoest.runelite.clueitems.ui.components.StatusPanel;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.ScriptID;
-import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.*;
+import net.runelite.api.events.*;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -56,10 +50,13 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
+import net.runelite.client.util.ImageUtil;
 
 import javax.inject.Inject;
 import javax.swing.*;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Main class of the plugin.
@@ -89,6 +86,11 @@ public class EmoteClueItemsPlugin extends Plugin
 	private ItemManager itemManager;
 	@Inject
 	private ClientToolbar clientToolbar;
+	@Inject
+	private WorldMapPointManager worldMapPointManager;
+
+	private StashUnitWorldMapMarker stashUnitWorldMapMarker = null;
+
 	private EmoteClueItemsOverlay overlay;
 	private NavigationButton navigationButton;
 	private ProgressManager progressManager;
@@ -96,6 +98,8 @@ public class EmoteClueItemsPlugin extends Plugin
 
 	private boolean updateStashBuiltStatusOnNextGameTick;
 	private boolean showUnopenedInterfaceNotification;
+
+	private Integer cachedPlayerConstructionLevel;
 
 	@Override
 	protected void startUp()
@@ -105,8 +109,10 @@ public class EmoteClueItemsPlugin extends Plugin
 		this.emoteClueItemsPanel = new EmoteClueItemsPanel(emoteClueItemsPalette,
 				this.itemManager,
 				this::onStashUnitFilledChanged,
+				this::addStashUnitMarkerToMap,
+				this::removeStashUnitMarkerFromMap,
 				"Emote Clue Items",
-				"v4.0.3",
+				"v4.1.0",
 				"https://github.com/larsvansoest/emote-clue-items"
 		);
 
@@ -123,14 +129,14 @@ public class EmoteClueItemsPlugin extends Plugin
 		this.navigationButton = NavigationButton
 				.builder()
 				.tooltip("Emote Clue Items")
-				.icon(EmoteClueImages.resizeCanvas(EmoteClueImages.Ribbon.ALL, 16, 16))
+				.icon(ImageUtil.resizeCanvas(EmoteClueItemsImages.Icons.RuneScape.EmoteClue.Ribbon.ALL, 16, 16))
 				.priority(7)
 				.panel(this.emoteClueItemsPanel)
 				.build();
 
 		this.toggleCollectionLog(this.config.showNavigation());
 
-		this.overlay = new EmoteClueItemsOverlay(this.itemManager, this.config, this.progressManager);
+		this.overlay = new EmoteClueItemsOverlay(this.client, this.clientThread, this.itemManager, this.config, this.progressManager);
 		this.overlayManager.add(this.overlay);
 
 		this.reset();
@@ -145,18 +151,37 @@ public class EmoteClueItemsPlugin extends Plugin
 		for (final StashUnit stashUnit : StashUnit.values())
 		{
 			this.emoteClueItemsPanel.turnOnSTASHFilledButton(stashUnit);
-			this.emoteClueItemsPanel.turnOffSTASHFilledButton(stashUnit, new ImageIcon(EmoteClueImages.Toolbar.CheckSquare.WAITING), loginDisclaimer);
+			this.emoteClueItemsPanel.turnOffSTASHFilledButton(stashUnit, new ImageIcon(EmoteClueItemsImages.Icons.CheckSquare.WAITING), loginDisclaimer);
 		}
 		this.emoteClueItemsPanel.setEmoteClueItemGridDisclaimer(loginDisclaimer);
 		this.emoteClueItemsPanel.setSTASHUnitGridDisclaimer(loginDisclaimer);
 
 		this.updateStashBuiltStatusOnNextGameTick = false;
 		this.showUnopenedInterfaceNotification = this.config.notifyUnopenedInterfaces();
+		this.cachedPlayerConstructionLevel = null;
 
 		if (this.client.getGameState() == GameState.LOGGED_IN)
 		{
 			this.onPlayerLoggedIn();
 		}
+
+		this.removeStashUnitMarkerFromMap();
+	}
+
+	private void addStashUnitMarkerToMap(final StashUnit stashUnit, final boolean built) {
+		removeStashUnitMarkerFromMap();
+		if (Objects.isNull(this.stashUnitWorldMapMarker)) {
+			this.stashUnitWorldMapMarker = new StashUnitWorldMapMarker(stashUnit, built);
+		}
+
+		this.stashUnitWorldMapMarker.setStashUnit(stashUnit, built);
+		this.worldMapPointManager.add(this.stashUnitWorldMapMarker);
+		this.overlay.addWorldMarker(this.stashUnitWorldMapMarker);
+	}
+
+	private void removeStashUnitMarkerFromMap() {
+		this.worldMapPointManager.remove(this.stashUnitWorldMapMarker);
+		this.overlay.clearWorldMarkers();
 	}
 
 	private void onStashUnitFilledChanged(final StashUnit stashUnit, final boolean filled)
@@ -169,12 +194,12 @@ public class EmoteClueItemsPlugin extends Plugin
 		this.emoteClueItemsPanel.setEmoteClueItemQuantity(emoteClueItem, quantity);
 	}
 
-	private void onEmoteClueItemInventoryStatusChanged(final EmoteClueItem emoteClueItem, final UpdatablePanel.Status status)
+	private void onEmoteClueItemInventoryStatusChanged(final EmoteClueItem emoteClueItem, final StatusPanel.Status status)
 	{
 		this.emoteClueItemsPanel.setEmoteClueItemCollectionLogStatus(emoteClueItem, status);
 	}
 
-	private void onEmoteClueItemStatusChanged(final EmoteClueItem emoteClueItem, final UpdatablePanel.Status status)
+	private void onEmoteClueItemStatusChanged(final EmoteClueItem emoteClueItem, final StatusPanel.Status status)
 	{
 		this.emoteClueItemsPanel.setEmoteClueItemStatus(emoteClueItem, status);
 	}
@@ -200,6 +225,18 @@ public class EmoteClueItemsPlugin extends Plugin
 		this.emoteClueItemsPanel.removeEmoteClueItemGridDisclaimer();
 		this.emoteClueItemsPanel.removeSTASHUnitGridDisclaimer();
 		this.clientThread.invoke(this::setupUnopenedInterfaceNotification);
+		this.clientThread.invoke(() -> {
+			int playerConstructionLevel = client.getBoostedSkillLevel(Skill.CONSTRUCTION);
+			this.updatePlayerConstructionLevel(playerConstructionLevel);
+		});
+		this.emoteClueItemsPanel.enableMapLinks();
+	}
+
+	private void updatePlayerConstructionLevel(Integer level) {
+		if (!Objects.equals(this.cachedPlayerConstructionLevel, level)) {
+			this.cachedPlayerConstructionLevel = level;
+			this.emoteClueItemsPanel.setPlayerConstructionLevel(level);
+		}
 	}
 
 	private void setupUnopenedInterfaceNotification()
@@ -244,6 +281,13 @@ public class EmoteClueItemsPlugin extends Plugin
 		if (event.getGameState() == GameState.LOGGED_IN)
 		{
 			this.onPlayerLoggedIn();
+		}
+	}
+
+	@Subscribe
+	protected void onStatChanged(final StatChanged event) {
+		if (Objects.equals(event.getSkill(), Skill.CONSTRUCTION)) {
+			this.updatePlayerConstructionLevel(event.getLevel());
 		}
 	}
 

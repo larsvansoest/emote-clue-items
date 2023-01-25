@@ -28,8 +28,8 @@
 
 package com.larsvansoest.runelite.clueitems.ui.clues;
 
+import com.larsvansoest.runelite.clueitems.EmoteClueItemsImages;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
-import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
 import com.larsvansoest.runelite.clueitems.ui.components.DataGrid;
 import com.larsvansoest.runelite.clueitems.ui.components.FoldablePanelGrid;
@@ -68,19 +68,22 @@ public class EmoteClueItemGrid extends FoldablePanelGrid<EmoteClueItemPanel>
 		final String filterKey = "status";
 		final String toolTipTextFormat = "Toggle show %s statuses.";
 
-		super.addFilter(filterKey, new ImageIcon(EmoteClueImages.Toolbar.CheckSquare.UNKNOWN), DataGrid.getToolTipText(toolTipTextFormat, "all"), $ -> true);
-		super.addFilter(filterKey,
-				new ImageIcon(EmoteClueImages.Toolbar.CheckSquare.INCOMPLETE),
+		super.addFilter(filterKey, new ImageIcon(EmoteClueItemsImages.Icons.CheckSquare.UNKNOWN), DataGrid.getToolTipText(toolTipTextFormat, "all"), $ -> true);
+		super.addFilter(
+				filterKey,
+				new ImageIcon(EmoteClueItemsImages.Icons.CheckSquare.INCOMPLETE),
 				DataGrid.getToolTipText(toolTipTextFormat, "incomplete"),
 				itemPanel -> itemPanel.getStatus() == RequirementPanel.Status.InComplete
 		);
-		super.addFilter(filterKey,
-				new ImageIcon(EmoteClueImages.Toolbar.CheckSquare.IN_PROGRESS),
+		super.addFilter(
+				filterKey,
+				new ImageIcon(EmoteClueItemsImages.Icons.CheckSquare.IN_PROGRESS),
 				DataGrid.getToolTipText(toolTipTextFormat, "in progress"),
 				itemPanel -> itemPanel.getStatus() == RequirementPanel.Status.InProgress
 		);
-		super.addFilter(filterKey,
-				new ImageIcon(EmoteClueImages.Toolbar.CheckSquare.COMPLETE),
+		super.addFilter(
+				filterKey,
+				new ImageIcon(EmoteClueItemsImages.Icons.CheckSquare.COMPLETE),
 				DataGrid.getToolTipText(toolTipTextFormat, "complete"),
 				itemPanel -> itemPanel.getStatus() == RequirementPanel.Status.Complete
 		);
@@ -91,40 +94,46 @@ public class EmoteClueItemGrid extends FoldablePanelGrid<EmoteClueItemPanel>
 		final String filterKey = "difficulty";
 		final String toolTipTextFormat = "Toggle show %s difficulties.";
 
-		super.addFilter(filterKey, new ImageIcon(EmoteClueImages.Ribbon.ALL), DataGrid.getToolTipText(toolTipTextFormat, "all"), $ -> true, palette.getBrandingColor());
-		super.addFilter(filterKey,
-				new ImageIcon(EmoteClueImages.Ribbon.BEGINNER),
+		super.addFilter(filterKey, new ImageIcon(EmoteClueItemsImages.Icons.RuneScape.EmoteClue.Ribbon.ALL), DataGrid.getToolTipText(toolTipTextFormat, "all"), $ -> true, palette.getBrandingColor());
+		super.addFilter(
+				filterKey,
+				new ImageIcon(EmoteClueItemsImages.Icons.RuneScape.EmoteClue.Ribbon.BEGINNER),
 				DataGrid.getToolTipText(toolTipTextFormat, "beginner"),
 				itemPanel -> Arrays.stream(itemPanel.getDifficulties()).anyMatch(difficulty -> difficulty == EmoteClueDifficulty.Beginner),
 				EmoteClueDifficulty.Beginner.getColor()
 		);
-		super.addFilter(filterKey,
-				new ImageIcon(EmoteClueImages.Ribbon.EASY),
+		super.addFilter(
+				filterKey,
+				new ImageIcon(EmoteClueItemsImages.Icons.RuneScape.EmoteClue.Ribbon.EASY),
 				DataGrid.getToolTipText(toolTipTextFormat, "easy"),
 				itemPanel -> Arrays.stream(itemPanel.getDifficulties()).anyMatch(difficulty -> difficulty == EmoteClueDifficulty.Easy),
 				EmoteClueDifficulty.Easy.getColor()
 		);
-		super.addFilter(filterKey,
-				new ImageIcon(EmoteClueImages.Ribbon.MEDIUM),
+		super.addFilter(
+				filterKey,
+				new ImageIcon(EmoteClueItemsImages.Icons.RuneScape.EmoteClue.Ribbon.MEDIUM),
 				DataGrid.getToolTipText(toolTipTextFormat, "medium"),
 				itemPanel -> Arrays.stream(itemPanel.getDifficulties()).anyMatch(difficulty -> difficulty == EmoteClueDifficulty.Medium),
 				EmoteClueDifficulty.Medium.getColor()
 
 		);
-		super.addFilter(filterKey,
-				new ImageIcon(EmoteClueImages.Ribbon.HARD),
+		super.addFilter(
+				filterKey,
+				new ImageIcon(EmoteClueItemsImages.Icons.RuneScape.EmoteClue.Ribbon.HARD),
 				DataGrid.getToolTipText(toolTipTextFormat, "hard"),
 				itemPanel -> Arrays.stream(itemPanel.getDifficulties()).anyMatch(difficulty -> difficulty == EmoteClueDifficulty.Hard),
 				EmoteClueDifficulty.Hard.getColor()
 		);
-		super.addFilter(filterKey,
-				new ImageIcon(EmoteClueImages.Ribbon.ELITE),
+		super.addFilter(
+				filterKey,
+				new ImageIcon(EmoteClueItemsImages.Icons.RuneScape.EmoteClue.Ribbon.ELITE),
 				DataGrid.getToolTipText(toolTipTextFormat, "elite"),
 				itemPanel -> Arrays.stream(itemPanel.getDifficulties()).anyMatch(difficulty -> difficulty == EmoteClueDifficulty.Elite),
 				EmoteClueDifficulty.Elite.getColor()
 		);
-		super.addFilter(filterKey,
-				new ImageIcon(EmoteClueImages.Ribbon.MASTER),
+		super.addFilter(
+				filterKey,
+				new ImageIcon(EmoteClueItemsImages.Icons.RuneScape.EmoteClue.Ribbon.MASTER),
 				DataGrid.getToolTipText(toolTipTextFormat, "master"),
 				itemPanel -> Arrays.stream(itemPanel.getDifficulties()).anyMatch(difficulty -> difficulty == EmoteClueDifficulty.Master),
 				EmoteClueDifficulty.Master.getColor()
@@ -133,19 +142,23 @@ public class EmoteClueItemGrid extends FoldablePanelGrid<EmoteClueItemPanel>
 
 	private void createSortFilterButton()
 	{
-		super.addSort(new ImageIcon(EmoteClueImages.Toolbar.SortType.QUANTITY_ASCENDING),
+		super.addSort(
+				new ImageIcon(EmoteClueItemsImages.Icons.SortType.QUANTITY_ASCENDING),
 				DataGrid.getToolTipText("Toggle order by %s (descending).", "quantity"),
 				Comparator.comparingInt(EmoteClueItemPanel::getQuantity)
 		);
-		super.addSort(new ImageIcon(EmoteClueImages.Toolbar.SortType.QUANTITY_DESCENDING),
+		super.addSort(
+				new ImageIcon(EmoteClueItemsImages.Icons.SortType.QUANTITY_DESCENDING),
 				DataGrid.getToolTipText("Toggle order by %s (ascending).", "quantity"),
 				Comparator.comparingInt(EmoteClueItemPanel::getQuantity).reversed()
 		);
-		super.addSort(new ImageIcon(EmoteClueImages.Toolbar.SortType.NAME_ASCENDING),
+		super.addSort(
+				new ImageIcon(EmoteClueItemsImages.Icons.SortType.NAME_ASCENDING),
 				DataGrid.getToolTipText("Toggle order by %s (ascending).", "name"),
 				Comparator.comparing(EmoteClueItemPanel::getName)
 		);
-		super.addSort(new ImageIcon(EmoteClueImages.Toolbar.SortType.NAME_DESCENDING),
+		super.addSort(
+				new ImageIcon(EmoteClueItemsImages.Icons.SortType.NAME_DESCENDING),
 				DataGrid.getToolTipText("Toggle order by %s (ascending).", "name"),
 				Comparator.comparing(EmoteClueItemPanel::getName).reversed()
 		);

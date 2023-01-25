@@ -28,9 +28,10 @@
 
 package com.larsvansoest.runelite.clueitems.ui.components;
 
-import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
+import com.larsvansoest.runelite.clueitems.EmoteClueItemsImages;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
 
 import javax.swing.*;
@@ -97,8 +98,8 @@ public class FooterPanel extends JPanel
 
 	private JLabel getGitHubLabel(final String gitHubUrl)
 	{
-		final ImageIcon defaultIcon = new ImageIcon(EmoteClueImages.Toolbar.Footer.GITHUB);
-		final ImageIcon illuminatedIcon = new ImageIcon(EmoteClueImages.illuminate(EmoteClueImages.Toolbar.Footer.GITHUB, 150));
+		final ImageIcon defaultIcon = new ImageIcon(EmoteClueItemsImages.Icons.GITHUB);
+		final ImageIcon illuminatedIcon = new ImageIcon(ImageUtil.luminanceScale(EmoteClueItemsImages.Icons.GITHUB, 150));
 		final JLabel gitHubLabel = new JLabel();
 		gitHubLabel.setToolTipText("Visit the GitHub repository webpage.");
 		gitHubLabel.setHorizontalAlignment(JLabel.LEFT);

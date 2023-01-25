@@ -1,7 +1,7 @@
 package com.larsvansoest.runelite.clueitems.ui.stashes;
 
+import com.larsvansoest.runelite.clueitems.EmoteClueItemsImages;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
-import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
 import com.larsvansoest.runelite.clueitems.ui.components.DataGrid;
 import com.larsvansoest.runelite.clueitems.ui.components.FoldablePanelGrid;
@@ -36,15 +36,15 @@ public class StashUnitGrid extends FoldablePanelGrid<StashUnitPanel>
 	private void createFilledFilterButton()
 	{
 		final String toolTipTextFormat = "Toggle show %s stashes.";
-		super.addFilter("filled", new ImageIcon(EmoteClueImages.Toolbar.CheckSquare.UNKNOWN), DataGrid.getToolTipText(toolTipTextFormat, "all"), $ -> true);
-		super.addFilter("filled", new ImageIcon(EmoteClueImages.Toolbar.CheckSquare.UNBUILT), DataGrid.getToolTipText(toolTipTextFormat, "not built"), stashUnitPanel -> !stashUnitPanel.isBuilt());
+		super.addFilter("filled", new ImageIcon(EmoteClueItemsImages.Icons.CheckSquare.UNKNOWN), DataGrid.getToolTipText(toolTipTextFormat, "all"), $ -> true);
+		super.addFilter("filled", new ImageIcon(EmoteClueItemsImages.Icons.CheckSquare.UNBUILT), DataGrid.getToolTipText(toolTipTextFormat, "not built"), stashUnitPanel -> !stashUnitPanel.isBuilt());
 		super.addFilter("filled",
-				new ImageIcon(EmoteClueImages.Toolbar.CheckSquare.INCOMPLETE_EMPTY),
+				new ImageIcon(EmoteClueItemsImages.Icons.CheckSquare.INCOMPLETE_EMPTY),
 				DataGrid.getToolTipText(toolTipTextFormat, "empty"),
 				stashUnitPanel -> stashUnitPanel.isBuilt() && !stashUnitPanel.isFilled()
 		);
 		super.addFilter("filled",
-				new ImageIcon(EmoteClueImages.Toolbar.CheckSquare.COMPLETE),
+				new ImageIcon(EmoteClueItemsImages.Icons.CheckSquare.COMPLETE),
 				DataGrid.getToolTipText(toolTipTextFormat, "filled"),
 				stashUnitPanel -> stashUnitPanel.isBuilt() && stashUnitPanel.isFilled()
 		);
@@ -52,19 +52,19 @@ public class StashUnitGrid extends FoldablePanelGrid<StashUnitPanel>
 
 	private void createSortFilterButton()
 	{
-		super.addSort(new ImageIcon(EmoteClueImages.Toolbar.SortType.QUANTITY_ASCENDING),
+		super.addSort(new ImageIcon(EmoteClueItemsImages.Icons.SortType.QUANTITY_ASCENDING),
 				DataGrid.getToolTipText("Toggle order by %s (descending).", "quantity"),
 				Comparator.comparingInt(StashUnitPanel::getQuantity)
 		);
-		super.addSort(new ImageIcon(EmoteClueImages.Toolbar.SortType.QUANTITY_DESCENDING),
+		super.addSort(new ImageIcon(EmoteClueItemsImages.Icons.SortType.QUANTITY_DESCENDING),
 				DataGrid.getToolTipText("Toggle order by %s (ascending).", "quantity"),
 				Comparator.comparingInt(StashUnitPanel::getQuantity).reversed()
 		);
-		super.addSort(new ImageIcon(EmoteClueImages.Toolbar.SortType.NAME_ASCENDING),
+		super.addSort(new ImageIcon(EmoteClueItemsImages.Icons.SortType.NAME_ASCENDING),
 				DataGrid.getToolTipText("Toggle order by %s (ascending).", "name"),
 				Comparator.comparing(StashUnitPanel::getName)
 		);
-		super.addSort(new ImageIcon(EmoteClueImages.Toolbar.SortType.NAME_DESCENDING),
+		super.addSort(new ImageIcon(EmoteClueItemsImages.Icons.SortType.NAME_DESCENDING),
 				DataGrid.getToolTipText("Toggle order by %s (ascending).", "name"),
 				Comparator.comparing(StashUnitPanel::getName).reversed()
 		);
@@ -75,39 +75,39 @@ public class StashUnitGrid extends FoldablePanelGrid<StashUnitPanel>
 		final String filterKey = "difficulty";
 		final String toolTipTextFormat = "Toggle show %s difficulties.";
 
-		super.addFilter(filterKey, new ImageIcon(EmoteClueImages.Ribbon.ALL), DataGrid.getToolTipText(toolTipTextFormat, "all"), $ -> true, palette.getBrandingColor());
+		super.addFilter(filterKey, new ImageIcon(EmoteClueItemsImages.Icons.RuneScape.EmoteClue.Ribbon.ALL), DataGrid.getToolTipText(toolTipTextFormat, "all"), $ -> true, palette.getBrandingColor());
 		super.addFilter(filterKey,
-				new ImageIcon(EmoteClueImages.Ribbon.BEGINNER),
+				new ImageIcon(EmoteClueItemsImages.Icons.RuneScape.EmoteClue.Ribbon.BEGINNER),
 				DataGrid.getToolTipText(toolTipTextFormat, "beginner"),
 				itemPanel -> Arrays.stream(itemPanel.getDifficulties()).anyMatch(difficulty -> difficulty == EmoteClueDifficulty.Beginner),
 				EmoteClueDifficulty.Beginner.getColor()
 		);
 		super.addFilter(filterKey,
-				new ImageIcon(EmoteClueImages.Ribbon.EASY),
+				new ImageIcon(EmoteClueItemsImages.Icons.RuneScape.EmoteClue.Ribbon.EASY),
 				DataGrid.getToolTipText(toolTipTextFormat, "easy"),
 				itemPanel -> Arrays.stream(itemPanel.getDifficulties()).anyMatch(difficulty -> difficulty == EmoteClueDifficulty.Easy),
 				EmoteClueDifficulty.Easy.getColor()
 		);
 		super.addFilter(filterKey,
-				new ImageIcon(EmoteClueImages.Ribbon.MEDIUM),
+				new ImageIcon(EmoteClueItemsImages.Icons.RuneScape.EmoteClue.Ribbon.MEDIUM),
 				DataGrid.getToolTipText(toolTipTextFormat, "medium"),
 				itemPanel -> Arrays.stream(itemPanel.getDifficulties()).anyMatch(difficulty -> difficulty == EmoteClueDifficulty.Medium),
 				EmoteClueDifficulty.Medium.getColor()
 		);
 		super.addFilter(filterKey,
-				new ImageIcon(EmoteClueImages.Ribbon.HARD),
+				new ImageIcon(EmoteClueItemsImages.Icons.RuneScape.EmoteClue.Ribbon.HARD),
 				DataGrid.getToolTipText(toolTipTextFormat, "hard"),
 				itemPanel -> Arrays.stream(itemPanel.getDifficulties()).anyMatch(difficulty -> difficulty == EmoteClueDifficulty.Hard),
 				EmoteClueDifficulty.Hard.getColor()
 		);
 		super.addFilter(filterKey,
-				new ImageIcon(EmoteClueImages.Ribbon.ELITE),
+				new ImageIcon(EmoteClueItemsImages.Icons.RuneScape.EmoteClue.Ribbon.ELITE),
 				DataGrid.getToolTipText(toolTipTextFormat, "elite"),
 				itemPanel -> Arrays.stream(itemPanel.getDifficulties()).anyMatch(difficulty -> difficulty == EmoteClueDifficulty.Elite),
 				EmoteClueDifficulty.Elite.getColor()
 		);
 		super.addFilter(filterKey,
-				new ImageIcon(EmoteClueImages.Ribbon.MASTER),
+				new ImageIcon(EmoteClueItemsImages.Icons.RuneScape.EmoteClue.Ribbon.MASTER),
 				DataGrid.getToolTipText(toolTipTextFormat, "master"),
 				itemPanel -> Arrays.stream(itemPanel.getDifficulties()).anyMatch(difficulty -> difficulty == EmoteClueDifficulty.Master),
 				EmoteClueDifficulty.Master.getColor()

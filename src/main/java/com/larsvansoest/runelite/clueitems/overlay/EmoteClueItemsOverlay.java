@@ -29,15 +29,23 @@
 package com.larsvansoest.runelite.clueitems.overlay;
 
 import com.larsvansoest.runelite.clueitems.EmoteClueItemsConfig;
-import com.larsvansoest.runelite.clueitems.data.*;
+import com.larsvansoest.runelite.clueitems.EmoteClueItemsImages;
+import com.larsvansoest.runelite.clueitems.data.EmoteClue;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueAssociations;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
+import com.larsvansoest.runelite.clueitems.map.WorldMapMarker;
 import com.larsvansoest.runelite.clueitems.progress.ProgressManager;
+import net.runelite.api.Client;
 import net.runelite.api.widgets.WidgetItem;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
 import net.runelite.client.ui.overlay.components.ImageComponent;
 
 import javax.inject.Inject;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -56,20 +64,35 @@ public class EmoteClueItemsOverlay extends WidgetItemOverlay
 	// Single object allocations, re-used every sequential iteration.
 	private final WidgetData widgetData;
 	private final Point point;
+	private final ArrayList<WorldMapMarker> worldMapMarkers;
+	private final Client client;
+	private final ClientThread clientThread;
 	private int x;
 	private int y;
 
 	@Inject
-	public EmoteClueItemsOverlay(final ItemManager itemManager, final EmoteClueItemsConfig config, final ProgressManager progressManager)
+	public EmoteClueItemsOverlay(final Client client, final ClientThread clientThread, final ItemManager itemManager, final EmoteClueItemsConfig config, final ProgressManager progressManager)
 	{
+		this.client = client;
 		this.itemManager = itemManager;
 		this.progressManager = progressManager;
+		this.clientThread = clientThread;
 
 		this.config = config;
 		this.widgetData = new WidgetData();
 		this.point = new Point();
+		this.worldMapMarkers = new ArrayList<>();
 
 		super.showOnInterfaces(Arrays.stream(Widget.values()).mapToInt(widget -> widget.groupId).toArray());
+	}
+
+	public void addWorldMarker(final WorldMapMarker marker)
+	{
+		this.worldMapMarkers.add(marker);
+	}
+
+	public void clearWorldMarkers() {
+		this.worldMapMarkers.clear();
 	}
 
 	@Override
@@ -114,6 +137,16 @@ public class EmoteClueItemsOverlay extends WidgetItemOverlay
 			ribbon.render(graphics);
 			this.y += ribbon.getBounds().getHeight() + 1;
 		});
+	}
+
+	@Override
+	public Dimension render(final Graphics2D graphics)
+	{
+		this.clientThread.invoke(() ->
+		{
+			this.worldMapMarkers.forEach(worldMapMarker -> worldMapMarker.rotateOrb(this.client));
+		});
+		return null;
 	}
 
 	private boolean difficultySettingEnabled(final EmoteClueDifficulty difficulty) {
@@ -168,12 +201,12 @@ public class EmoteClueItemsOverlay extends WidgetItemOverlay
 
 	private static final class RibbonComponent
 	{
-		static final ImageComponent BEGINNER = new ImageComponent(EmoteClueImages.Ribbon.BEGINNER);
-		static final ImageComponent EASY = new ImageComponent(EmoteClueImages.Ribbon.EASY);
-		static final ImageComponent MEDIUM = new ImageComponent(EmoteClueImages.Ribbon.MEDIUM);
-		static final ImageComponent HARD = new ImageComponent(EmoteClueImages.Ribbon.HARD);
-		static final ImageComponent ELITE = new ImageComponent(EmoteClueImages.Ribbon.ELITE);
-		static final ImageComponent MASTER = new ImageComponent(EmoteClueImages.Ribbon.MASTER);
+		static final ImageComponent BEGINNER = new ImageComponent(EmoteClueItemsImages.Icons.RuneScape.EmoteClue.Ribbon.BEGINNER);
+		static final ImageComponent EASY = new ImageComponent(EmoteClueItemsImages.Icons.RuneScape.EmoteClue.Ribbon.EASY);
+		static final ImageComponent MEDIUM = new ImageComponent(EmoteClueItemsImages.Icons.RuneScape.EmoteClue.Ribbon.MEDIUM);
+		static final ImageComponent HARD = new ImageComponent(EmoteClueItemsImages.Icons.RuneScape.EmoteClue.Ribbon.HARD);
+		static final ImageComponent ELITE = new ImageComponent(EmoteClueItemsImages.Icons.RuneScape.EmoteClue.Ribbon.ELITE);
+		static final ImageComponent MASTER = new ImageComponent(EmoteClueItemsImages.Icons.RuneScape.EmoteClue.Ribbon.MASTER);
 
 		public static ImageComponent ofDifficulty(final EmoteClueDifficulty difficulty)
 		{
@@ -194,4 +227,6 @@ public class EmoteClueItemsOverlay extends WidgetItemOverlay
 			}
 		}
 	}
+
+
 }

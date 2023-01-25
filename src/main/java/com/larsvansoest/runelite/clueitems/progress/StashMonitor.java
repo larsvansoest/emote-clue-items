@@ -41,7 +41,7 @@ class StashMonitor
 	 */
 	public void setStashFilled(final StashUnit stashUnit, final boolean filled)
 	{
-		String stashes = this.config.getRSProfileConfiguration(GROUP, FILLED_KEY);
+		final String stashes = this.config.getRSProfileConfiguration(GROUP, FILLED_KEY);
 		if (Objects.nonNull(stashes)) // validated, player is logged in.
 		{
 			final StringBuilder stashesBuilder = new StringBuilder(stashes);
@@ -93,16 +93,16 @@ class StashMonitor
 	@Deprecated
 	private void migrateConfig()
 	{
-		String legacyFilledConfig = this.config.getRSProfileConfiguration(LEGACY_GROUP, LEGACY_FILLED_KEY);
-		String filledConfig = this.config.getRSProfileConfiguration(GROUP, FILLED_KEY);
+		final String legacyFilledConfig = this.config.getRSProfileConfiguration(LEGACY_GROUP, LEGACY_FILLED_KEY);
+		final String filledConfig = this.config.getRSProfileConfiguration(GROUP, FILLED_KEY);
 
 		if (Objects.nonNull(legacyFilledConfig) && Objects.isNull(filledConfig))
 		{
 			this.config.setRSProfileConfiguration(GROUP, FILLED_KEY, legacyFilledConfig);
 		}
 
-		String legacyFingerprintConfig = this.config.getRSProfileConfiguration(LEGACY_GROUP, LEGACY_FINGERPRINT_KEY);
-		String fingerprintConfig = this.config.getRSProfileConfiguration(GROUP, FINGERPRINT_KEY);
+		final String legacyFingerprintConfig = this.config.getRSProfileConfiguration(LEGACY_GROUP, LEGACY_FINGERPRINT_KEY);
+		final String fingerprintConfig = this.config.getRSProfileConfiguration(GROUP, FINGERPRINT_KEY);
 
 		if (Objects.nonNull(legacyFingerprintConfig) && Objects.isNull(fingerprintConfig))
 		{

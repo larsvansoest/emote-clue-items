@@ -10,7 +10,7 @@ import lombok.Getter;
  * @see FoldablePanel
  * @since 2.0.0
  */
-public class RequirementPanel extends FoldablePanel implements UpdatablePanel
+public class RequirementPanel extends FoldablePanel implements StatusPanel
 {
 	@Getter
 	private Status status;
@@ -25,13 +25,28 @@ public class RequirementPanel extends FoldablePanel implements UpdatablePanel
 	 */
 	public RequirementPanel(final EmoteClueItemsPalette emoteClueItemsPalette, final String name, final int headerNameWidth, final int headerMinHeight)
 	{
-		super(emoteClueItemsPalette, name, headerNameWidth, headerMinHeight);
+		this(emoteClueItemsPalette, name, headerNameWidth, headerMinHeight, Status.InComplete);
 	}
 
 	/**
-	 * Change the status of the {@link com.larsvansoest.runelite.clueitems.data.EmoteClueImages.Toolbar.Requirement}.
+	 * Creates the panel.
+	 *
+	 * @param emoteClueItemsPalette Colour scheme for the panel.
+	 * @param name                  Name displayed as the panel header text.
+	 * @param headerNameWidth       Fixed panel width to contain the panel header text.
+	 * @param headerMinHeight       Minimum panel header height.
+	 * @param status                The status to be displayed.
+	 */
+	public RequirementPanel(final EmoteClueItemsPalette emoteClueItemsPalette, final String name, final int headerNameWidth, final int headerMinHeight, Status status)
+	{
+		super(emoteClueItemsPalette, name, headerNameWidth, headerMinHeight);
+		this.setStatus(status);
+	}
+
+	/**
+	 * Change the status of the requirement.
 	 * <p>
-	 * Changes the header text color the color corresponding with given {@link com.larsvansoest.runelite.clueitems.ui.components.UpdatablePanel.Status}.
+	 * Changes the header text color the color corresponding with given {@link StatusPanel.Status}.
 	 *
 	 * @param status the new status of the panel.
 	 */

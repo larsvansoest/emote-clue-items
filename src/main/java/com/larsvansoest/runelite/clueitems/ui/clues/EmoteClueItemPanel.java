@@ -28,7 +28,11 @@
 
 package com.larsvansoest.runelite.clueitems.ui.clues;
 
-import com.larsvansoest.runelite.clueitems.data.*;
+import com.larsvansoest.runelite.clueitems.EmoteClueItemsImages;
+import com.larsvansoest.runelite.clueitems.data.EmoteClue;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueAssociations;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
+import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
 import com.larsvansoest.runelite.clueitems.ui.components.ItemCollectionPanel;
 import com.larsvansoest.runelite.clueitems.ui.components.RequirementPanel;
@@ -71,7 +75,12 @@ public class EmoteClueItemPanel extends RequirementPanel
 		this.stashUnitPanels = new ArrayList<>();
 		this.difficulties = Arrays.stream(emoteClues).map(EmoteClue::getEmoteClueDifficulty).distinct().toArray(EmoteClueDifficulty[]::new);
 		final Insets insets = new Insets(2, 0, 2, 5);
-		Arrays.stream(this.difficulties).map(EmoteClueImages::getRibbon).map(ImageIcon::new).map(JLabel::new).forEach(label -> super.addRight(label, insets, 0, 0, DisplayMode.Default));
+		Arrays
+				.stream(this.difficulties)
+				.map(EmoteClueItemsImages.Icons.RuneScape.EmoteClue.Ribbon::get)
+				.map(ImageIcon::new)
+				.map(JLabel::new)
+				.forEach(label -> super.addRight(label, insets, 0, 0, DisplayMode.Default));
 		this.quantity = emoteClues.length;
 		super.addRight(new JLabel(String.valueOf(this.quantity)), insets, 0, 0, DisplayMode.Default);
 	}

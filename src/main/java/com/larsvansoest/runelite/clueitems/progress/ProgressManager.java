@@ -5,7 +5,7 @@ import com.larsvansoest.runelite.clueitems.data.EmoteClue;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueAssociations;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
 import com.larsvansoest.runelite.clueitems.data.StashUnit;
-import com.larsvansoest.runelite.clueitems.ui.components.UpdatablePanel;
+import com.larsvansoest.runelite.clueitems.ui.components.StatusPanel;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
@@ -34,16 +34,16 @@ public class ProgressManager
 	private final EmoteClueItemsConfig config;
 	private final InventoryMonitor inventoryMonitor;
 	private final StashMonitor stashMonitor;
-	private final HashMap<EmoteClueItem, UpdatablePanel.Status> inventoryStatusMap;
+	private final HashMap<EmoteClueItem, StatusPanel.Status> inventoryStatusMap;
 	private final Map<EmoteClueItem, Map<StashUnit, Boolean>> stashFilledStatusMap;
 	private final BiConsumer<EmoteClueItem, Integer> onEmoteClueItemQuantityChanged;
-	private final BiConsumer<EmoteClueItem, UpdatablePanel.Status> onEmoteClueItemInventoryStatusChanged;
-	private final BiConsumer<EmoteClueItem, UpdatablePanel.Status> onEmoteClueItemStatusChanged;
+	private final BiConsumer<EmoteClueItem, StatusPanel.Status> onEmoteClueItemInventoryStatusChanged;
+	private final BiConsumer<EmoteClueItem, StatusPanel.Status> onEmoteClueItemStatusChanged;
 
 	public ProgressManager(
 			final Client client, final ClientThread clientThread, final ConfigManager configManager, final EmoteClueItemsConfig config, final ItemManager itemManager,
-			final BiConsumer<EmoteClueItem, Integer> onEmoteClueItemQuantityChanged, final BiConsumer<EmoteClueItem, UpdatablePanel.Status> onEmoteClueItemInventoryStatusChanged,
-			final BiConsumer<EmoteClueItem, UpdatablePanel.Status> onEmoteClueItemStatusChanged)
+			final BiConsumer<EmoteClueItem, Integer> onEmoteClueItemQuantityChanged, final BiConsumer<EmoteClueItem, StatusPanel.Status> onEmoteClueItemInventoryStatusChanged,
+			final BiConsumer<EmoteClueItem, StatusPanel.Status> onEmoteClueItemStatusChanged)
 	{
 		this.client = client;
 		this.clientThread = clientThread;
@@ -77,7 +77,7 @@ public class ProgressManager
 		this.inventoryMonitor.reset();
 		for (final EmoteClueItem emoteClueItem : EmoteClueItem.values())
 		{
-			this.inventoryStatusMap.put(emoteClueItem, UpdatablePanel.Status.InComplete);
+			this.inventoryStatusMap.put(emoteClueItem, StatusPanel.Status.InComplete);
 		}
 		for (final EmoteClueItem emoteClueItem : EmoteClueAssociations.EmoteClueItemToEmoteClues.keySet())
 		{
@@ -110,7 +110,7 @@ public class ProgressManager
 		this.handleItemChanges(this.inventoryMonitor.toggleBankTracking(track));
 		if (track)
 		{
-			refreshContainer(InventoryID.BANK);
+			this.refreshContainer(InventoryID.BANK);
 		}
 	}
 
@@ -127,7 +127,7 @@ public class ProgressManager
 		this.handleItemChanges(this.inventoryMonitor.toggleInventoryTracking(track));
 		if (track)
 		{
-			refreshContainer(InventoryID.INVENTORY);
+			this.refreshContainer(InventoryID.INVENTORY);
 		}
 	}
 
@@ -144,7 +144,7 @@ public class ProgressManager
 		this.handleItemChanges(this.inventoryMonitor.toggleEquipmentTracking(track));
 		if (track)
 		{
-			refreshContainer(InventoryID.EQUIPMENT);
+			this.refreshContainer(InventoryID.EQUIPMENT);
 		}
 	}
 
@@ -156,18 +156,18 @@ public class ProgressManager
 	 * @param track True if the group storage should be tracked, false otherwise.
 	 * @see net.runelite.client.callback.ClientThread
 	 */
-	public void toggleGroupStorageTracking(boolean track)
+	public void toggleGroupStorageTracking(final boolean track)
 	{
 		this.handleItemChanges(this.inventoryMonitor.toggleGroupStorageTracking(track));
 		if (track)
 		{
-			refreshContainer(InventoryID.GROUP_STORAGE);
+			this.refreshContainer(InventoryID.GROUP_STORAGE);
 		}
 	}
 
-	private void refreshContainer(InventoryID inventoryID)
+	private void refreshContainer(final InventoryID inventoryID)
 	{
-		ItemContainer container = client.getItemContainer(inventoryID);
+		final ItemContainer container = this.client.getItemContainer(inventoryID);
 		if (container != null)
 		{
 			this.processInventoryChanges(container.getId(), container.getItems());
@@ -232,7 +232,7 @@ public class ProgressManager
 
 				this.onEmoteClueItemQuantityChanged.accept(emoteClueItem, quantity);
 
-				final UpdatablePanel.Status status = quantity > 0 ? UpdatablePanel.Status.Complete : UpdatablePanel.Status.InComplete;
+				final StatusPanel.Status status = quantity > 0 ? StatusPanel.Status.Complete : StatusPanel.Status.InComplete;
 				this.inventoryStatusMap.put(emoteClueItem, status);
 
 				this.setEmoteClueItemStatus(emoteClueItem, this.getEmoteClueItemStatus(emoteClueItem));
@@ -264,14 +264,14 @@ public class ProgressManager
 		}
 	}
 
-	private UpdatablePanel.Status getEmoteClueItemStatus(final EmoteClueItem emoteClueItem)
+	private StatusPanel.Status getEmoteClueItemStatus(final EmoteClueItem emoteClueItem)
 	{
 		// Check inventory data.
-		UpdatablePanel.Status intermediateStatus = this.inventoryStatusMap.get(emoteClueItem);
+		StatusPanel.Status intermediateStatus = this.inventoryStatusMap.get(emoteClueItem);
 		this.onEmoteClueItemInventoryStatusChanged.accept(emoteClueItem, intermediateStatus);
-		if (intermediateStatus == UpdatablePanel.Status.Complete)
+		if (intermediateStatus == StatusPanel.Status.Complete)
 		{
-			return UpdatablePanel.Status.Complete;
+			return StatusPanel.Status.Complete;
 		}
 
 		// Check STASHUnit fill status.
@@ -280,11 +280,11 @@ public class ProgressManager
 		{
 			if (this.stashFilledStatusMap.get(emoteClueItem).values().stream().allMatch(Boolean::booleanValue))
 			{
-				return UpdatablePanel.Status.Complete;
+				return StatusPanel.Status.Complete;
 			}
 			if (this.stashFilledStatusMap.get(emoteClueItem).values().stream().anyMatch(Boolean::booleanValue))
 			{
-				intermediateStatus = UpdatablePanel.Status.InProgress;
+				intermediateStatus = StatusPanel.Status.InProgress;
 			}
 		}
 
@@ -294,9 +294,9 @@ public class ProgressManager
 		{
 			for (final EmoteClueItem child : emoteClueItem.getChildren())
 			{
-				if (this.getEmoteClueItemStatus(child) == UpdatablePanel.Status.Complete)
+				if (this.getEmoteClueItemStatus(child) == StatusPanel.Status.Complete)
 				{
-					return UpdatablePanel.Status.Complete;
+					return StatusPanel.Status.Complete;
 				}
 			}
 		}
@@ -306,7 +306,7 @@ public class ProgressManager
 			boolean allMatch = true;
 			for (final EmoteClueItem child : emoteClueItem.getChildren())
 			{
-				if (this.getEmoteClueItemStatus(child) == UpdatablePanel.Status.Complete)
+				if (this.getEmoteClueItemStatus(child) == StatusPanel.Status.Complete)
 				{
 					anyMatch = true;
 				}
@@ -317,17 +317,17 @@ public class ProgressManager
 			}
 			if (allMatch)
 			{
-				return UpdatablePanel.Status.Complete;
+				return StatusPanel.Status.Complete;
 			}
 			if (anyMatch)
 			{
-				intermediateStatus = UpdatablePanel.Status.InProgress;
+				intermediateStatus = StatusPanel.Status.InProgress;
 			}
 		}
 		return intermediateStatus;
 	}
 
-	private void setEmoteClueItemStatus(final EmoteClueItem emoteClueItem, final UpdatablePanel.Status status)
+	private void setEmoteClueItemStatus(final EmoteClueItem emoteClueItem, final StatusPanel.Status status)
 	{
 		this.onEmoteClueItemStatusChanged.accept(emoteClueItem, status);
 		for (final EmoteClueItem parent : emoteClueItem.getParents())

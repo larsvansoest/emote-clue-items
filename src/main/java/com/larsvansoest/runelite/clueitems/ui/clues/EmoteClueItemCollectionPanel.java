@@ -3,6 +3,7 @@ package com.larsvansoest.runelite.clueitems.ui.clues;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
 import com.larsvansoest.runelite.clueitems.ui.components.ItemCollectionPanel;
+import com.larsvansoest.runelite.clueitems.ui.components.StatusPanel;
 import net.runelite.client.plugins.cluescrolls.clues.item.AllRequirementsCollection;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 import net.runelite.client.plugins.cluescrolls.clues.item.SingleItemRequirement;
@@ -27,7 +28,7 @@ public class EmoteClueItemCollectionPanel extends ItemCollectionPanel
 	/**
 	 * Add an {@link com.larsvansoest.runelite.clueitems.data.EmoteClueItem} requirement to include in inventory status checking.
 	 * <p>
-	 * Automatically adds the children of given {@link com.larsvansoest.runelite.clueitems.data.EmoteClueItem} to the inner data structure, which serve as parameter for {@link #setStatus(com.larsvansoest.runelite.clueitems.data.EmoteClueItem, com.larsvansoest.runelite.clueitems.ui.components.UpdatablePanel.Status)}.
+	 * Automatically adds the children of given {@link com.larsvansoest.runelite.clueitems.data.EmoteClueItem} to the inner data structure, which serve as parameter for {@link #setStatus(com.larsvansoest.runelite.clueitems.data.EmoteClueItem, StatusPanel.Status)}.
 	 *
 	 * @param emoteClueItem the requirement to include.
 	 */

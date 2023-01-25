@@ -40,7 +40,7 @@ import java.awt.*;
  * @see FoldablePanel
  * @since 2.0.0
  */
-public interface UpdatablePanel
+public interface StatusPanel
 {
 	/**
 	 * In similar fashion to Runescape's quest progression, requirement progression is represented by the following states:
@@ -67,4 +67,10 @@ public interface UpdatablePanel
 			this.colour = colour;
 		}
 	}
+
+	/**
+	 * Updates the displayed status.
+	 * @param status The status.
+	 */
+	void setStatus(Status status);
 }

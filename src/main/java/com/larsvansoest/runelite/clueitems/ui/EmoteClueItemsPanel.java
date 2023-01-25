@@ -49,6 +49,8 @@ public class EmoteClueItemsPanel extends PluginPanel
 	private final EmoteClueItemGrid clueItemsGrid;
 	private final StashUnitGrid stashUnitGrid;
 
+	private StashUnitPanel stashUnitPanelShownOnMap;
+
 	/**
 	 * Creates the panel.
 	 *
@@ -60,7 +62,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 	 * @param gitHubUrl                Hyperlink when clicking the GitHub icon in the footer.
 	 */
 	public EmoteClueItemsPanel(
-			final EmoteClueItemsPalette palette, final ItemManager itemManager, final BiConsumer<StashUnit, Boolean> onStashFillStatusChanged, final String pluginName, final String pluginVersion,
+			final EmoteClueItemsPalette palette, final ItemManager itemManager, final BiConsumer<StashUnit, Boolean> onStashFillStatusChanged, final BiConsumer<StashUnit, Boolean> onAddStashUnitToMap, final Runnable onRemoveStashUnitFromMap, final String pluginName, final String pluginVersion,
 			final String gitHubUrl)
 	{
 		super();
@@ -85,7 +87,20 @@ public class EmoteClueItemsPanel extends PluginPanel
 		this.emoteCluePanelMap = EmoteClue.CLUES.stream().collect(Collectors.toMap(Function.identity(), emoteClue -> new EmoteCluePanel(palette, emoteClue)));
 
 		// Create STASHUnit panels.
-		this.stashUnitPanelMap = Arrays.stream(StashUnit.values()).collect(Collectors.toMap(Function.identity(), stash -> new StashUnitPanel(palette, stash, onStashFillStatusChanged)));
+		this.stashUnitPanelShownOnMap = null;
+		this.stashUnitPanelMap = Arrays.stream(StashUnit.values()).collect(Collectors.toMap(
+				Function.identity(),
+				stash -> new StashUnitPanel(
+						palette,
+						stash,
+						onStashFillStatusChanged,
+						(panel, built) -> {
+							this.setStashUnitShownOnMap(panel);
+							onAddStashUnitToMap.accept(stash, built);
+						},
+						onRemoveStashUnitFromMap
+				)
+		));
 
 		// Setup item panels.
 		this.itemPanelMap.forEach((emoteClueItem, itemPanel) ->
@@ -106,7 +121,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 		{
 			final EmoteClueItemCollectionPanel collectionPanel = new EmoteClueItemCollectionPanel(palette, "Eligible Inventory Items", 6, true);
 			stashUnitPanel.setItemCollectionPanel(collectionPanel, FoldablePanel.DisplayMode.All);
-			collectionPanel.setStatus(UpdatablePanel.Status.InComplete);
+			collectionPanel.setStatus(StatusPanel.Status.InComplete);
 
 			for (final EmoteClue emoteClue : EmoteClueAssociations.STASHUnitToEmoteClues.get(stashUnit))
 			{
@@ -158,15 +173,25 @@ public class EmoteClueItemsPanel extends PluginPanel
 		for (final EmoteClueItem emoteClueItem : EmoteClueItem.values())
 		{
 			this.setEmoteClueItemQuantity(emoteClueItem, 0);
-			this.setEmoteClueItemStatus(emoteClueItem, UpdatablePanel.Status.InComplete);
-			this.setEmoteClueItemCollectionLogStatus(emoteClueItem, UpdatablePanel.Status.InComplete);
+			this.setEmoteClueItemStatus(emoteClueItem, StatusPanel.Status.InComplete);
+			this.setEmoteClueItemCollectionLogStatus(emoteClueItem, StatusPanel.Status.InComplete);
 		}
 		for (final StashUnit stashUnit : StashUnit.values())
 		{
 			this.setSTASHUnitStatus(stashUnit, false, false);
 		}
+		this.setStashUnitShownOnMap(null);
+		this.setPlayerConstructionLevel(null);
 		this.clueItemsGrid.reset();
 		this.stashUnitGrid.reset();
+		this.disableMapLinks();
+	}
+
+	private void setStashUnitShownOnMap(StashUnitPanel stashUnitPanel) {
+		if(Objects.nonNull(this.stashUnitPanelShownOnMap)) {
+			this.stashUnitPanelShownOnMap.setMapLinkShowDelete(false);
+		}
+		this.stashUnitPanelShownOnMap = stashUnitPanel;
 	}
 
 	private void addEmoteClueItemToCollectionPanel(final EmoteClueItemCollectionPanel collectionPanel, final EmoteClueItem emoteClueItem)
@@ -212,7 +237,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 	 * @param emoteClueItem the EmoteClueItem requirement to change the status of in all corresponding {@link ItemCollectionPanel}.
 	 * @param status        the new status of the EmoteClueItem requirement.
 	 */
-	public void setEmoteClueItemCollectionLogStatus(final EmoteClueItem emoteClueItem, final UpdatablePanel.Status status)
+	public void setEmoteClueItemCollectionLogStatus(final EmoteClueItem emoteClueItem, final StatusPanel.Status status)
 	{
 		for (final EmoteClueItemCollectionPanel collectionPanel : this.collectionPanelsMap.get(emoteClueItem))
 		{
@@ -224,9 +249,9 @@ public class EmoteClueItemsPanel extends PluginPanel
 	 * Changes an {@link com.larsvansoest.runelite.clueitems.data.EmoteClueItem} {@link com.larsvansoest.runelite.clueitems.ui.clues.EmoteClueItemPanel} status panel to represent given status, if a mapping to {@link com.larsvansoest.runelite.clueitems.ui.clues.EmoteClueItemPanel} exists.
 	 *
 	 * @param emoteClueItem the emote to change the status of in the corresponding {@link com.larsvansoest.runelite.clueitems.ui.stashes.StashUnitPanel}.
-	 * @param status        the desired {@link UpdatablePanel.Status} status to display.
+	 * @param status        the desired {@link StatusPanel.Status} status to display.
 	 */
-	public void setEmoteClueItemStatus(final EmoteClueItem emoteClueItem, final UpdatablePanel.Status status)
+	public void setEmoteClueItemStatus(final EmoteClueItem emoteClueItem, final StatusPanel.Status status)
 	{
 		final EmoteClueItemPanel itemPanel = this.itemPanelMap.get(emoteClueItem);
 		if (itemPanel != null)
@@ -321,7 +346,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 	 * @param text    text to display in the notification.
 	 * @param onClose runnable to execute when user clicks the notification close button.
 	 */
-	public void setEmoteClueItemGridDisclaimer(final String text, Runnable onClose)
+	public void setEmoteClueItemGridDisclaimer(final String text, final Runnable onClose)
 	{
 		this.clueItemsGrid.setDisclaimer(text, onClose);
 	}
@@ -354,5 +379,17 @@ public class EmoteClueItemsPanel extends PluginPanel
 	public void removeSTASHUnitGridDisclaimer()
 	{
 		this.stashUnitGrid.removeDisclaimer();
+	}
+
+	public void setPlayerConstructionLevel(Integer level) {
+		this.stashUnitPanelMap.values().forEach(stashUnitPanel -> stashUnitPanel.setPlayerConstructionLevel(level));
+	}
+
+	public void enableMapLinks() {
+		this.stashUnitPanelMap.values().forEach(StashUnitPanel::turnOnMapLinkButton);
+	}
+
+	public void disableMapLinks() {
+		this.stashUnitPanelMap.values().forEach(StashUnitPanel::turnOffMapLinkButton);
 	}
 }

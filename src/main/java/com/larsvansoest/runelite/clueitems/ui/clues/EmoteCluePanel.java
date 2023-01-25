@@ -28,9 +28,9 @@
 
 package com.larsvansoest.runelite.clueitems.ui.clues;
 
+import com.larsvansoest.runelite.clueitems.EmoteClueItemsImages;
 import com.larsvansoest.runelite.clueitems.data.EmoteClue;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
-import com.larsvansoest.runelite.clueitems.data.EmoteClueImages;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
 import com.larsvansoest.runelite.clueitems.ui.components.DescriptionPanel;
 import com.larsvansoest.runelite.clueitems.ui.components.FoldablePanel;
@@ -72,7 +72,7 @@ public class EmoteCluePanel extends FoldablePanel
 		super(palette, emoteClue.getLocationName(), 160, 20);
 
 		this.difficulty = emoteClue.getEmoteClueDifficulty();
-		super.addLeft(new JLabel(new ImageIcon(EmoteClueImages.getScroll(this.difficulty))), new Insets(2, 4, 2, 0), 0, 0, DisplayMode.All);
+		super.addLeft(new JLabel(new ImageIcon(EmoteClueItemsImages.Icons.RuneScape.EmoteClue.Scroll.get(this.difficulty))), new Insets(2, 4, 2, 0), 0, 0, DisplayMode.All);
 
 		this.firstEmote = emoteClue.getFirstEmote();
 		this.secondEmote = emoteClue.getSecondEmote();
