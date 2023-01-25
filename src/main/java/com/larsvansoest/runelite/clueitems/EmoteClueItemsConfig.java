@@ -45,23 +45,91 @@ import net.runelite.client.config.ConfigSection;
 @ConfigGroup("emote-clue-items")
 public interface EmoteClueItemsConfig extends Config
 {
+	@ConfigSection(name = "Collection Log Panel",
+			       description = "Modify the plugin panel's behaviour.",
+			       position = 0)
+	String Section_collectionLogPanel = "collectionLogPanel";
+
+	@ConfigSection(name = "Interface Tracking",
+			description = "Toggle including items in the collection log per interface type.",
+			position = 1)
+	String Section_interfaceTracking = "interfaceTracking";
+
 	@ConfigSection(name = "Interface Highlighting",
 	               description = "Toggle emote clue icons per interface type.",
-	               position = 1)
+	               position = 2)
 	String Section_interfaceHighlighting = "interfaceHighlighting";
-	@ConfigSection(name = "Interface Tracking",
-	               description = "Toggle including items in the collection log per interface type.",
-	               position = 3)
-	String Section_interfaceTracking = "interfaceTracking";
+
+	@ConfigSection(name = "Difficulty Highlighting",
+			description = "Toggle emote clue icons per difficulty.",
+			position = 3)
+	String Section_difficultyHighlighting = "difficultyHighlighting";
+
+    // Collection Log Panel
 
 	@ConfigItem(keyName = "ShowNavigation",
 	            name = "Show collection log",
 	            description = "Show the collection log panel in the RuneLite toolbar.",
+			    section = Section_collectionLogPanel,
 	            position = 0)
 	default boolean showNavigation()
 	{
 		return true;
 	}
+
+	@ConfigItem(keyName = "NotifyUnopenedInterfaces",
+			name = "Unopened interface notification",
+			description = "Show notification for tracked interfaces that have not yet been opened.",
+			section = Section_collectionLogPanel,
+			position = 1)
+	default boolean notifyUnopenedInterfaces()
+	{
+		return true;
+	}
+
+	// Interface Tracking
+
+	@ConfigItem(keyName = "TrackBank",
+			name = "Bank",
+			description = "Include bank items in the collection log.",
+			section = Section_interfaceTracking,
+			position = 0)
+	default boolean trackBank()
+	{
+		return true;
+	}
+
+	@ConfigItem(keyName = "TrackInventory",
+			name = "Inventory",
+			description = "Include inventory items in the collection log.",
+			section = Section_interfaceTracking,
+			position = 1)
+	default boolean trackInventory()
+	{
+		return true;
+	}
+
+	@ConfigItem(keyName = "TrackEquipment",
+			name = "Equipment",
+			description = "Include equipped items in the collection log.",
+			section = Section_interfaceTracking,
+			position = 2)
+	default boolean trackEquipment()
+	{
+		return true;
+	}
+
+	@ConfigItem(keyName = "TrackGroupStorage",
+			name = "Group Storage",
+			description = "(Group iron men) include group storage items in the collection log.",
+			section = Section_interfaceTracking,
+			position = 3)
+	default boolean trackGroupStorage()
+	{
+		return false;
+	}
+
+	// Interface Highlighting
 
 	@ConfigItem(keyName = "HighlightBank",
 	            name = "Bank",
@@ -143,60 +211,75 @@ public interface EmoteClueItemsConfig extends Config
 		return false;
 	}
 
+	// Difficulty Highlighting
+
+	@ConfigItem(keyName = "HighlightBeginner",
+			name = "Beginner",
+			description = "Show highlights for beginner clues.",
+			section = Section_difficultyHighlighting,
+			position = 1)
+	default boolean highlightBeginner()
+	{
+		return true;
+	}
+
+	@ConfigItem(keyName = "HighlightEasy",
+			name = "Easy",
+			description = "Show highlights for easy clues.",
+			section = Section_difficultyHighlighting,
+			position = 2)
+	default boolean highlightEasy()
+	{
+		return true;
+	}
+
+	@ConfigItem(keyName = "HighlightMedium",
+			name = "Medium",
+			description = "Show highlights for medium clues.",
+			section = Section_difficultyHighlighting,
+			position = 3)
+	default boolean highlightMedium()
+	{
+		return true;
+	}
+
+	@ConfigItem(keyName = "HighlightHard",
+			name = "Hard",
+			description = "Show highlights for hard clues.",
+			section = Section_difficultyHighlighting,
+			position = 4)
+	default boolean highlightHard()
+	{
+		return true;
+	}
+
+	@ConfigItem(keyName = "HighlightElite",
+			name = "Elite",
+			description = "Show highlights for elite clues.",
+			section = Section_difficultyHighlighting,
+			position = 5)
+	default boolean highlightElite()
+	{
+		return true;
+	}
+
+	@ConfigItem(keyName = "HighlightMaster",
+			name = "Master",
+			description = "Show highlights for master clues.",
+			section = Section_difficultyHighlighting,
+			position = 6)
+	default boolean highlightMaster()
+	{
+		return true;
+	}
+
+	// Below the sections
+
 	@ConfigItem(keyName = "FilterInStash",
 	            name = "Filter items in STASH",
 	            description = "Do not highlight items already in STASH units.",
-	            position = 2)
-	default boolean filterInStash()
-	{
-		return true;
-	}
-
-	@ConfigItem(keyName = "TrackBank",
-	            name = "Bank",
-	            description = "Include bank items in the collection log.",
-	            section = Section_interfaceTracking,
-	            position = 0)
-	default boolean trackBank()
-	{
-		return true;
-	}
-
-	@ConfigItem(keyName = "TrackInventory",
-	            name = "Inventory",
-	            description = "Include inventory items in the collection log.",
-	            section = Section_interfaceTracking,
-	            position = 1)
-	default boolean trackInventory()
-	{
-		return true;
-	}
-
-	@ConfigItem(keyName = "TrackEquipment",
-	            name = "Equipment",
-	            description = "Include equipped items in the collection log.",
-	            section = Section_interfaceTracking,
-	            position = 2)
-	default boolean trackEquipment()
-	{
-		return true;
-	}
-
-	@ConfigItem(keyName = "TrackGroupStorage",
-	            name = "Group Storage",
-	            description = "(Group iron men) include group storage items in the collection log.",
-	            section = Section_interfaceTracking,
-	            position = 3)
-	default boolean trackGroupStorage()
-	{
-		return false;
-	}
-
-	@ConfigItem(keyName = "NotifyUnopenedInterfaces",
-	            name = "Unopened interface notification",
-	            description = "Show notification for tracked interfaces that have not yet been opened.",
 	            position = 4)
-	default boolean notifyUnopenedInterfaces()
+	default boolean filterInStash()
 	{
 		return true;
 	}
