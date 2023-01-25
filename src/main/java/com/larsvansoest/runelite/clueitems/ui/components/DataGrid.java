@@ -317,7 +317,9 @@ public class DataGrid<T extends JPanel> extends JPanel
 		this.disclaimerPanel.setVisible(true);
 		this.disclaimerPanel.setOnClose(() ->
 		{
-			onClose.run();
+			if (Objects.nonNull(onClose)) {
+				onClose.run();
+			}
 			this.removeDisclaimer();
 		});
 	}
