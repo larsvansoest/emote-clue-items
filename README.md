@@ -59,6 +59,4 @@ requirement name, emoteClueDifficulty and completion status filtering.
 ![Requirement lookup](/readme/requirement-lookup.gif)
 
 ### Planned future updates
-
-- Add buttons to display EmoteClue and STASHUnit locations on the in-game world map.
 - Include more types of item requirements
