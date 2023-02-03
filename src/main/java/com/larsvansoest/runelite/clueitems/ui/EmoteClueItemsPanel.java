@@ -63,7 +63,7 @@ public class EmoteClueItemsPanel extends PluginPanel
 	 */
 	public EmoteClueItemsPanel(
 			final EmoteClueItemsPalette palette, final ItemManager itemManager, final BiConsumer<StashUnit, Boolean> onStashFillStatusChanged, final BiConsumer<StashUnit, Boolean> onAddStashUnitToMap, final Runnable onRemoveStashUnitFromMap, final String pluginName, final String pluginVersion,
-			final String gitHubUrl)
+			final String gitHubUrl, final String payPalUrl)
 	{
 		super();
 		super.setLayout(new GridBagLayout());
@@ -155,14 +155,13 @@ public class EmoteClueItemsPanel extends PluginPanel
 		c.gridx = 0;
 		c.gridy = 0;
 
+		super.add(new HeaderPanel(pluginName, pluginVersion, gitHubUrl, payPalUrl), c);
+		c.gridy++;
+
 		super.add(tabMenu, c);
 		c.gridy++;
 		super.add(this.clueItemsGrid, c);
 		super.add(this.stashUnitGrid, c);
-
-		c.gridy++;
-		c.insets = new Insets(10, 20, 0, 20);
-		super.add(new FooterPanel(palette, pluginName, pluginVersion, gitHubUrl), c);
 	}
 
 	/**

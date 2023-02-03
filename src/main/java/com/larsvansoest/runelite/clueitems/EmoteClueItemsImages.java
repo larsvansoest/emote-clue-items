@@ -113,9 +113,9 @@ public abstract class EmoteClueItemsImages
 	public static final class Icons
 	{
 		private static final String folder = path(EmoteClueItemsImages.folder, "icons");
-
 		public static final BufferedImage CLOSE = getBufferedImage(Icons.folder, "close.png");
 		public static final BufferedImage GITHUB = getBufferedImage(Icons.folder, "github.png");
+		public static final BufferedImage PAYPAL = getBufferedImage(Icons.folder, "paypal.png");
 		public static final BufferedImage QUESTION = getBufferedImage(Icons.folder, "question.png");
 
 		private Icons()

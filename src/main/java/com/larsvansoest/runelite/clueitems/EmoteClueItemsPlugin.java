@@ -113,7 +113,8 @@ public class EmoteClueItemsPlugin extends Plugin
 				this::removeStashUnitMarkerFromMap,
 				"Emote Clue Items",
 				"v4.1.0",
-				"https://github.com/larsvansoest/emote-clue-items"
+				"https://github.com/larsvansoest/emote-clue-items",
+				"https://www.paypal.com/donate/?hosted_button_id=72AFNGL28LFEN"
 		);
 
 		this.progressManager = new ProgressManager(this.client,
