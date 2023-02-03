@@ -60,3 +60,6 @@ requirement name, emoteClueDifficulty and completion status filtering.
 
 ### Planned future updates
 - Include more types of item requirements
+
+### Donating
+Buy me a coffee with [this PayPal donation link](https://www.paypal.com/donate/?hosted_button_id=72AFNGL28LFEN)!
