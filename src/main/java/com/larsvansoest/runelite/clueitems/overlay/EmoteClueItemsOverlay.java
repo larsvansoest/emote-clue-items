@@ -146,7 +146,7 @@ public class EmoteClueItemsOverlay extends WidgetItemOverlay
 		{
 			this.worldMapMarkers.forEach(worldMapMarker -> worldMapMarker.rotateOrb(this.client));
 		});
-		return null;
+		return super.render(graphics);
 	}
 
 	private boolean difficultySettingEnabled(final EmoteClueDifficulty difficulty) {
