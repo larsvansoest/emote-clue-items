@@ -360,6 +360,7 @@ public class EmoteClueItemsPlugin extends Plugin
 	{
 		this.overlayManager.remove(this.overlay);
 		this.clientToolbar.removeNavigation(this.navigationButton);
+		this.removeStashUnitMarkerFromMap();
 	}
 
 	@Provides
