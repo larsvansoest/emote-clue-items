@@ -87,6 +87,16 @@ public interface EmoteClueItemsConfig extends Config
 		return true;
 	}
 
+	@ConfigItem(keyName = "AutoSyncWatsonBoard",
+			name = "Sync watson board",
+			description = "Sync STASH unit fill statuses after opening the notice board in Watson's house.",
+			section = Section_collectionLogPanel,
+			position = 1)
+	default boolean autoSyncWatsonBoard()
+	{
+		return false;
+	}
+
 	// Interface Tracking
 
 	@ConfigItem(keyName = "TrackBank",

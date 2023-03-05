@@ -28,7 +28,11 @@
 
 package com.larsvansoest.runelite.clueitems.overlay;
 
+import net.runelite.api.Client;
 import net.runelite.api.widgets.WidgetItem;
+
+import java.util.Objects;
+import java.util.function.BiConsumer;
 
 /**
  * Utility class with Runescape item container widget inspection functionality.
@@ -39,19 +43,19 @@ import net.runelite.api.widgets.WidgetItem;
 public abstract class WidgetInspector
 {
 	/**
-	 * Identifies the origin of given widgetItem, writes found data into given {@link WidgetData} object. The method iterates over the ancestors (parents of parents), and compares it to the ids of all entries of the {@link Widget} enum.
+	 * Identifies the origin of given widgetItem, writes found data into given {@link ItemContainerWidgetData} object. The method iterates over the ancestors (parents of parents), and compares it to the ids of all entries of the {@link Widget} enum.
 	 *
 	 * @param widgetItem    the {@link WidgetItem} to analyse.
-	 * @param widgetDataRef the {@link WidgetData} to write found data to.
+	 * @param itemContainerWidgetDataRef the {@link ItemContainerWidgetData} to write found data to.
 	 * @param maxDepth      the maximum steps from initial widgetItem parameter to one of the parents specified.
 	 * @since 1.2.0
 	 */
-	public static void Inspect(final WidgetItem widgetItem, final WidgetData widgetDataRef, final int maxDepth)
+	public static void InspectItemContainer(final WidgetItem widgetItem, final ItemContainerWidgetData itemContainerWidgetDataRef, final int maxDepth)
 	{
 		net.runelite.api.widgets.Widget widget = widgetItem.getWidget();
 
-		widgetDataRef.setWidgetContainer(null);
-		widgetDataRef.setWidgetContext(null);
+		itemContainerWidgetDataRef.setWidgetContainer(null);
+		itemContainerWidgetDataRef.setWidgetContext(null);
 
 		int i = 0;
 		while (i < maxDepth && widget != null)
@@ -60,110 +64,151 @@ public abstract class WidgetInspector
 
 			if (id == Widget.BANK.id)
 			{
-				widgetDataRef.setWidgetContext(WidgetContext.InBank);
-				widgetDataRef.setWidgetContainer(WidgetContainer.Bank);
+				itemContainerWidgetDataRef.setWidgetContext(WidgetContext.InBank);
+				itemContainerWidgetDataRef.setWidgetContainer(WidgetContainer.Bank);
 				return;
 			}
 			else if (id == Widget.BANK_EQUIPMENT.id)
 			{
-				widgetDataRef.setWidgetContext(WidgetContext.InBank);
-				widgetDataRef.setWidgetContainer(WidgetContainer.Equipment);
+				itemContainerWidgetDataRef.setWidgetContext(WidgetContext.InBank);
+				itemContainerWidgetDataRef.setWidgetContainer(WidgetContainer.Equipment);
 				return;
 			}
 			else if (id == Widget.BANK_EQUIPMENT_INVENTORY.id)
 			{
-				widgetDataRef.setWidgetContext(WidgetContext.InBank);
-				widgetDataRef.setWidgetContainer(WidgetContainer.Inventory);
+				itemContainerWidgetDataRef.setWidgetContext(WidgetContext.InBank);
+				itemContainerWidgetDataRef.setWidgetContainer(WidgetContainer.Inventory);
 				return;
 			}
 			else if (id == Widget.BANK_INVENTORY.id)
 			{
-				widgetDataRef.setWidgetContext(WidgetContext.InBank);
-				widgetDataRef.setWidgetContainer(WidgetContainer.Inventory);
+				itemContainerWidgetDataRef.setWidgetContext(WidgetContext.InBank);
+				itemContainerWidgetDataRef.setWidgetContainer(WidgetContainer.Inventory);
 				return;
 			}
 
 			else if (id == Widget.EQUIPMENT.id)
 			{
-				widgetDataRef.setWidgetContext(WidgetContext.Default);
-				widgetDataRef.setWidgetContainer(WidgetContainer.Equipment);
+				itemContainerWidgetDataRef.setWidgetContext(WidgetContext.Default);
+				itemContainerWidgetDataRef.setWidgetContainer(WidgetContainer.Equipment);
 				return;
 			}
 			else if (id == Widget.EQUIPMENT_EQUIPMENT.id)
 			{
-				widgetDataRef.setWidgetContext(WidgetContext.InEquipment);
-				widgetDataRef.setWidgetContainer(WidgetContainer.Equipment);
+				itemContainerWidgetDataRef.setWidgetContext(WidgetContext.InEquipment);
+				itemContainerWidgetDataRef.setWidgetContainer(WidgetContainer.Equipment);
 				return;
 			}
 			else if (id == Widget.EQUIPMENT_INVENTORY.id)
 			{
-				widgetDataRef.setWidgetContext(WidgetContext.InEquipment);
-				widgetDataRef.setWidgetContainer(WidgetContainer.Inventory);
+				itemContainerWidgetDataRef.setWidgetContext(WidgetContext.InEquipment);
+				itemContainerWidgetDataRef.setWidgetContainer(WidgetContainer.Inventory);
 				return;
 			}
 
 			else if (id == Widget.DEPOSIT_BOX.id)
 			{
-				widgetDataRef.setWidgetContext(WidgetContext.InDepositBox);
-				widgetDataRef.setWidgetContainer(WidgetContainer.DepositBox);
+				itemContainerWidgetDataRef.setWidgetContext(WidgetContext.InDepositBox);
+				itemContainerWidgetDataRef.setWidgetContainer(WidgetContainer.DepositBox);
 				return;
 			}
 
 			else if (id == Widget.GUIDE_PRICES.id)
 			{
-				widgetDataRef.setWidgetContext(WidgetContext.InGuidePrices);
-				widgetDataRef.setWidgetContainer(WidgetContainer.GuidePrices);
+				itemContainerWidgetDataRef.setWidgetContext(WidgetContext.InGuidePrices);
+				itemContainerWidgetDataRef.setWidgetContainer(WidgetContainer.GuidePrices);
 				return;
 			}
 			else if (id == Widget.GUIDE_PRICES_INVENTORY.id)
 			{
-				widgetDataRef.setWidgetContext(WidgetContext.InGuidePrices);
-				widgetDataRef.setWidgetContainer(WidgetContainer.Inventory);
+				itemContainerWidgetDataRef.setWidgetContext(WidgetContext.InGuidePrices);
+				itemContainerWidgetDataRef.setWidgetContainer(WidgetContainer.Inventory);
 				return;
 			}
 
 			else if (id == Widget.INVENTORY.id)
 			{
-				widgetDataRef.setWidgetContext(WidgetContext.Default);
-				widgetDataRef.setWidgetContainer(WidgetContainer.Inventory);
+				itemContainerWidgetDataRef.setWidgetContext(WidgetContext.Default);
+				itemContainerWidgetDataRef.setWidgetContainer(WidgetContainer.Inventory);
 				return;
 			}
 
 			else if (id == Widget.KEPT_ON_DEATH.id)
 			{
-				widgetDataRef.setWidgetContext(WidgetContext.InKeptOnDeath);
-				widgetDataRef.setWidgetContainer(WidgetContainer.KeptOnDeath);
+				itemContainerWidgetDataRef.setWidgetContext(WidgetContext.InKeptOnDeath);
+				itemContainerWidgetDataRef.setWidgetContainer(WidgetContainer.KeptOnDeath);
 				return;
 			}
 
 			else if (id == Widget.SHOP.id)
 			{
-				widgetDataRef.setWidgetContext(WidgetContext.InShop);
-				widgetDataRef.setWidgetContainer(WidgetContainer.Shop);
+				itemContainerWidgetDataRef.setWidgetContext(WidgetContext.InShop);
+				itemContainerWidgetDataRef.setWidgetContainer(WidgetContainer.Shop);
 				return;
 			}
 
 			else if (id == Widget.SHOP_INVENTORY.id)
 			{
-				widgetDataRef.setWidgetContext(WidgetContext.InShop);
-				widgetDataRef.setWidgetContainer(WidgetContainer.Inventory);
+				itemContainerWidgetDataRef.setWidgetContext(WidgetContext.InShop);
+				itemContainerWidgetDataRef.setWidgetContainer(WidgetContainer.Inventory);
 				return;
 			}
 
 			else if (id == Widget.GROUP_STORAGE.id)
 			{
-				widgetDataRef.setWidgetContext(WidgetContext.InGroupStorage);
-				widgetDataRef.setWidgetContainer(WidgetContainer.GroupStorage);
+				itemContainerWidgetDataRef.setWidgetContext(WidgetContext.InGroupStorage);
+				itemContainerWidgetDataRef.setWidgetContainer(WidgetContainer.GroupStorage);
 			}
 
 			else if (id == Widget.GROUP_STORAGE_INVENTORY.id)
 			{
-				widgetDataRef.setWidgetContext(WidgetContext.InGroupStorage);
-				widgetDataRef.setWidgetContainer(WidgetContainer.Inventory);
+				itemContainerWidgetDataRef.setWidgetContext(WidgetContext.InGroupStorage);
+				itemContainerWidgetDataRef.setWidgetContainer(WidgetContainer.Inventory);
 			}
 
 			widget = widget.getParent();
 			i++;
 		}
+	}
+
+	public static boolean TryReadWatsonBoard(final Client client, final BiConsumer<String, Boolean> stashUnitFillStatusCallback) {
+		return TryReadWatsonBoard(Widget.WATSON_NOTICE_BOARD_BEGINNER, client, stashUnitFillStatusCallback)
+			 | TryReadWatsonBoard(Widget.WATSON_NOTICE_BOARD_EASY, client, stashUnitFillStatusCallback)
+			 | TryReadWatsonBoard(Widget.WATSON_NOTICE_BOARD_MEDIUM, client, stashUnitFillStatusCallback)
+			 | TryReadWatsonBoard(Widget.WATSON_NOTICE_BOARD_HARD, client, stashUnitFillStatusCallback)
+			 | TryReadWatsonBoard(Widget.WATSON_NOTICE_BOARD_ELITE, client, stashUnitFillStatusCallback)
+			 | TryReadWatsonBoard(Widget.WATSON_NOTICE_BOARD_MASTER, client, stashUnitFillStatusCallback);
+	}
+
+	private static boolean TryReadWatsonBoard(final Widget watsonNoticeBoard, final Client client, final BiConsumer<String, Boolean> stashUnitFillStatusCallback) {
+		final net.runelite.api.widgets.Widget stashListWidget = client.getWidget(watsonNoticeBoard.groupId, watsonNoticeBoard.childId);
+		if (Objects.isNull(stashListWidget)) return false;
+		final net.runelite.api.widgets.Widget[] stashListWidgetChildren = stashListWidget.getChildren();
+		if (Objects.isNull(stashListWidgetChildren)) return false;
+
+		String location = null;
+		int checkMarkCount = 0;
+		for(net.runelite.api.widgets.Widget widget : stashListWidgetChildren) {
+			final boolean widgetContainsLocationName = widget.getType() == 4;
+			if (widgetContainsLocationName) {
+				if (Objects.nonNull(location)) {
+					final boolean stashUnitFilled = checkMarkCount == 2;
+					stashUnitFillStatusCallback.accept(location, stashUnitFilled);
+					checkMarkCount = 0;
+				}
+				location = widget.getText();
+			}
+			final boolean widgetContainsCheckMark = Objects.nonNull(location) && widget.getType() == 5;
+			if(widgetContainsCheckMark) {
+				checkMarkCount++;
+			}
+		}
+
+		if (Objects.nonNull(location)) {
+			final boolean stashUnitFilled = checkMarkCount == 2;
+			stashUnitFillStatusCallback.accept(location, stashUnitFilled);
+		}
+
+		return true;
 	}
 }

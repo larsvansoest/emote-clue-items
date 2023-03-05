@@ -28,7 +28,10 @@
 
 package com.larsvansoest.runelite.clueitems.overlay;
 
-enum Widget
+/**
+ * Includes Widget definitions for widgets used by the plugin.
+ */
+public enum Widget
 {
 	BANK(12, 10),
 
@@ -60,7 +63,15 @@ enum Widget
 
 	GROUP_STORAGE(724, 10),
 
-	GROUP_STORAGE_INVENTORY(725, 0);
+	GROUP_STORAGE_INVENTORY(725, 0),
+
+	WATSON_NOTICE_BOARD(493, 0),
+	WATSON_NOTICE_BOARD_BEGINNER(493, 4),
+	WATSON_NOTICE_BOARD_EASY(493, 6),
+	WATSON_NOTICE_BOARD_MEDIUM(493, 8),
+	WATSON_NOTICE_BOARD_HARD(493, 10),
+	WATSON_NOTICE_BOARD_ELITE(493, 12),
+	WATSON_NOTICE_BOARD_MASTER(493, 14);
 
 	/**
 	 * id of the widget

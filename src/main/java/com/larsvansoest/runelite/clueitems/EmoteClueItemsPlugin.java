@@ -33,6 +33,8 @@ import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
 import com.larsvansoest.runelite.clueitems.data.StashUnit;
 import com.larsvansoest.runelite.clueitems.map.StashUnitWorldMapMarker;
 import com.larsvansoest.runelite.clueitems.overlay.EmoteClueItemsOverlay;
+import com.larsvansoest.runelite.clueitems.overlay.Widget;
+import com.larsvansoest.runelite.clueitems.overlay.WidgetInspector;
 import com.larsvansoest.runelite.clueitems.progress.ProgressManager;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPanel;
@@ -100,6 +102,7 @@ public class EmoteClueItemsPlugin extends Plugin
 	private boolean showUnopenedInterfaceNotification;
 
 	private Integer cachedPlayerConstructionLevel;
+	private boolean readWatsonOnNextGameTick;
 
 	@Override
 	protected void startUp()
@@ -108,11 +111,11 @@ public class EmoteClueItemsPlugin extends Plugin
 
 		this.emoteClueItemsPanel = new EmoteClueItemsPanel(emoteClueItemsPalette,
 				this.itemManager,
-				this::onStashUnitFilledChanged,
+				this::onUserSetStashUnitFillStatus,
 				this::addStashUnitMarkerToMap,
 				this::removeStashUnitMarkerFromMap,
 				"Emote Clue Items",
-				"v4.1.1",
+				"v4.2.0",
 				"https://github.com/larsvansoest/emote-clue-items",
 				"https://www.paypal.com/donate/?hosted_button_id=72AFNGL28LFEN"
 		);
@@ -122,9 +125,9 @@ public class EmoteClueItemsPlugin extends Plugin
 				this.configManager,
 				this.config,
 				this.itemManager,
-				this::onEmoteClueItemQuantityChanged,
-				this::onEmoteClueItemInventoryStatusChanged,
-				this::onEmoteClueItemStatusChanged
+				this.emoteClueItemsPanel::setEmoteClueItemQuantity,
+				this.emoteClueItemsPanel::setEmoteClueItemCollectionLogStatus,
+				this.emoteClueItemsPanel::setEmoteClueItemStatus
 		);
 
 		this.navigationButton = NavigationButton
@@ -143,6 +146,10 @@ public class EmoteClueItemsPlugin extends Plugin
 		this.reset();
 	}
 
+	private void onUserSetStashUnitFillStatus(StashUnit stashUnit, Boolean filled) {
+		this.progressManager.setStashUnitFilled(stashUnit, filled);
+	}
+
 	private void reset()
 	{
 		this.progressManager.reset();
@@ -158,6 +165,7 @@ public class EmoteClueItemsPlugin extends Plugin
 		this.emoteClueItemsPanel.setSTASHUnitGridDisclaimer(loginDisclaimer);
 
 		this.updateStashBuiltStatusOnNextGameTick = false;
+		this.readWatsonOnNextGameTick = false;
 		this.showUnopenedInterfaceNotification = this.config.notifyUnopenedInterfaces();
 		this.cachedPlayerConstructionLevel = null;
 
@@ -183,26 +191,6 @@ public class EmoteClueItemsPlugin extends Plugin
 	private void removeStashUnitMarkerFromMap() {
 		this.worldMapPointManager.remove(this.stashUnitWorldMapMarker);
 		this.overlay.clearWorldMarkers();
-	}
-
-	private void onStashUnitFilledChanged(final StashUnit stashUnit, final boolean filled)
-	{
-		this.progressManager.setStashUnitFilled(stashUnit, filled);
-	}
-
-	private void onEmoteClueItemQuantityChanged(final EmoteClueItem emoteClueItem, final int quantity)
-	{
-		this.emoteClueItemsPanel.setEmoteClueItemQuantity(emoteClueItem, quantity);
-	}
-
-	private void onEmoteClueItemInventoryStatusChanged(final EmoteClueItem emoteClueItem, final StatusPanel.Status status)
-	{
-		this.emoteClueItemsPanel.setEmoteClueItemCollectionLogStatus(emoteClueItem, status);
-	}
-
-	private void onEmoteClueItemStatusChanged(final EmoteClueItem emoteClueItem, final StatusPanel.Status status)
-	{
-		this.emoteClueItemsPanel.setEmoteClueItemStatus(emoteClueItem, status);
 	}
 
 	private void updateStashUnitBuildStatuses()
@@ -273,6 +261,20 @@ public class EmoteClueItemsPlugin extends Plugin
 	}
 
 	@Subscribe
+	protected void onWidgetLoaded(final WidgetLoaded event) {
+		if (event.getGroupId() == Widget.WATSON_NOTICE_BOARD.groupId && this.config.autoSyncWatsonBoard()) {
+			this.readWatsonOnNextGameTick = true;
+		}
+	}
+
+	@Subscribe
+	protected void onWidgetClosed(final WidgetClosed event) {
+		if (event.getGroupId() == Widget.WATSON_NOTICE_BOARD.groupId) {
+			this.readWatsonOnNextGameTick = false;
+		}
+	}
+
+	@Subscribe
 	protected void onGameStateChanged(final GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGIN_SCREEN)
@@ -316,43 +318,55 @@ public class EmoteClueItemsPlugin extends Plugin
 			this.updateStashBuiltStatusOnNextGameTick = false;
 			this.updateStashUnitBuildStatuses();
 		}
+		if (this.readWatsonOnNextGameTick)
+		{
+			final boolean readComplete = WidgetInspector.TryReadWatsonBoard(this.client, (watsonLocation, filled) -> {
+				StashUnit stashUnit = StashUnit.fromWatsonLocation(watsonLocation);
+				if(Objects.nonNull(stashUnit)) {
+					this.progressManager.setStashUnitFilled(stashUnit, filled);
+					this.emoteClueItemsPanel.setStashUnitFilledStatus(stashUnit, filled);
+				}
+			});
+			this.readWatsonOnNextGameTick = !readComplete;
+		}
 	}
 
 	@Subscribe
 	protected void onConfigChanged(final ConfigChanged event)
 	{
-		this.clientThread.invoke(() ->
+		final String key = event.getKey();
+		switch (key)
 		{
-			final String key = event.getKey();
-			switch (key)
-			{
-				case "TrackBank":
-					this.progressManager.toggleBankTracking(event.getNewValue().equals("true"));
-					this.setupUnopenedInterfaceNotification();
-					break;
-				case "TrackInventory":
-					this.progressManager.toggleInventoryTracking(event.getNewValue().equals("true"));
-					this.setupUnopenedInterfaceNotification();
-					break;
-				case "TrackEquipment":
-					this.progressManager.toggleEquipmentTracking(event.getNewValue().equals("true"));
-					this.setupUnopenedInterfaceNotification();
-					break;
-				case "TrackGroupStorage":
-					this.progressManager.toggleGroupStorageTracking(event.getNewValue().equals("true"));
-					this.setupUnopenedInterfaceNotification();
-					break;
-				case "NotifyUnopenedInterfaces":
-					this.showUnopenedInterfaceNotification = event.getNewValue().equals("true");
-					this.setupUnopenedInterfaceNotification();
-					break;
-				case "ShowNavigation":
-					this.toggleCollectionLog(event.getNewValue().equals("true"));
-					break;
-				default:
-					break;
-			}
-		});
+			case "TrackBank":
+				this.progressManager.toggleBankTracking(event.getNewValue().equals("true"));
+				this.setupUnopenedInterfaceNotification();
+				break;
+			case "TrackInventory":
+				this.progressManager.toggleInventoryTracking(event.getNewValue().equals("true"));
+				this.setupUnopenedInterfaceNotification();
+				break;
+			case "TrackEquipment":
+				this.progressManager.toggleEquipmentTracking(event.getNewValue().equals("true"));
+				this.setupUnopenedInterfaceNotification();
+				break;
+			case "TrackGroupStorage":
+				this.progressManager.toggleGroupStorageTracking(event.getNewValue().equals("true"));
+				this.setupUnopenedInterfaceNotification();
+				break;
+			case "NotifyUnopenedInterfaces":
+				this.showUnopenedInterfaceNotification = event.getNewValue().equals("true");
+				this.setupUnopenedInterfaceNotification();
+				break;
+			case "ShowNavigation":
+				this.toggleCollectionLog(event.getNewValue().equals("true"));
+				break;
+			case "AutoSyncWatsonBoard":
+				final boolean isWatsonBoardOpen = Objects.nonNull(this.client.getWidget(493, 0));
+				this.readWatsonOnNextGameTick = event.getNewValue().equals("true") && isWatsonBoardOpen;
+				break;
+			default:
+				break;
+		}
 	}
 
 	@Override
