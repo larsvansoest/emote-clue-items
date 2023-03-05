@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit;
 
+import java.util.Arrays;
+
 /**
  * Contains and wraps all {@link net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit} used by {@link net.runelite.client.plugins.cluescrolls.clues.EmoteClue}, integrated in vendored {@link com.larsvansoest.runelite.clueitems.data.EmoteClue} class.
  * <p>
@@ -17,7 +19,6 @@ import net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit;
  * @since 3.0.0
  */
 @Getter
-@RequiredArgsConstructor
 public enum StashUnit
 {
 	NEAR_A_SHED_IN_LUMBRIDGE_SWAMP("Lumbridge Swamp Shed", STASHUnit.NEAR_A_SHED_IN_LUMBRIDGE_SWAMP, Type.Hole),
@@ -44,7 +45,7 @@ public enum StashUnit
 	ROAD_JUNCTION_SOUTH_OF_SINCLAIR_MANSION("Sinclaire Mansion Junction", STASHUnit.ROAD_JUNCTION_SOUTH_OF_SINCLAIR_MANSION, Type.Rock),
 	OUTSIDE_THE_DIGSITE_EXAM_CENTRE("Digsite Exam Centre", STASHUnit.OUTSIDE_THE_DIGSITE_EXAM_CENTRE, Type.Bush),
 	NEAR_THE_SAWMILL_OPERATORS_BOOTH("Sawmill Operators Booth", STASHUnit.NEAR_THE_SAWMILL_OPERATORS_BOOTH, Type.Bush),
-	PVP_ARENA_TICKET_OFFICE("PvP Arena Ticket Office", STASHUnit.PVP_ARENA_TICKET_OFFICE, Type.Crate),
+	PVP_ARENA_TICKET_OFFICE("PvP Arena Ticket Office", "Mubariz's room at the Emir's Arena", STASHUnit.PVP_ARENA_TICKET_OFFICE, Type.Crate),
 	OUTSIDE_VARROCK_PALACE_COURTYARD("Varrock Palace Courtyard", STASHUnit.OUTSIDE_VARROCK_PALACE_COURTYARD, Type.Bush),
 	NEAR_HERQUINS_SHOP_IN_FALADOR("Falador Herquins Shop", STASHUnit.NEAR_HERQUINS_SHOP_IN_FALADOR, Type.Bush),
 	SOUTH_OF_THE_GRAND_EXCHANGE("Varrock Grand Exchange", STASHUnit.SOUTH_OF_THE_GRAND_EXCHANGE, Type.Bush),
@@ -54,11 +55,11 @@ public enum StashUnit
 	EAST_OF_THE_BARBARIAN_VILLAGE_BRIDGE("Barbarian Village Bridge", STASHUnit.EAST_OF_THE_BARBARIAN_VILLAGE_BRIDGE, Type.Bush),
 	SOUTH_OF_THE_SHRINE_IN_TAI_BWO_WANNAI_VILLAGE("Tai Bwo Wannai Shrine", STASHUnit.SOUTH_OF_THE_SHRINE_IN_TAI_BWO_WANNAI_VILLAGE, Type.Crate),
 	CASTLE_WARS_BANK("Castle Wars Bank", STASHUnit.CASTLE_WARS_BANK, Type.Crate),
-	BARBARIAN_OUTPOST_OBSTACLE_COURSE("Barbarian Outpost Course", STASHUnit.BARBARIAN_OUTPOST_OBSTACLE_COURSE, Type.Bush),
+	BARBARIAN_OUTPOST_OBSTACLE_COURSE("Barbarian Outpost Course", "Barbarian Outpost obstacle course", STASHUnit.BARBARIAN_OUTPOST_OBSTACLE_COURSE, Type.Bush),
 	GNOME_STRONGHOLD_BALANCING_ROPE("Gnome Stronghold Rope", STASHUnit.GNOME_STRONGHOLD_BALANCING_ROPE, Type.Crate),
 	OUTSIDE_YANILLE_BANK("Yanille Bank", STASHUnit.OUTSIDE_YANILLE_BANK, Type.Rock),
 	OBSERVATORY("Observatory", STASHUnit.OBSERVATORY, Type.Crate),
-	OGRE_CAGE_IN_KING_LATHAS_TRAINING_CAMP("Lathas Camp Ogre Cage", STASHUnit.OGRE_CAGE_IN_KING_LATHAS_TRAINING_CAMP, Type.Hole),
+	OGRE_CAGE_IN_KING_LATHAS_TRAINING_CAMP("Lathas Camp Ogre Cage", "Ogre cage in the Ardougne Training Camp", STASHUnit.OGRE_CAGE_IN_KING_LATHAS_TRAINING_CAMP, Type.Hole),
 	DIGSITE("Digsite", STASHUnit.DIGSITE, Type.Rock),
 	HICKTONS_ARCHERY_EMPORIUM("Hickton's Archery Emporium", STASHUnit.HICKTONS_ARCHERY_EMPORIUM, Type.Crate),
 	SHANTAY_PASS("Shantay Pass", STASHUnit.SHANTAY_PASS, Type.Crate),
@@ -68,7 +69,7 @@ public enum StashUnit
 	OUTSIDE_HARRYS_FISHING_SHOP_IN_CATHERBY("Catherby Harry's Fishing Shop", STASHUnit.OUTSIDE_HARRYS_FISHING_SHOP_IN_CATHERBY, Type.Bush),
 	TZHAAR_WEAPONS_STORE("TzHaar Weapons Store", STASHUnit.TZHAAR_WEAPONS_STORE, Type.Hole),
 	NORTH_OF_EVIL_DAVES_HOUSE_IN_EDGEVILLE("Edgeville Evil Dave's House", STASHUnit.NORTH_OF_EVIL_DAVES_HOUSE_IN_EDGEVILLE, Type.Bush),
-	WEST_OF_THE_SHAYZIEN_COMBAT_RING("Shayzien Combat Ring", STASHUnit.WEST_OF_THE_SHAYZIEN_COMBAT_RING, Type.Crate),
+	WEST_OF_THE_SHAYZIEN_COMBAT_RING("Shayzien Combat Ring", "North of the Shayzien combat ring", STASHUnit.WEST_OF_THE_SHAYZIEN_COMBAT_RING, Type.Crate),
 	ENTRANCE_OF_THE_ARCEUUS_LIBRARY("Arceuus Library", STASHUnit.ENTRANCE_OF_THE_ARCEUUS_LIBRARY, Type.Crate),
 	OUTSIDE_DRAYNOR_VILLAGE_JAIL("Draynor Village Jail", STASHUnit.OUTSIDE_DRAYNOR_VILLAGE_JAIL, Type.Bush),
 	CHAOS_TEMPLE_IN_THE_SOUTHEASTERN_WILDERNESS("Wilderness Chaos Temple", STASHUnit.CHAOS_TEMPLE_IN_THE_SOUTHEASTERN_WILDERNESS, Type.Rock),
@@ -84,7 +85,7 @@ public enum StashUnit
 	NORTHEAST_CORNER_OF_THE_KHARAZI_JUNGLE("Khazari Jungle", STASHUnit.NORTHEAST_CORNER_OF_THE_KHARAZI_JUNGLE, Type.Hole),
 	VOLCANO_IN_THE_NORTHEASTERN_WILDERNESS("Wilderness Volcano", STASHUnit.VOLCANO_IN_THE_NORTHEASTERN_WILDERNESS, Type.Rock),
 	IN_THE_MIDDLE_OF_JIGGIG("Jiggig", STASHUnit.IN_THE_MIDDLE_OF_JIGGIG, Type.Rock),
-	AGILITY_PYRAMID("Agility Pyramid", STASHUnit.AGILITY_PYRAMID, Type.Hole),
+	AGILITY_PYRAMID("Agility Pyramid", "Agility Pyramid", STASHUnit.AGILITY_PYRAMID, Type.Hole),
 	HOSIDIUS_MESS("Hosidius Mess", STASHUnit.HOSIDIUS_MESS, Type.Crate),
 	CHAPEL_IN_WEST_ARDOUGNE("West Ardougne Chapel", STASHUnit.CHAPEL_IN_WEST_ARDOUGNE, Type.Crate),
 	NEAR_A_RUNITE_ROCK_IN_THE_FREMENNIK_ISLES("Fremennik Isles Runite Rock", STASHUnit.NEAR_A_RUNITE_ROCK_IN_THE_FREMENNIK_ISLES, Type.Rock),
@@ -124,13 +125,46 @@ public enum StashUnit
 	BEHIND_MISS_SCHISM_IN_DRAYNOR_VILLAGE("Draynor Village Miss Chism", STASHUnit.BEHIND_MISS_SCHISM_IN_DRAYNOR_VILLAGE, Type.Bush),
 	NORTHWESTERN_CORNER_OF_THE_ENCHANTED_VALLEY("Enchanted Valley", STASHUnit.NORTHWESTERN_CORNER_OF_THE_ENCHANTED_VALLEY, Type.Bush),
 	NORTH_OF_MOUNT_KARUULM("Mount Karuulm", STASHUnit.NORTH_OF_MOUNT_KARUULM, Type.Hole),
-	GYPSY_TENT_ENTRANCE("Varrock Gypsy Tent", STASHUnit.GYPSY_TENT_ENTRANCE, Type.Bush),
-	FINE_CLOTHES_ENTRANCE("Varrock Fine Clothes", STASHUnit.FINE_CLOTHES_ENTRANCE, Type.Bush),
-	BOB_AXES_ENTRANCE("Lumbridge Bob's Axes", STASHUnit.BOB_AXES_ENTRANCE, Type.Bush),
-	CRYSTALLINE_MAPLE_TREES("Crystalline Maple Trees", STASHUnit.CRYSTALLINE_MAPLE_TREES, Type.Hole),
-	CHARCOAL_BURNERS("Charcoal Burners", STASHUnit.CHARCOAL_BURNERS, Type.Crate);
+	GYPSY_TENT_ENTRANCE("Varrock Gypsy Tent", "Aris's tent", STASHUnit.GYPSY_TENT_ENTRANCE, Type.Bush),
+	FINE_CLOTHES_ENTRANCE("Varrock Fine Clothes", "Iffie Nitter in Varrock", STASHUnit.FINE_CLOTHES_ENTRANCE, Type.Bush),
+	BOB_AXES_ENTRANCE("Lumbridge Bob's Axes", "Bob's Brilliant Axes in Lumbridge", STASHUnit.BOB_AXES_ENTRANCE, Type.Bush),
+	CRYSTALLINE_MAPLE_TREES("Crystalline Maple Trees", "North of Prifddinas by several maple trees", STASHUnit.CRYSTALLINE_MAPLE_TREES, Type.Hole),
+	CHARCOAL_BURNERS("Charcoal Burners", "Near the Charcoal Burners", STASHUnit.CHARCOAL_BURNERS, Type.Crate);
+
+	StashUnit(String name, STASHUnit stashUnit, Type type) {
+		this.name = name;
+		this.watsonLocation = formatWatsonLocation(this.name());
+		this.stashUnit = stashUnit;
+		this.type = type;
+	}
+
+	StashUnit(String name, String watsonLocation, STASHUnit stashUnit, Type type) {
+		this.name = name;
+		this.watsonLocation = formatWatsonLocation(watsonLocation);
+		this.stashUnit = stashUnit;
+		this.type = type;
+	}
+
+	/**
+	 * Returns the StashUnit corresponding to the text on the Watson notice board.
+	 * @param watsonLocation - The text from the watson notice board.
+	 * @return the StashUnit, null if no match was found.
+	 */
+	public static StashUnit fromWatsonLocation(String watsonLocation) {
+		for(StashUnit stashUnit : StashUnit.values()) {
+			if (stashUnit.getWatsonLocation().equals(formatWatsonLocation(watsonLocation))) {
+				return stashUnit;
+			}
+		}
+		return null;
+	}
+
+	private static String formatWatsonLocation(String watsonLocation) {
+		return watsonLocation.replace("'", "").replace("-", "").replace("_", " ").trim().toLowerCase();
+	}
 
 	private final String name;
+	private final String watsonLocation;
 	private final STASHUnit stashUnit;
 	private final Type type;
 

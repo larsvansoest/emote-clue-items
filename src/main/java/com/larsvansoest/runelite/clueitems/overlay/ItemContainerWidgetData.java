@@ -36,7 +36,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-class WidgetData
+class ItemContainerWidgetData
 {
 	private WidgetContainer widgetContainer;
 	private WidgetContext widgetContext;

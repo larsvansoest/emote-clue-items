@@ -285,6 +285,11 @@ public class EmoteClueItemsPanel extends PluginPanel
 		}
 	}
 
+	public void setStashUnitFilledStatus(final StashUnit stashUnit, final boolean filled) {
+		final StashUnitPanel stashUnitPanel = this.stashUnitPanelMap.get(stashUnit);
+		if(filled != stashUnitPanel.isFilled()) stashUnitPanel.setFilled(filled);
+	}
+
 	/**
 	 * Turn on the stash unit filled button of the {@link com.larsvansoest.runelite.clueitems.ui.stashes.StashUnitPanel} of the {@link com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPanel} that corresponds to given STASHUnit, if a mapping to {@link com.larsvansoest.runelite.clueitems.ui.stashes.StashUnitPanel} exists.
 	 * <p>

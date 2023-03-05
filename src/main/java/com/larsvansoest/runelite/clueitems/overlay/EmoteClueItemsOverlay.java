@@ -62,7 +62,7 @@ public class EmoteClueItemsOverlay extends WidgetItemOverlay
 	private final ItemManager itemManager;
 	private final ProgressManager progressManager;
 	// Single object allocations, re-used every sequential iteration.
-	private final WidgetData widgetData;
+	private final ItemContainerWidgetData itemContainerWidgetData;
 	private final Point point;
 	private final ArrayList<WorldMapMarker> worldMapMarkers;
 	private final Client client;
@@ -79,7 +79,7 @@ public class EmoteClueItemsOverlay extends WidgetItemOverlay
 		this.clientThread = clientThread;
 
 		this.config = config;
-		this.widgetData = new WidgetData();
+		this.itemContainerWidgetData = new ItemContainerWidgetData();
 		this.point = new Point();
 		this.worldMapMarkers = new ArrayList<>();
 
@@ -98,9 +98,9 @@ public class EmoteClueItemsOverlay extends WidgetItemOverlay
 	@Override
 	public void renderItemOverlay(final Graphics2D graphics, final int itemId, final WidgetItem itemWidget)
 	{
-		WidgetInspector.Inspect(itemWidget, this.widgetData, 3);
-		final WidgetContainer widgetContainer = this.widgetData.getWidgetContainer();
-		final WidgetContext widgetContext = this.widgetData.getWidgetContext();
+		WidgetInspector.InspectItemContainer(itemWidget, this.itemContainerWidgetData, 3);
+		final WidgetContainer widgetContainer = this.itemContainerWidgetData.getWidgetContainer();
+		final WidgetContext widgetContext = this.itemContainerWidgetData.getWidgetContext();
 
 		// Filter unsupported and turned off interfaces.
 		if (Objects.isNull(widgetContext) || Objects.isNull(widgetContainer) || !this.interfaceGroupSettingEnabled(widgetContainer))
