@@ -1,4 +1,4 @@
-## Emote Clue Items v4.1.1 [![Plugin Installs](http://img.shields.io/endpoint?url=https://i.pluginhub.info/shields/installs/plugin/emote-clue-items&label=Active%20installs)](https://runelite.net/plugin-hub/Lars%20van%20Soest)
+## Emote Clue Items v4.2.0 [![Plugin Installs](http://img.shields.io/endpoint?url=https://i.pluginhub.info/shields/installs/plugin/emote-clue-items&label=Active%20installs)](https://runelite.net/plugin-hub/Lars%20van%20Soest)
 
 Emote Clue Items is a RuneLite plugin which highlights items required for emote clue steps and provides a user-friendly
 item collection log with STASHUnit integration.
@@ -9,11 +9,11 @@ Maintaining bank space can be quite cumbersome, especially when you are not sure
 clue scrolls. With this plugin, throwing away items may be a bit less stressful, as this plugin aims to highlight all
 emote clue items.
 
-### 4.1.0 Patch notes
+### 4.2.0 Feature overivew
+- The new 4.2.0 patch enables fill status synchronisation for the noticeboard in Watson's house. 
+  > To enable this feature, enable "Sync Watson Board" in the plugin settings.
+- In previous news, the recent [v4.1.0 update](https://github.com/larsvansoest/emote-clue-items/releases/tag/v4.1.0) allows [marking STASH unit locations](#mark-stash-unit-locations-on-the-map) on the map and highlights construction level requirements.
 
-This update features an update to the collection panel, which now allows [marking STASH unit locations](#mark-stash-unit-locations-on-the-map) on the map and highlights construction level requirements.
-What's more, highlights can now be toggled for each emote clue difficulty. See
-the [v4.1.0 release notes](https://github.com/larsvansoest/emote-clue-items/releases/tag/v4.1.0) for the full list of changes.
 
 #### Filling stashes updates the emote clue item requirement status
 
