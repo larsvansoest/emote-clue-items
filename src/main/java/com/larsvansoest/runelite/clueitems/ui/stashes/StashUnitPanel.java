@@ -25,7 +25,7 @@ import java.util.function.BiConsumer;
  */
 public class StashUnitPanel extends RequirementPanel
 {
-	private final CycleButton filledButton;
+	private CycleButton filledButton;
 	private final int filledButtonComplete;
 	private final int filledButtonInComplete;
 	private final EmoteClueItemsPalette palette;
@@ -43,8 +43,6 @@ public class StashUnitPanel extends RequirementPanel
 	private boolean filled;
 	@Getter
 	private boolean built;
-	private Color headerColorBeforeTurnOff;
-	private boolean filledButtonTurnedOn;
 	@Getter
 	private ItemCollectionPanel itemCollectionPanel;
 
@@ -69,20 +67,22 @@ public class StashUnitPanel extends RequirementPanel
 
 		this.filled = true;
 		final String toolTipTextFormat = "Set stash unit as %s.";
-		this.filledButtonTurnedOn = false;
+
 		this.filledButton = new CycleButton(palette, new ImageIcon(EmoteClueItemsImages.Icons.CheckSquare.INCOMPLETE_EMPTY), () ->
 		{
-			if (this.filledButtonTurnedOn)
+			if (Objects.nonNull(this.filledButton) && this.filledButton.isTurnedOn())
 			{
 				onStashFillStatusChanged.accept(stash, false);
 				super.setStatus(Status.InComplete);
+				super.setHeaderColor(null);
 				this.filled = false;
 			}
 		}, DataGrid.getToolTipText(toolTipTextFormat, "filled"));
+
 		this.filledButtonInComplete = 0;
 		this.filledButtonComplete = this.filledButton.addOption(new ImageIcon(EmoteClueItemsImages.Icons.CheckSquare.COMPLETE), () ->
 		{
-			if (this.filledButtonTurnedOn)
+			if (this.filledButton.isTurnedOn())
 			{
 				onStashFillStatusChanged.accept(stash, true);
 				super.setStatus(Status.Complete);
@@ -189,11 +189,9 @@ public class StashUnitPanel extends RequirementPanel
 	 */
 	public void turnOffFilledButton(final Icon icon, final String toolTip)
 	{
-		if (this.filledButtonTurnedOn)
+		if (this.filledButton.isTurnedOn())
 		{
 			this.filledButton.turnOff(icon, toolTip);
-			this.filledButtonTurnedOn = this.filledButton.isTurnedOn();
-			this.headerColorBeforeTurnOff = super.getHeaderColor();
 			super.setHeaderColor(this.palette.getFoldHeaderTextColor());
 		}
 	}
@@ -207,12 +205,10 @@ public class StashUnitPanel extends RequirementPanel
 	 */
 	public void turnOnFilledButton()
 	{
-		if (!this.filledButtonTurnedOn)
+		if (!this.filledButton.isTurnedOn())
 		{
 			this.filledButton.turnOn();
-			this.filledButtonTurnedOn = this.filledButton.isTurnedOn();
-			super.setHeaderColor(this.headerColorBeforeTurnOff);
-			this.headerColorBeforeTurnOff = null;
+			super.setHeaderColor(this.filled ? null : super.getStatus().colour);
 		}
 	}
 
@@ -250,8 +246,10 @@ public class StashUnitPanel extends RequirementPanel
 	 */
 	public void setFilled(final boolean filled)
 	{
-		this.filledButton.cycleToStage(filled ? this.filledButtonComplete : this.filledButtonInComplete);
-		this.filled = filled;
+		if(this.built) {
+			this.filledButton.cycleToStage(filled ? this.filledButtonComplete : this.filledButtonInComplete);
+			this.filled = filled;
+		}
 	}
 
 	public void setMapLinkShowDelete(boolean showDelete) {
