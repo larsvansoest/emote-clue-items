@@ -12,6 +12,9 @@ emote clue items.
 ### 4.2.0 Feature overivew
 - The new 4.2.0 patch enables fill status synchronisation for the noticeboard in Watson's house. 
   > To enable this feature, enable "Sync Watson Board" in the plugin settings.
+
+![Watson notice board sync](/readme/watson-sync.gif)
+
 - In previous news, the recent [v4.1.0 update](https://github.com/larsvansoest/emote-clue-items/releases/tag/v4.1.0) allows [marking STASH unit locations](#mark-stash-unit-locations-on-the-map) on the map and highlights construction level requirements.
 
 
