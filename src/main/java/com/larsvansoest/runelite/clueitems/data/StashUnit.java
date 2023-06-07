@@ -150,7 +150,11 @@ public enum StashUnit
 	 * @param watsonLocation - The text from the watson notice board.
 	 * @return the StashUnit, null if no match was found.
 	 */
-	public static StashUnit fromWatsonLocation(String watsonLocation) {
+	public static StashUnit fromWatsonLocation(String watsonLocation, EmoteClueDifficulty difficulty) {
+		// warrior guild STASHes have the same board name
+		if (watsonLocation.equals("Warriors' Guild bank")) {
+			return difficulty.equals(EmoteClueDifficulty.Elite) ? WARRIORS_GUILD_BANK : WARRIORS_GUILD_BANK_29047;
+		}
 		for(StashUnit stashUnit : StashUnit.values()) {
 			if (stashUnit.getWatsonLocation().equals(formatWatsonLocation(watsonLocation))) {
 				return stashUnit;
