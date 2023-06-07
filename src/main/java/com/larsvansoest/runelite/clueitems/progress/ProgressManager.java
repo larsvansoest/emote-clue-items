@@ -30,6 +30,7 @@ import java.util.function.BiConsumer;
 public class ProgressManager
 {
 	private final Client client;
+	private final ClientThread clientThread;
 	private final EmoteClueItemsConfig config;
 	private final InventoryMonitor inventoryMonitor;
 	private final StashMonitor stashMonitor;
@@ -45,6 +46,7 @@ public class ProgressManager
 			final BiConsumer<EmoteClueItem, StatusPanel.Status> onEmoteClueItemStatusChanged)
 	{
 		this.client = client;
+		this.clientThread = clientThread;
 		this.config = config;
 		this.inventoryMonitor = new InventoryMonitor(config, itemManager);
 		this.stashMonitor = new StashMonitor(configManager);
@@ -92,7 +94,9 @@ public class ProgressManager
 	 */
 	public void processInventoryChanges(final int containerId, final Item[] items)
 	{
-		this.handleItemChanges(this.inventoryMonitor.fetchEmoteClueItemChanges(containerId, items));
+		this.clientThread.invoke(() -> {
+			this.handleItemChanges(this.inventoryMonitor.fetchEmoteClueItemChanges(containerId, items));
+		});
 	}
 
 	/**
