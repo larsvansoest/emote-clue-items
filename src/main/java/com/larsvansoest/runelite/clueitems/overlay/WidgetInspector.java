@@ -28,11 +28,13 @@
 
 package com.larsvansoest.runelite.clueitems.overlay;
 
+import com.larsvansoest.runelite.clueitems.data.EmoteClueDifficulty;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.WidgetItem;
 
 import java.util.Objects;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * Utility class with Runescape item container widget inspection functionality.
@@ -171,16 +173,16 @@ public abstract class WidgetInspector
 		}
 	}
 
-	public static boolean TryReadWatsonBoard(final Client client, final BiConsumer<String, Boolean> stashUnitFillStatusCallback) {
-		return TryReadWatsonBoard(Widget.WATSON_NOTICE_BOARD_BEGINNER, client, stashUnitFillStatusCallback)
-			 | TryReadWatsonBoard(Widget.WATSON_NOTICE_BOARD_EASY, client, stashUnitFillStatusCallback)
-			 | TryReadWatsonBoard(Widget.WATSON_NOTICE_BOARD_MEDIUM, client, stashUnitFillStatusCallback)
-			 | TryReadWatsonBoard(Widget.WATSON_NOTICE_BOARD_HARD, client, stashUnitFillStatusCallback)
-			 | TryReadWatsonBoard(Widget.WATSON_NOTICE_BOARD_ELITE, client, stashUnitFillStatusCallback)
-			 | TryReadWatsonBoard(Widget.WATSON_NOTICE_BOARD_MASTER, client, stashUnitFillStatusCallback);
+	public static boolean TryReadWatsonBoard(final Client client, final Function<EmoteClueDifficulty, BiConsumer<String, Boolean>> stashUnitFillStatusCallback) {
+		return TryReadWatsonBoard(Widget.WATSON_NOTICE_BOARD_BEGINNER, client, stashUnitFillStatusCallback.apply(EmoteClueDifficulty.Beginner))
+			 | TryReadWatsonBoard(Widget.WATSON_NOTICE_BOARD_EASY, client, stashUnitFillStatusCallback.apply(EmoteClueDifficulty.Easy))
+			 | TryReadWatsonBoard(Widget.WATSON_NOTICE_BOARD_MEDIUM, client, stashUnitFillStatusCallback.apply(EmoteClueDifficulty.Medium))
+			 | TryReadWatsonBoard(Widget.WATSON_NOTICE_BOARD_HARD, client, stashUnitFillStatusCallback.apply(EmoteClueDifficulty.Hard))
+			 | TryReadWatsonBoard(Widget.WATSON_NOTICE_BOARD_ELITE, client, stashUnitFillStatusCallback.apply(EmoteClueDifficulty.Elite))
+			 | TryReadWatsonBoard(Widget.WATSON_NOTICE_BOARD_MASTER, client, stashUnitFillStatusCallback.apply(EmoteClueDifficulty.Master));
 	}
 
-	private static boolean TryReadWatsonBoard(final Widget watsonNoticeBoard, final Client client, final BiConsumer<String, Boolean> stashUnitFillStatusCallback) {
+	private static boolean TryReadWatsonBoard(Widget watsonNoticeBoard, final Client client, final BiConsumer<String, Boolean> stashUnitFillStatusCallback) {
 		final net.runelite.api.widgets.Widget stashListWidget = client.getWidget(watsonNoticeBoard.groupId, watsonNoticeBoard.childId);
 		if (Objects.isNull(stashListWidget)) return false;
 		final net.runelite.api.widgets.Widget[] stashListWidgetChildren = stashListWidget.getChildren();
