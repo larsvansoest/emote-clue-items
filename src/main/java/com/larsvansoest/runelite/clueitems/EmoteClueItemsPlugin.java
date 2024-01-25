@@ -29,7 +29,6 @@
 package com.larsvansoest.runelite.clueitems;
 
 import com.google.inject.Provides;
-import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
 import com.larsvansoest.runelite.clueitems.data.StashUnit;
 import com.larsvansoest.runelite.clueitems.map.StashUnitWorldMapMarker;
 import com.larsvansoest.runelite.clueitems.overlay.EmoteClueItemsOverlay;
@@ -38,7 +37,6 @@ import com.larsvansoest.runelite.clueitems.overlay.WidgetInspector;
 import com.larsvansoest.runelite.clueitems.progress.ProgressManager;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPalette;
 import com.larsvansoest.runelite.clueitems.ui.EmoteClueItemsPanel;
-import com.larsvansoest.runelite.clueitems.ui.components.StatusPanel;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
 import net.runelite.api.events.*;

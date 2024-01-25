@@ -1,17 +1,17 @@
 package com.larsvansoest.runelite.clueitems.map;
 
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+
 import com.larsvansoest.runelite.clueitems.EmoteClueItemsImages;
+
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
-import net.runelite.api.RenderOverview;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
-
-import java.awt.*;
-import java.awt.image.BufferedImage;
+import net.runelite.api.widgets.*;
+import net.runelite.api.worldmap.WorldMap;
 
 public class WorldMapOrb
 {
@@ -58,7 +58,7 @@ public class WorldMapOrb
 
 	private static Point mapWorldPointToGraphicsPoint(final Client client, final WorldPoint worldPoint)
 	{
-		final RenderOverview ro = client.getRenderOverview();
+		final WorldMap ro = client.getWorldMap();
 
 		if (!ro.getWorldMapData().surfaceContainsPosition(worldPoint.getX(), worldPoint.getY()))
 		{
@@ -67,7 +67,7 @@ public class WorldMapOrb
 
 		final float pixelsPerTile = ro.getWorldMapZoom();
 
-		final Widget map = client.getWidget(WidgetInfo.WORLD_MAP_VIEW);
+		final Widget map = client.getWidget(ComponentID.WORLD_MAP_MAPVIEW);
 		if (map != null)
 		{
 			final Rectangle worldMapRect = map.getBounds();
@@ -100,7 +100,7 @@ public class WorldMapOrb
 
 	private static Rectangle getWorldMapClipArea(final Client client)
 	{
-		final Widget widget = client.getWidget(WidgetInfo.WORLD_MAP_VIEW);
+		final Widget widget = client.getWidget(ComponentID.WORLD_MAP_MAPVIEW);
 		return widget == null ? null : widget.getBounds();
 	}
 

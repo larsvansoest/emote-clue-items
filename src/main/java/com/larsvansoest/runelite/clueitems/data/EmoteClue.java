@@ -30,6 +30,7 @@ import lombok.Getter;
 import net.runelite.api.Varbits;
 import net.runelite.api.annotations.Varbit;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import net.runelite.client.plugins.cluescrolls.clues.Enemy;
 import net.runelite.client.plugins.cluescrolls.clues.LocationClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.emote.Emote;
@@ -1311,5 +1312,10 @@ public final class EmoteClue implements LocationClueScroll
 		this.itemRequirements = itemRequirements;
 		this.enemy = enemy;
 		this.hasFirePit = hasFirePit;
+	}
+
+	@Override
+	public WorldPoint getLocation(ClueScrollPlugin plugin) {
+		return location;
 	}
 }

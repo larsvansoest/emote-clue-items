@@ -2,8 +2,6 @@ package com.larsvansoest.runelite.clueitems.map;
 
 import com.larsvansoest.runelite.clueitems.EmoteClueItemsImages;
 import com.larsvansoest.runelite.clueitems.data.StashUnit;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.http.api.worlds.WorldRegion;
 
 import java.awt.image.BufferedImage;
 
