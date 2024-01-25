@@ -1,13 +1,11 @@
 package com.larsvansoest.runelite.clueitems.map;
 
 import com.larsvansoest.runelite.clueitems.EmoteClueItemsImages;
-import com.larsvansoest.runelite.clueitems.data.StashUnit;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class WorldMapMarker extends WorldMapPoint

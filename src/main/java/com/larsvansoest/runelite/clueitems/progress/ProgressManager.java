@@ -6,11 +6,8 @@ import com.larsvansoest.runelite.clueitems.data.EmoteClueAssociations;
 import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
 import com.larsvansoest.runelite.clueitems.data.StashUnit;
 import com.larsvansoest.runelite.clueitems.ui.components.StatusPanel;
-import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
-import net.runelite.api.vars.AccountType;
+
+import net.runelite.api.*;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
@@ -198,8 +195,15 @@ public class ProgressManager
 		{
 			unopenedContainers.add("equipment");
 		}
-		final AccountType accountType = this.client.getAccountType();
-		if ((accountType == AccountType.GROUP_IRONMAN || accountType == AccountType.HARDCORE_GROUP_IRONMAN) && this.config.trackGroupStorage() && !this.inventoryMonitor.getHasSeenGroupStorage())
+
+		int accountType = this.client.getVarbitValue(Varbits.ACCOUNT_TYPE);
+		/*
+		 * Varbits.ACCOUNT_TYPE
+		 * 4 = group ironman
+		 * 5 = hardcore group ironman
+		 * 6 = unranked group ironman
+		 */
+		if ((accountType == 4 || accountType == 5 || accountType == 6) && this.config.trackGroupStorage() && !this.inventoryMonitor.getHasSeenGroupStorage())
 		{
 			unopenedContainers.add("group storage");
 		}

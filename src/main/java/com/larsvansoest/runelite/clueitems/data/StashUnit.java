@@ -4,8 +4,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit;
 
-import java.util.Arrays;
-
 /**
  * Contains and wraps all {@link net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit} used by {@link net.runelite.client.plugins.cluescrolls.clues.EmoteClue}, integrated in vendored {@link com.larsvansoest.runelite.clueitems.data.EmoteClue} class.
  * <p>
