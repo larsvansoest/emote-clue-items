@@ -51,7 +51,7 @@ import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement
  * Source: https://github.com/runelite/runelite/tree/master/runelite-client/src/main/java/net/runelite/client/plugins/cluescrolls/clues
  * </p>
  * <p>
- * Maintained up to 3e65e49.
+ * Maintained up to 47f73bd.
  * To check for any updates, see https://github.com/runelite/runelite/commits/master/runelite-client/src/main/java/net/runelite/client/plugins/cluescrolls/clues/EmoteClue.java
  * </p>
  *
@@ -100,8 +100,8 @@ public final class EmoteClue implements LocationClueScroll
 					CHEER,
 					EmoteClueItem.ANY_MITRE,
 					EmoteClueItem.ANY_RUNE_CROSSBOW,
-					EmoteClueItem.CLIMBING_BOOTS,
-					EmoteClueItem.RING_OF_VISIBILITY
+					EmoteClueItem.ANY_CLIMBING_BOOTS,
+					EmoteClueItem.ANY_RING_OF_VISIBILITY_OR_SHADOWS
 			),
 			new EmoteClue(Hard,
 					"Cheer at the top of the agility pyramid. Beware of double agents! Equip a blue mystic robe top, and any rune heraldic shield.",
@@ -177,7 +177,7 @@ public final class EmoteClue implements LocationClueScroll
 			),
 			new EmoteClue(Easy,
 					"Cheer at the games room. Have nothing equipped at all when you do.",
-					"Games room",
+					"Burthorpe Games Room",
 					null,
 					new WorldPoint(2207, 4952, 0),
 					CHEER,
@@ -270,7 +270,7 @@ public final class EmoteClue implements LocationClueScroll
 					new WorldPoint(2205, 3252, 0),
 					DOUBLE_AGENT_141,
 					BOW,
-					EmoteClueItem.ANY_CRYSTAL_BOW
+					EmoteClueItem.ANY_CRYSTAL_BOW_OR_ACTIVE_BOW_OF_FAERDHINEN
 			),
 			new EmoteClue(Master,
 					"Bow in the Iorwerth Camp. Beware of double agents! Equip a charged crystal bow.",
@@ -279,7 +279,7 @@ public final class EmoteClue implements LocationClueScroll
 					new WorldPoint(2205, 3252, 0),
 					DOUBLE_AGENT_141,
 					BOW,
-					EmoteClueItem.ANY_CRYSTAL_BOW
+					EmoteClueItem.ANY_CRYSTAL_BOW_OR_ACTIVE_BOW_OF_FAERDHINEN
 			),
 			new EmoteClue(Easy,
 					"Bow outside the entrance to the Legends' Guild. Equip iron platelegs, an emerald amulet and an oak longbow.",
@@ -302,7 +302,7 @@ public final class EmoteClue implements LocationClueScroll
 					EmoteClueItem.ANY_AMULET_OF_GLORY
 			),
 			new EmoteClue(Easy,
-					"Bow in the ticket office of the PvP Arena. Equip an iron chain body, leather chaps and coif.",
+					"Bow in the ticket office of the Emir's Arena. Equip an iron chain body, leather chaps and coif.",
 					"PvP Arena",
 					PVP_ARENA_TICKET_OFFICE,
 					new WorldPoint(3314, 3241, 0),
@@ -310,6 +310,16 @@ public final class EmoteClue implements LocationClueScroll
 					EmoteClueItem.IRON_CHAINBODY,
 					EmoteClueItem.LEATHER_CHAPS,
 					EmoteClueItem.COIF
+			),
+			new EmoteClue(Elite,
+					"Bow within the temple in Civitas illa Fortis. Equip the full set of Sunfire Fanatic armour.",
+					"Civitas illa Fortis",
+					TEMPLE_SOUTHEAST_OF_THE_BAZAAR,
+					new WorldPoint(1699, 3087, 0),
+					BOW,
+					EmoteClueItem.SUNFIRE_FANATIC_HELM,
+					EmoteClueItem.SUNFIRE_FANATIC_CUIRASS,
+					EmoteClueItem.SUNFIRE_FANATIC_CHAUSSES
 			),
 			new EmoteClue(Hard,
 					"Bow at the top of the lighthouse. Beware of double agents! Equip a blue dragonhide body, blue dragonhide vambraces and no jewelry.",
@@ -610,6 +620,18 @@ public final class EmoteClue implements LocationClueScroll
 					EmoteClueItem.BODY_TIARA
 			),
 			new EmoteClue(Master,
+					"Fortis Salute outside the gates of Cam Torum. Beware of double agents! Equip a full set of Frostmoon equipment.",
+					"Cam Torum",
+					CAM_TORUM_ENTRANCE,
+					new WorldPoint(1436, 3115, 0),
+					DOUBLE_AGENT_141,
+					FORTIS_SALUTE,
+					EmoteClueItem.BLUE_MOON_HELM,
+					EmoteClueItem.BLUE_MOON_CHESTPLATE,
+					EmoteClueItem.BLUE_MOON_TASSETS,
+					EmoteClueItem.BLUE_MOON_SPEAR
+			),
+			new EmoteClue(Master,
 					"Goblin Salute in the Goblin Village. Beware of double agents! Equip a bandos godsword, a bandos cloak and a bandos platebody.",
 					"Goblin Village",
 					OUTSIDE_MUDKNUCKLES_HUT,
@@ -741,7 +763,7 @@ public final class EmoteClue implements LocationClueScroll
 					DOUBLE_AGENT_141,
 					JUMP_FOR_JOY,
 					EmoteClueItem.DRAGON_2H_SWORD,
-					EmoteClueItem.BANDOS_BOOTS,
+					EmoteClueItem.ANY_BANDOS_BOOTS,
 					EmoteClueItem.OBSIDIAN_CAPE
 			),
 			new EmoteClue(Elite,
@@ -960,7 +982,7 @@ public final class EmoteClue implements LocationClueScroll
 			),
 			new EmoteClue(Hard,
 					"Shrug in the Zamorak temple found in the Eastern Wilderness. Beware of double agents! Equip rune platelegs, an iron platebody and blue dragonhide vambraces.",
-					"Chaos temple",
+					"Chaos temple (east of Ferox Enclave)",
 					CHAOS_TEMPLE_IN_THE_SOUTHEASTERN_WILDERNESS,
 					new WorldPoint(3239, 3611, 0),
 					DOUBLE_AGENT_65,
@@ -1102,7 +1124,7 @@ public final class EmoteClue implements LocationClueScroll
 			),
 			new EmoteClue(Easy,
 					"Wave on Mudskipper Point. Equip a black cape, leather chaps and a steel mace.",
-					"Mudskipper Point",
+					"Mudskipper Point (IAQ)",
 					MUDSKIPPER_POINT,
 					new WorldPoint(2989, 3110, 0),
 					WAVE,
@@ -1194,6 +1216,16 @@ public final class EmoteClue implements LocationClueScroll
 					EmoteClueItem.ADAMANT_BOOTS,
 					EmoteClueItem.ADAMANT_DAGGER
 			),
+			new EmoteClue(Easy,
+					"Yawn in the Fortis Grand Museum. Equip an emerald necklace, blue skirt, and turqoise gnome robe top.",
+					"Fortis Grand Museum",
+					FORTIS_GRAND_MUSEUM,
+					new WorldPoint(1712, 3163, 0),
+					YAWN,
+					EmoteClueItem.EMERALD_NECKLACE,
+					EmoteClueItem.BLUE_SKIRT,
+					EmoteClueItem.TURQUOISE_ROBE_TOP
+			),
 			new EmoteClue(Master,
 					"Swing a bullroarer at the top of the Watchtower. Beware of double agents! Equip a dragon plateskirt, climbing boots and a dragon chainbody.",
 					"Yanille Watchtower",
@@ -1215,7 +1247,11 @@ public final class EmoteClue implements LocationClueScroll
 					EmoteClueItem.GOLD_RING,
 					EmoteClueItem.GOLD_NECKLACE
 			),
-			new EmoteClue(Beginner, "Bow to Brugsen Bursen at the Grand Exchange.", "Grand Exchange", null, new WorldPoint(3164, 3477, 0), BOW),
+			new EmoteClue(Beginner,
+					"Bow to Brugsen Bursen at the Grand Exchange.",
+					"Grand Exchange",
+					null,
+					new WorldPoint(3164, 3477, 0), BOW),
 			new EmoteClue(Beginner,
 					"Cheer at Iffie Nitter. Equip a chef hat and a red cape.",
 					"Varrock",
@@ -1234,8 +1270,18 @@ public final class EmoteClue implements LocationClueScroll
 					EmoteClueItem.BRONZE_AXE,
 					EmoteClueItem.LEATHER_BOOTS
 			),
-			new EmoteClue(Beginner, "Panic at Al Kharid mine.", "Al Kharid mine", null, new WorldPoint(3300, 3314, 0), PANIC),
-			new EmoteClue(Beginner, "Spin at Flynn's Mace Shop.", "Falador", null, new WorldPoint(2950, 3387, 0), SPIN),
+			new EmoteClue(Beginner,
+					"Panic at Al Kharid mine.",
+					"Al Kharid mine",
+					null,
+					new WorldPoint(3303, 3271, 0),
+					PANIC),
+			new EmoteClue(Beginner,
+					"Spin at Flynn's Mace Shop.",
+					"Falador",
+					null,
+					new WorldPoint(2950, 3387, 0),
+					SPIN),
 			new EmoteClue(
 					Elite,
 					"Salute by the Charcoal Burners. Equip a Farmer's strawhat, Shayzien platebody (5) and Pyromancer robes.",

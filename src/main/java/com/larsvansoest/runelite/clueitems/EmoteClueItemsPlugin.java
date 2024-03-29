@@ -115,7 +115,7 @@ public class EmoteClueItemsPlugin extends Plugin
 				this::addStashUnitMarkerToMap,
 				this::removeStashUnitMarkerFromMap,
 				"Emote Clue Items",
-				"v4.2.2",
+				"v4.3.0",
 				"https://github.com/larsvansoest/emote-clue-items",
 				"https://www.paypal.com/donate/?hosted_button_id=72AFNGL28LFEN"
 		);
