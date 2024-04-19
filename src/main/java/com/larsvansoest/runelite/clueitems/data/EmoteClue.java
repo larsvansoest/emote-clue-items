@@ -983,7 +983,7 @@ public final class EmoteClue implements LocationClueScroll
 			new EmoteClue(Hard,
 					"Shrug in the Zamorak temple found in the Eastern Wilderness. Beware of double agents! Equip rune platelegs, an iron platebody and blue dragonhide vambraces.",
 					"Chaos temple (east of Ferox Enclave)",
-					CHAOS_TEMPLE_IN_THE_SOUTHEASTERN_WILDERNESS,
+					EAST_OF_THE_LEVEL_19_WILDERNESS_OBELISK,
 					new WorldPoint(3239, 3611, 0),
 					DOUBLE_AGENT_65,
 					SHRUG,
