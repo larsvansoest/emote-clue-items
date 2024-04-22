@@ -70,7 +70,6 @@ public enum StashUnit
 	WEST_OF_THE_SHAYZIEN_COMBAT_RING("Shayzien Combat Ring", "North of the Shayzien combat ring", STASHUnit.WEST_OF_THE_SHAYZIEN_COMBAT_RING, Type.Crate),
 	ENTRANCE_OF_THE_ARCEUUS_LIBRARY("Arceuus Library", STASHUnit.ENTRANCE_OF_THE_ARCEUUS_LIBRARY, Type.Crate),
 	OUTSIDE_DRAYNOR_VILLAGE_JAIL("Draynor Village Jail", STASHUnit.OUTSIDE_DRAYNOR_VILLAGE_JAIL, Type.Bush),
-	EAST_OF_THE_LEVEL_19_WILDERNESS_OBELISK("Wilderness Chaos Temple", STASHUnit.EAST_OF_THE_LEVEL_19_WILDERNESS_OBELISK, Type.Rock),
 	FISHING_GUILD_BANK("Fishing Guild Bank", STASHUnit.FISHING_GUILD_BANK, Type.Crate),
 	TOP_FLOOR_OF_THE_LIGHTHOUSE("Lighthouse Top Floor", STASHUnit.TOP_FLOOR_OF_THE_LIGHTHOUSE, Type.Crate),
 	OUTSIDE_THE_GREAT_PYRAMID_OF_SOPHANEM("Great Pyramid of Sophanem", STASHUnit.OUTSIDE_THE_GREAT_PYRAMID_OF_SOPHANEM, Type.Hole),
@@ -130,7 +129,8 @@ public enum StashUnit
 	FINE_CLOTHES_ENTRANCE("Varrock Fine Clothes", "Iffie Nitter in Varrock", STASHUnit.FINE_CLOTHES_ENTRANCE, Type.Bush),
 	BOB_AXES_ENTRANCE("Lumbridge Bob's Axes", "Bob's Brilliant Axes in Lumbridge", STASHUnit.BOB_AXES_ENTRANCE, Type.Bush),
 	CRYSTALLINE_MAPLE_TREES("Crystalline Maple Trees", "North of Prifddinas by several maple trees", STASHUnit.CRYSTALLINE_MAPLE_TREES, Type.Hole),
-	CHARCOAL_BURNERS("Charcoal Burners", "Near the Charcoal Burners", STASHUnit.CHARCOAL_BURNERS, Type.Crate);
+	CHARCOAL_BURNERS("Charcoal Burners", "Near the Charcoal Burners", STASHUnit.CHARCOAL_BURNERS, Type.Crate),
+	EAST_OF_THE_LEVEL_19_WILDERNESS_OBELISK("Wilderness Chaos Temple", "Chaos Temple in the south-eastern Wilderness", STASHUnit.EAST_OF_THE_LEVEL_19_WILDERNESS_OBELISK, Type.Rock);
 
 	StashUnit(String name, STASHUnit stashUnit, Type type) {
 		this.name = name;
