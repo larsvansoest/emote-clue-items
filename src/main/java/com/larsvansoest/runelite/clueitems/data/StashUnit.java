@@ -10,7 +10,7 @@ import net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit;
  * Source https://github.com/runelite/runelite/blob/master/runelite-client/src/main/java/net/runelite/client/plugins/cluescrolls/clues/emote/STASHUnit.java
  * </p>
  * <p>
- * Maintained up to 91e5d18.
+ * Maintained up to 2253b25.
  * </p>
  *
  * @author Lars van Soest

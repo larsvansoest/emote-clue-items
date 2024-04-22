@@ -51,7 +51,7 @@ import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement
  * Source: https://github.com/runelite/runelite/tree/master/runelite-client/src/main/java/net/runelite/client/plugins/cluescrolls/clues
  * </p>
  * <p>
- * Maintained up to 47f73bd.
+ * Maintained up to 2253b25.
  * To check for any updates, see https://github.com/runelite/runelite/commits/master/runelite-client/src/main/java/net/runelite/client/plugins/cluescrolls/clues/EmoteClue.java
  * </p>
  *
