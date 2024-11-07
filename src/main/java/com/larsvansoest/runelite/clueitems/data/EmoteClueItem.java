@@ -182,7 +182,7 @@ public enum EmoteClueItem implements ItemRequirement
 	BRONZE_SQ_SHIELD("Bronze sq shield", ItemID.BRONZE_SQ_SHIELD),
 	BROWN_APRON("Brown apron", ItemID.BROWN_APRON),
 	BROWN_HEADBAND("Brown headband", ItemID.BROWN_HEADBAND),
-	BRUISE_BLUE_SNELM_POINTED("Bruise blue snelm (pointed)", ItemID.BRUISE_BLUE_SNELM_3343),
+	BRUISE_BLUE_SNELM_POINTED("Bruise blue snelm (pointed)", ItemID.BRUISE_BLUE_SNELM),
 	BRYOPHYTAS_STAFF_UNCHARGED("Bryophytas' staff (uncharged)", ItemID.BRYOPHYTAS_STAFF_UNCHARGED),
 	BRYOPHYTAS_STAFF("Bryophytas' staff", ItemID.BRYOPHYTAS_STAFF),
 	BULL_ROARER("Bull roarer", ItemID.BULLROARER),
