@@ -624,10 +624,10 @@ public final class EmoteClue implements LocationClueScroll
 					new WorldPoint(1436, 3115, 0),
 					DOUBLE_AGENT_141,
 					FORTIS_SALUTE,
-					EmoteClueItem.BLUE_MOON_HELM,
-					EmoteClueItem.BLUE_MOON_CHESTPLATE,
-					EmoteClueItem.BLUE_MOON_TASSETS,
-					EmoteClueItem.BLUE_MOON_SPEAR
+					EmoteClueItem.ANY_BLUE_MOON_HELM,
+					EmoteClueItem.ANY_BLUE_MOON_CHESTPLATE,
+					EmoteClueItem.ANY_BLUE_MOON_TASSETS,
+					EmoteClueItem.ANY_BLUE_MOON_SPEAR
 			),
 			new EmoteClue(Master,
 					"Goblin Salute in the Goblin Village. Beware of double agents! Equip a bandos godsword, a bandos cloak and a bandos platebody.",
