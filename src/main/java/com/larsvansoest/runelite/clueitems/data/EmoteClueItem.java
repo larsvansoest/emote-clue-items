@@ -1063,6 +1063,12 @@ public enum EmoteClueItem implements ItemRequirement
 			EmoteClueItem.ZAMORAK_STOLE,
 			EmoteClueItem.ARMADYL_STOLE
 	),
+	ANY_SUNFIRE_FANATIC_PIECE("Any sunfire fanatic piece",
+			false,
+			EmoteClueItem.SUNFIRE_FANATIC_HELM,
+			EmoteClueItem.SUNFIRE_FANATIC_CUIRASS,
+			EmoteClueItem.SUNFIRE_FANATIC_CHAUSSES
+	),
 	ANY_TEAM_CAPE("Any team cape",
 			false,
 			EmoteClueItem.TEAM1_CAPE,

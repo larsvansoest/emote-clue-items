@@ -317,9 +317,7 @@ public final class EmoteClue implements LocationClueScroll
 					TEMPLE_SOUTHEAST_OF_THE_BAZAAR,
 					new WorldPoint(1699, 3087, 0),
 					BOW,
-					EmoteClueItem.SUNFIRE_FANATIC_HELM,
-					EmoteClueItem.SUNFIRE_FANATIC_CUIRASS,
-					EmoteClueItem.SUNFIRE_FANATIC_CHAUSSES
+					EmoteClueItem.ANY_SUNFIRE_FANATIC_PIECE
 			),
 			new EmoteClue(Hard,
 					"Bow at the top of the lighthouse. Beware of double agents! Equip a blue dragonhide body, blue dragonhide vambraces and no jewelry.",
