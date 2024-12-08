@@ -312,7 +312,7 @@ public final class EmoteClue implements LocationClueScroll
 					EmoteClueItem.COIF
 			),
 			new EmoteClue(Elite,
-					"Bow within the temple in Civitas illa Fortis. Equip the full set of Sunfire Fanatic armour.",
+					"Bow within the temple in Civitas illa Fortis. Equip any piece of Sunfire Fanatic armour.",
 					"Civitas illa Fortis",
 					TEMPLE_SOUTHEAST_OF_THE_BAZAAR,
 					new WorldPoint(1699, 3087, 0),
