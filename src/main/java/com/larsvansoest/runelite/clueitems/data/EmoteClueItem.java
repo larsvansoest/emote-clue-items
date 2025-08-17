@@ -332,6 +332,8 @@ public enum EmoteClueItem implements ItemRequirement
 	HELM_OF_NEITIZNOT("Helm of neitiznot", ItemID.FRIS_KINGLY_HELM),
 	HOLY_BOOK_OR("Holy book or", ItemID.LEAGUE_3_BOOK_SARADOMIN),
 	HOLY_BOOK("Holy book", ItemID.SARADOMINBOOK_COMPLETE),
+	HUEYCOATL_HIDE_COIF("Hueycoatl hide coif", ItemID.HUEY_COIF),
+	HUEYCOATL_HIDE_VAMBRACES("Hueycoatl hide vambraces", ItemID.HUEY_VAMBRACES),
 	HYDRA_SLAYER_HELMET_I_25189("Hydra slayer helmet i 25189", ItemID.SW_SLAYER_HELM_I_HYDRA),
 	HYDRA_SLAYER_HELMET_I("Hydra slayer helmet i", ItemID.SLAYER_HELM_I_HYDRA),
 	HYDRA_SLAYER_HELMET("Hydra slayer helmet", ItemID.SLAYER_HELM_HYDRA),
