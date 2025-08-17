@@ -8,6 +8,8 @@ import com.larsvansoest.runelite.clueitems.data.StashUnit;
 import com.larsvansoest.runelite.clueitems.ui.components.StatusPanel;
 
 import net.runelite.api.*;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
@@ -126,7 +128,7 @@ public class ProgressManager
 		this.handleItemChanges(this.inventoryMonitor.toggleInventoryTracking(track));
 		if (track)
 		{
-			this.refreshContainer(InventoryID.INVENTORY);
+			this.refreshContainer(InventoryID.INV);
 		}
 	}
 
@@ -143,7 +145,7 @@ public class ProgressManager
 		this.handleItemChanges(this.inventoryMonitor.toggleEquipmentTracking(track));
 		if (track)
 		{
-			this.refreshContainer(InventoryID.EQUIPMENT);
+			this.refreshContainer(InventoryID.WORN);
 		}
 	}
 
@@ -160,11 +162,11 @@ public class ProgressManager
 		this.handleItemChanges(this.inventoryMonitor.toggleGroupStorageTracking(track));
 		if (track)
 		{
-			this.refreshContainer(InventoryID.GROUP_STORAGE);
+			this.refreshContainer(InventoryID.INV_GROUP_TEMP);
 		}
 	}
 
-	private void refreshContainer(final InventoryID inventoryID)
+	private void refreshContainer(final int inventoryID)
 	{
 		final ItemContainer container = this.client.getItemContainer(inventoryID);
 		if (container != null)
@@ -196,7 +198,7 @@ public class ProgressManager
 			unopenedContainers.add("equipment");
 		}
 
-		int accountType = this.client.getVarbitValue(Varbits.ACCOUNT_TYPE);
+		int accountType = this.client.getVarbitValue(VarbitID.IRONMAN);
 		/*
 		 * Varbits.ACCOUNT_TYPE
 		 * 4 = group ironman

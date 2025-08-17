@@ -27,9 +27,9 @@ package com.larsvansoest.runelite.clueitems.data;
 import com.google.common.collect.ImmutableSet;
 import com.larsvansoest.runelite.clueitems.EmoteClueItemsPlugin;
 import lombok.Getter;
-import net.runelite.api.Varbits;
 import net.runelite.api.annotations.Varbit;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import net.runelite.client.plugins.cluescrolls.clues.Enemy;
 import net.runelite.client.plugins.cluescrolls.clues.LocationClueScroll;
@@ -590,7 +590,7 @@ public final class EmoteClue implements LocationClueScroll
 					new WorldPoint(3168, 9571, 0),
 					DANCE,
 					BLOW_KISS,
-					Varbits.FIRE_PIT_LUMBRIDGE_SWAMP,
+					VarbitID.MY2ARM_FIRE_LUMB,
 					EmoteClueItem.STAFF_OF_AIR,
 					EmoteClueItem.BRONZE_FULL_HELM,
 					EmoteClueItem.AMULET_OF_POWER
