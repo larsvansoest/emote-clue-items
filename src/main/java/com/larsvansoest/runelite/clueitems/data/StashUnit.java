@@ -122,6 +122,8 @@ public enum StashUnit
 	BEHIND_MISS_SCHISM_IN_DRAYNOR_VILLAGE("Draynor Village Miss Chism", STASHUnit.BEHIND_MISS_SCHISM_IN_DRAYNOR_VILLAGE, Type.Bush),
 	NORTHWESTERN_CORNER_OF_THE_ENCHANTED_VALLEY("Enchanted Valley", STASHUnit.NORTHWESTERN_CORNER_OF_THE_ENCHANTED_VALLEY, Type.Bush),
 	NORTH_OF_MOUNT_KARUULM("Mount Karuulm", STASHUnit.NORTH_OF_MOUNT_KARUULM, Type.Hole),
+	NORTH_OF_THE_TWILIGHT_TEMPLE("Twilight Temple Mine", STASHUnit.TWILIGHT_TEMPLE_MINE, Type.Hole),
+	WHERE_THE_RIVER_ORTUS_MEETS_THE_PROUDSPIRE("River Ortis", STASHUnit.ORTUS_MEETS_PROUDSPIRE, Type.Rock),
 	TEMPLE_SOUTHEAST_OF_THE_BAZAAR("Temple in Civitas illa Fortis", "Outside the temple in Civitas illa Fortis", STASHUnit.TEMPLE_SOUTHEAST_OF_THE_BAZAAR, Type.Bush),
 	CAM_TORUM_ENTRANCE("Cam torum entrance", "South of the gates to Cam Torum", STASHUnit.CAM_TORUM_ENTRANCE, Type.Hole),
 	FORTIS_GRAND_MUSEUM("Fortis grand museum", "Near the entrance of the Civitas illa Fortis Grand Museum", STASHUnit.FORTIS_GRAND_MUSEUM, Type.Hole),

@@ -551,6 +551,7 @@ public enum EmoteClueItem implements ItemRequirement
 	STEEL_MED_HELM("Steel med helm", ItemID.STEEL_MED_HELM),
 	STEEL_PICKAXE("Steel pickaxe", ItemID.STEEL_PICKAXE),
 	STEEL_PLATEBODY("Steel platebody", ItemID.STEEL_PLATEBODY),
+	STEEL_PLATELEGS("Steel platelegs", ItemID.STEEL_PLATELEGS),
 	STEEL_PLATESKIRT("Steel plateskirt", ItemID.STEEL_PLATESKIRT),
 	STEEL_SQ_SHIELD("Steel sq shield", ItemID.STEEL_SQ_SHIELD),
 	STUDDED_BODY("Studded body", ItemID.STUDDED_BODY),
