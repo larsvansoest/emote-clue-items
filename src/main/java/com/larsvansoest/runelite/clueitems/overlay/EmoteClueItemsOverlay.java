@@ -37,6 +37,7 @@ import com.larsvansoest.runelite.clueitems.data.EmoteClueItem;
 import com.larsvansoest.runelite.clueitems.map.WorldMapMarker;
 import com.larsvansoest.runelite.clueitems.progress.ProgressManager;
 import net.runelite.api.Client;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
@@ -104,6 +105,13 @@ public class EmoteClueItemsOverlay extends WidgetItemOverlay
 
 		// Filter unsupported and turned off interfaces.
 		if (Objects.isNull(widgetContext) || Objects.isNull(widgetContainer) || !this.interfaceGroupSettingEnabled(widgetContainer))
+		{
+			return;
+		}
+
+		// Opening potion storage changes BANK_CURRENTTAB to 15
+		// Closing the bank retains the value so we check interface and current tab
+		if (widgetContainer == WidgetContainer.Bank && this.client.getVarbitValue(VarbitID.BANK_CURRENTTAB) == 15)
 		{
 			return;
 		}

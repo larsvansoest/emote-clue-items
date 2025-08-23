@@ -10,6 +10,7 @@ import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.*;
 import net.runelite.api.worldmap.WorldMap;
 
@@ -67,7 +68,7 @@ public class WorldMapOrb
 
 		final float pixelsPerTile = ro.getWorldMapZoom();
 
-		final Widget map = client.getWidget(ComponentID.WORLD_MAP_MAPVIEW);
+		final Widget map = client.getWidget(InterfaceID.Worldmap.MAP_CONTAINER);
 		if (map != null)
 		{
 			final Rectangle worldMapRect = map.getBounds();
@@ -100,7 +101,7 @@ public class WorldMapOrb
 
 	private static Rectangle getWorldMapClipArea(final Client client)
 	{
-		final Widget widget = client.getWidget(ComponentID.WORLD_MAP_MAPVIEW);
+		final Widget widget = client.getWidget(InterfaceID.Worldmap.MAP_CONTAINER);
 		return widget == null ? null : widget.getBounds();
 	}
 

@@ -27,9 +27,9 @@ package com.larsvansoest.runelite.clueitems.data;
 import com.google.common.collect.ImmutableSet;
 import com.larsvansoest.runelite.clueitems.EmoteClueItemsPlugin;
 import lombok.Getter;
-import net.runelite.api.Varbits;
 import net.runelite.api.annotations.Varbit;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import net.runelite.client.plugins.cluescrolls.clues.Enemy;
 import net.runelite.client.plugins.cluescrolls.clues.LocationClueScroll;
@@ -479,6 +479,27 @@ public final class EmoteClue implements LocationClueScroll
 					EmoteClueItem.MITHRIL_BOOTS
 			),
 			new EmoteClue(Medium,
+				"Jump for Joy in the mine near the Twilight Temple. Bow before you talk to me. Equip a maple longbow, a ruby amulet and some steel platelegs.",
+				"Twilight Temple Mine",
+				NORTH_OF_THE_TWILIGHT_TEMPLE,
+				new WorldPoint(1672, 3284, 0),
+				JUMP_FOR_JOY,
+				BOW,
+				EmoteClueItem.MAPLE_LONGBOW,
+				EmoteClueItem.RUBY_AMULET,
+				EmoteClueItem.STEEL_PLATELEGS
+			),
+			new EmoteClue(Medium,
+				"Nod your head where the River Ortus meets the Proudspire. Indicate 'no' before you talk to me. Equip a blue wizard hat, a blue wizard robe and wear nothing on your legs.",
+				"River Ortus",
+				WHERE_THE_RIVER_ORTUS_MEETS_THE_PROUDSPIRE,
+				new WorldPoint(1626, 3241, 0),
+				YES,
+				NO,
+				EmoteClueItem.BLUE_WIZARD_HAT,
+				EmoteClueItem.BLUE_WIZARD_ROBE
+			),
+			new EmoteClue(Medium,
 					"Cry in the Catherby Ranging shop. Bow before you talk to me. Equip blue gnome boots, a hard leather body and an unblessed silver sickle.",
 					"Catherby",
 					HICKTONS_ARCHERY_EMPORIUM,
@@ -569,7 +590,7 @@ public final class EmoteClue implements LocationClueScroll
 					new WorldPoint(3168, 9571, 0),
 					DANCE,
 					BLOW_KISS,
-					Varbits.FIRE_PIT_LUMBRIDGE_SWAMP,
+					VarbitID.MY2ARM_FIRE_LUMB,
 					EmoteClueItem.STAFF_OF_AIR,
 					EmoteClueItem.BRONZE_FULL_HELM,
 					EmoteClueItem.AMULET_OF_POWER
@@ -1280,6 +1301,27 @@ public final class EmoteClue implements LocationClueScroll
 					null,
 					new WorldPoint(2950, 3387, 0),
 					SPIN),
+			new EmoteClue(Hard,
+				"Panic outside the Twilight Temple. Beware of double agents! Equip a rune longsword, rune platebody and a rune plateskirt.",
+				"Twilight Temple",
+				TWILIGHT_TEMPLE,
+				new WorldPoint(1694, 3247, 0),
+				DOUBLE_AGENT_108,
+				PANIC,
+				EmoteClueItem.RUNE_LONGSWORD,
+				EmoteClueItem.RUNE_PLATEBODY,
+				EmoteClueItem.RUNE_PLATESKIRT
+			),
+			new EmoteClue(Master,
+				"Think on the western coast of Salvager Overlook. Beware of double agents! Equip a Hueycoatl hide coif and some Hueycoatl hide vambraces.",
+				"Salvager Overlook",
+				SALVAGER_OVERLOOK,
+				new WorldPoint(1610, 3302, 0),
+				DOUBLE_AGENT_141,
+				THINK,
+				EmoteClueItem.HUEYCOATL_HIDE_COIF,
+				EmoteClueItem.HUEYCOATL_HIDE_VAMBRACES
+			),
 			new EmoteClue(
 					Elite,
 					"Salute by the Charcoal Burners. Equip a Farmer's strawhat, Shayzien platebody (5) and Pyromancer robes.",
