@@ -51,7 +51,7 @@ import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement
  * Source: https://github.com/runelite/runelite/tree/master/runelite-client/src/main/java/net/runelite/client/plugins/cluescrolls/clues
  * </p>
  * <p>
- * Maintained up to 2253b25.
+ * Maintained up to 32f2f00.
  * To check for any updates, see https://github.com/runelite/runelite/commits/master/runelite-client/src/main/java/net/runelite/client/plugins/cluescrolls/clues/EmoteClue.java
  * </p>
  *
@@ -298,7 +298,7 @@ public final class EmoteClue implements LocationClueScroll
 					new WorldPoint(2728, 3377, 0),
 					BOW,
 					EmoteClueItem.CAPE_OF_LEGENDS,
-					EmoteClueItem.DRAGON_BATTLEAXE,
+					EmoteClueItem.ANY_DRAGON_BATTLEAXE,
 					EmoteClueItem.ANY_AMULET_OF_GLORY
 			),
 			new EmoteClue(Easy,
@@ -438,7 +438,7 @@ public final class EmoteClue implements LocationClueScroll
 					"Clap on the top level of the mill, north of East Ardougne. Equip a blue gnome robe top, HAM robe bottom and an unenchanted tiara.",
 					"East Ardougne",
 					UPSTAIRS_IN_THE_ARDOUGNE_WINDMILL,
-					new WorldPoint(2635, 3385, 3),
+					new WorldPoint(2635, 3385, 2),
 					CLAP,
 					EmoteClueItem.BLUE_ROBE_TOP,
 					EmoteClueItem.HAM_ROBE,
@@ -639,12 +639,12 @@ public final class EmoteClue implements LocationClueScroll
 					EmoteClueItem.BODY_TIARA
 			),
 			new EmoteClue(Master,
-					"Fortis Salute outside the gates of Cam Torum. Beware of double agents! Equip a full set of Frostmoon equipment.",
+					"Salute outside the gates of Cam Torum. Beware of double agents! Equip a full set of Frostmoon equipment.",
 					"Cam Torum",
 					CAM_TORUM_ENTRANCE,
 					new WorldPoint(1436, 3115, 0),
 					DOUBLE_AGENT_141,
-					FORTIS_SALUTE,
+					SALUTE,
 					EmoteClueItem.ANY_BLUE_MOON_HELM,
 					EmoteClueItem.ANY_BLUE_MOON_CHESTPLATE,
 					EmoteClueItem.ANY_BLUE_MOON_TASSETS,
@@ -900,7 +900,7 @@ public final class EmoteClue implements LocationClueScroll
 					new WorldPoint(2843, 3543, 0),
 					DOUBLE_AGENT_141,
 					PUSH_UP,
-					EmoteClueItem.DRAGON_BATTLEAXE,
+					EmoteClueItem.ANY_DRAGON_BATTLEAXE,
 					EmoteClueItem.ANY_DRAGON_DEFENDER,
 					EmoteClueItem.ANY_SLAYER_HELMET
 			),
@@ -912,7 +912,7 @@ public final class EmoteClue implements LocationClueScroll
 					new WorldPoint(2843, 3543, 0),
 					DOUBLE_AGENT_141,
 					RASPBERRY,
-					EmoteClueItem.DRAGON_BATTLEAXE,
+					EmoteClueItem.ANY_DRAGON_BATTLEAXE,
 					EmoteClueItem.ANY_DRAGON_OR_AVERNIC_DEFENDER,
 					EmoteClueItem.ANY_SLAYER_HELMET
 			),
@@ -1027,7 +1027,7 @@ public final class EmoteClue implements LocationClueScroll
 					new WorldPoint(1663, 10045, 0),
 					DOUBLE_AGENT_141,
 					SLAP_HEAD,
-					EmoteClueItem.ARCLIGHT,
+					EmoteClueItem.ANY_ARCLIGHT_OR_EMBERLIGHT,
 					EmoteClueItem.ANY_AMULET_OF_THE_DAMNED
 			),
 			new EmoteClue(Easy,
@@ -1313,14 +1313,14 @@ public final class EmoteClue implements LocationClueScroll
 				EmoteClueItem.RUNE_PLATESKIRT
 			),
 			new EmoteClue(Master,
-				"Think on the western coast of Salvager Overlook. Beware of double agents! Equip a Hueycoatl hide coif and some Hueycoatl hide vambraces.",
-				"Salvager Overlook",
-				SALVAGER_OVERLOOK,
-				new WorldPoint(1610, 3302, 0),
-				DOUBLE_AGENT_141,
-				THINK,
-				EmoteClueItem.HUEYCOATL_HIDE_COIF,
-				EmoteClueItem.HUEYCOATL_HIDE_VAMBRACES
+					"Think on the western coast of Salvager Overlook. Beware of double agents! Equip a Hueycoatl hide coif and some Hueycoatl hide vambraces.",
+					"Salvager Overlook",
+					SALVAGER_OVERLOOK,
+					new WorldPoint(1610, 3302, 0),
+					DOUBLE_AGENT_141,
+					THINK,
+					EmoteClueItem.HUEYCOATL_HIDE_COIF,
+					EmoteClueItem.HUEYCOATL_HIDE_VAMBRACES
 			),
 			new EmoteClue(
 					Elite,
@@ -1332,6 +1332,36 @@ public final class EmoteClue implements LocationClueScroll
 					EmoteClueItem.ANY_FARMERS_STRAWHAT,
 					EmoteClueItem.SHAYZIEN_BODY_5,
 					EmoteClueItem.PYROMANCER_ROBE
+			),
+			new EmoteClue(
+					Easy,
+					"Dance a jig behind the bar on the Pandemonium. Equip a right eye patch and a bronze scimitar.",
+					"Pandemonium",
+					PANDEMONIUM_BAR,
+					new WorldPoint(3049, 2966, 0),
+					JIG,
+					EmoteClueItem.EYE_PATCH,
+					EmoteClueItem.BRONZE_SCIMITAR
+			),
+			new EmoteClue(
+					Elite,
+					"Do the crab dance by the monument on Wintumber Island. Equip a crab helmet and a crab claw.",
+					"Wintumber Island",
+					WINTUMBER_ISLAND,
+					new WorldPoint(2069, 2608, 0),
+					CRAB_DANCE,
+					EmoteClueItem.HUNDRED_PIRATE_CRAB_SHELL_HELM,
+					EmoteClueItem.HUNDRED_PIRATE_CRAB_SHELL_GAUNTLET
+			),
+			new EmoteClue(
+					Master,
+					"Bow in front of the cave on Brittle Isle. Beware of double agents! Equip a Medallion of the Deep and a rosewood blowpipe.",
+					"Brittle Isle",
+					BRITTLE_ISLE,
+					new WorldPoint(1946, 4074, 0),
+					BOW,
+					EmoteClueItem.MEDALLION_OF_THE_DEEP,
+					EmoteClueItem.ROSEWOOD_BLOWPIPE
 			)
 	);
 

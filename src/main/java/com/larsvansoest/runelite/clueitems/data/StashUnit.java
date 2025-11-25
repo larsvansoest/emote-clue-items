@@ -10,7 +10,7 @@ import net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit;
  * Source https://github.com/runelite/runelite/blob/master/runelite-client/src/main/java/net/runelite/client/plugins/cluescrolls/clues/emote/STASHUnit.java
  * </p>
  * <p>
- * Maintained up to 2253b25.
+ * Maintained up to 32f2f00.
  * </p>
  *
  * @author Lars van Soest
@@ -43,7 +43,7 @@ public enum StashUnit
 	ROAD_JUNCTION_SOUTH_OF_SINCLAIR_MANSION("Sinclaire Mansion Junction", STASHUnit.ROAD_JUNCTION_SOUTH_OF_SINCLAIR_MANSION, Type.Rock),
 	OUTSIDE_THE_DIGSITE_EXAM_CENTRE("Digsite Exam Centre", STASHUnit.OUTSIDE_THE_DIGSITE_EXAM_CENTRE, Type.Bush),
 	NEAR_THE_SAWMILL_OPERATORS_BOOTH("Sawmill Operators Booth", STASHUnit.NEAR_THE_SAWMILL_OPERATORS_BOOTH, Type.Bush),
-	EMIRS_ARENA_TICKET_OFFICE("Emir's Arena Ticket Office", "Mubariz's room at Emir's Arena", STASHUnit.EMIRS_ARENA_TICKET_OFFICE, Type.Crate),
+	EMIRS_ARENA_TICKET_OFFICE("Emir's Arena Ticket Office", "Mubariz's room at the Emir's Arena", STASHUnit.EMIRS_ARENA_TICKET_OFFICE, Type.Crate),
 	OUTSIDE_VARROCK_PALACE_COURTYARD("Varrock Palace Courtyard", STASHUnit.OUTSIDE_VARROCK_PALACE_COURTYARD, Type.Bush),
 	NEAR_HERQUINS_SHOP_IN_FALADOR("Falador Herquins Shop", STASHUnit.NEAR_HERQUINS_SHOP_IN_FALADOR, Type.Bush),
 	SOUTH_OF_THE_GRAND_EXCHANGE("Varrock Grand Exchange", STASHUnit.SOUTH_OF_THE_GRAND_EXCHANGE, Type.Bush),
@@ -124,7 +124,10 @@ public enum StashUnit
 	NORTH_OF_MOUNT_KARUULM("Mount Karuulm", STASHUnit.NORTH_OF_MOUNT_KARUULM, Type.Hole),
 	NORTH_OF_THE_TWILIGHT_TEMPLE("Twilight Temple Mine", STASHUnit.TWILIGHT_TEMPLE_MINE, Type.Hole),
 	TWILIGHT_TEMPLE("Twilight Temple", STASHUnit.OUTSIDE_TWILIGHT_TEMPLE, Type.Crate),
-	SALVAGER_OVERLOOK("Salveager Overlook", STASHUnit.WESTERN_SALVAGER_OVERLOOK, Type.Hole),
+	PANDEMONIUM_BAR("Pandemonium Bar", STASHUnit.PANDEMONIUM_BAR, Type.Rock),
+	WINTUMBER_ISLAND("Wintumber island", STASHUnit.WINTUMBER_ISLAND, Type.Rock),
+	BRITTLE_ISLE("Brittle Isle", STASHUnit.BRITTLE_ISLE, Type.Rock),
+	SALVAGER_OVERLOOK("Salvager Overlook", "West side of Salvager Overlook", STASHUnit.WESTERN_SALVAGER_OVERLOOK, Type.Hole),
 	WHERE_THE_RIVER_ORTUS_MEETS_THE_PROUDSPIRE("River Ortis", STASHUnit.ORTUS_MEETS_PROUDSPIRE, Type.Rock),
 	TEMPLE_SOUTHEAST_OF_THE_BAZAAR("Temple in Civitas illa Fortis", "Outside the temple in Civitas illa Fortis", STASHUnit.TEMPLE_SOUTHEAST_OF_THE_BAZAAR, Type.Bush),
 	CAM_TORUM_ENTRANCE("Cam torum entrance", "South of the gates to Cam Torum", STASHUnit.CAM_TORUM_ENTRANCE, Type.Hole),
