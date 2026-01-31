@@ -891,7 +891,7 @@ public final class EmoteClue implements LocationClueScroll
 					EmoteClueItem.BLUE_DHIDE_VAMBRACES,
 					EmoteClueItem.DRAGON_SPEAR,
 					EmoteClueItem.RUNE_PLATESKIRT,
-					EmoteClueItem.SLED_4084
+					EmoteClueItem.SLED
 			),
 			new EmoteClue(Master,
 					"Do a push up at the bank of the Warrior's guild. Beware of double agents! Equip a dragon battleaxe, a dragon defender and a slayer helm of any kind.",
@@ -1340,7 +1340,7 @@ public final class EmoteClue implements LocationClueScroll
 					PANDEMONIUM_BAR,
 					new WorldPoint(3049, 2966, 0),
 					JIG,
-					EmoteClueItem.EYE_PATCH,
+					EmoteClueItem.RIGHT_EYE_PATCH,
 					EmoteClueItem.BRONZE_SCIMITAR
 			),
 			new EmoteClue(
